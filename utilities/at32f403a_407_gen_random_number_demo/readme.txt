@@ -1,0 +1,15 @@
+/**
+  **************************************************************************
+  * @file     readme.txt 
+  * @version  v2.0.4
+  * @date     2021-11-26
+  * @brief    readme
+  **************************************************************************
+  */
+
+  this demo is based on the at-start board, in this demo, you can select different device on toolbar "select target".
+  in this demo, show how to get random number by rtc and uid, and usart1 printf the result.
+  through config #define ENABLE_RTC_ASSEED value 0 or 1,to opnen or close rtc as seed for random. 
+
+
+
