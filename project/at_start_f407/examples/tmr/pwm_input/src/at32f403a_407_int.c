@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_int.c
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    main interrupt service routines.
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -145,7 +145,7 @@ void SysTick_Handler(void)
 void TMR3_GLOBAL_IRQHandler(void)
 {
   /* clear tmr3 channel interrupt pending bit */
-  tmr_flag_clear(TMR3, TMR_C2_INT);
+  tmr_flag_clear(TMR3, TMR_C2_FLAG);
 
   /* get the input channel data value */
   ic2value = tmr_channel_value_get(TMR3, TMR_SELECT_CHANNEL_2);

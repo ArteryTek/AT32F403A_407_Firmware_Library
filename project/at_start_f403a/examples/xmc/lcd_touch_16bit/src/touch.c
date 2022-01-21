@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     touch.c
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    this file contains all the functions prototypes for the 
   *           touch firmware driver.
   **************************************************************************
@@ -76,7 +76,7 @@ void touch_pin_init(void)
   gpio_init_struct.gpio_drive_strength = GPIO_DRIVE_STRENGTH_STRONGER; 
   gpio_init(GPIOB, &gpio_init_struct); 
   
-  gpio_init_struct.gpio_pins = GPIO_PINS_8; 
+  gpio_init_struct.gpio_pins = GPIO_PINS_6; 
   gpio_init_struct.gpio_mode = GPIO_MODE_OUTPUT; 
   gpio_init_struct.gpio_out_type = GPIO_OUTPUT_PUSH_PULL; 
   gpio_init_struct.gpio_pull = GPIO_PULL_NONE; 
@@ -85,7 +85,7 @@ void touch_pin_init(void)
   
   gpio_bits_set(GPIOB, GPIO_PINS_3); 
   gpio_bits_set(GPIOB, GPIO_PINS_5); 
-  gpio_bits_set(GPIOB, GPIO_PINS_8); 
+  gpio_bits_set(GPIOB, GPIO_PINS_6); 
   
   gpio_init_struct.gpio_pins = GPIO_PINS_4; 
   gpio_init_struct.gpio_mode = GPIO_MODE_INPUT; 
@@ -94,14 +94,14 @@ void touch_pin_init(void)
   gpio_init_struct.gpio_drive_strength = GPIO_DRIVE_STRENGTH_STRONGER; 
   gpio_init(GPIOB, &gpio_init_struct); 
   
-  gpio_init_struct.gpio_pins = GPIO_PINS_5; 
+  gpio_init_struct.gpio_pins = GPIO_PINS_11; 
   gpio_init_struct.gpio_mode = GPIO_MODE_INPUT; 
   gpio_init_struct.gpio_out_type = GPIO_OUTPUT_PUSH_PULL; 
   gpio_init_struct.gpio_pull = GPIO_PULL_UP; 
   gpio_init_struct.gpio_drive_strength = GPIO_DRIVE_STRENGTH_STRONGER; 
-  gpio_init(GPIOD, &gpio_init_struct); 
+  gpio_init(GPIOB, &gpio_init_struct); 
   
-  gpio_bits_set(GPIOD, GPIO_PINS_5); 
+  gpio_bits_set(GPIOB, GPIO_PINS_11); 
  
   spi_default_para_init(&spi_init_struct); 
   spi_init_struct.transmission_mode = SPI_TRANSMIT_FULL_DUPLEX; 
@@ -228,7 +228,7 @@ uint8_t touch_read_1byte(void)
   uint8_t touch; 
   
   while(spi_i2s_flag_get(SPI3, SPI_I2S_TDBE_FLAG) == RESET); 
-  spi_i2s_data_transmit(SPI3, 0XFF); 
+  spi_i2s_data_transmit(SPI3, 0xFF); 
   
   while(spi_i2s_flag_get(SPI3, SPI_I2S_RDBF_FLAG) == RESET); 
   touch = spi_i2s_data_receive(SPI3); 
@@ -245,7 +245,7 @@ void touch_scan(void)
 {
   uint16_t x, y; 
   
-  if(gpio_input_data_bit_read(GPIOD, GPIO_PINS_5) == 0)
+  if(gpio_input_data_bit_read(GPIOB, GPIO_PINS_11) == 0)
   {
     touch_dev_struct.touch_read_xy(&touch_dev_struct.x_p[1], &touch_dev_struct.y_p[1]); 
     x = (240 * touch_dev_struct.x_p[1]) / (0xed0); 

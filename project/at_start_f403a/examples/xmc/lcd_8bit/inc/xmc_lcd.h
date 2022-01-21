@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     xmc_lcd.h
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    xmc_lcd header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -58,27 +58,27 @@ extern "C" {
   */
   
 /* the lcd reset line */
-#define LCD_RESET_HIGH                   gpio_bits_set(GPIOB,GPIO_PINS_10)
-#define LCD_RESET_LOW                    gpio_bits_reset(GPIOB,GPIO_PINS_10)
+#define LCD_RESET_HIGH                   gpio_bits_set(GPIOB,GPIO_PINS_9)
+#define LCD_RESET_LOW                    gpio_bits_reset(GPIOB,GPIO_PINS_9)
 
 /**
   * @}
   */
   
 #define WHITE                            0xFFFF
-#define BLACK                            0x0000    
-#define BLUE                             0x001F  
-#define BRED                             0XF81F
-#define GRED                             0XFFE0
-#define GBLUE                            0X07FF
+#define BLACK                            0x0000
+#define BLUE                             0x001F
+#define BRED                             0xF81F
+#define GRED                             0xFFE0
+#define GBLUE                            0x07FF
 #define RED                              0xF800
 #define MAGENTA                          0xF81F
 #define GREEN                            0x07E0
 #define CYAN                             0x7FFF
 #define YELLOW                           0xFFE0
-#define BROWN                            0XBC40
-#define BRRED                            0XFC07
-#define GRAY                             0X8430
+#define BROWN                            0xBC40
+#define BRRED                            0xFC07
+#define GRAY                             0x8430
 
 /** @defgroup XMC_lcd_8bit_exported_functions
   * @{

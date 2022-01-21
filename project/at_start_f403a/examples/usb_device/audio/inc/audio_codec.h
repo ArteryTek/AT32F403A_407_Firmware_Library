@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     audio_codec.h
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    audio codec header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -124,10 +124,38 @@ extern "C" {
 /** @defgroup USB_device_audio_codec_exported_functions
   * @{
   */
+#define MIC_BUFFER_SIZE   1024
+#define SPK_BUFFER_SIZE   4096
+#define DMA_BUFFER_SIZE   288
+
 typedef struct
 {
   uint32_t audio_freq;
   uint32_t audio_bitw;
+  //spk part
+  uint16_t spk_buffer[SPK_BUFFER_SIZE];
+  uint16_t *spk_roff;
+  uint16_t *spk_woff;
+  uint16_t *spk_rend;
+  uint32_t spk_freq;
+  uint32_t spk_wtotal;
+  uint32_t spk_rtotal;
+  uint16_t spk_threshold;
+  uint16_t spk_calc;
+  uint8_t  spk_stage;
+  
+  //mic part
+  uint16_t mic_buffer[MIC_BUFFER_SIZE];
+  uint16_t *mic_roff;
+  uint16_t *mic_woff;
+  uint16_t *mic_wend;
+  uint32_t mic_wtotal;
+  uint32_t mic_rtotal;
+  uint32_t mic_delta;
+  uint16_t mic_calc;
+  uint16_t mic_adj_count;
+  uint8_t  mic_adj_stage;
+  uint8_t  mic_stage;
   
   uint8_t mic_mute;
   uint8_t spk_mute;
@@ -141,22 +169,15 @@ typedef struct
   uint32_t spk_enable;
   uint32_t mic_enable;
   
-  uint16_t spk_buffer[768];
-  uint16_t mic_buffer[768];
-  uint32_t mic_hf_status;
-  
-  uint32_t feedback_counter;
-  
-  uint32_t r_pos;
-  uint32_t w_pos;
-  uint16_t spk_tx_fifo[SPK_TX_FIFO_SIZE];
-  
 }audio_codec_type;
 
 error_status audio_codec_init(void);
 error_status audio_codec_loop(void);
 void audio_codec_modify_freq(uint32_t freq);
 
+/**
+  * @brief audio codec interface
+  */
 void audio_codec_spk_fifo_write(uint8_t *data, uint32_t len);
 uint32_t audio_codec_mic_get_data(uint8_t *buffer);
 uint8_t audio_codec_spk_feedback(uint8_t *feedback);

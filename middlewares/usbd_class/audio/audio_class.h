@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     audio_class.h
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    usb audio class file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -58,11 +58,11 @@ extern "C" {
 /**
   * @brief endpoint support max size
   */
-#define AUDIO_REMAIN_SIZE                8
+#define AUDIO_REMAIN_SIZE                40
 #define AUDIO_MIC_IN_MAXPACKET_SIZE      (AUDIO_SUPPORT_MAX_FREQ * AUDIO_MIC_CHANEL_NUM * (AUDIO_MIC_DEFAULT_BITW / 8) + AUDIO_REMAIN_SIZE)
 #define AUDIO_SPK_OUT_MAXPACKET_SIZE     (AUDIO_SUPPORT_MAX_FREQ * AUDIO_SPK_CHANEL_NUM * (AUDIO_SPK_DEFAULT_BITW / 8) + AUDIO_REMAIN_SIZE)
 #define AUDIO_FEEDBACK_MAXPACKET_SIZE    0x3
-
+#define FEEDBACK_REFRESH_TIME            0x8
 /**
   * @brief request type define
   */

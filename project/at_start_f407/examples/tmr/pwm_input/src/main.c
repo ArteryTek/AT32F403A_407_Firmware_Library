@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -43,7 +43,6 @@ __IO uint32_t frequency = 0;
 
 void crm_configuration(void);
 void gpio_configuration(void);
-void uart_init(uint32_t baudrate);
 
 /**
   * @brief  configure the tmr3 pins.
@@ -78,70 +77,6 @@ void crm_configuration(void)
 }
 
 /**
-  * @brief  initialize print usart
-  * @param  baudrate: uart baudrate
-  * @retval none
-  */
-void uart_init(uint32_t baudrate)
-{
-  gpio_init_type gpio_init_struct;
-
-  /* enable the uart1 and gpio clock */
-  crm_periph_clock_enable(CRM_USART1_PERIPH_CLOCK, TRUE);
-  crm_periph_clock_enable(CRM_GPIOA_PERIPH_CLOCK, TRUE);
-
-  gpio_default_para_init(&gpio_init_struct);
-
-  /* configure the uart1 tx pin */
-  gpio_init_struct.gpio_drive_strength = GPIO_DRIVE_STRENGTH_STRONGER;
-  gpio_init_struct.gpio_out_type = GPIO_OUTPUT_PUSH_PULL;
-  gpio_init_struct.gpio_mode = GPIO_MODE_MUX;
-  gpio_init_struct.gpio_pins = GPIO_PINS_9;
-  gpio_init_struct.gpio_pull = GPIO_PULL_NONE;
-  gpio_init(GPIOA, &gpio_init_struct);
-
-  /* configure uart param */
-  usart_init(USART1, baudrate, USART_DATA_8BITS, USART_STOP_1_BIT);
-  usart_transmitter_enable(USART1, TRUE);
-  usart_enable(USART1, TRUE);
-}
-
-/* suport printf function, usemicrolib is unnecessary */
-#ifdef __CC_ARM
-  #pragma import(__use_no_semihosting)
-  struct __FILE
-  {
-    int handle;
-  };
-
-  FILE __stdout;
-
-  void _sys_exit(int x)
-  {
-    x = x;
-  }
-#endif
-
-#ifdef __GNUC__
-  /* with gcc/raisonance, small printf (option ld linker->libraries->small printf set to 'yes') calls __io_putchar() */
-  #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
-#else
-  #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
-#endif /* __gnuc__ */
-
-/**
-  * @brief  retargets the c library printf function to the usart.
-  * @param  none
-  * @retval none
-  */
-PUTCHAR_PROTOTYPE
-{
-  while(usart_flag_get(USART1, USART_TDBE_FLAG) == RESET);
-  usart_data_transmit(USART1, ch);
-  return ch;
-}
-
-/**
   * @brief  main function.
   * @param  none
   * @retval none
@@ -160,7 +95,7 @@ int main(void)
   /* gpio configuration */
   gpio_configuration();
 
-  uart_init(115200);
+  uart_print_init(115200);
 
   tmr_input_default_para_init(&tmr_ic_init_structure);
   tmr_ic_init_structure.input_filter_value = 0;

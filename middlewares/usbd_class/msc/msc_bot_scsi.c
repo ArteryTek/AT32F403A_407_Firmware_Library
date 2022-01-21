@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     msc_bot_scsi.c
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    usb mass storage bulk-only transport and scsi command
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -49,7 +49,10 @@ csw_type csw_struct =
   CSW_BCSWSTATUS_PASS,
 };
 
-uint8_t page00_inquiry_data[] = {
+#if defined ( __ICCARM__ ) /* iar compiler */
+  #pragma data_alignment=4
+#endif
+ALIGNED_HEAD uint8_t page00_inquiry_data[] ALIGNED_TAIL = {
 	0x00,		
 	0x00, 
 	0x00, 
@@ -57,7 +60,11 @@ uint8_t page00_inquiry_data[] = {
 	0x00, 
 
 };
-sense_type sense_data =
+
+#if defined ( __ICCARM__ ) /* iar compiler */
+  #pragma data_alignment=4
+#endif
+ALIGNED_HEAD sense_type sense_data ALIGNED_TAIL =
 {
   0x70,
   0x00,
@@ -70,8 +77,10 @@ sense_type sense_data =
   0x00000000
 };
 
-
-uint8_t mode_sense6_data[8] = 
+#if defined ( __ICCARM__ ) /* iar compiler */
+  #pragma data_alignment=4
+#endif
+ALIGNED_HEAD uint8_t mode_sense6_data[8] ALIGNED_TAIL = 
 {
   0x00,
   0x00,
@@ -83,7 +92,10 @@ uint8_t mode_sense6_data[8] =
   0x00
 };
 
-uint8_t mode_sense10_data[8] = 
+#if defined ( __ICCARM__ ) /* iar compiler */
+  #pragma data_alignment=4
+#endif
+ALIGNED_HEAD uint8_t mode_sense10_data[8] ALIGNED_TAIL = 
 {
   0x00,
   0x06,

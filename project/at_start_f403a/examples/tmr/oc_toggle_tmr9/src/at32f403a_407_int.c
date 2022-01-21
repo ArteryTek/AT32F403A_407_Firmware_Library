@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_int.c
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    main interrupt service routines.
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -145,17 +145,17 @@ void SysTick_Handler(void)
 void TMR1_BRK_TMR9_IRQHandler(void)
 {
   /* TMR9_CH1 toggling with frequency = 366.2 Hz */
-  if(tmr_flag_get(TMR9, TMR_C1_INT) != RESET)
+  if(tmr_flag_get(TMR9, TMR_C1_FLAG) != RESET)
   {
-    tmr_flag_clear(TMR9, TMR_C1_INT );
+    tmr_flag_clear(TMR9, TMR_C1_FLAG );
     capture = tmr_channel_value_get(TMR9, TMR_SELECT_CHANNEL_1);
     tmr_channel_value_set(TMR9, TMR_SELECT_CHANNEL_1, capture + ccr1_val);
   }
 
   /* TMR9_CH2 toggling with frequency = 732.4 Hz */
-  if(tmr_flag_get(TMR9, TMR_C2_INT) != RESET)
+  if(tmr_flag_get(TMR9, TMR_C2_FLAG) != RESET)
   {
-    tmr_flag_clear(TMR9, TMR_C2_INT);
+    tmr_flag_clear(TMR9, TMR_C2_FLAG);
     capture = tmr_channel_value_get(TMR9, TMR_SELECT_CHANNEL_2);
     tmr_channel_value_set(TMR9, TMR_SELECT_CHANNEL_2, capture + ccr2_val);
   }

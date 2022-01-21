@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -58,6 +58,9 @@ int main(void)
 
   /* initialize leds */
   at32_board_init();
+  
+  /* initialize usart */
+  uart_print_init(115200);
 
   /* configure xmc bank1 nor/sram1 */
   psram_init();
@@ -83,14 +86,12 @@ int main(void)
   if(writereadstatus == 0)
   {
     /* pass */
-    /* turn on led2 */
-    at32_led_on(LED2);
+    printf("data is right\r\n");  
   }
   else
   { 
     /* fail */
-    /* turn on led3 */
-    at32_led_on(LED3);
+    printf("data is error\r\n");   
   }
 
   while(1)

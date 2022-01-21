@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     readme.txt 
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    readme
   **************************************************************************
   */
@@ -14,7 +14,7 @@
   100pin and 64pin pakeage.
   
   the pin to pin with lcd and xmc:
-  - gpio      pb10    --->   lcd_reset
+  - gpio      pb9     --->   lcd_reset
   - xmc_a0    pc3     --->   lcd_rs  
   - xmc_ne4   pc4     --->   lcd_cs
   - xmc_nwe   pd2     --->   lcd_wr 
@@ -26,4 +26,6 @@
   - xmc_d4    pa2     --->   data[4]
   - xmc_d5    pa3     --->   data[5]
   - xmc_d6    pa4     --->   data[6]
-  - xmc_d7    pa5     --->   data[7]
+  - xmc_d7    pa5     --->   data[7]
+
+

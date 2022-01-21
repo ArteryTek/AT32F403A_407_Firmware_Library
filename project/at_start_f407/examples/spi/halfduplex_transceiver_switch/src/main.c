@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -26,7 +26,6 @@
 
 #include "at32f403a_407_board.h"
 #include "at32f403a_407_clock.h"
-#include <stdio.h>
 
 /** @addtogroup AT32F407_periph_examples
   * @{
@@ -49,7 +48,7 @@ uint8_t spi2_tx_buffer[BUFFER_SIZE] = {0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57,
                                        0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68,
                                        0x69, 0x6A, 0x6B, 0x6C, 0x6D, 0x6E, 0x6F, 0x70};
 uint8_t spi1_rx_buffer[BUFFER_SIZE], spi2_rx_buffer[BUFFER_SIZE];
-uint32_t tx_index = 0, rx_index = 0;
+volatile uint32_t tx_index = 0, rx_index = 0;
 volatile error_status transfer_status1 = ERROR, transfer_status2 = ERROR;
 
 static void gpio_config(void);

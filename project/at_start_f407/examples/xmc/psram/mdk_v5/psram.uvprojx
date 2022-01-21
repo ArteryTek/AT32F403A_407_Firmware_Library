@@ -351,7 +351,7 @@
             <NoWarn>0</NoWarn>
             <uSurpInc>0</uSurpInc>
             <useXO>0</useXO>
-            <ClangAsOpt>1</ClangAsOpt>
+            <ClangAsOpt>4</ClangAsOpt>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define></Define>
@@ -426,6 +426,11 @@
               <FileName>at32f403a_407_crm.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\..\..\libraries\drivers\src\at32f403a_407_crm.c</FilePath>
+            </File>
+            <File>
+              <FileName>at32f403a_407_usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\libraries\drivers\src\at32f403a_407_usart.c</FilePath>
             </File>
             <File>
               <FileName>at32f403a_407_misc.c</FileName>

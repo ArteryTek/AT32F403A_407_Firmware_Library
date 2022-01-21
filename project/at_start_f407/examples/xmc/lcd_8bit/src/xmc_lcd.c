@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     xmc_lcd.c
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    xmc_lcd config program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -86,7 +86,7 @@ void xmc_init(void)
   gpio_init(GPIOC, &gpio_init_struct); 
   
   /* lcd reset lines configuration */
-  gpio_init_struct.gpio_pins = GPIO_PINS_10; 
+  gpio_init_struct.gpio_pins = GPIO_PINS_9; 
   gpio_init_struct.gpio_mode = GPIO_MODE_OUTPUT; 
   gpio_init_struct.gpio_out_type = GPIO_OUTPUT_PUSH_PULL; 
   gpio_init_struct.gpio_pull = GPIO_PULL_NONE; 
@@ -110,7 +110,7 @@ void xmc_init(void)
 
   /*-- xmc configuration ------------------------------------------------------*/
   xmc_norsram_default_para_init(&xmc_norsram_init_struct); 
-  xmc_norsram_init_struct.bank = XMC_BANK1_NOR_SRAM4; 
+  xmc_norsram_init_struct.subbank = XMC_BANK1_NOR_SRAM4; 
   xmc_norsram_init_struct.data_addr_multiplex = XMC_DATA_ADDR_MUX_DISABLE; 
   xmc_norsram_init_struct.device = XMC_DEVICE_SRAM; 
   xmc_norsram_init_struct.bus_type = XMC_BUSTYPE_8_BITS; 
@@ -127,20 +127,20 @@ void xmc_init(void)
   
   /* timing configuration */
   xmc_norsram_timing_default_para_init(&rw_timing_struct, &w_timing_struct); 
-  rw_timing_struct.bank = XMC_BANK1_NOR_SRAM4; 
+  rw_timing_struct.subbank = XMC_BANK1_NOR_SRAM4; 
   rw_timing_struct.write_timing_enable = XMC_WRITE_TIMING_ENABLE; 
-  rw_timing_struct.addr_setup_time = 0x2; 
+  rw_timing_struct.addr_setup_time = 0xf; 
   rw_timing_struct.addr_hold_time = 0x0; 
-  rw_timing_struct.data_setup_time = 0x2; 
+  rw_timing_struct.data_setup_time = 0xf; 
   rw_timing_struct.bus_latency_time = 0x0; 
   rw_timing_struct.clk_psc = 0x0; 
   rw_timing_struct.data_latency_time = 0x0; 
   rw_timing_struct.mode = XMC_ACCESS_MODE_A; 
-  w_timing_struct.bank = XMC_BANK1_NOR_SRAM4; 
+  w_timing_struct.subbank = XMC_BANK1_NOR_SRAM4; 
   w_timing_struct.write_timing_enable = XMC_WRITE_TIMING_ENABLE; 
-  w_timing_struct.addr_setup_time = 0x2; 
+  w_timing_struct.addr_setup_time = 0xf; 
   w_timing_struct.addr_hold_time = 0x0; 
-  w_timing_struct.data_setup_time = 0x2; 
+  w_timing_struct.data_setup_time = 0xf; 
   w_timing_struct.bus_latency_time = 0x0; 
   w_timing_struct.clk_psc = 0x0; 
   w_timing_struct.data_latency_time = 0x0; 
@@ -252,7 +252,7 @@ void lcd_init(void)
   */
 void lcd_wr_command(uint8_t command)
 {
-  *(uint8_t *) XMC_LCD_COMMAND = command; 
+  *(__IO uint8_t *) XMC_LCD_COMMAND = command; 
 }
 
 /**
@@ -262,7 +262,7 @@ void lcd_wr_command(uint8_t command)
   */
 void lcd_wr_data(uint8_t data)
 {
-  *(uint8_t *) XMC_LCD_DATA = data; 
+  *(__IO uint8_t *) XMC_LCD_DATA = data; 
 }
 
 /**

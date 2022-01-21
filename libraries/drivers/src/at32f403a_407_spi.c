@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_spi.c
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    contains all the functions for the spi firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -584,9 +584,9 @@ flag_status spi_i2s_flag_get(spi_type* spi_x, uint32_t spi_i2s_flag)
 void spi_i2s_flag_clear(spi_type* spi_x, uint32_t spi_i2s_flag)
 {
   volatile uint32_t temp = 0;
-
+  temp = temp;
   if(spi_i2s_flag == SPI_CCERR_FLAG)
-    spi_x->sts_bit.ccerr = FALSE;
+    spi_x->sts = ~SPI_CCERR_FLAG;
   else if(spi_i2s_flag == SPI_I2S_RDBF_FLAG)
     temp = REG32(&spi_x->dt);
   else if(spi_i2s_flag == I2S_TUERR_FLAG)

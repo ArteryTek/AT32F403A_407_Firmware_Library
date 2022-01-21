@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     system_at32f403a_407.h
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    cmsis cortex-m4 system header file.
   **************************************************************************
   *                       Copyright notice & Disclaimer

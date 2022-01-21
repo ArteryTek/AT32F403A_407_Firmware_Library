@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
   * @file     readme.txt 
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    readme
   ******************************************************************************
   */  
@@ -10,8 +10,7 @@
   this demo is based on the at-start board, in this demo, provides a basic example
   of how to use ecc to check and correct the data write/read on the nand flash£º
   h27u1g8f2ctr(hynix) or k9gag08u0e(samsung).
-  led2 on: write and read all are ok
-  led3 on: some errors
+  usart1 using pa9 to printf the result.
         
     xmc                     at32f403a/407       nand
   - xmc_d0                  pd14         --->   io[0]  

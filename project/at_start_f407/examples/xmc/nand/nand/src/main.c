@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -58,11 +58,18 @@ int main(void)
   /* led initalization */
   at32_board_init();    
   
+  /* usart initalization */
+  uart_print_init(115200);
+  
   /* get system clock */
   crm_clocks_freq_get(&crm_clocks_freq_struct);
   
   /* xmc initialization */
   nand_init();
+
+  /* nand reset command */
+  nand_reset();
+  delay_ms(1);
   
   /* nand read id command */
   nand_read_id(&nand_id_struct);
@@ -101,24 +108,18 @@ int main(void)
       }
     }
     
-    /* led2 and led3 indicate that whether there is an error during writing and reading nand flash */ 
     if(writereadstatus == 0)
     {
-      at32_led_off(LED3);
-      at32_led_on(LED2);
+      printf("data is right\r\n");  
     }
     else
     {
-      at32_led_off(LED2);
-      at32_led_on(LED3);
+      printf("data is error\r\n");   
     }
   }
-  
-  /* led2 and led3 both turn on means device error (id not correct) */
   else
   {
-    at32_led_on(LED2);
-    at32_led_on(LED3);
+    printf("the id is error\r\n");
   }
 
   while(1)

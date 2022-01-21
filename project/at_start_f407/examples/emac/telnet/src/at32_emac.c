@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32_emac.c
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    emac config program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -208,7 +208,7 @@ error_status emac_layer2_configuration(void)
 {
   emac_control_config_type mac_control_para;
   emac_dma_config_type dma_control_para;
-  #ifdef MII
+  #ifdef MII_MODE
   gpio_pin_remap_config(MII_RMII_SEL_GMUX, FALSE);
   #elif defined RMII_MODE
   gpio_pin_remap_config(MII_RMII_SEL_GMUX, TRUE);

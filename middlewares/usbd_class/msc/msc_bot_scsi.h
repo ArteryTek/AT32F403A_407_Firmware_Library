@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     msc_bot_scsi.h
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    usb mass storage bulk-only transport and scsi command header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -194,7 +194,7 @@ typedef struct
 {
   uint8_t msc_state;
   uint8_t bot_status;
-  uint8_t max_lun;
+  uint32_t max_lun;
   
   uint32_t blk_nbr[MSC_SUPPORT_MAX_LUN];
   uint32_t blk_size[MSC_SUPPORT_MAX_LUN];

@@ -1206,6 +1206,9 @@
             <name>$PROJ_DIR$\..\..\..\..\..\libraries\drivers\src\at32f403a_407_crm.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\libraries\drivers\src\at32f403a_407_usart.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\..\..\..\..\libraries\drivers\src\at32f403a_407_emac.c</name>
         </file>
         <file>

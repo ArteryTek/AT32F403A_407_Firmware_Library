@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_pwc.h
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    at32f403a_407 pwc header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -56,6 +56,11 @@ extern "C" {
 /**
   * @}
   */
+
+/**
+  * @brief pwc wakeup pin num definition
+  */
+#define PWC_WAKEUP_PIN_1                 ((uint32_t)0x00000100) /*!< standby wake-up pin1 */
 
 /** @defgroup PWC_exported_types
   * @{
@@ -159,7 +164,7 @@ void pwc_reset(void);
 void pwc_battery_powered_domain_access(confirm_state new_state);
 void pwc_pvm_level_select(pwc_pvm_voltage_type pvm_voltage);
 void pwc_power_voltage_monitor_enable(confirm_state new_state);
-void pwc_wakeup_pin_enable(confirm_state new_state);
+void pwc_wakeup_pin_enable(uint32_t pin_num, confirm_state new_state);
 void pwc_flag_clear(uint32_t pwc_flag);
 flag_status pwc_flag_get(uint32_t pwc_flag);
 void pwc_sleep_mode_enter(pwc_sleep_enter_type pwc_sleep_enter);

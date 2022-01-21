@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_usb.c
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    contains the functions for the usb firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -329,7 +329,11 @@ void usb_write_packet(uint8_t *pusr_buf, uint16_t offset_addr, uint16_t nbytes)
   uint16_t *pbuf = (uint16_t *)pusr_buf;
   for(n_index = 0; n_index < nhbytes; n_index ++)
   {
+#if defined (__ICCARM__) && (__VER__ < 7000000)
+    *d_addr++  = *(__packed uint16_t *)pbuf;
+#else
     *d_addr++ = __UNALIGNED_UINT16_READ(pbuf);
+#endif
     d_addr ++;
     pbuf ++;
   }
@@ -350,7 +354,11 @@ void usb_read_packet(uint8_t *pusr_buf, uint16_t offset_addr, uint16_t nbytes)
   uint16_t *pbuf = (uint16_t *)pusr_buf;
   for(n_index = 0; n_index < nhbytes; n_index ++)
   {
+#if defined (__ICCARM__) && (__VER__ < 7000000)
+    *(__packed uint16_t *)pbuf = *(__IO uint16_t *)s_addr ++;
+#else
     __UNALIGNED_UINT16_WRITE(pbuf, *(__IO uint16_t *)s_addr ++);
+#endif
     s_addr ++;
     pbuf ++;
   }
@@ -515,6 +523,27 @@ flag_status usb_flag_get(usbd_type *usbx, uint16_t flag)
     status = SET;
   }
   return status;
+}
+
+/**
+  * @brief  clear flag of usb.
+  * @param  usbx: select the usb peripheral
+  * @param  flag: select the usb flag
+  *         this parameter can be one of the following values:
+  *         - USB_INOUT_FLAG
+  *         - USB_LSOF_FLAG
+  *         - USB_SOF_FLAG 
+  *         - USB_RST_FLAG
+  *         - USB_SP_FLAG
+  *         - USB_WK_FLAG
+  *         - USB_BE_FLAG                  
+  *         - USB_UCFOR_FLAG
+  *         - USB_TC_FLAG 
+  * @retval none                            
+  */
+void usb_flag_clear(usbd_type *usbx, uint16_t flag)
+{
+  usbx->intsts = ~flag;
 }
 
 /**

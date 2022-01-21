@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -26,7 +26,6 @@
 
 #include "at32f403a_407_board.h"
 #include "at32f403a_407_clock.h"
-#include "stdio.h"
 
 /** @addtogroup AT32F403A_periph_examples
   * @{
@@ -57,77 +56,6 @@ void delay(uint32_t time)
   uint32_t i;
 
   for(i = 0; i < time; i++);
-}
-
-/**
-  * @brief  initialize print usart
-  * @param  baudrate: uart baudrate
-  * @retval none
-  */
-void uart_init(uint32_t baudrate)
-{
-  gpio_init_type gpio_init_struct;
-
-  /* enable the uart clock */
-  crm_periph_clock_enable(CRM_GPIOA_PERIPH_CLOCK, TRUE);
-  crm_periph_clock_enable(CRM_USART1_PERIPH_CLOCK, TRUE);
-
-  /* set default parameter */
-  gpio_default_para_init(&gpio_init_struct);
-
-  /* configure uart tx gpio */
-  gpio_init_struct.gpio_drive_strength = GPIO_DRIVE_STRENGTH_STRONGER;
-  gpio_init_struct.gpio_mode = GPIO_MODE_MUX;
-  gpio_init_struct.gpio_out_type = GPIO_OUTPUT_PUSH_PULL;
-  gpio_init_struct.gpio_pins = GPIO_PINS_9;
-  gpio_init_struct.gpio_pull = GPIO_PULL_NONE;
-  gpio_init(GPIOA, &gpio_init_struct);
-  /* configure uart rx gpio */
-  gpio_init_struct.gpio_mode = GPIO_MODE_INPUT;
-  gpio_init_struct.gpio_pins = GPIO_PINS_10;
-  gpio_init(GPIOA, &gpio_init_struct);
-
-  /* configure usart */
-  usart_init(USART1, baudrate, USART_DATA_8BITS, USART_STOP_1_BIT);
-  usart_parity_selection_config(USART1, USART_PARITY_NONE);
-  usart_transmitter_enable(USART1, TRUE);
-  usart_receiver_enable(USART1, TRUE);
-  usart_enable(USART1, TRUE);
-}
-
-/* suport printf function, usemicrolib is unnecessary */
-#ifdef __CC_ARM
-  #pragma import(__use_no_semihosting)
-  struct __FILE
-  {
-    int handle;
-  };
-
-  FILE __stdout;
-
-  void _sys_exit(int x)
-  {
-    x = x;
-  }
-#endif
-
-#ifdef __GNUC__
-  /* with gcc/raisonance, small printf (option ld linker->libraries->small printf set to 'yes') calls __io_putchar() */
-  #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
-#else
-  #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
-#endif /* __gnuc__ */
-
-/**
-  * @brief  retargets the c library printf function to the usart.
-  * @param  none
-  * @retval none
-  */
-PUTCHAR_PROTOTYPE
-{
-  while(usart_flag_get(USART1, USART_TDBE_FLAG) == RESET);
-  usart_data_transmit(USART1, ch);
-  return ch;
 }
 
 /**
@@ -179,7 +107,7 @@ int main(void)
 
   at32_board_init();
 
-  uart_init(115200);
+  uart_print_init(115200);
 
   /* get system clock */
   crm_clocks_freq_get(&crm_clocks_freq_struct);

@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     mouse_class.c
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    usb hid mouse class type
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -55,7 +55,7 @@ static uint32_t hid_protocol = 0;
 static uint32_t hid_set_idle = 0;
 static uint32_t alt_setting = 0;
 static uint8_t hid_state;
-uint8_t hid_suspend_flag = 0;
+__IO uint8_t hid_suspend_flag = 0;
 uint8_t hid_set_report[64];
 
 /* usb device class handler */

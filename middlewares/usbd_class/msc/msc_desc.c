@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     msc_desc.c
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    usb msc device descriptor
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -78,7 +78,10 @@ usbd_desc_handler msc_desc_handler =
 /**
   * @brief usb device standard descriptor
   */
-uint8_t g_usbd_descriptor[USB_DEVICE_DESC_LEN] =
+#if defined ( __ICCARM__ ) /* iar compiler */
+  #pragma data_alignment=4
+#endif
+ALIGNED_HEAD uint8_t g_usbd_descriptor[USB_DEVICE_DESC_LEN] ALIGNED_TAIL =
 {
   USB_DEVICE_DESC_LEN,                   /* bLength */
   USB_DESCIPTOR_TYPE_DEVICE,             /* bDescriptorType */
@@ -103,7 +106,10 @@ uint8_t g_usbd_descriptor[USB_DEVICE_DESC_LEN] =
 /**
   * @brief usb configuration standard descriptor
   */
-uint8_t g_usbd_configuration[USBD_CONFIG_DESC_SIZE] =
+#if defined ( __ICCARM__ ) /* iar compiler */
+  #pragma data_alignment=4
+#endif
+ALIGNED_HEAD uint8_t g_usbd_configuration[USBD_CONFIG_DESC_SIZE] ALIGNED_TAIL =
 {
   USB_DEVICE_CFG_DESC_LEN,               /* bLength: configuration descriptor size */
   USB_DESCIPTOR_TYPE_CONFIGURATION,      /* bDescriptorType: configuration */
@@ -146,7 +152,10 @@ uint8_t g_usbd_configuration[USBD_CONFIG_DESC_SIZE] =
 /**
   * @brief usb string lang id
   */
-uint8_t g_string_lang_id[USBD_SIZ_STRING_LANGID] =
+#if defined ( __ICCARM__ ) /* iar compiler */
+  #pragma data_alignment=4
+#endif
+ALIGNED_HEAD uint8_t g_string_lang_id[USBD_SIZ_STRING_LANGID] ALIGNED_TAIL =
 {
   USBD_SIZ_STRING_LANGID,
   USB_DESCIPTOR_TYPE_STRING,
@@ -157,7 +166,10 @@ uint8_t g_string_lang_id[USBD_SIZ_STRING_LANGID] =
 /**
   * @brief usb string serial
   */
-uint8_t g_string_serial[USBD_SIZ_STRING_SERIAL] =
+#if defined ( __ICCARM__ ) /* iar compiler */
+  #pragma data_alignment=4
+#endif
+ALIGNED_HEAD uint8_t g_string_serial[USBD_SIZ_STRING_SERIAL] ALIGNED_TAIL =
 {
   USBD_SIZ_STRING_SERIAL,
   USB_DESCIPTOR_TYPE_STRING,

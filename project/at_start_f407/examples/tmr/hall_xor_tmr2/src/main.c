@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -39,8 +39,6 @@ gpio_init_type  gpio_init_struct = {0};
 crm_clocks_freq_type crm_clocks_freq_struct = {0};
 tmr_output_config_type tmr_output_struct;
 tmr_input_config_type tmr_input_config_struct;
-
-void delay(uint32_t time);
 
 /**
   * @brief  main function.
@@ -119,30 +117,18 @@ int main(void)
   {
     /* generate hall signal */
     gpio_bits_set(GPIOA, GPIO_PINS_3);
-    delay(1000);
+    delay_us(10);
     gpio_bits_set(GPIOA, GPIO_PINS_6);
-    delay(1000);
+    delay_us(10);
     gpio_bits_set(GPIOA, GPIO_PINS_7);
-    delay(1000);
+    delay_us(10);
     gpio_bits_reset(GPIOA, GPIO_PINS_3);
-    delay(1000);
+    delay_us(10);
     gpio_bits_reset(GPIOA, GPIO_PINS_6);
-    delay(1000);
+    delay_us(10);
     gpio_bits_reset(GPIOA, GPIO_PINS_7);
-    delay(1000);
+    delay_us(10);
   }
-}
-
-/**
-  * @brief  delay function
-  * @param  time:number of time to delay
-  * @retval none
-  */
-void delay(uint32_t time)
-{
-  uint32_t i;
-
-  for(i = 0; i < time; i++);
 }
 
 /**

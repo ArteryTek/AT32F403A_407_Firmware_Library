@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_rtc.c
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    contains all the functions for the rtc firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -49,14 +49,14 @@
 void rtc_counter_set(uint32_t counter_value)
 {   
   /* enter rtc config mode */
-  RTC->ctrll_bit.cfgen = TRUE;
+  RTC->ctrll = 0x003F;
   
   /* set rtc counter */  
   RTC->cnth_bit.cnt = (uint16_t)(counter_value >> 16);
   RTC->cntl_bit.cnt = (uint16_t)(counter_value & 0x0000FFFF);
   
   /* exit rtc config mode */
-  RTC->ctrll_bit.cfgen = FALSE;  
+  RTC->ctrll = 0x000F;
 }
 
 /**
@@ -82,14 +82,14 @@ uint32_t rtc_counter_get(void)
 void rtc_divider_set(uint32_t div_value)
 {    
   /* enter rtc config mode */
-  RTC->ctrll_bit.cfgen = TRUE;
+  RTC->ctrll = 0x003F;
   
   /* set rtc divider */  
   RTC->divh_bit.div = (uint16_t)(div_value >> 16);
   RTC->divl_bit.div = (uint16_t)(div_value & 0x0000FFFF);
   
   /* exit rtc config mode */
-  RTC->ctrll_bit.cfgen = FALSE;   
+  RTC->ctrll = 0x000F;
 }
 
 /**
@@ -115,14 +115,14 @@ uint32_t rtc_divider_get(void)
 void rtc_alarm_set(uint32_t alarm_value)
 {    
   /* enter rtc config mode */
-  RTC->ctrll_bit.cfgen = TRUE;
+  RTC->ctrll = 0x003F;
   
   /* set rtc alarm value */  
   RTC->tah_bit.ta = (uint16_t)(alarm_value >> 16);
   RTC->tal_bit.ta = (uint16_t)(alarm_value & 0x0000FFFF);
   
   /* exit rtc config mode */
-  RTC->ctrll_bit.cfgen = FALSE;   
+  RTC->ctrll = 0x000F;  
 }
 
 /**
@@ -186,7 +186,7 @@ flag_status rtc_flag_get(uint16_t flag)
   */
 void rtc_flag_clear(uint16_t flag)
 {   
-  RTC->ctrll &= ~flag;
+  RTC->ctrll = ~(flag | 0x10) | (RTC->ctrll_bit.cfgen << 4);
 }
 
 /**

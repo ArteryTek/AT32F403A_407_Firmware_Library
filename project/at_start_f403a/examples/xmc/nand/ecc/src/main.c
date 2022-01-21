@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -71,7 +71,7 @@ void fill_buffer(uint8_t *pbuffer, uint16_t bufferlenght, uint32_t offset)
   */
 void nand_ecc_correction(uint8_t *pbuffer,uint32_t tx_ecc_value ,uint32_t rx_ecc_value)
 {
-  uint32_t ecc_value, position ,byte_position;
+  uint32_t ecc_value=0, position=0 ,byte_position=0;
   uint8_t i,compare_data;
   
   /* check ecc value */
@@ -124,11 +124,18 @@ int main(void)
   /* led initalization */
   at32_board_init();    
   
+  /* usart initalization */
+  uart_print_init(115200);
+  
   /* get system clock */
   crm_clocks_freq_get(&crm_clocks_freq_struct);
   
   /* xmc initialization */
   nand_init();
+
+  /* nand reset command */
+  nand_reset();
+  delay_us(10);
 
   /* nand read id command */
   nand_read_id(&nand_id_struct);
@@ -178,20 +185,16 @@ int main(void)
    
     if(rx_buffer[10]==0x03)
     {
-      at32_led_off(LED3);
-      at32_led_on(LED2);
+      printf("ecc is work\r\n");  
     }
     else
     {
-      at32_led_off(LED2);
-      at32_led_on(LED3);
+      printf("ecc is not work\r\n");   
     }
   }
-  /* led2 and led3 both turn on means device error (id not correct) */
   else
   {
-    at32_led_on(LED2);
-    at32_led_on(LED3);
+    printf("the id is error\r\n"); 
   }
 
   while(1)

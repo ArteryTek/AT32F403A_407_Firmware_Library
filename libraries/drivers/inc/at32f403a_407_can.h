@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_can.h
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    at32f403a_407 can header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -110,16 +110,21 @@ extern "C" {
 /**
   * @brief  can flag clear operation macro definition val
   */
-#define CAN_MSTS_EOIF_VAL                ((uint32_t)0x00000004) /*!< eoif bit w1 */
-#define CAN_MSTS_QDZIF_VAL               ((uint32_t)0x00000008) /*!< qdzif bit w1 */
-#define CAN_MSTS_EDZIF_VAL               ((uint32_t)0x00000010) /*!< edzif bit w1 */
-#define CAN_TSTS_TM0TCF_VAL              ((uint32_t)0x00000001) /*!< tm0tcf bit w1 */
-#define CAN_TSTS_TM1TCF_VAL              ((uint32_t)0x00000100) /*!< tm1tcf bit w1 */
-#define CAN_TSTS_TM2TCF_VAL              ((uint32_t)0x00010000) /*!< tm2tcf bit w1 */
-#define CAN_RF0_RF0FF_VAL                ((uint32_t)0x00000008) /*!< rf0ff bit w1 */
-#define CAN_RF0_RF0OF_VAL                ((uint32_t)0x00000010) /*!< rf0of bit w1 */
-#define CAN_RF1_RF1FF_VAL                ((uint32_t)0x00000008) /*!< rf1ff bit w1 */
-#define CAN_RF1_RF1OF_VAL                ((uint32_t)0x00000010) /*!< rf1of bit w1 */
+#define CAN_MSTS_EOIF_VAL                ((uint32_t)0x00000004) /*!< eoif bit value, it clear by writing 1 */
+#define CAN_MSTS_QDZIF_VAL               ((uint32_t)0x00000008) /*!< qdzif bit value, it clear by writing 1 */
+#define CAN_MSTS_EDZIF_VAL               ((uint32_t)0x00000010) /*!< edzif bit value, it clear by writing 1 */
+#define CAN_TSTS_TM0TCF_VAL              ((uint32_t)0x00000001) /*!< tm0tcf bit value, it clear by writing 1 */
+#define CAN_TSTS_TM1TCF_VAL              ((uint32_t)0x00000100) /*!< tm1tcf bit value, it clear by writing 1 */
+#define CAN_TSTS_TM2TCF_VAL              ((uint32_t)0x00010000) /*!< tm2tcf bit value, it clear by writing 1 */
+#define CAN_TSTS_TM0CT_VAL               ((uint32_t)0x00000080) /*!< tm0ct bit value, it clear by writing 1 */
+#define CAN_TSTS_TM1CT_VAL               ((uint32_t)0x00008000) /*!< tm1ct bit value, it clear by writing 1 */
+#define CAN_TSTS_TM2CT_VAL               ((uint32_t)0x00800000) /*!< tm2ct bit value, it clear by writing 1 */
+#define CAN_RF0_RF0FF_VAL                ((uint32_t)0x00000008) /*!< rf0ff bit value, it clear by writing 1 */
+#define CAN_RF0_RF0OF_VAL                ((uint32_t)0x00000010) /*!< rf0of bit value, it clear by writing 1 */
+#define CAN_RF0_RF0R_VAL                 ((uint32_t)0x00000020) /*!< rf0r bit value, it clear by writing 1 */
+#define CAN_RF1_RF1FF_VAL                ((uint32_t)0x00000008) /*!< rf1ff bit value, it clear by writing 1 */
+#define CAN_RF1_RF1OF_VAL                ((uint32_t)0x00000010) /*!< rf1of bit value, it clear by writing 1 */
+#define CAN_RF1_RF1R_VAL                 ((uint32_t)0x00000020) /*!< rf1r bit value, it clear by writing 1 */
 
 /** @defgroup CAN_exported_types
   * @{

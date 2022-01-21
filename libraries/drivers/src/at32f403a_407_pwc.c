@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_pwc.c
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    contains all the functions for the pwc firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -94,15 +94,25 @@ void pwc_power_voltage_monitor_enable(confirm_state new_state)
 
 /**
   * @brief  enable or disable pwc standby wakeup pin  
+  * @param  pin_num: choose the wakeup pin.
+  *         this parameter can be be any combination of the following values:
+  *         - PWC_WAKEUP_PIN_1
   * @param  new_state: new state of the standby wakeup pin.
   *         this parameter can be one of the following values:
   *         - TRUE <wakeup pin is used for wake up cpu from standby mode>
   *         - FALSE <wakeup pin is used for general purpose I/O>
   * @retval none
   */
-void pwc_wakeup_pin_enable(confirm_state new_state)
+void pwc_wakeup_pin_enable(uint32_t pin_num, confirm_state new_state)
 {
-  PWC->ctrlsts_bit.swpen = new_state;
+  if(new_state == TRUE)
+  {
+    PWC->ctrlsts |= pin_num;
+  }
+  else
+  {
+    PWC->ctrlsts &= ~pin_num;
+  }
 }
 
 /**

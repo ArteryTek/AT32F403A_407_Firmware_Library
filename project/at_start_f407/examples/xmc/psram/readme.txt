@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
   * @file     readme.txt
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    readme
   ******************************************************************************
   */
@@ -10,8 +10,7 @@
   this demo is based on the artery ic, in this demo, provides a basic example of how
   to use the xmc  firmware library and  an associate  driver to perform  read/write
   operations on the nand flash memory w957d6hb(winbond).
-  led2 on: write and read all are ok
-  led3 on: some errors
+  usart1 using pa9 to printf the result.
 
     xmc                         at32f403a           psram
   - xmc_d0                      pd14         --->   dq[0]

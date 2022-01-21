@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_exint.c
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    contains all the functions for the exint firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -52,7 +52,7 @@ void exint_reset(void)
   EXINT->polcfg1 = 0x00000000;
   EXINT->polcfg2 = 0x00000000;
   EXINT->evten = 0x00000000;
-  EXINT->intsts = 0x007FFFFF;
+  EXINT->intsts = 0x000FFFFF;
 }
 
 /**

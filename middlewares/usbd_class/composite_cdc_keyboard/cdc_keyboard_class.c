@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     cdc_keyboard_class.c
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    usb cdc and keyboard class type
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -66,7 +66,7 @@ static uint8_t g_req;
 static uint16_t g_len, g_rxlen;
 __IO uint8_t g_tx_completed = 1, g_rx_completed = 0;
 
-uint8_t g_keyboard_tx_completed = 0;
+__IO uint8_t g_keyboard_tx_completed = 0;
 
 #define SHIFT 0x80
 const unsigned char _asciimap[128] =

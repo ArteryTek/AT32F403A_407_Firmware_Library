@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     usbd_int.c
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    usb interrupt request
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -58,7 +58,7 @@ void usbd_irq_handler(usbd_core_type *udev)
   if(sts_val & USB_RST_FLAG)
   {
     /* clear reset flag */
-    usbx->intsts_bit.rst = 0;
+    usb_flag_clear(usbx, USB_RST_FLAG);
     
     /* reset interrupt handler */
     usbd_reset_handler(udev);
@@ -68,7 +68,7 @@ void usbd_irq_handler(usbd_core_type *udev)
     (sts_ien & USB_SOF_INT))
   {
     /* clear sof flag */
-    usbx->intsts_bit.sof = 0;
+    usb_flag_clear(usbx, USB_SOF_FLAG);
     
     /* sof interrupt handler */
     usbd_sof_handler(udev);
@@ -78,14 +78,14 @@ void usbd_irq_handler(usbd_core_type *udev)
     (sts_ien & USB_LSOF_INT))
   {
     /* clear lsof flag */
-    usbx->intsts_bit.lsof = 0;
+    usb_flag_clear(usbx, USB_LSOF_FLAG);
   }
   
   if((sts_val & USB_SP_FLAG) && 
     (sts_ien & USB_SP_INT))
   {
     /* clear suspend flag */
-    usbx->intsts_bit.sp = 0;
+    usb_flag_clear(usbx, USB_SP_FLAG);
     
     /* usb suspend interrupt handler */
     usbd_suspend_handler(udev);
@@ -98,7 +98,7 @@ void usbd_irq_handler(usbd_core_type *udev)
     usbd_wakeup_handler(udev);
     
     /* clear wakeup flag */
-    usbx->intsts_bit.wk = 0;
+    usb_flag_clear(usbx, USB_WK_FLAG);
   }
 }
 

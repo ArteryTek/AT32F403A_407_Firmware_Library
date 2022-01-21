@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_adc.c
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    contains all the functions for the adc firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -931,7 +931,7 @@ flag_status adc_flag_get(adc_type *adc_x, uint8_t adc_flag)
   */
 void adc_flag_clear(adc_type *adc_x, uint32_t adc_flag)
 {   
-  adc_x->sts &= ~adc_flag;
+  adc_x->sts = ~adc_flag;
 }
 
 /**

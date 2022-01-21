@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_tmr.c
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    contains all the functions for the tmr firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -1406,7 +1406,7 @@ flag_status tmr_flag_get(tmr_type *tmr_x, uint32_t tmr_flag)
   */
 void tmr_flag_clear(tmr_type *tmr_x, uint32_t tmr_flag)
 {
-  tmr_x->ists &= ~tmr_flag;
+  tmr_x->ists = ~tmr_flag;
 }
 
 /**

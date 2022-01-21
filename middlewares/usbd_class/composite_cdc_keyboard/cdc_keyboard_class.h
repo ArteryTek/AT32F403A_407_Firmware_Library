@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     cdc_keyboard_class.h
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    usb cdc and keyboard class file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -106,7 +106,7 @@ typedef struct
   * @{
   */
 extern usbd_class_handler cdc_keyboard_class_handler;
-extern uint8_t g_keyboard_tx_completed;
+extern __IO uint8_t g_keyboard_tx_completed;
 uint16_t usb_vcp_get_rxdata(void *udev, uint8_t *recv_data);
 error_status usb_vcp_send_data(void *udev, uint8_t *send_data, uint16_t len);
 usb_sts_type class_send_report(void *udev, uint8_t *report, uint16_t len);

@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -63,7 +63,7 @@ int main(void)
   at32_led_on(LED4);
 
   lcd_struct->lcd_init();
-  point_color = GBLUE;
+  point_color = GREEN;
   lcd_struct->lcd_clear(point_color);
   
   touch_struct->init();

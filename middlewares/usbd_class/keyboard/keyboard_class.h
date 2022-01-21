@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     keyboard_class.h
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    usb hid keyboard header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -86,7 +86,7 @@ extern "C" {
   * @{
   */
 extern usbd_class_handler keyboard_class_handler;
-extern uint8_t g_u8tx_completed;
+extern __IO uint8_t g_u8tx_completed;
 
 usb_sts_type class_send_report(void *udev, uint8_t *report, uint16_t len);
 void usb_hid_keyboard_send_char(void *udev, uint8_t ascii_code);

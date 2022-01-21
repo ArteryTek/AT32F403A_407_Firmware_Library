@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     printer_class.c
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    usb printer class type
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -62,7 +62,7 @@ uint8_t PRINTER_DEVICE_ID[PRINTER_DEVICE_ID_LEN] =
   'M', 'F', 'G',':','A','r','t','e', 'r', 'y' ,' ',
   'C','M', 'D', ':', 'E', 'S', 'C', 'P', 'O', 'S',' ',
 };
-static uint8_t g_printer_port_status = 0x18;
+static uint32_t g_printer_port_status = 0x18;
 uint8_t g_printer_data[USBD_OUT_MAXPACKET_SIZE];
 
 

@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_gpio.h
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    at32f403a_407 gpio header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -490,7 +490,7 @@ typedef struct
   };
 
   /**
-    * @brief gpio wcr register, offset:0x10
+    * @brief gpio scr register, offset:0x10
     */
   union
   {

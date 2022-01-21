@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -43,10 +43,10 @@ uint8_t usart2_tx_buffer[] = "usart transfer by dma interrupt: usart2 -> usart3 
 uint8_t usart3_tx_buffer[] = "usart transfer by dma interrupt: usart3 -> usart2 using dma";
 uint8_t usart2_rx_buffer[USART3_TX_BUFFER_SIZE];
 uint8_t usart3_rx_buffer[USART2_TX_BUFFER_SIZE];
-uint8_t usart2_tx_dma_status = 0;
-uint8_t usart2_rx_dma_status = 0;
-uint8_t usart3_tx_dma_status = 0;
-uint8_t usart3_rx_dma_status = 0;
+volatile uint8_t usart2_tx_dma_status = 0;
+volatile uint8_t usart2_rx_dma_status = 0;
+volatile uint8_t usart3_tx_dma_status = 0;
+volatile uint8_t usart3_rx_dma_status = 0;
 
 /**
   * @brief  config usart   

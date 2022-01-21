@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_sdio.c
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    contains all the functions for the sdio firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -325,7 +325,7 @@ flag_status sdio_flag_get(sdio_type *sdio_x, uint32_t flag)
   */
 void sdio_flag_clear(sdio_type *sdio_x, uint32_t flag)
 {
-  sdio_x->intclr |= flag;
+  sdio_x->intclr = flag;
 }
 
 /**

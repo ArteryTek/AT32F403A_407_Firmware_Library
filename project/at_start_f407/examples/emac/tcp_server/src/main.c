@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -27,7 +27,6 @@
 #include "at32f403a_407_board.h"
 #include "at32f403a_407_clock.h"
 #include "at32_emac.h"
-#include "stdio.h"
 #include "netconf.h"
 #include "tcp_server.h"
 

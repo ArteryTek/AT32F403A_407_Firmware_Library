@@ -428,6 +428,11 @@
               <FilePath>..\..\..\..\..\..\libraries\drivers\src\at32f403a_407_crm.c</FilePath>
             </File>
             <File>
+              <FileName>at32f403a_407_usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\libraries\drivers\src\at32f403a_407_usart.c</FilePath>
+            </File>
+            <File>
               <FileName>at32f403a_407_misc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\..\..\libraries\drivers\src\at32f403a_407_misc.c</FilePath>
@@ -881,6 +886,11 @@
               <FileName>at32f403a_407_crm.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\..\..\libraries\drivers\src\at32f403a_407_crm.c</FilePath>
+            </File>
+            <File>
+              <FileName>at32f403a_407_usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\libraries\drivers\src\at32f403a_407_usart.c</FilePath>
             </File>
             <File>
               <FileName>at32f403a_407_misc.c</FileName>

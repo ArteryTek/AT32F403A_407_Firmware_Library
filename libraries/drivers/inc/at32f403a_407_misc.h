@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_misc.h
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    at32f403a_407 misc header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -64,11 +64,11 @@ extern "C" {
   */
 typedef enum
 {
-  NVIC_PRIORITY_GROUP_0                  = ((uint32_t)0x700), /*!< 0 bits for preemption priority, 4 bits for subpriority */
-  NVIC_PRIORITY_GROUP_1                  = ((uint32_t)0x600), /*!< 1 bits for preemption priority, 3 bits for subpriority */
-  NVIC_PRIORITY_GROUP_2                  = ((uint32_t)0x500), /*!< 2 bits for preemption priority, 2 bits for subpriority */
-  NVIC_PRIORITY_GROUP_3                  = ((uint32_t)0x400), /*!< 3 bits for preemption priority, 1 bits for subpriority */
-  NVIC_PRIORITY_GROUP_4                  = ((uint32_t)0x300)  /*!< 4 bits for preemption priority, 0 bits for subpriority */
+  NVIC_PRIORITY_GROUP_0                  = ((uint32_t)0x7), /*!< 0 bits for preemption priority, 4 bits for subpriority */
+  NVIC_PRIORITY_GROUP_1                  = ((uint32_t)0x6), /*!< 1 bits for preemption priority, 3 bits for subpriority */
+  NVIC_PRIORITY_GROUP_2                  = ((uint32_t)0x5), /*!< 2 bits for preemption priority, 2 bits for subpriority */
+  NVIC_PRIORITY_GROUP_3                  = ((uint32_t)0x4), /*!< 3 bits for preemption priority, 1 bits for subpriority */
+  NVIC_PRIORITY_GROUP_4                  = ((uint32_t)0x3)  /*!< 4 bits for preemption priority, 0 bits for subpriority */
 } nvic_priority_group_type;
 
 /**

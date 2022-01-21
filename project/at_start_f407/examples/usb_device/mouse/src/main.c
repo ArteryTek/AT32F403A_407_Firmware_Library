@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -40,8 +40,8 @@
   */
 
 usbd_core_type usb_core_dev;
-uint8_t press_mouse = 0;
-extern uint8_t hid_suspend_flag;
+__IO uint8_t press_mouse = 0;
+extern __IO uint8_t hid_suspend_flag;
 uint8_t report_buf[USBD_IN_MAXPACKET_SIZE];
 void system_clock_recover(void);
 void button_exint_init(void);

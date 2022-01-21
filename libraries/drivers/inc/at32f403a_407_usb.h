@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_usb.h
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    at32f403a_407 usb header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -690,6 +690,7 @@ void usb_remote_wkup_clear(usbd_type *usbx);
 uint16_t usb_buffer_malloc(uint16_t maxpacket);
 void usb_buffer_free(void);
 flag_status usb_flag_get(usbd_type *usbx, uint16_t flag);
+void usb_flag_clear(usbd_type *usbx, uint16_t flag);
 
 
 #ifdef __cplusplus

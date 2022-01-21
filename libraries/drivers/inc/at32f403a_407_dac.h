@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_dac.h
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    at32f403a_407 dac header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -44,6 +44,9 @@ extern "C" {
   * @{
   */
 
+#define DAC1_D1DMAUDRF                   ((uint32_t)(0x00002000))
+#define DAC2_D2DMAUDRF                   ((uint32_t)(0x20000000))
+ 
 /** @defgroup DAC_exported_types
   * @{
   */

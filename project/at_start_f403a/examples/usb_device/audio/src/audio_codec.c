@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     audio_codec.c
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    audio codec function
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -28,6 +28,7 @@
 #include "audio_codec.h"
 #include "i2c_application.h"
 #include "audio_conf.h"
+#include <string.h>
 
 /** @addtogroup AT32F403A_periph_examples
   * @{
@@ -103,6 +104,8 @@ uint16_t reg_addr_data[] =
 i2c_handle_type hi2cx;
 
 audio_codec_type audio_codec;
+uint16_t spk_dma_buffer[DMA_BUFFER_SIZE];
+uint16_t mic_dma_buffer[DMA_BUFFER_SIZE];
 
 void memset16_buffer(uint16_t *buffer, uint32_t set, uint32_t len);
 void codec_i2s_reset(void);
@@ -152,15 +155,9 @@ void audio_codec_spk_alt_setting(uint32_t alt_seting)
 {
   if(alt_seting == 0)
   {
-    memset16_buffer(audio_codec.spk_tx_fifo, 0, SPK_TX_FIFO_SIZE);
-    audio_codec.r_pos = 0;
-    audio_codec.w_pos = 0;
-    audio_codec.spk_enable = 0;
   }
   else
   {
-    audio_codec.spk_enable = 1;
-    audio_codec.feedback_counter = 0;
   }
 }
 
@@ -173,11 +170,9 @@ void audio_codec_mic_alt_setting(uint32_t alt_seting)
 {
   if(alt_seting == 0)
   {
-    audio_codec.mic_enable = 0;
   }
   else
   {
-    audio_codec.mic_enable = 1;
   }
 }
 
@@ -232,10 +227,8 @@ void audio_codec_set_spk_volume(uint16_t volume)
   */
 uint8_t audio_codec_spk_feedback(uint8_t *feedback)
 {
-  uint32_t feedback_cnt = (audio_codec.feedback_counter) << 1;
-  float fd_fval = (float) feedback_cnt / (float)1024.0 * (float)16384/*2^14*/;
-  uint32_t feedback_value = (uint32_t)fd_fval;
-  audio_codec.feedback_counter = 0;
+  uint32_t feedback_value = (audio_codec.spk_freq);
+  feedback_value = ((feedback_value/1000)<<14)|((feedback_value%1000)<<4);
   feedback[0] = (uint8_t)(feedback_value);
   feedback[1] = (uint8_t)(feedback_value >> 8);
   feedback[2] = (uint8_t)(feedback_value >> 16);
@@ -250,14 +243,35 @@ uint8_t audio_codec_spk_feedback(uint8_t *feedback)
   */
 void audio_codec_spk_fifo_write(uint8_t *data, uint32_t len)
 {
-  uint32_t ulen = len / 2;
+  uint16_t ulen = len / 2, i;
+  uint16_t *u16data = (uint16_t *)data;
   
-  if(audio_codec.w_pos + ulen > SPK_TX_FIFO_SIZE)
+  switch(audio_codec.spk_stage)
   {
-    audio_codec.w_pos = 0;
+    case 0:
+      audio_codec.spk_woff = audio_codec.spk_roff = audio_codec.spk_buffer;
+      audio_codec.spk_wtotal = audio_codec.spk_rtotal = 0;
+      audio_codec.spk_stage = 1;
+      audio_codec.spk_threshold = SPK_BUFFER_SIZE/2;
+      break;
+    case 1:
+      if( audio_codec.spk_wtotal >= SPK_BUFFER_SIZE/2 )
+      {
+        audio_codec.spk_stage = 2;
+      }
+      break;
+    case 2:
+      break;
   }
-  copy_buff(audio_codec.spk_tx_fifo + audio_codec.w_pos, (uint16_t *)data, ulen);
-  audio_codec.w_pos  += ulen;
+  for( i = 0; i < ulen; ++i )
+  {
+    *audio_codec.spk_woff++ = *u16data++;
+    if( audio_codec.spk_woff >= audio_codec.spk_rend )
+    {
+      audio_codec.spk_woff = audio_codec.spk_buffer;
+    }
+  }
+  audio_codec.spk_wtotal += ulen;
 }
 
 /**
@@ -267,9 +281,57 @@ void audio_codec_spk_fifo_write(uint8_t *data, uint32_t len)
   */
 uint32_t audio_codec_mic_get_data(uint8_t *buffer)
 {
-  copy_buff((uint16_t *)buffer, audio_codec.mic_buffer + audio_codec.mic_hf_status, audio_codec.mic_rx_size);
+  //copy_buff((uint16_t *)buffer, audio_codec.mic_buffer + audio_codec.mic_hf_status, audio_codec.mic_rx_size);
+  uint16_t len = audio_codec.mic_rx_size << 1;
+  uint16_t i;
+  uint16_t* u16buf = (uint16_t*)buffer;
+  switch(audio_codec.mic_stage)
+  {
+    case 0:
+      audio_codec.mic_stage = 1;
+      memset( buffer, 0, len ); 
+      return len;
+    case 1:
+      if( audio_codec.mic_wtotal - audio_codec.mic_rtotal >= MIC_BUFFER_SIZE/2 )
+      {
+        audio_codec.mic_stage = 2;
+      }
+      return len;
+  }
+  switch( audio_codec.mic_adj_stage )
+  {
+    case 0:
+      break;
+    case 1:
+      if( audio_codec.mic_adj_count >= 4 ){
+        len += 4;
+        audio_codec.mic_adj_count -= 4;
+      }
+      break;
+    case 2:
+      if( audio_codec.mic_adj_count >= 4 ){
+        len -= 4;
+        audio_codec.mic_adj_count -= 4;
+      }
+      break;
+  }
   
-  return audio_codec.mic_rx_size << 1;
+  for( i = 0; i < len/2; ++i )
+  {
+    *u16buf++ = *audio_codec.mic_roff++;
+    if( audio_codec.mic_roff >= audio_codec.mic_wend )
+    {
+      audio_codec.mic_roff = audio_codec.mic_buffer;
+    }
+  }
+  if( audio_codec.mic_wtotal <= audio_codec.mic_rtotal )
+  { //should not happen
+    while(1);
+  }
+
+  audio_codec.mic_rtotal += len/2;
+  audio_codec.mic_delta  += len/2;
+  return len;
 }
 
 /**
@@ -440,14 +502,27 @@ void codec_i2s_init(audio_codec_type *param)
   crm_periph_clock_enable(CRM_SPI1_PERIPH_CLOCK, TRUE);
   crm_periph_clock_enable(CRM_SPI2_PERIPH_CLOCK, TRUE);
   
-  param->feedback_counter = 0;
+  param->spk_freq = param->audio_freq;
   
   param->spk_tx_size = (param->audio_freq / 1000) * (param->audio_bitw / 8) * AUDIO_SPK_CHANEL_NUM / 2;
   param->mic_rx_size = (param->audio_freq / 1000) * (param->audio_bitw / 8) * AUDIO_MIC_CHANEL_NUM / 2;
   
-  param->r_pos = 0;
-  param->w_pos = 0;
+  memset(param->spk_buffer, 0, SPK_BUFFER_SIZE*sizeof(uint16_t));
+  memset(param->mic_buffer, 0, MIC_BUFFER_SIZE*sizeof(uint16_t));
   
+  param->mic_wend = param->mic_woff = param->mic_roff = param->mic_buffer;
+  param->spk_rend = param->spk_woff = param->spk_roff = param->spk_buffer;
+  
+  while(param->mic_wend < param->mic_buffer+MIC_BUFFER_SIZE)
+  {
+    param->mic_wend += param->mic_rx_size;
+  }
+  param->mic_wend -= param->mic_rx_size;
+  while(param->spk_rend < param->spk_buffer+SPK_BUFFER_SIZE)
+  {
+    param->spk_rend += param->spk_tx_size;
+  }
+  param->spk_rend -= param->spk_tx_size;
   if(param->audio_bitw == 16)
   {
     format = I2S_DATA_16BIT_CHANNEL_16BIT;
@@ -500,11 +575,10 @@ void codec_i2s_init(audio_codec_type *param)
   dma_reset(DMA1_CHANNEL4);
   
   /* dma1 channel3: speaker i2s1 tx */
-  audio_codec.r_pos = 0;
   dma_default_para_init(&dma_init_struct);
   dma_init_struct.buffer_size = param->spk_tx_size << 1;
   dma_init_struct.direction = DMA_DIR_MEMORY_TO_PERIPHERAL;
-  dma_init_struct.memory_base_addr = (uint32_t)param->spk_buffer;
+  dma_init_struct.memory_base_addr = (uint32_t)spk_dma_buffer;
   dma_init_struct.memory_data_width = DMA_MEMORY_DATA_WIDTH_HALFWORD;
   dma_init_struct.memory_inc_enable = TRUE;
   dma_init_struct.peripheral_base_addr = (uint32_t)I2S1_DT_ADDRESS;
@@ -518,11 +592,10 @@ void codec_i2s_init(audio_codec_type *param)
   nvic_irq_enable(DMA1_Channel3_IRQn, 1, 0);
   
   /* dma1 channel4: microphone i2s2 rx */
-  audio_codec.mic_hf_status = 0;
   dma_default_para_init(&dma_init_struct);
   dma_init_struct.buffer_size = param->mic_rx_size << 1;
   dma_init_struct.direction = DMA_DIR_PERIPHERAL_TO_MEMORY;
-  dma_init_struct.memory_base_addr = (uint32_t)param->mic_buffer;
+  dma_init_struct.memory_base_addr = (uint32_t)mic_dma_buffer;
   dma_init_struct.memory_data_width = DMA_MEMORY_DATA_WIDTH_HALFWORD;
   dma_init_struct.memory_inc_enable = TRUE;
   dma_init_struct.peripheral_base_addr = (uint32_t)I2S2_DT_ADDRESS;
@@ -576,22 +649,70 @@ void codec_i2s_init(audio_codec_type *param)
 void DMA1_Channel3_IRQHandler(void)
 {
   uint16_t half_size = audio_codec.spk_tx_size;
-  audio_codec.feedback_counter += audio_codec.spk_tx_size;
-  if((audio_codec.r_pos + half_size)  > SPK_TX_FIFO_SIZE)
-  {
-    audio_codec.r_pos = 0;
-  }
+  uint16_t *pdst;
+  
   if(dma_flag_get(DMA1_HDT3_FLAG) == SET)
   {
-    copy_buff(audio_codec.spk_buffer, audio_codec.spk_tx_fifo + audio_codec.r_pos, half_size);
+    //copy_buff(audio_codec.spk_buffer, audio_codec.spk_tx_fifo + audio_codec.r_pos, half_size);
+    pdst = spk_dma_buffer;
     dma_flag_clear(DMA1_HDT3_FLAG);
   }
   else if(dma_flag_get(DMA1_FDT3_FLAG) == SET)
   {
-    copy_buff(&audio_codec.spk_buffer[half_size], audio_codec.spk_tx_fifo + audio_codec.r_pos, half_size);
+    //copy_buff(&audio_codec.spk_buffer[half_size], audio_codec.spk_tx_fifo + audio_codec.r_pos, half_size);
+    pdst = spk_dma_buffer + half_size;
     dma_flag_clear(DMA1_FDT3_FLAG);
   }
-  audio_codec.r_pos += half_size;
+  
+  switch( audio_codec.spk_stage )
+  {
+    case 0:
+    case 1:
+      memset( pdst, 0, half_size << 1);
+      break;
+    case 2:
+      if( audio_codec.spk_wtotal >= audio_codec.spk_rtotal + SPK_BUFFER_SIZE )
+      {
+        while(1);//should not happen;
+      }
+      if( audio_codec.spk_rtotal >= audio_codec.spk_wtotal )
+      {
+        audio_codec.spk_stage = 0;
+        audio_codec.spk_woff = audio_codec.spk_roff = audio_codec.spk_buffer;
+        audio_codec.spk_rtotal = audio_codec.spk_wtotal = 0;
+      }
+      else
+      {
+        memcpy( pdst, audio_codec.spk_roff, half_size << 1 );
+        audio_codec.spk_roff   += half_size;
+        audio_codec.spk_rtotal += half_size;
+        if( audio_codec.spk_roff >= audio_codec.spk_rend )
+        {
+          audio_codec.spk_roff = audio_codec.spk_buffer;
+        }
+        if( ++audio_codec.spk_calc == 256 )
+        {
+          uint16_t delta = audio_codec.spk_wtotal - audio_codec.spk_rtotal;
+          audio_codec.spk_calc = 0;
+          if( delta < audio_codec.spk_threshold - half_size )
+          {
+            audio_codec.spk_threshold -= half_size;
+            audio_codec.spk_freq += audio_codec.audio_freq/1024;
+          }
+          else if( delta > audio_codec.spk_threshold + half_size )
+          {
+            audio_codec.spk_threshold += half_size;
+            audio_codec.spk_freq -= audio_codec.audio_freq/1024;
+          }
+          if(audio_codec.spk_rtotal > 0x20000000)
+          {
+            audio_codec.spk_rtotal -= 0x10000000;
+            audio_codec.spk_wtotal -= 0x10000000;
+          }
+        }
+      }
+    break;
+  }
   
 }
 
@@ -602,15 +723,66 @@ void DMA1_Channel3_IRQHandler(void)
   */
 void DMA1_Channel4_IRQHandler(void)
 {
+  uint16_t *psrc;
+  uint16_t len = audio_codec.mic_rx_size << 1;
+  
   if(dma_flag_get(DMA1_HDT4_FLAG) == SET)
   {
     dma_flag_clear(DMA1_HDT4_FLAG);
-    audio_codec.mic_hf_status = 0;
+    psrc = mic_dma_buffer;
   }
   else if(dma_flag_get(DMA1_FDT4_FLAG) == SET)
   {
-    audio_codec.mic_hf_status = audio_codec.mic_rx_size;
+    psrc = mic_dma_buffer + audio_codec.mic_rx_size;
     dma_flag_clear(DMA1_FDT4_FLAG);
+  }
+  if( audio_codec.mic_stage )
+  {
+    memcpy( audio_codec.mic_woff, psrc, len );
+    audio_codec.mic_woff   += len/2;
+    audio_codec.mic_wtotal += len/2;
+    if( audio_codec.mic_woff >= audio_codec.mic_wend )
+    {
+      audio_codec.mic_woff = audio_codec.mic_buffer;
+    }
+    if( audio_codec.mic_stage == 2 )
+    {
+      if( 1024 == ++audio_codec.mic_calc )
+      {
+        uint32_t size_estimate = 1024*audio_codec.mic_rx_size;
+        audio_codec.mic_calc = 0;
+        if( audio_codec.mic_delta > size_estimate )
+        {
+          audio_codec.mic_adj_count = audio_codec.mic_delta - size_estimate;
+          audio_codec.mic_adj_stage = 2;
+        }
+        else if( audio_codec.mic_delta < size_estimate )
+        {
+          audio_codec.mic_adj_count = size_estimate - audio_codec.mic_delta;
+          audio_codec.mic_adj_stage = 1;
+        }
+        else
+        {
+          audio_codec.mic_adj_count = 0;
+          audio_codec.mic_adj_stage = 0;
+        }
+        audio_codec.mic_delta = 0;
+        if( audio_codec.mic_rtotal >= 0x80000000 )
+        {
+          audio_codec.mic_rtotal -= 0x80000000;
+          audio_codec.mic_wtotal -= 0x80000000;
+        }
+      }
+      if( audio_codec.mic_wtotal >= audio_codec.mic_rtotal + MIC_BUFFER_SIZE )
+      {
+        audio_codec.mic_delta = audio_codec.mic_wtotal = audio_codec.mic_rtotal = 0;
+        audio_codec.mic_woff = audio_codec.mic_roff = audio_codec.mic_buffer;
+        audio_codec.mic_stage = 0;
+        audio_codec.mic_adj_stage = 0;
+        audio_codec.mic_adj_count = 0;
+        audio_codec.mic_calc = 0;
+      }
+    }
   }
 }
 

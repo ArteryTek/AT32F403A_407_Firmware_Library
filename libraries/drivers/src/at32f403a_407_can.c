@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_can.c
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    contains all the functions for the can firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -591,13 +591,14 @@ void can_transmit_cancel(can_type* can_x, can_tx_mailbox_num_type transmit_mailb
   switch (transmit_mailbox)
   {
     case CAN_TX_MAILBOX0:
-      can_x->tsts_bit.tm0ct = TRUE;
+      can_x->tsts = CAN_TSTS_TM0CT_VAL;
       break;
     case CAN_TX_MAILBOX1:
-      can_x->tsts_bit.tm1ct = TRUE;
+      can_x->tsts = CAN_TSTS_TM1CT_VAL;
       break;
     case CAN_TX_MAILBOX2:
-      can_x->tsts_bit.tm2ct = TRUE;
+      can_x->tsts = CAN_TSTS_TM2CT_VAL;
+
       break;
     default:
       break;
@@ -668,10 +669,10 @@ void can_receive_fifo_release(can_type* can_x, can_rx_fifo_num_type fifo_number)
   switch (fifo_number)
   {
     case CAN_RX_FIFO0:
-      can_x->rf0_bit.rf0r = TRUE;
+      can_x->rf0 = CAN_RF0_RF0R_VAL;
       break;
     case CAN_RX_FIFO1:
-      can_x->rf1_bit.rf1r = TRUE;
+      can_x->rf1 = CAN_RF1_RF1R_VAL;
       break;
     default:
       break;

@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32_emac.h
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    header file of emac config program.
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -82,8 +82,8 @@
   #define PHY_LINKED_STATUS_BIT            (0x0004)     /*!< link status */
   #define PHY_NEGO_COMPLETE_BIT            (0x0020)     /*!< auto negotiation complete */
   
-  #define PHY_DUPLEX_MODE                  (0x0002)     /*!< full duplex mode */
-  #define PHY_SPEED_MODE                   (0x0001)     /*!< 10 mbps */
+  #define PHY_DUPLEX_MODE                  (0x0004)     /*!< full duplex mode */
+  #define PHY_SPEED_MODE                   (0x0002)     /*!< 10 mbps */
 #endif
   
 error_status emac_system_init(void);

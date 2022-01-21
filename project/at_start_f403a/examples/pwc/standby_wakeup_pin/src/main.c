@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -26,7 +26,6 @@
 
 #include "at32f403a_407_board.h"
 #include "at32f403a_407_clock.h"
-#include <stdio.h>
 
 /** @addtogroup AT32F403A_periph_examples
   * @{
@@ -80,7 +79,7 @@ int main(void)
   for(index = 0; index < 0xFFFFFF; index++);
   
   /* enable wakeup pin - pa0 */
-  pwc_wakeup_pin_enable(TRUE);
+  pwc_wakeup_pin_enable(PWC_WAKEUP_PIN_1, TRUE);
   
   /* enter standby mode */
   pwc_standby_mode_enter();

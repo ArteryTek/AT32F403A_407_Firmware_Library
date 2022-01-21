@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
   * @file     xmc_nand.h
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    header file for the nand configuration.    
   ******************************************************************************
   *                       Copyright notice & Disclaimer
@@ -188,11 +188,11 @@ typedef struct
   
 /*-- xmc nand memory address computation ------------------------------------*/  
 /* 1st addressing cycle */
-#define addr_1st_cycle(addr)             (uint8_t)((addr) & 0xFF)  
+#define addr_1st_cycle(addr)             (uint8_t)((addr) & 0x000000FF)  
 /* 2nd addressing cycle */               
-#define addr_2nd_cycle(addr)             (uint8_t)(((addr) & 0xFF00) >> 8)   
+#define addr_2nd_cycle(addr)             (uint8_t)(((addr) & 0x0000FF00) >> 8)   
 /* 3rd addressing cycle */               
-#define addr_3rd_cycle(addr)             (uint8_t)(((addr) & 0xFF0000) >> 16)   
+#define addr_3rd_cycle(addr)             (uint8_t)(((addr) & 0x00FF0000) >> 16)   
 /* 4th addressing cycle */               
 #define addr_4th_cycle(addr)             (uint8_t)(((addr) & 0xFF000000) >> 24) 
 

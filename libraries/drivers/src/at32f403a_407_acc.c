@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_acc.c
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    contains all the functions for the acc firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer

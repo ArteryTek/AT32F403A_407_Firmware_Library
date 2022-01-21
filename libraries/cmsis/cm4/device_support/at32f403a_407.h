@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407.h
-  * @version  v2.0.4
-  * @date     2021-11-26
+  * @version  v2.0.6
+  * @date     2021-12-31
   * @brief    at32f403a_407 header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -60,7 +60,7 @@ extern "C" {
     !defined (AT32F407VCT7)  && !defined (AT32F407RET7)  && !defined (AT32F407VET7)  && \
     !defined (AT32F407AVCT7) && !defined (AT32F407AVGT7)
 
-    #error "Please select first the target at32f4xx device used in your application (in at32f4xx.h file)"
+    #error "Please select first the target device used in your application (in at32f403a_407.h file)"
 #endif
 
 #if defined (AT32F403AVCT7) || defined (AT32F403ARCT7) || defined (AT32F403ACCT7) || \
@@ -97,7 +97,7 @@ extern "C" {
   */
 #define __AT32F403A_407_LIBRARY_VERSION_MAJOR    (0x02) /*!< [31:24] major version */
 #define __AT32F403A_407_LIBRARY_VERSION_MIDDLE   (0x00) /*!< [23:16] middle version */
-#define __AT32F403A_407_LIBRARY_VERSION_MINOR    (0x04) /*!< [15:8]  minor version */
+#define __AT32F403A_407_LIBRARY_VERSION_MINOR    (0x06) /*!< [15:8]  minor version */
 #define __AT32F403A_407_LIBRARY_VERSION_RC       (0x00) /*!< [7:0]  release candidate */
 #define __AT32F403A_407_LIBRARY_VERSION          ((__AT32F403A_407_LIBRARY_VERSION_MAJOR << 24)  | \
                                                   (__AT32F403A_407_LIBRARY_VERSION_MIDDLE << 16) | \
@@ -548,11 +548,7 @@ typedef enum {ERROR = 0, SUCCESS = !ERROR} error_status;
 #define SDIO2_BASE                       (AHBPERIPH_BASE + 0x3400)
 #define EMAC_BASE                        (AHBPERIPH_BASE + 0x8000)
 #define XMC_BANK1_REG_BASE               (XMC_REG_BASE + 0x0000)
-#define XMC_BANK1E_REG_BASE              (XMC_REG_BASE + 0x0104)
-#define XMC_BANK1E_H_BASE                (XMC_REG_BASE + 0x0220)
 #define XMC_BANK2_REG_BASE               (XMC_REG_BASE + 0x0060)
-#define XMC_BANK3_REG_BASE               (XMC_REG_BASE + 0x0080)
-#define XMC_BANK4_REG_BASE               (XMC_REG_BASE + 0x00A0)
 #define EMAC_MMC_BASE                    (EMAC_BASE + 0x0100)
 #define EMAC_PTP_BASE                    (EMAC_BASE + 0x0700)
 #define EMAC_DMA_BASE                    (EMAC_BASE + 0x1000)
@@ -569,7 +565,8 @@ typedef enum {ERROR = 0, SUCCESS = !ERROR} error_status;
 /**
   * @}
   */
-  
+
+#include "at32f403a_407_def.h"  
 #include "at32f403a_407_conf.h"
 
 #ifdef __cplusplus
