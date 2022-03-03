@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     keyboard_class.c
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    usb hid keyboard class type
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -40,27 +40,19 @@
   * @{
   */
 
-usb_sts_type class_init_handler(void *udev);
-usb_sts_type class_clear_handler(void *udev);
-usb_sts_type class_setup_handler(void *udev, usb_setup_type *setup);
-usb_sts_type class_ept0_tx_handler(void *udev);
-usb_sts_type class_ept0_rx_handler(void *udev);
-usb_sts_type class_in_handler(void *udev, uint8_t ept_num);
-usb_sts_type class_out_handler(void *udev, uint8_t ept_num);
-usb_sts_type class_sof_handler(void *udev);
-usb_sts_type class_event_handler(void *udev, usbd_event_type event);
+static usb_sts_type class_init_handler(void *udev);
+static usb_sts_type class_clear_handler(void *udev);
+static usb_sts_type class_setup_handler(void *udev, usb_setup_type *setup);
+static usb_sts_type class_ept0_tx_handler(void *udev);
+static usb_sts_type class_ept0_rx_handler(void *udev);
+static usb_sts_type class_in_handler(void *udev, uint8_t ept_num);
+static usb_sts_type class_out_handler(void *udev, uint8_t ept_num);
+static usb_sts_type class_sof_handler(void *udev);
+static usb_sts_type class_event_handler(void *udev, usbd_event_type event);
 
-/* hid static variable */
-static uint32_t hid_protocol = 0;
-static uint32_t hid_set_idle = 0;
-static uint32_t alt_setting = 0;
-static uint8_t hid_state;
-__IO uint8_t hid_suspend_flag = 0;
-uint8_t hid_set_report[64];
-__IO uint8_t g_u8tx_completed = 0;
-
+keyboard_type keyboard_struct;
 #define SHIFT 0x80
-const unsigned char _asciimap[128] =
+const static unsigned char _asciimap[128] =
 {
   0x00,// NUL
   0x00,// SOH
@@ -205,6 +197,7 @@ usbd_class_handler keyboard_class_handler =
   class_out_handler,
   class_sof_handler,
   class_event_handler,
+  &keyboard_struct
 };
 
 /**
@@ -212,20 +205,20 @@ usbd_class_handler keyboard_class_handler =
   * @param  udev: to the structure of usbd_core_type
   * @retval status of usb_sts_type                            
   */
-usb_sts_type class_init_handler(void *udev)
+static usb_sts_type class_init_handler(void *udev)
 {
   usb_sts_type status = USB_OK;
   usbd_core_type *pudev = (usbd_core_type *)udev;
-  
+  keyboard_type *pkeyboard = (keyboard_type *)pudev->class_handler->pdata;
 #ifndef USB_EPT_AUTO_MALLOC_BUFFER
   /* use user define buffer address */
-  usbd_ept_buf_custom_define(pudev, USBD_HID_IN_EPT, EPT1_TX_ADDR);
+  usbd_ept_buf_custom_define(pudev, USBD_KEYBOARD_IN_EPT, EPT1_TX_ADDR);
 #endif
   
   /* open hid in endpoint */
-  usbd_ept_open(pudev, USBD_HID_IN_EPT, EPT_INT_TYPE, USBD_IN_MAXPACKET_SIZE);
+  usbd_ept_open(pudev, USBD_KEYBOARD_IN_EPT, EPT_INT_TYPE, USBD_KEYBOARD_IN_MAXPACKET_SIZE);
   
-  g_u8tx_completed = 1;
+  pkeyboard->g_u8tx_completed = 1;
   
   return status;
 }
@@ -235,13 +228,13 @@ usb_sts_type class_init_handler(void *udev)
   * @param  udev: to the structure of usbd_core_type
   * @retval status of usb_sts_type                            
   */
-usb_sts_type class_clear_handler(void *udev)
+static usb_sts_type class_clear_handler(void *udev)
 {
   usb_sts_type status = USB_OK;
   usbd_core_type *pudev = (usbd_core_type *)udev;
   
   /* close hid in endpoint */
-  usbd_ept_close(pudev, USBD_HID_IN_EPT);
+  usbd_ept_close(pudev, USBD_KEYBOARD_IN_EPT);
   
   return status;
 }
@@ -252,10 +245,11 @@ usb_sts_type class_clear_handler(void *udev)
   * @param  setup: setup packet
   * @retval status of usb_sts_type                            
   */
-usb_sts_type class_setup_handler(void *udev, usb_setup_type *setup)
+static usb_sts_type class_setup_handler(void *udev, usb_setup_type *setup)
 {
   usb_sts_type status = USB_OK;
   usbd_core_type *pudev = (usbd_core_type *)udev;
+  keyboard_type *pkeyboard = (keyboard_type *)pudev->class_handler->pdata;
   uint16_t len;
   uint8_t *buf;
 
@@ -266,20 +260,20 @@ usb_sts_type class_setup_handler(void *udev, usb_setup_type *setup)
       switch(setup->bRequest)
       {
         case HID_REQ_SET_PROTOCOL:
-          hid_protocol = (uint8_t)setup->wValue;
+          pkeyboard->hid_protocol = (uint8_t)setup->wValue;
           break;
         case HID_REQ_GET_PROTOCOL:
-          usbd_ctrl_send(pudev, (uint8_t *)&hid_protocol, 1);
+          usbd_ctrl_send(pudev, (uint8_t *)&pkeyboard->hid_protocol, 1);
           break;
         case HID_REQ_SET_IDLE:
-          hid_set_idle = (uint8_t)(setup->wValue >> 8);
+          pkeyboard->hid_set_idle = (uint8_t)(setup->wValue >> 8);
           break;
         case HID_REQ_GET_IDLE:
-          usbd_ctrl_send(pudev, (uint8_t *)&hid_set_idle, 1);
+          usbd_ctrl_send(pudev, (uint8_t *)&pkeyboard->hid_set_idle, 1);
           break;
         case HID_REQ_SET_REPORT:
-          hid_state = HID_REQ_SET_REPORT;
-          usbd_ctrl_recv(pudev, hid_set_report, setup->wLength);
+          pkeyboard->hid_state = HID_REQ_SET_REPORT;
+          usbd_ctrl_recv(pudev, pkeyboard->hid_set_report, setup->wLength);
           break;
         default:
           usbd_ctrl_unsupport(pudev);
@@ -293,21 +287,21 @@ usb_sts_type class_setup_handler(void *udev, usb_setup_type *setup)
         case USB_STD_REQ_GET_DESCRIPTOR:
           if(setup->wValue >> 8 == HID_REPORT_DESC)
           {
-            len = MIN(USBD_HID_SIZ_REPORT_DESC, setup->wLength);
-            buf = (uint8_t *)g_usbd_hid_report;
+            len = MIN(USBD_KEYBOARD_SIZ_REPORT_DESC, setup->wLength);
+            buf = (uint8_t *)g_usbd_keyboard_report;
           }
           else if(setup->wValue >> 8 == HID_DESCRIPTOR_TYPE)
           {
             len = MIN(9, setup->wLength);
-            buf = (uint8_t *)g_hid_usb_desc;
+            buf = (uint8_t *)g_keyboard_usb_desc;
           }
           usbd_ctrl_send(pudev, (uint8_t *)buf, len);
           break;
         case USB_STD_REQ_GET_INTERFACE:
-          usbd_ctrl_send(pudev, (uint8_t *)&alt_setting, 1);
+          usbd_ctrl_send(pudev, (uint8_t *)&pkeyboard->alt_setting, 1);
           break;
         case USB_STD_REQ_SET_INTERFACE:
-          alt_setting = setup->wValue;
+          pkeyboard->alt_setting = setup->wValue;
           break;
         default:
           break;
@@ -325,7 +319,7 @@ usb_sts_type class_setup_handler(void *udev, usb_setup_type *setup)
   * @param  udev: to the structure of usbd_core_type
   * @retval status of usb_sts_type                            
   */
-usb_sts_type class_ept0_tx_handler(void *udev)
+static usb_sts_type class_ept0_tx_handler(void *udev)
 {
   usb_sts_type status = USB_OK;
   
@@ -339,16 +333,17 @@ usb_sts_type class_ept0_tx_handler(void *udev)
   * @param  udev: to the structure of usbd_core_type
   * @retval status of usb_sts_type                            
   */
-usb_sts_type class_ept0_rx_handler(void *udev)
+static usb_sts_type class_ept0_rx_handler(void *udev)
 {
   usb_sts_type status = USB_OK;
   usbd_core_type *pudev = (usbd_core_type *)udev;
+  keyboard_type *pkeyboard = (keyboard_type *)pudev->class_handler->pdata;
   uint32_t recv_len = usbd_get_recv_len(pudev, 0);
   /* ...user code... */
-  if( hid_state == HID_REQ_SET_REPORT)
+  if( pkeyboard->hid_state == HID_REQ_SET_REPORT)
   {
     /* hid buffer process */
-    hid_state = 0;
+    pkeyboard->hid_state = 0;
   }
   
   return status;
@@ -360,14 +355,16 @@ usb_sts_type class_ept0_rx_handler(void *udev)
   * @param  ept_num: endpoint number
   * @retval status of usb_sts_type                            
   */
-usb_sts_type class_in_handler(void *udev, uint8_t ept_num)
+static usb_sts_type class_in_handler(void *udev, uint8_t ept_num)
 {
   usb_sts_type status = USB_OK;
+  usbd_core_type *pudev = (usbd_core_type *)udev;
+  keyboard_type *pkeyboard = (keyboard_type *)pudev->class_handler->pdata;
   
   /* ...user code...
     trans next packet data
   */
-  g_u8tx_completed = 1;
+  pkeyboard->g_u8tx_completed = 1;
   
   return status;
 }
@@ -378,7 +375,7 @@ usb_sts_type class_in_handler(void *udev, uint8_t ept_num)
   * @param  ept_num: endpoint number
   * @retval status of usb_sts_type                            
   */
-usb_sts_type class_out_handler(void *udev, uint8_t ept_num)
+static usb_sts_type class_out_handler(void *udev, uint8_t ept_num)
 {
   usb_sts_type status = USB_OK;
   
@@ -390,7 +387,7 @@ usb_sts_type class_out_handler(void *udev, uint8_t ept_num)
   * @param  udev: to the structure of usbd_core_type
   * @retval status of usb_sts_type                            
   */
-usb_sts_type class_sof_handler(void *udev)
+static usb_sts_type class_sof_handler(void *udev)
 {
   usb_sts_type status = USB_OK;
   
@@ -405,9 +402,11 @@ usb_sts_type class_sof_handler(void *udev)
   * @param  event: usb device event
   * @retval status of usb_sts_type                            
   */
-usb_sts_type class_event_handler(void *udev, usbd_event_type event)
+static usb_sts_type class_event_handler(void *udev, usbd_event_type event)
 {
   usb_sts_type status = USB_OK;
+  usbd_core_type *pudev = (usbd_core_type *)udev;
+  keyboard_type *pkeyboard = (keyboard_type *)pudev->class_handler->pdata;
   switch(event)
   {
     case USBD_RESET_EVENT:
@@ -416,7 +415,7 @@ usb_sts_type class_event_handler(void *udev, usbd_event_type event)
     
       break;
     case USBD_SUSPEND_EVENT:
-      hid_suspend_flag = 1;
+      pkeyboard->hid_suspend_flag = 1;
       /* ...user code... */
     
       break;
@@ -437,13 +436,13 @@ usb_sts_type class_event_handler(void *udev, usbd_event_type event)
   * @param  len: report length
   * @retval status of usb_sts_type                            
   */
-usb_sts_type class_send_report(void *udev, uint8_t *report, uint16_t len)
+usb_sts_type usb_keyboard_class_send_report(void *udev, uint8_t *report, uint16_t len)
 {
   usb_sts_type status = USB_OK;
   usbd_core_type *pudev = (usbd_core_type *)udev;
 
   if(usbd_connect_state_get(pudev) == USB_CONN_STATE_CONFIGURED)
-    usbd_ept_send(pudev, USBD_HID_IN_EPT, report, len);
+    usbd_ept_send(pudev, USBD_KEYBOARD_IN_EPT, report, len);
   
   return status;
 }
@@ -458,8 +457,8 @@ usb_sts_type class_send_report(void *udev, uint8_t *report, uint16_t len)
 void usb_hid_keyboard_send_char(void *udev, uint8_t ascii_code)
 {
   uint8_t key_data = 0;
-  static uint8_t temp = 0;
-  static uint8_t keyboard_buf[8] = {0, 0, 6, 0, 0, 0, 0, 0};
+  usbd_core_type *pudev = (usbd_core_type *)udev;
+  keyboard_type *pkeyboard = (keyboard_type *)pudev->class_handler->pdata;
   
   if(ascii_code > 128)
   {
@@ -480,17 +479,17 @@ void usb_hid_keyboard_send_char(void *udev, uint8_t ascii_code)
     }
   }
   
-  if((temp == ascii_code) && (ascii_code != 0))
+  if((pkeyboard->temp == ascii_code) && (ascii_code != 0))
   {
-    keyboard_buf[0] = 0;
-    keyboard_buf[2] = 0;
-    class_send_report(udev, keyboard_buf, 8);
+    pkeyboard->keyboard_buf[0] = 0;
+    pkeyboard->keyboard_buf[2] = 0;
+    usb_keyboard_class_send_report(udev, pkeyboard->keyboard_buf, 8);
   }
   else
   {
-    keyboard_buf[0] = key_data;
-    keyboard_buf[2] = ascii_code;
-    class_send_report(udev, keyboard_buf, 8);
+    pkeyboard->keyboard_buf[0] = key_data;
+    pkeyboard->keyboard_buf[2] = ascii_code;
+    usb_keyboard_class_send_report(udev, pkeyboard->keyboard_buf, 8);
   }
 }
 

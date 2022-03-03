@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>AT32F403AVGT7,USE_STDPERIPH_DRIVER,AT_START_F403A_V1</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\..\..\libraries\drivers\inc;..\..\..\..\libraries\cmsis\cm4\core_support;..\..\..\..\libraries\cmsis\cm4\device_support;..\..\templates\inc;..\..\..\at32f403a_407_board</IncludePath>
+              <IncludePath>..\..\..\..\libraries\drivers\inc;..\..\..\..\libraries\cmsis\cm4\core_support;..\..\..\..\libraries\cmsis\cm4\device_support;..\inc;..\..\..\at32f403a_407_board</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>

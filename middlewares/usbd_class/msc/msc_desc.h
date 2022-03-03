@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     msc_desc.h
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    usb msc descriptor header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -47,37 +47,24 @@ extern "C" {
   * @{
   */
 
-#define BCD_NUM                          0x0110
+#define MSC_BCD_NUM                          0x0110
 
-#define USBD_VENDOR_ID                   0x2E3C
-#define USBD_PRODUCT_ID                  0x5720 
+#define USBD_MSC_VENDOR_ID                   0x2E3C
+#define USBD_MSC_PRODUCT_ID                  0x5720
 
-#define USBD_CONFIG_DESC_SIZE            32
-#define USBD_SIZ_STRING_LANGID           4
-#define USBD_SIZ_STRING_SERIAL           0x1A
+#define USBD_MSC_CONFIG_DESC_SIZE            32
+#define USBD_MSC_SIZ_STRING_LANGID           4
+#define USBD_MSC_SIZ_STRING_SERIAL           0x1A
 
-#define USBD_DESC_MANUFACTURER_STRING    "Artery"
-#define USBD_DESC_PRODUCT_STRING         "AT32 Mass Storage"
-#define USBD_DESC_CONFIGURATION_STRING   "Mass Storage Config"
-#define USBD_DESC_INTERFACE_STRING       "Mass Storage Interface"
-
-#define HID_BINTERVAL_TIME                0xFF
-
-#define USBD_CDC_CS_INTERFACE             0x24
-#define USBD_CDC_CS_ENDPOINT              0x25
-
-#define USBD_CDC_SUBTYPE_HEADER           0x00
-#define USBD_CDC_SUBTYPE_CMF              0x01
-#define USBD_CDC_SUBTYPE_ACM              0x02
-#define USBD_CDC_SUBTYPE_UFD              0x06
-
+#define USBD_MSC_DESC_MANUFACTURER_STRING    "Artery"
+#define USBD_MSC_DESC_PRODUCT_STRING         "AT32 Mass Storage"
+#define USBD_MSC_DESC_CONFIGURATION_STRING   "Mass Storage Config"
+#define USBD_MSC_DESC_INTERFACE_STRING       "Mass Storage Interface"
 
 #define         MCU_ID1                   (0x1FFFF7E8)
 #define         MCU_ID2                   (0x1FFFF7EC)
 #define         MCU_ID3                   (0x1FFFF7F0)
 
-extern uint8_t g_usbd_descriptor[USB_DEVICE_DESC_LEN];
-extern uint8_t g_usbd_configuration[USBD_CONFIG_DESC_SIZE];
 extern usbd_desc_handler msc_desc_handler;
 
 /**
@@ -96,4 +83,3 @@ extern usbd_desc_handler msc_desc_handler;
 #endif
 
 #endif
-

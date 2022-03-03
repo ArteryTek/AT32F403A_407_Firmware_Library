@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     readme.txt
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    readme
   **************************************************************************
   */
@@ -18,11 +18,11 @@
   - spi3_sck  pb3     --->   spi_sck
   - spi3_miso pb4     --->   spi_miso
   - spi3_mosi pb5     --->   spi_mosi
-  - gpio      pb6     --->   lcd_cs
-  - gpio      pb9     --->   lcd_reset
-  - gpio      pb11    --->   lcd_pen
-  - gpio      pb8     --->   lcd_bl
-  - xmc_a0    pc3     --->   lcd_rs
+  - gpio      pb8     --->   lcd_cs
+  - gpio      pd3     --->   lcd_reset
+  - gpio      pd5     --->   lcd_pen
+  - gpio      pb0     --->   lcd_bl
+  - xmc_a16   pd11    --->   lcd_rs
   - xmc_ne1   pd7     --->   lcd_cs
   - xmc_nwe   pd2     --->   lcd_wr
   - xmc_noe   pc5     --->   lcd_rd

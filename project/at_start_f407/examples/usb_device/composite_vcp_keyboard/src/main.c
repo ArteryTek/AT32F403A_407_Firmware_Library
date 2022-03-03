@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -41,8 +41,7 @@
 
 usbd_core_type usb_core_dev;
 uint8_t usb_buffer[256];
-
-void keyboard_send_string(uint8_t *string, uint8_t len);
+void keyboard_send_string(void *udev, uint8_t *string, uint8_t len);
 
 /**
   * @brief  usb 48M clock select
@@ -118,27 +117,29 @@ void usb_clock48m_select(usb_clk48_s clk_s)
   * @param  len: send string length
   * @retval none
   */
-void keyboard_send_string(uint8_t *string, uint8_t len)
+void keyboard_send_string(void *udev, uint8_t *string, uint8_t len)
 {
-  __IO uint8_t index = 0;
+  uint8_t index = 0;
+  usbd_core_type *pudev = (usbd_core_type *)udev;
+  vcp_keyboard_type *vcpkybrd = (vcp_keyboard_type *)pudev->class_handler->pdata;
   for(index = 0; index < len; index ++)
   {
     while(1)
     {
-      if(g_keyboard_tx_completed == 1)
+      if(vcpkybrd->g_keyboard_tx_completed == 1)
       {
-        g_keyboard_tx_completed = 0;
-        usb_hid_keyboard_send_char(&usb_core_dev, string[index]);
+        vcpkybrd->g_keyboard_tx_completed = 0;
+        usb_vcpkybrd_keyboard_send_char(&usb_core_dev, string[index]);
         break;
       }
     }
     /* send 0x00 */
     while(1)
     {
-      if(g_keyboard_tx_completed == 1)
+      if(vcpkybrd->g_keyboard_tx_completed == 1)
       {
-        g_keyboard_tx_completed = 0;
-        usb_hid_keyboard_send_char(&usb_core_dev, 0x00);
+        vcpkybrd->g_keyboard_tx_completed = 0;
+        usb_vcpkybrd_keyboard_send_char(&usb_core_dev, 0x00);
         break;
       }
     }
@@ -184,7 +185,7 @@ int main(void)
   while(1)
   {
     /* get usb vcp receive data */
-    data_len = usb_vcp_get_rxdata(&usb_core_dev, usb_buffer);
+    data_len = usb_vcpkybrd_vcp_get_rxdata(&usb_core_dev, usb_buffer);
 
     if(data_len > 0 || send_zero_packet == 1)
     {
@@ -198,11 +199,11 @@ int main(void)
       if(data_len == 0)
         send_zero_packet = 0;
 
-      timeout = 50000;
+      timeout = 5000000;
       do
       {
         /* send data to host */
-        if(usb_vcp_send_data(&usb_core_dev, usb_buffer, data_len) == SUCCESS)
+        if(usb_vcpkybrd_vcp_send_data(&usb_core_dev, usb_buffer, data_len) == SUCCESS)
         {
           break;
         }
@@ -211,7 +212,7 @@ int main(void)
 
     if(at32_button_press() == USER_BUTTON)
     {
-      keyboard_send_string((uint8_t *)" Keyboard Demo\r\n", 16);
+      keyboard_send_string(&usb_core_dev, (uint8_t *)" Keyboard Demo\r\n", 16);
     }
   }
 }

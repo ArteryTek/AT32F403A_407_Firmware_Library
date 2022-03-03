@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     usbd_core.c
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    usb driver
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -635,7 +635,8 @@ void usbd_ept_defaut_init(usbd_core_type *udev)
     udev->ept_in[i_index].maxpacket   = 0;
     udev->ept_in[i_index].trans_buf   = 0;
     udev->ept_in[i_index].total_len   = 0;
-    udev->ept_in[i_index].tx_addr     = 0;     
+    udev->ept_in[i_index].tx_addr     = 0;
+    udev->ept_in[i_index].rx_addr     = 0;      
   }
   
   /* init out endpoint info structure */
@@ -648,6 +649,7 @@ void usbd_ept_defaut_init(usbd_core_type *udev)
     udev->ept_out[i_index].trans_buf   = 0;
     udev->ept_out[i_index].total_len   = 0;
     udev->ept_out[i_index].rx_addr     = 0; 
+    udev->ept_out[i_index].tx_addr     = 0; 
   }
   return;
 }

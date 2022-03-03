@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     msc_desc.c
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    usb msc device descriptor
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -42,18 +42,18 @@
   * @{
   */
 
-usbd_desc_t *get_device_descriptor(void);
-usbd_desc_t *get_device_qualifier(void);
-usbd_desc_t *get_device_configuration(void);
-usbd_desc_t *get_device_other_speed(void);
-usbd_desc_t *get_device_lang_id(void);
-usbd_desc_t *get_device_manufacturer_string(void);
-usbd_desc_t *get_device_product_string(void);
-usbd_desc_t *get_device_serial_string(void);
-usbd_desc_t *get_device_interface_string(void);
-usbd_desc_t *get_device_config_string(void);
+static usbd_desc_t *get_device_descriptor(void);
+static usbd_desc_t *get_device_qualifier(void);
+static usbd_desc_t *get_device_configuration(void);
+static usbd_desc_t *get_device_other_speed(void);
+static usbd_desc_t *get_device_lang_id(void);
+static usbd_desc_t *get_device_manufacturer_string(void);
+static usbd_desc_t *get_device_product_string(void);
+static usbd_desc_t *get_device_serial_string(void);
+static usbd_desc_t *get_device_interface_string(void);
+static usbd_desc_t *get_device_config_string(void);
 
-uint16_t usbd_unicode_convert(uint8_t *string, uint8_t *unicode_buf);
+static uint16_t usbd_unicode_convert(uint8_t *string, uint8_t *unicode_buf);
 static void usbd_int_to_unicode (uint32_t value , uint8_t *pbuf , uint8_t len);
 static void get_serial_num(void);
 static uint8_t g_usbd_desc_buffer[256];
@@ -81,7 +81,7 @@ usbd_desc_handler msc_desc_handler =
 #if defined ( __ICCARM__ ) /* iar compiler */
   #pragma data_alignment=4
 #endif
-ALIGNED_HEAD uint8_t g_usbd_descriptor[USB_DEVICE_DESC_LEN] ALIGNED_TAIL =
+ALIGNED_HEAD static uint8_t g_usbd_descriptor[USB_DEVICE_DESC_LEN] ALIGNED_TAIL =
 {
   USB_DEVICE_DESC_LEN,                   /* bLength */
   USB_DESCIPTOR_TYPE_DEVICE,             /* bDescriptorType */
@@ -91,10 +91,10 @@ ALIGNED_HEAD uint8_t g_usbd_descriptor[USB_DEVICE_DESC_LEN] ALIGNED_TAIL =
   0x00,                                  /* bDeviceSubClass */
   0x00,                                  /* bDeviceProtocol */
   USB_MAX_EP0_SIZE,                      /* bMaxPacketSize */
-  LBYTE(USBD_VENDOR_ID),                 /* idVendor */
-  HBYTE(USBD_VENDOR_ID),                 /* idVendor */
-  LBYTE(USBD_PRODUCT_ID),                /* idProduct */
-  HBYTE(USBD_PRODUCT_ID),                /* idProduct */
+  LBYTE(USBD_MSC_VENDOR_ID),             /* idVendor */
+  HBYTE(USBD_MSC_VENDOR_ID),             /* idVendor */
+  LBYTE(USBD_MSC_PRODUCT_ID),            /* idProduct */
+  HBYTE(USBD_MSC_PRODUCT_ID),            /* idProduct */
   0x00,                                  /* bcdDevice rel. 2.00 */
   0x02,
   USB_MFC_STRING,                        /* Index of manufacturer string */
@@ -109,12 +109,12 @@ ALIGNED_HEAD uint8_t g_usbd_descriptor[USB_DEVICE_DESC_LEN] ALIGNED_TAIL =
 #if defined ( __ICCARM__ ) /* iar compiler */
   #pragma data_alignment=4
 #endif
-ALIGNED_HEAD uint8_t g_usbd_configuration[USBD_CONFIG_DESC_SIZE] ALIGNED_TAIL =
+ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_MSC_CONFIG_DESC_SIZE] ALIGNED_TAIL =
 {
   USB_DEVICE_CFG_DESC_LEN,               /* bLength: configuration descriptor size */
   USB_DESCIPTOR_TYPE_CONFIGURATION,      /* bDescriptorType: configuration */
-  LBYTE(USBD_CONFIG_DESC_SIZE),          /* wTotalLength: bytes returned */
-  HBYTE(USBD_CONFIG_DESC_SIZE),          /* wTotalLength: bytes returned */
+  LBYTE(USBD_MSC_CONFIG_DESC_SIZE),      /* wTotalLength: bytes returned */
+  HBYTE(USBD_MSC_CONFIG_DESC_SIZE),      /* wTotalLength: bytes returned */
   0x01,                                  /* bNumInterfaces: 2 interface */
   0x01,                                  /* bConfigurationValue: configuration value */
   0x04,                                  /* iConfiguration: index of string descriptor describing
@@ -155,9 +155,9 @@ ALIGNED_HEAD uint8_t g_usbd_configuration[USBD_CONFIG_DESC_SIZE] ALIGNED_TAIL =
 #if defined ( __ICCARM__ ) /* iar compiler */
   #pragma data_alignment=4
 #endif
-ALIGNED_HEAD uint8_t g_string_lang_id[USBD_SIZ_STRING_LANGID] ALIGNED_TAIL =
+ALIGNED_HEAD static uint8_t g_string_lang_id[USBD_MSC_SIZ_STRING_LANGID] ALIGNED_TAIL =
 {
-  USBD_SIZ_STRING_LANGID,
+  USBD_MSC_SIZ_STRING_LANGID,
   USB_DESCIPTOR_TYPE_STRING,
   0x09,
   0x04,
@@ -169,42 +169,42 @@ ALIGNED_HEAD uint8_t g_string_lang_id[USBD_SIZ_STRING_LANGID] ALIGNED_TAIL =
 #if defined ( __ICCARM__ ) /* iar compiler */
   #pragma data_alignment=4
 #endif
-ALIGNED_HEAD uint8_t g_string_serial[USBD_SIZ_STRING_SERIAL] ALIGNED_TAIL =
+ALIGNED_HEAD static uint8_t g_string_serial[USBD_MSC_SIZ_STRING_SERIAL] ALIGNED_TAIL =
 {
-  USBD_SIZ_STRING_SERIAL,
+  USBD_MSC_SIZ_STRING_SERIAL,
   USB_DESCIPTOR_TYPE_STRING,
 };
 
 
 /* device descriptor */
-usbd_desc_t device_descriptor =
+static usbd_desc_t device_descriptor =
 {
   USB_DEVICE_DESC_LEN,
   g_usbd_descriptor
 };
 
 /* config descriptor */
-usbd_desc_t config_descriptor =
+static usbd_desc_t config_descriptor =
 {
-  USBD_CONFIG_DESC_SIZE,
+  USBD_MSC_CONFIG_DESC_SIZE,
   g_usbd_configuration
 };
 
 /* langid descriptor */
-usbd_desc_t langid_descriptor =
+static usbd_desc_t langid_descriptor =
 {
-  USBD_SIZ_STRING_LANGID,
+  USBD_MSC_SIZ_STRING_LANGID,
   g_string_lang_id
 };
 
 /* serial descriptor */
-usbd_desc_t serial_descriptor =
+static usbd_desc_t serial_descriptor =
 {
-  USBD_SIZ_STRING_SERIAL,
+  USBD_MSC_SIZ_STRING_SERIAL,
   g_string_serial
 };
 
-usbd_desc_t vp_desc;
+static usbd_desc_t vp_desc;
 
 /**
   * @brief  standard usb unicode convert
@@ -212,7 +212,7 @@ usbd_desc_t vp_desc;
   * @param  unicode_buf: unicode buffer
   * @retval length                        
   */
-uint16_t usbd_unicode_convert(uint8_t *string, uint8_t *unicode_buf)
+static uint16_t usbd_unicode_convert(uint8_t *string, uint8_t *unicode_buf)
 {
   uint16_t str_len = 0, id_pos = 2;
   uint8_t *tmp_str = string;
@@ -286,7 +286,7 @@ static void get_serial_num(void)
   * @param  none
   * @retval usbd_desc                         
   */
-usbd_desc_t *get_device_descriptor(void)
+static usbd_desc_t *get_device_descriptor(void)
 {
   return &device_descriptor;
 }
@@ -296,7 +296,7 @@ usbd_desc_t *get_device_descriptor(void)
   * @param  none
   * @retval usbd_desc                         
   */
-usbd_desc_t * get_device_qualifier(void)
+static usbd_desc_t * get_device_qualifier(void)
 {
   return NULL;
 }
@@ -306,7 +306,7 @@ usbd_desc_t * get_device_qualifier(void)
   * @param  none
   * @retval usbd_desc                         
   */
-usbd_desc_t *get_device_configuration(void)
+static usbd_desc_t *get_device_configuration(void)
 {
   return &config_descriptor;
 }
@@ -316,7 +316,7 @@ usbd_desc_t *get_device_configuration(void)
   * @param  none
   * @retval usbd_desc                         
   */
-usbd_desc_t *get_device_other_speed(void)
+static usbd_desc_t *get_device_other_speed(void)
 {
   return NULL;
 }
@@ -326,7 +326,7 @@ usbd_desc_t *get_device_other_speed(void)
   * @param  none
   * @retval usbd_desc                         
   */
-usbd_desc_t *get_device_lang_id(void)
+static usbd_desc_t *get_device_lang_id(void)
 {
   return &langid_descriptor;
 }
@@ -337,9 +337,9 @@ usbd_desc_t *get_device_lang_id(void)
   * @param  none
   * @retval usbd_desc                         
   */
-usbd_desc_t *get_device_manufacturer_string(void)
+static usbd_desc_t *get_device_manufacturer_string(void)
 {
-  vp_desc.length = usbd_unicode_convert((uint8_t *)USBD_DESC_MANUFACTURER_STRING, g_usbd_desc_buffer);
+  vp_desc.length = usbd_unicode_convert((uint8_t *)USBD_MSC_DESC_MANUFACTURER_STRING, g_usbd_desc_buffer);
   vp_desc.descriptor = g_usbd_desc_buffer;
   return &vp_desc;
 }
@@ -349,9 +349,9 @@ usbd_desc_t *get_device_manufacturer_string(void)
   * @param  none
   * @retval usbd_desc                         
   */
-usbd_desc_t *get_device_product_string(void)
+static usbd_desc_t *get_device_product_string(void)
 {
-  vp_desc.length = usbd_unicode_convert((uint8_t *)USBD_DESC_PRODUCT_STRING, g_usbd_desc_buffer);
+  vp_desc.length = usbd_unicode_convert((uint8_t *)USBD_MSC_DESC_PRODUCT_STRING, g_usbd_desc_buffer);
   vp_desc.descriptor = g_usbd_desc_buffer;
   return &vp_desc;
 }
@@ -361,7 +361,7 @@ usbd_desc_t *get_device_product_string(void)
   * @param  none
   * @retval usbd_desc                         
   */
-usbd_desc_t *get_device_serial_string(void)
+static usbd_desc_t *get_device_serial_string(void)
 {
   get_serial_num();
   return &serial_descriptor;
@@ -372,9 +372,9 @@ usbd_desc_t *get_device_serial_string(void)
   * @param  none
   * @retval usbd_desc                         
   */
-usbd_desc_t *get_device_interface_string(void)
+static usbd_desc_t *get_device_interface_string(void)
 {
-  vp_desc.length = usbd_unicode_convert((uint8_t *)USBD_DESC_INTERFACE_STRING, g_usbd_desc_buffer);
+  vp_desc.length = usbd_unicode_convert((uint8_t *)USBD_MSC_DESC_INTERFACE_STRING, g_usbd_desc_buffer);
   vp_desc.descriptor = g_usbd_desc_buffer;
   return &vp_desc;
 }
@@ -384,9 +384,9 @@ usbd_desc_t *get_device_interface_string(void)
   * @param  none
   * @retval usbd_desc                         
   */
-usbd_desc_t *get_device_config_string(void)
+static usbd_desc_t *get_device_config_string(void)
 {
-  vp_desc.length = usbd_unicode_convert((uint8_t *)USBD_DESC_CONFIGURATION_STRING, g_usbd_desc_buffer);
+  vp_desc.length = usbd_unicode_convert((uint8_t *)USBD_MSC_DESC_CONFIGURATION_STRING, g_usbd_desc_buffer);
   vp_desc.descriptor = g_usbd_desc_buffer;
   return &vp_desc;
 }

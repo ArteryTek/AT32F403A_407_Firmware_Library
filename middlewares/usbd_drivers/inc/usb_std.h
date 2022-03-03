@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     usb_std.h
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    usb standard header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -185,6 +185,56 @@ typedef enum
 #define USB_EPT_DESC_DATA_EPT            0x00 /*!< usb endpoint description data */
 #define USB_EPT_DESC_FD_EPT              0x10 /*!< usb endpoint description fd */
 #define USB_EPT_DESC_FDDATA_EPT          0x20 /*!< usb endpoint description fddata */
+
+/**
+  * @brief usb cdc class descriptor define
+  */
+#define USBD_CDC_CS_INTERFACE             0x24
+#define USBD_CDC_CS_ENDPOINT              0x25
+
+/**
+  * @brief usb cdc class sub-type define
+  */
+#define USBD_CDC_SUBTYPE_HEADER           0x00
+#define USBD_CDC_SUBTYPE_CMF              0x01
+#define USBD_CDC_SUBTYPE_ACM              0x02
+#define USBD_CDC_SUBTYPE_UFD              0x06
+
+/**
+  * @brief usb cdc class request code define
+  */
+#define SET_LINE_CODING                   0x20
+#define GET_LINE_CODING                   0x21
+
+/**
+  * @brief usb cdc class set line coding struct
+  */
+typedef struct 
+{
+  uint32_t bitrate;                      /* line coding baud rate */
+  uint8_t format;                        /* line coding foramt */
+  uint8_t parity;                        /* line coding parity */
+  uint8_t data;                          /* line coding data bit */
+}linecoding_type;
+
+/**
+  * @brief usb hid class descriptor define
+  */
+#define HID_CLASS_DESC_HID               0x21
+#define HID_CLASS_DESC_REPORT            0x22
+#define HID_CLASS_DESC_PHYSICAL          0x23
+
+/**
+  * @brief usb hid class request code define
+  */
+#define HID_REQ_SET_PROTOCOL             0x0B
+#define HID_REQ_GET_PROTOCOL             0x03
+#define HID_REQ_SET_IDLE                 0x0A
+#define HID_REQ_GET_IDLE                 0x02
+#define HID_REQ_SET_REPORT               0x09
+#define HID_REQ_GET_REPORT               0x01
+#define HID_DESCRIPTOR_TYPE              0x21
+#define HID_REPORT_DESC                  0x22
 
 /**
   * @brief endpoint 0 max size

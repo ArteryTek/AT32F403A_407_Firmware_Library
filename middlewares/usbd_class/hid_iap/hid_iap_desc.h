@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     hid_iap_desc.h
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    usb hid descriptor header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -47,39 +47,32 @@ extern "C" {
   * @{
   */
 
-#define HID_BCD_NUM                      0x0110
 
-#define HID_CLASS_DESC_HID               0x21
-#define HID_CLASS_DESC_REPORT            0x22
-#define HID_CLASS_DESC_PHYSICAL          0x23
+#define HIDIAP_BCD_NUM                   0x0110
 
+#define USBD_HIDIAP_VENDOR_ID            0x2E3C
+#define USBD_HIDIAP_PRODUCT_ID           0xAF01  
 
-#define USBD_VENDOR_ID                   0x2E3C
-#define USBD_PRODUCT_ID                  0xAF01  
+#define USBD_HIDIAP_CONFIG_DESC_SIZE     41
+#define USBD_HIDIAP_SIZ_REPORT_DESC      32
+#define USBD_HIDIAP_SIZ_STRING_LANGID    4
+#define USBD_HIDIAP_SIZ_STRING_SERIAL    0x1A
 
-#define USBD_CONFIG_DESC_SIZE            41
-#define USBD_HID_SIZ_REPORT_DESC         32
-#define USBD_SIZ_STRING_LANGID           4
-#define USBD_SIZ_STRING_SERIAL           0x1A
+#define USBD_HIDIAP_DESC_MANUFACTURER_STRING    "Artery"
+#define USBD_HIDIAP_DESC_PRODUCT_STRING         "HID IAP"
+#define USBD_HIDIAP_DESC_CONFIGURATION_STRING   "HID IAP Config"
+#define USBD_HIDIAP_DESC_INTERFACE_STRING       "HID IAP Interface"
 
-#define USBD_DESC_MANUFACTURER_STRING    "Artery"
-#define USBD_DESC_PRODUCT_STRING         "HID IAP"
-#define USBD_DESC_CONFIGURATION_STRING   "HID IAP Config"
-#define USBD_DESC_INTERFACE_STRING       "HID IAP Interface"
-
-#define HID_BINTERVAL_TIME                0x01
-
+#define HIDIAP_BINTERVAL_TIME                0x01
 
 #define         MCU_ID1                   (0x1FFFF7E8)
 #define         MCU_ID2                   (0x1FFFF7EC)
 #define         MCU_ID3                   (0x1FFFF7F0)
-
-extern uint8_t g_usbd_descriptor[USB_DEVICE_DESC_LEN];
-extern uint8_t g_usbd_configuration[USBD_CONFIG_DESC_SIZE];
-extern uint8_t g_usbd_hid_report[USBD_HID_SIZ_REPORT_DESC];
-extern uint8_t g_hid_usb_desc[9];
+extern uint8_t g_usbd_hidiap_report[USBD_HIDIAP_SIZ_REPORT_DESC];
+extern uint8_t g_hidiap_usb_desc[9];
 
 extern usbd_desc_handler hid_iap_desc_handler;
+
 
 /**
   * @}
@@ -98,3 +91,4 @@ extern usbd_desc_handler hid_iap_desc_handler;
 #endif
 
 #endif
+

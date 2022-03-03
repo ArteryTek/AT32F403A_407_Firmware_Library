@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     xmc_lcd.c
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    xmc_lcd program file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -111,29 +111,29 @@ void xmc_init(void)
   gpio_init(GPIOD, &gpio_init_struct);
   
   /* lcd reset lines configuration */
-  gpio_init_struct.gpio_pins = GPIO_PINS_8;
+  gpio_init_struct.gpio_pins = GPIO_PINS_0;
   gpio_init_struct.gpio_mode = GPIO_MODE_OUTPUT;
   gpio_init_struct.gpio_out_type = GPIO_OUTPUT_PUSH_PULL;
   gpio_init_struct.gpio_pull = GPIO_PULL_NONE;
   gpio_init_struct.gpio_drive_strength = GPIO_DRIVE_STRENGTH_STRONGER;
   gpio_init(GPIOB, &gpio_init_struct);
   
-  gpio_init_struct.gpio_pins = GPIO_PINS_9;
+  gpio_init_struct.gpio_pins = GPIO_PINS_3;
   gpio_init_struct.gpio_mode = GPIO_MODE_OUTPUT;
   gpio_init_struct.gpio_out_type = GPIO_OUTPUT_PUSH_PULL;
   gpio_init_struct.gpio_pull = GPIO_PULL_NONE;
   gpio_init_struct.gpio_drive_strength = GPIO_DRIVE_STRENGTH_STRONGER;
-  gpio_init(GPIOB, &gpio_init_struct);
+  gpio_init(GPIOD, &gpio_init_struct);
   
   /* lcd rs/cs/wr/rd lines configuration */
-  gpio_init_struct.gpio_pins = GPIO_PINS_3 | GPIO_PINS_5;
+  gpio_init_struct.gpio_pins = GPIO_PINS_5;
   gpio_init_struct.gpio_mode = GPIO_MODE_MUX;
   gpio_init_struct.gpio_out_type = GPIO_OUTPUT_PUSH_PULL;
   gpio_init_struct.gpio_pull = GPIO_PULL_NONE;
   gpio_init_struct.gpio_drive_strength = GPIO_DRIVE_STRENGTH_STRONGER;
   gpio_init(GPIOC, &gpio_init_struct);
   
-  gpio_init_struct.gpio_pins = GPIO_PINS_2 | GPIO_PINS_7;
+  gpio_init_struct.gpio_pins = GPIO_PINS_2 | GPIO_PINS_7 | GPIO_PINS_11;
   gpio_init_struct.gpio_mode = GPIO_MODE_MUX;
   gpio_init_struct.gpio_out_type = GPIO_OUTPUT_PUSH_PULL;
   gpio_init_struct.gpio_pull = GPIO_PULL_NONE;

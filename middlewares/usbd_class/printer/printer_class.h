@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     printer_class.h
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    usb printer class file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -51,8 +51,8 @@ extern "C" {
 #define USBD_PRINTER_BULK_OUT_EPT        0x01
 
 
-#define USBD_IN_MAXPACKET_SIZE           0x40
-#define USBD_OUT_MAXPACKET_SIZE          0x40
+#define USBD_PRINTER_IN_MAXPACKET_SIZE   0x40
+#define USBD_PRINTER_OUT_MAXPACKET_SIZE  0x40
 
 #define PRINTER_DEVICE_ID_LEN            24
 
@@ -64,16 +64,16 @@ typedef enum
 }printer_req_type;
 
 
-#define SET_LINE_CODING                  0x20
-#define GET_LINE_CODING                  0x21
-
-typedef struct 
+typedef struct
 {
-  uint32_t bitrate;
-  uint8_t format;
-  uint8_t parity;
-  uint8_t data;
-}linecoding_type;
+  uint32_t alt_setting;
+  uint32_t g_printer_port_status;
+  uint8_t g_rx_buff[USBD_PRINTER_OUT_MAXPACKET_SIZE];
+  uint8_t g_printer_data[USBD_PRINTER_OUT_MAXPACKET_SIZE];
+  __IO uint8_t g_tx_completed;
+  __IO uint8_t g_rx_completed;
+  uint32_t g_rxlen;
+}printer_type;
 
 extern usbd_class_handler printer_class_handler;
 uint16_t usb_printer_get_rxdata(void *udev, uint8_t *recv_data);

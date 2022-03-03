@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     mouse_class.h
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    usb hid mouse header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -50,12 +50,12 @@ extern "C" {
 /**
   * @brief usb hid use endpoint define
   */
-#define USBD_HID_IN_EPT                  0x81
+#define USBD_MOUSE_IN_EPT                  0x81
 
 /**
   * @brief usb hid in and out max packet size define
   */
-#define USBD_IN_MAXPACKET_SIZE           0x40
+#define USBD_MOUSE_IN_MAXPACKET_SIZE        0x40
 
 /**
   * @}
@@ -65,17 +65,6 @@ extern "C" {
   * @{
   */
   
-/**
-  * @brief usb hid class request code define
-  */
-#define HID_REQ_SET_PROTOCOL             0x0B
-#define HID_REQ_GET_PROTOCOL             0x03
-#define HID_REQ_SET_IDLE                 0x0A
-#define HID_REQ_GET_IDLE                 0x02
-#define HID_REQ_SET_REPORT               0x09
-#define HID_REQ_GET_REPORT               0x01
-#define HID_DESCRIPTOR_TYPE              0x21
-#define HID_REPORT_DESC                  0x22
 
 /**
   * @brief usb hid mouse operation
@@ -90,6 +79,18 @@ extern "C" {
 #define UP_MOVE                          5
 #define DOWN_MOVE                        6
 
+typedef struct
+{
+  uint32_t hid_protocol;
+  uint32_t hid_set_idle;
+  uint32_t alt_setting;
+ 
+  uint8_t hid_set_report[64];
+  uint8_t mouse_buffer[4];
+  uint8_t hid_state;
+  __IO uint8_t hid_suspend_flag;
+}mouse_type;
+
 /**
   * @}
   */
@@ -98,12 +99,12 @@ extern "C" {
   * @{
   */
 extern usbd_class_handler mouse_class_handler;
-usb_sts_type class_send_report(void *udev, uint8_t *report, uint16_t len);
+usb_sts_type usb_mouse_class_send_report(void *udev, uint8_t *report, uint16_t len);
 void usb_hid_mouse_send(void *udev, uint8_t op);
 /**
   * @}
   */
-
+  
 /**
   * @}
   */

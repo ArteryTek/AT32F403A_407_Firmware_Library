@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_debug.h
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    at32f403a_407 debug header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -121,18 +121,18 @@ typedef struct
       __IO uint32_t can1_pause           : 1;/* [14] */
       __IO uint32_t i2c1_smbus_timeout   : 1;/* [15] */
       __IO uint32_t i2c2_smbus_timeout   : 1;/* [16] */
-      __IO uint32_t tim8_pause           : 1;/* [17] */
-      __IO uint32_t tim5_pause           : 1;/* [18] */
-      __IO uint32_t tim6_pause           : 1;/* [19] */
-      __IO uint32_t tim7_pause           : 1;/* [20] */
+      __IO uint32_t tmr8_pause           : 1;/* [17] */
+      __IO uint32_t tmr5_pause           : 1;/* [18] */
+      __IO uint32_t tmr6_pause           : 1;/* [19] */
+      __IO uint32_t tmr7_pause           : 1;/* [20] */
       __IO uint32_t can2_pause           : 1;/* [21] */
       __IO uint32_t reserved2            : 3;/* [24:22] */
-      __IO uint32_t tim12_pause          : 1;/* [25] */
-      __IO uint32_t tim13_pause          : 1;/* [26] */
-      __IO uint32_t tim14_pause          : 1;/* [27] */
-      __IO uint32_t tim9_pause           : 1;/* [28] */
-      __IO uint32_t tim10_pause          : 1;/* [29] */
-      __IO uint32_t tim11_pause          : 1;/* [30] */
+      __IO uint32_t tmr12_pause          : 1;/* [25] */
+      __IO uint32_t tmr13_pause          : 1;/* [26] */
+      __IO uint32_t tmr14_pause          : 1;/* [27] */
+      __IO uint32_t tmr9_pause           : 1;/* [28] */
+      __IO uint32_t tmr10_pause          : 1;/* [29] */
+      __IO uint32_t tmr11_pause          : 1;/* [30] */
       __IO uint32_t i2c3_smbus_timeout   : 1;/* [31] */
     } ctrl_bit;
   };

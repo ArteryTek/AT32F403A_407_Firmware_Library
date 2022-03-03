@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     msc_bot_scsi.c
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    usb mass storage bulk-only transport and scsi command
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -39,15 +39,6 @@
   * @{
   */
 
-msc_type msc_struct;
-cbw_type cbw_struct;
-csw_type csw_struct = 
-{
-  CSW_DCSWSIGNATURE,
-  0x00,
-  0x00,
-  CSW_BCSWSTATUS_PASS,
-};
 
 #if defined ( __ICCARM__ ) /* iar compiler */
   #pragma data_alignment=4
@@ -60,7 +51,6 @@ ALIGNED_HEAD uint8_t page00_inquiry_data[] ALIGNED_TAIL = {
 	0x00, 
 
 };
-
 #if defined ( __ICCARM__ ) /* iar compiler */
   #pragma data_alignment=4
 #endif
@@ -114,12 +104,19 @@ ALIGNED_HEAD uint8_t mode_sense10_data[8] ALIGNED_TAIL =
 void bot_scsi_init(void *udev)
 {
   usbd_core_type *pudev = (usbd_core_type *)udev;
-  msc_struct.msc_state = MSC_STATE_MACHINE_IDLE;
-  msc_struct.bot_status = MSC_BOT_STATE_IDLE;
-  msc_struct.max_lun = MSC_SUPPORT_MAX_LUN - 1;
+  msc_type *pmsc = (msc_type *)pudev->class_handler->pdata;
+  pmsc->msc_state = MSC_STATE_MACHINE_IDLE;
+  pmsc->bot_status = MSC_BOT_STATE_IDLE;
+  pmsc->max_lun = MSC_SUPPORT_MAX_LUN - 1;
+  
+  pmsc->csw_struct.dCSWSignature = CSW_DCSWSIGNATURE;
+  pmsc->csw_struct.dCSWDataResidue = 0;
+  pmsc->csw_struct.dCSWSignature = 0;
+  pmsc->csw_struct.dCSWTag = CSW_BCSWSTATUS_PASS;
+  
   
   /* set out endpoint to receive status */
-  usbd_ept_recv(pudev, USBD_MSC_BULK_OUT_EPT, (uint8_t *)&cbw_struct, CBW_CMD_LENGTH);
+  usbd_ept_recv(pudev, USBD_MSC_BULK_OUT_EPT, (uint8_t *)&pmsc->cbw_struct, CBW_CMD_LENGTH);
 }
 
 /**
@@ -130,12 +127,13 @@ void bot_scsi_init(void *udev)
 void bot_scsi_reset(void *udev)
 {
   usbd_core_type *pudev = (usbd_core_type *)udev;
-  msc_struct.msc_state = MSC_STATE_MACHINE_IDLE;
-  msc_struct.bot_status = MSC_BOT_STATE_RECOVERY;
-  msc_struct.max_lun = MSC_SUPPORT_MAX_LUN - 1;
+  msc_type *pmsc = (msc_type *)pudev->class_handler->pdata;
+  pmsc->msc_state = MSC_STATE_MACHINE_IDLE;
+  pmsc->bot_status = MSC_BOT_STATE_RECOVERY;
+  pmsc->max_lun = MSC_SUPPORT_MAX_LUN - 1;
   
   /* set out endpoint to receive status */
-  usbd_ept_recv(pudev, USBD_MSC_BULK_OUT_EPT, (uint8_t *)&cbw_struct, CBW_CMD_LENGTH);
+  usbd_ept_recv(pudev, USBD_MSC_BULK_OUT_EPT, (uint8_t *)&pmsc->cbw_struct, CBW_CMD_LENGTH);
 }
 
 /**
@@ -146,7 +144,9 @@ void bot_scsi_reset(void *udev)
   */
 void bot_scsi_datain_handler(void *udev, uint8_t ept_num)
 {
-  switch(msc_struct.msc_state)
+  usbd_core_type *pudev = (usbd_core_type *)udev;
+  msc_type *pmsc = (msc_type *)pudev->class_handler->pdata;
+  switch(pmsc->msc_state)
   {
     case MSC_STATE_MACHINE_DATA_IN:
       if(bot_scsi_cmd_process(udev) != USB_OK)
@@ -173,7 +173,9 @@ void bot_scsi_datain_handler(void *udev, uint8_t ept_num)
   */
 void bot_scsi_dataout_handler(void *udev, uint8_t ept_num)
 {
-  switch(msc_struct.msc_state)
+  usbd_core_type *pudev = (usbd_core_type *)udev;
+  msc_type *pmsc = (msc_type *)pudev->class_handler->pdata;
+  switch(pmsc->msc_state)
   {
     case MSC_STATE_MACHINE_IDLE:
       bot_cbw_decode(udev);
@@ -196,18 +198,19 @@ void bot_scsi_dataout_handler(void *udev, uint8_t ept_num)
 void bot_cbw_decode(void *udev)
 {
   usbd_core_type *pudev = (usbd_core_type *)udev;
+  msc_type *pmsc = (msc_type *)pudev->class_handler->pdata;
   
-  csw_struct.dCSWTag = cbw_struct.dCBWTage;
-  csw_struct.dCSWDataResidue = cbw_struct.dCBWDataTransferLength;
+  pmsc->csw_struct.dCSWTag = pmsc->cbw_struct.dCBWTage;
+  pmsc->csw_struct.dCSWDataResidue = pmsc->cbw_struct.dCBWDataTransferLength;
   
   /* check param */
-  if((cbw_struct.dCBWSignature != CBW_DCBWSIGNATURE) ||
+  if((pmsc->cbw_struct.dCBWSignature != CBW_DCBWSIGNATURE) ||
     (usbd_get_recv_len(pudev, USBD_MSC_BULK_OUT_EPT) != CBW_CMD_LENGTH)
-    || (cbw_struct.bCBWLUN > MSC_SUPPORT_MAX_LUN) ||
-      (cbw_struct.bCBWCBLength < 1) || (cbw_struct.bCBWCBLength > 16))
+    || (pmsc->cbw_struct.bCBWLUN > MSC_SUPPORT_MAX_LUN) ||
+      (pmsc->cbw_struct.bCBWCBLength < 1) || (pmsc->cbw_struct.bCBWCBLength > 16))
   {
     bot_scsi_sense_code(udev, SENSE_KEY_ILLEGAL_REQUEST, INVALID_COMMAND);
-    msc_struct.bot_status = MSC_BOT_STATE_ERROR;
+    pmsc->bot_status = MSC_BOT_STATE_ERROR;
     bot_scsi_stall(udev);
   }
   else
@@ -216,17 +219,17 @@ void bot_cbw_decode(void *udev)
     {
       bot_scsi_stall(udev);
     }
-    else if((msc_struct.msc_state != MSC_STATE_MACHINE_DATA_IN) &&
-            (msc_struct.msc_state != MSC_STATE_MACHINE_DATA_OUT) &&
-            (msc_struct.msc_state != MSC_STATE_MACHINE_LAST_DATA))
+    else if((pmsc->msc_state != MSC_STATE_MACHINE_DATA_IN) &&
+            (pmsc->msc_state != MSC_STATE_MACHINE_DATA_OUT) &&
+            (pmsc->msc_state != MSC_STATE_MACHINE_LAST_DATA))
     {
-      if(msc_struct.data_len == 0)
+      if(pmsc->data_len == 0)
       {
         bot_scsi_send_csw(udev, CSW_BCSWSTATUS_PASS);
       }
-      else if(msc_struct.data_len > 0)
+      else if(pmsc->data_len > 0)
       {
-        bot_scsi_send_data(udev, msc_struct.data, msc_struct.data_len);
+        bot_scsi_send_data(udev, pmsc->data, pmsc->data_len);
       }
     }
   }
@@ -242,12 +245,13 @@ void bot_cbw_decode(void *udev)
 void bot_scsi_send_data(void *udev, uint8_t *buffer, uint32_t len)
 {
   usbd_core_type *pudev = (usbd_core_type *)udev;
-  uint32_t data_len = MIN(len, cbw_struct.dCBWDataTransferLength);
+  msc_type *pmsc = (msc_type *)pudev->class_handler->pdata;
+  uint32_t data_len = MIN(len, pmsc->cbw_struct.dCBWDataTransferLength);
   
-  csw_struct.dCSWDataResidue -= data_len;
-  csw_struct.bCSWStatus = CSW_BCSWSTATUS_PASS;
+  pmsc->csw_struct.dCSWDataResidue -= data_len;
+  pmsc->csw_struct.bCSWStatus = CSW_BCSWSTATUS_PASS;
   
-  msc_struct.msc_state = MSC_STATE_MACHINE_SEND_DATA;
+  pmsc->msc_state = MSC_STATE_MACHINE_SEND_DATA;
   
   usbd_ept_send(pudev, USBD_MSC_BULK_IN_EPT, 
                 buffer, data_len);
@@ -262,16 +266,17 @@ void bot_scsi_send_data(void *udev, uint8_t *buffer, uint32_t len)
 void bot_scsi_send_csw(void *udev, uint8_t status)
 {
   usbd_core_type *pudev = (usbd_core_type *)udev;
+  msc_type *pmsc = (msc_type *)pudev->class_handler->pdata;
   
-  csw_struct.bCSWStatus = status;
-  csw_struct.dCSWSignature = CSW_DCSWSIGNATURE;
-  msc_struct.msc_state = MSC_STATE_MACHINE_IDLE;
+  pmsc->csw_struct.bCSWStatus = status;
+  pmsc->csw_struct.dCSWSignature = CSW_DCSWSIGNATURE;
+  pmsc->msc_state = MSC_STATE_MACHINE_IDLE;
   
   usbd_ept_send(pudev, USBD_MSC_BULK_IN_EPT, 
-                (uint8_t *)&csw_struct, CSW_CMD_LENGTH);
+                (uint8_t *)&pmsc->csw_struct, CSW_CMD_LENGTH);
   
   usbd_ept_recv(pudev, USBD_MSC_BULK_OUT_EPT,
-               (uint8_t *)&cbw_struct, CBW_CMD_LENGTH);
+               (uint8_t *)&pmsc->cbw_struct, CBW_CMD_LENGTH);
 }
 
 
@@ -299,7 +304,9 @@ void bot_scsi_sense_code(void *udev, uint8_t sense_key, uint8_t asc)
   */
 usb_sts_type bot_scsi_check_address(void *udev, uint8_t lun, uint32_t blk_offset, uint32_t blk_count)
 {
-  if((blk_offset + blk_count) > msc_struct.blk_nbr[lun])
+  usbd_core_type *pudev = (usbd_core_type *)udev;
+  msc_type *pmsc = (msc_type *)pudev->class_handler->pdata;
+  if((blk_offset + blk_count) > pmsc->blk_nbr[lun])
   {
     bot_scsi_sense_code(udev, SENSE_KEY_ILLEGAL_REQUEST, ADDRESS_OUT_OF_RANGE);
     return USB_FAIL;
@@ -315,18 +322,20 @@ usb_sts_type bot_scsi_check_address(void *udev, uint8_t lun, uint32_t blk_offset
 void bot_scsi_stall(void *udev)
 {
   usbd_core_type *pudev = (usbd_core_type *)udev;
-  if((cbw_struct.dCBWDataTransferLength != 0) &&
-    (cbw_struct.bmCBWFlags == 0) &&
-    msc_struct.bot_status == MSC_BOT_STATE_IDLE)
+  msc_type *pmsc = (msc_type *)pudev->class_handler->pdata;
+  
+  if((pmsc->cbw_struct.dCBWDataTransferLength != 0) &&
+    (pmsc->cbw_struct.bmCBWFlags == 0) &&
+    pmsc->bot_status == MSC_BOT_STATE_IDLE)
   {
     usbd_set_stall(pudev, USBD_MSC_BULK_OUT_EPT);
   }
   usbd_set_stall(pudev, USBD_MSC_BULK_IN_EPT);
   
-  if(msc_struct.bot_status == MSC_BOT_STATE_ERROR)
+  if(pmsc->bot_status == MSC_BOT_STATE_ERROR)
   {
     usbd_ept_recv(pudev, USBD_MSC_BULK_OUT_EPT, 
-                 (uint8_t *)&cbw_struct, CBW_CMD_LENGTH);
+                 (uint8_t *)&pmsc->cbw_struct, CBW_CMD_LENGTH);
   }
 }
 
@@ -339,13 +348,16 @@ void bot_scsi_stall(void *udev)
 usb_sts_type bot_scsi_test_unit(void *udev, uint8_t lun)
 {
   usb_sts_type status = USB_OK;
-  if(cbw_struct.dCBWDataTransferLength != 0)
+  usbd_core_type *pudev = (usbd_core_type *)udev;
+  msc_type *pmsc = (msc_type *)pudev->class_handler->pdata;
+  
+  if(pmsc->cbw_struct.dCBWDataTransferLength != 0)
   {
     bot_scsi_sense_code(udev, SENSE_KEY_ILLEGAL_REQUEST, INVALID_COMMAND);
     return USB_FAIL;
   }
   
-  msc_struct.data_len = 0;
+  pmsc->data_len = 0;
   return status;
 }
 
@@ -360,8 +372,10 @@ usb_sts_type bot_scsi_inquiry(void *udev, uint8_t lun)
   uint8_t *pdata;
   uint32_t trans_len = 0;
   usb_sts_type status = USB_OK;
+  usbd_core_type *pudev = (usbd_core_type *)udev;
+  msc_type *pmsc = (msc_type *)pudev->class_handler->pdata;
   
-  if(cbw_struct.CBWCB[1] & 0x01)
+  if(pmsc->cbw_struct.CBWCB[1] & 0x01)
   {
     pdata = page00_inquiry_data;
     trans_len = 5;
@@ -369,9 +383,9 @@ usb_sts_type bot_scsi_inquiry(void *udev, uint8_t lun)
   else
   {
     pdata = get_inquiry(lun);
-    if(cbw_struct.dCBWDataTransferLength < SCSI_INQUIRY_DATA_LENGTH)
+    if(pmsc->cbw_struct.dCBWDataTransferLength < SCSI_INQUIRY_DATA_LENGTH)
     {
-      trans_len = cbw_struct.dCBWDataTransferLength;
+      trans_len = pmsc->cbw_struct.dCBWDataTransferLength;
     }
     else
     {
@@ -379,11 +393,11 @@ usb_sts_type bot_scsi_inquiry(void *udev, uint8_t lun)
     }
   }
   
-  msc_struct.data_len = trans_len;
+  pmsc->data_len = trans_len;
   while(trans_len)
   {
     trans_len --;
-    msc_struct.data[trans_len] = pdata[trans_len];
+    pmsc->data[trans_len] = pdata[trans_len];
   }
   return status;
 }
@@ -396,7 +410,9 @@ usb_sts_type bot_scsi_inquiry(void *udev, uint8_t lun)
   */
 usb_sts_type bot_scsi_start_stop(void *udev, uint8_t lun)
 {
-  msc_struct.data_len = 0;
+  usbd_core_type *pudev = (usbd_core_type *)udev;
+  msc_type *pmsc = (msc_type *)pudev->class_handler->pdata;
+  pmsc->data_len = 0;
   return USB_OK;
 }
 
@@ -408,7 +424,9 @@ usb_sts_type bot_scsi_start_stop(void *udev, uint8_t lun)
   */
 usb_sts_type bot_scsi_allow_medium_removal(void *udev, uint8_t lun)
 {
-  msc_struct.data_len = 0;
+  usbd_core_type *pudev = (usbd_core_type *)udev;
+  msc_type *pmsc = (msc_type *)pudev->class_handler->pdata;
+  pmsc->data_len = 0;
   return USB_OK;
 }
 
@@ -421,11 +439,13 @@ usb_sts_type bot_scsi_allow_medium_removal(void *udev, uint8_t lun)
 usb_sts_type bot_scsi_mode_sense6(void *udev, uint8_t lun)
 {
   uint8_t data_len = 8;
-  msc_struct.data_len = 8;
+  usbd_core_type *pudev = (usbd_core_type *)udev;
+  msc_type *pmsc = (msc_type *)pudev->class_handler->pdata;
+  pmsc->data_len = 8;
   while(data_len)
   {
     data_len --;
-    msc_struct.data[data_len] = mode_sense6_data[data_len];
+    pmsc->data[data_len] = mode_sense6_data[data_len];
   };
   return USB_OK;
 }
@@ -439,11 +459,13 @@ usb_sts_type bot_scsi_mode_sense6(void *udev, uint8_t lun)
 usb_sts_type bot_scsi_mode_sense10(void *udev, uint8_t lun)
 {
   uint8_t data_len = 8;
-  msc_struct.data_len = 8;
+  usbd_core_type *pudev = (usbd_core_type *)udev;
+  msc_type *pmsc = (msc_type *)pudev->class_handler->pdata;
+  pmsc->data_len = 8;
   while(data_len)
   {
     data_len --;
-    msc_struct.data[data_len] = mode_sense10_data[data_len];
+    pmsc->data[data_len] = mode_sense10_data[data_len];
   };
   return USB_OK;
 }
@@ -456,21 +478,22 @@ usb_sts_type bot_scsi_mode_sense10(void *udev, uint8_t lun)
   */
 usb_sts_type bot_scsi_capacity(void *udev, uint8_t lun)
 {
-  uint8_t *pdata = msc_struct.data;
-  
-  msc_disk_capacity(lun, &msc_struct.blk_nbr[lun], &msc_struct.blk_size[lun]);
+  usbd_core_type *pudev = (usbd_core_type *)udev;
+  msc_type *pmsc = (msc_type *)pudev->class_handler->pdata;
+  uint8_t *pdata = pmsc->data;
+  msc_disk_capacity(lun, &pmsc->blk_nbr[lun], &pmsc->blk_size[lun]);
     
-  pdata[0] = (uint8_t)((msc_struct.blk_nbr[lun] - 1) >> 24);
-  pdata[1] = (uint8_t)((msc_struct.blk_nbr[lun] - 1) >> 16);
-  pdata[2] = (uint8_t)((msc_struct.blk_nbr[lun] - 1) >> 8);
-  pdata[3] = (uint8_t)((msc_struct.blk_nbr[lun] - 1));
+  pdata[0] = (uint8_t)((pmsc->blk_nbr[lun] - 1) >> 24);
+  pdata[1] = (uint8_t)((pmsc->blk_nbr[lun] - 1) >> 16);
+  pdata[2] = (uint8_t)((pmsc->blk_nbr[lun] - 1) >> 8);
+  pdata[3] = (uint8_t)((pmsc->blk_nbr[lun] - 1));
   
-  pdata[4] = (uint8_t)((msc_struct.blk_size[lun]) >> 24);
-  pdata[5] = (uint8_t)((msc_struct.blk_size[lun]) >> 16);
-  pdata[6] = (uint8_t)((msc_struct.blk_size[lun]) >> 8);
-  pdata[7] = (uint8_t)((msc_struct.blk_size[lun]));
+  pdata[4] = (uint8_t)((pmsc->blk_size[lun]) >> 24);
+  pdata[5] = (uint8_t)((pmsc->blk_size[lun]) >> 16);
+  pdata[6] = (uint8_t)((pmsc->blk_size[lun]) >> 8);
+  pdata[7] = (uint8_t)((pmsc->blk_size[lun]));
   
-  msc_struct.data_len = 8;
+  pmsc->data_len = 8;
   return USB_OK;
 }
 
@@ -481,28 +504,30 @@ usb_sts_type bot_scsi_capacity(void *udev, uint8_t lun)
   * @retval status of usb_sts_type                            
   */
 usb_sts_type bot_scsi_format_capacity(void *udev, uint8_t lun)
-{
-  uint8_t *pdata = msc_struct.data;
+{  
+  usbd_core_type *pudev = (usbd_core_type *)udev;
+  msc_type *pmsc = (msc_type *)pudev->class_handler->pdata;
+  uint8_t *pdata = pmsc->data;
   
   pdata[0] = 0;
   pdata[1] = 0;
   pdata[2] = 0;
   pdata[3] = 0x08;
   
-  msc_disk_capacity(lun, &msc_struct.blk_nbr[lun], &msc_struct.blk_size[lun]);
+  msc_disk_capacity(lun, &pmsc->blk_nbr[lun], &pmsc->blk_size[lun]);
   
-  pdata[4] = (uint8_t)((msc_struct.blk_nbr[lun] - 1) >> 24);
-  pdata[5] = (uint8_t)((msc_struct.blk_nbr[lun] - 1) >> 16);
-  pdata[6] = (uint8_t)((msc_struct.blk_nbr[lun] - 1) >> 8);
-  pdata[7] = (uint8_t)((msc_struct.blk_nbr[lun] - 1));
+  pdata[4] = (uint8_t)((pmsc->blk_nbr[lun] - 1) >> 24);
+  pdata[5] = (uint8_t)((pmsc->blk_nbr[lun] - 1) >> 16);
+  pdata[6] = (uint8_t)((pmsc->blk_nbr[lun] - 1) >> 8);
+  pdata[7] = (uint8_t)((pmsc->blk_nbr[lun] - 1));
   
   pdata[8] = 0x02;
   
-  pdata[9] = (uint8_t)((msc_struct.blk_size[lun]) >> 16);
-  pdata[10] = (uint8_t)((msc_struct.blk_size[lun]) >> 8);
-  pdata[11] = (uint8_t)((msc_struct.blk_size[lun]));
+  pdata[9] = (uint8_t)((pmsc->blk_size[lun]) >> 16);
+  pdata[10] = (uint8_t)((pmsc->blk_size[lun]) >> 8);
+  pdata[11] = (uint8_t)((pmsc->blk_size[lun]));
   
-  msc_struct.data_len = 12;
+  pmsc->data_len = 12;
   
   return USB_OK;
 }
@@ -516,7 +541,9 @@ usb_sts_type bot_scsi_format_capacity(void *udev, uint8_t lun)
 usb_sts_type bot_scsi_request_sense(void *udev, uint8_t lun)
 {
   uint32_t trans_len = 0x12;
-  uint8_t *pdata = msc_struct.data;
+  usbd_core_type *pudev = (usbd_core_type *)udev;
+  msc_type *pmsc = (msc_type *)pudev->class_handler->pdata;
+  uint8_t *pdata = pmsc->data;
   uint8_t *sdata = (uint8_t *)&sense_data;
  
   while(trans_len)
@@ -525,13 +552,13 @@ usb_sts_type bot_scsi_request_sense(void *udev, uint8_t lun)
     pdata[trans_len] = sdata[trans_len];
   }
   
-  if(cbw_struct.dCBWDataTransferLength < REQ_SENSE_STANDARD_DATA_LEN)
+  if(pmsc->cbw_struct.dCBWDataTransferLength < REQ_SENSE_STANDARD_DATA_LEN)
   {
-    msc_struct.data_len = cbw_struct.dCBWDataTransferLength;
+    pmsc->data_len = pmsc->cbw_struct.dCBWDataTransferLength;
   }
   else
   {
-    msc_struct.data_len = REQ_SENSE_STANDARD_DATA_LEN;
+    pmsc->data_len = REQ_SENSE_STANDARD_DATA_LEN;
   }
   return USB_OK;
 }
@@ -544,21 +571,23 @@ usb_sts_type bot_scsi_request_sense(void *udev, uint8_t lun)
   */
 usb_sts_type bot_scsi_verify(void *udev, uint8_t lun)
 {
-  uint8_t *cmd = cbw_struct.CBWCB;
-  if((cbw_struct.CBWCB[1] & 0x02) == 0x02)
+  usbd_core_type *pudev = (usbd_core_type *)udev;
+  msc_type *pmsc = (msc_type *)pudev->class_handler->pdata;
+  uint8_t *cmd = pmsc->cbw_struct.CBWCB;
+  if((pmsc->cbw_struct.CBWCB[1] & 0x02) == 0x02)
   {
     bot_scsi_sense_code(udev, SENSE_KEY_ILLEGAL_REQUEST, INVALID_FIELED_IN_COMMAND);
     return USB_FAIL;
   }
   
-  msc_struct.blk_addr = cmd[2] << 24 | cmd[3] << 16 | cmd[4] << 8 | cmd[5];
-  msc_struct.blk_len = cmd[7] << 8 | cmd[8];
+  pmsc->blk_addr = cmd[2] << 24 | cmd[3] << 16 | cmd[4] << 8 | cmd[5];
+  pmsc->blk_len = cmd[7] << 8 | cmd[8];
   
-  if(bot_scsi_check_address(udev, lun, msc_struct.blk_addr, msc_struct.blk_len) != USB_OK)
+  if(bot_scsi_check_address(udev, lun, pmsc->blk_addr, pmsc->blk_len) != USB_OK)
   {
     return USB_FAIL;
   }
-  msc_struct.data_len = 0;
+  pmsc->data_len = 0;
   return USB_OK;
 }
 
@@ -570,52 +599,53 @@ usb_sts_type bot_scsi_verify(void *udev, uint8_t lun)
   */
 usb_sts_type bot_scsi_read10(void *udev, uint8_t lun)
 {
-  uint8_t *cmd = cbw_struct.CBWCB;
   usbd_core_type *pudev = (usbd_core_type *)udev;
+  msc_type *pmsc = (msc_type *)pudev->class_handler->pdata;
+  uint8_t *cmd = pmsc->cbw_struct.CBWCB;
   uint32_t len;
   
-  if(msc_struct.msc_state == MSC_STATE_MACHINE_IDLE)
+  if(pmsc->msc_state == MSC_STATE_MACHINE_IDLE)
   {
-    if((cbw_struct.bmCBWFlags & 0x80) != 0x80)
+    if((pmsc->cbw_struct.bmCBWFlags & 0x80) != 0x80)
     {
       bot_scsi_sense_code(udev, SENSE_KEY_ILLEGAL_REQUEST, INVALID_COMMAND);
       return USB_FAIL;
     }
     
-    msc_struct.blk_addr = cmd[2] << 24 | cmd[3] << 16 | cmd[4] << 8 | cmd[5];
-    msc_struct.blk_len = cmd[7] << 8 | cmd[8];
+    pmsc->blk_addr = cmd[2] << 24 | cmd[3] << 16 | cmd[4] << 8 | cmd[5];
+    pmsc->blk_len = cmd[7] << 8 | cmd[8];
     
-    if(bot_scsi_check_address(udev, lun, msc_struct.blk_addr, msc_struct.blk_len) != USB_OK)
+    if(bot_scsi_check_address(udev, lun, pmsc->blk_addr, pmsc->blk_len) != USB_OK)
     {
       return USB_FAIL;
     }
     
-    msc_struct.blk_addr *= msc_struct.blk_size[lun];
-    msc_struct.blk_len *= msc_struct.blk_size[lun];
+    pmsc->blk_addr *= pmsc->blk_size[lun];
+    pmsc->blk_len *= pmsc->blk_size[lun];
     
-    if(cbw_struct.dCBWDataTransferLength != msc_struct.blk_len)
+    if(pmsc->cbw_struct.dCBWDataTransferLength != pmsc->blk_len)
     {
       bot_scsi_sense_code(udev, SENSE_KEY_ILLEGAL_REQUEST, INVALID_COMMAND);
       return USB_FAIL;
     }
-    msc_struct.msc_state  = MSC_STATE_MACHINE_DATA_IN;
+    pmsc->msc_state  = MSC_STATE_MACHINE_DATA_IN;
   }
-  msc_struct.data_len = MSC_MAX_DATA_BUF_LEN;
+  pmsc->data_len = MSC_MAX_DATA_BUF_LEN;
   
-  len = MIN(msc_struct.blk_len, MSC_MAX_DATA_BUF_LEN);
-  if( msc_disk_read(lun, msc_struct.blk_addr, msc_struct.data, len) != USB_OK)
+  len = MIN(pmsc->blk_len, MSC_MAX_DATA_BUF_LEN);
+  if( msc_disk_read(lun, pmsc->blk_addr, pmsc->data, len) != USB_OK)
   {
     bot_scsi_sense_code(udev, SENSE_KEY_HARDWARE_ERROR, MEDIUM_NOT_PRESENT);
     return USB_FAIL;
   }
-  usbd_ept_send(pudev, USBD_MSC_BULK_IN_EPT, msc_struct.data, len);
-  msc_struct.blk_addr += len;
-  msc_struct.blk_len -= len;
+  usbd_ept_send(pudev, USBD_MSC_BULK_IN_EPT, pmsc->data, len);
+  pmsc->blk_addr += len;
+  pmsc->blk_len -= len;
   
-  csw_struct.dCSWDataResidue -= len;
-  if(msc_struct.blk_len == 0)
+  pmsc->csw_struct.dCSWDataResidue -= len;
+  if(pmsc->blk_len == 0)
   {
-    msc_struct.msc_state = MSC_STATE_MACHINE_LAST_DATA;
+    pmsc->msc_state = MSC_STATE_MACHINE_LAST_DATA;
   }
   
   return USB_OK;
@@ -630,62 +660,63 @@ usb_sts_type bot_scsi_read10(void *udev, uint8_t lun)
   */
 usb_sts_type bot_scsi_write10(void *udev, uint8_t lun)
 {
-  uint8_t *cmd = cbw_struct.CBWCB;
   usbd_core_type *pudev = (usbd_core_type *)udev;
+  msc_type *pmsc = (msc_type *)pudev->class_handler->pdata;
+  uint8_t *cmd = pmsc->cbw_struct.CBWCB;
   uint32_t len;
   
-  if(msc_struct.msc_state == MSC_STATE_MACHINE_IDLE)
+  if(pmsc->msc_state == MSC_STATE_MACHINE_IDLE)
   {
-    if((cbw_struct.bmCBWFlags & 0x80) == 0x80)
+    if((pmsc->cbw_struct.bmCBWFlags & 0x80) == 0x80)
     {
       bot_scsi_sense_code(udev, SENSE_KEY_ILLEGAL_REQUEST, INVALID_COMMAND);
       return USB_FAIL;
     }
     
-    msc_struct.blk_addr = cmd[2] << 24 | cmd[3] << 16 | cmd[4] << 8 | cmd[5];
-    msc_struct.blk_len = cmd[7] << 8 | cmd[8];
+    pmsc->blk_addr = cmd[2] << 24 | cmd[3] << 16 | cmd[4] << 8 | cmd[5];
+    pmsc->blk_len = cmd[7] << 8 | cmd[8];
     
-    if(bot_scsi_check_address(udev, lun, msc_struct.blk_addr, msc_struct.blk_len) != USB_OK)
+    if(bot_scsi_check_address(udev, lun, pmsc->blk_addr, pmsc->blk_len) != USB_OK)
     {
       return USB_FAIL;
     }
     
-    msc_struct.blk_addr *= msc_struct.blk_size[lun];
-    msc_struct.blk_len *= msc_struct.blk_size[lun];
+    pmsc->blk_addr *= pmsc->blk_size[lun];
+    pmsc->blk_len *= pmsc->blk_size[lun];
     
-    if(cbw_struct.dCBWDataTransferLength != msc_struct.blk_len)
+    if(pmsc->cbw_struct.dCBWDataTransferLength != pmsc->blk_len)
     {
       bot_scsi_sense_code(udev, SENSE_KEY_ILLEGAL_REQUEST, INVALID_COMMAND);
       return USB_FAIL;
     }
     
-    msc_struct.msc_state  = MSC_STATE_MACHINE_DATA_OUT;
-    len = MIN(msc_struct.blk_len, MSC_MAX_DATA_BUF_LEN);
-    usbd_ept_recv(pudev, USBD_MSC_BULK_OUT_EPT, (uint8_t *)msc_struct.data, len);
+    pmsc->msc_state  = MSC_STATE_MACHINE_DATA_OUT;
+    len = MIN(pmsc->blk_len, MSC_MAX_DATA_BUF_LEN);
+    usbd_ept_recv(pudev, USBD_MSC_BULK_OUT_EPT, (uint8_t *)pmsc->data, len);
     
   }
   else
   {
-    len = MIN(msc_struct.blk_len, MSC_MAX_DATA_BUF_LEN);
-    if(msc_disk_write(lun, msc_struct.blk_addr, msc_struct.data, len) != USB_OK)
+    len = MIN(pmsc->blk_len, MSC_MAX_DATA_BUF_LEN);
+    if(msc_disk_write(lun, pmsc->blk_addr, pmsc->data, len) != USB_OK)
     {
       bot_scsi_sense_code(udev, SENSE_KEY_HARDWARE_ERROR, MEDIUM_NOT_PRESENT);
       return USB_FAIL;
     }
     
-    msc_struct.blk_addr += len;
-    msc_struct.blk_len -= len;
+    pmsc->blk_addr += len;
+    pmsc->blk_len -= len;
   
-    csw_struct.dCSWDataResidue -= len;
+    pmsc->csw_struct.dCSWDataResidue -= len;
     
-    if(msc_struct.blk_len == 0)
+    if(pmsc->blk_len == 0)
     {
       bot_scsi_send_csw(udev, CSW_BCSWSTATUS_PASS);
     }
     else
     {
-      len = MIN(msc_struct.blk_len, MSC_MAX_DATA_BUF_LEN);
-      usbd_ept_recv(pudev, USBD_MSC_BULK_OUT_EPT, (uint8_t *)msc_struct.data, len);
+      len = MIN(pmsc->blk_len, MSC_MAX_DATA_BUF_LEN);
+      usbd_ept_recv(pudev, USBD_MSC_BULK_OUT_EPT, (uint8_t *)pmsc->data, len);
     }
   }
   return USB_OK;
@@ -700,13 +731,13 @@ usb_sts_type bot_scsi_write10(void *udev, uint8_t lun)
 void bot_scsi_clear_feature(void *udev, uint8_t ept_num)
 {
   usbd_core_type *pudev = (usbd_core_type *)udev;
-  
-  if(msc_struct.bot_status == MSC_BOT_STATE_ERROR)
+  msc_type *pmsc = (msc_type *)pudev->class_handler->pdata;
+  if(pmsc->bot_status == MSC_BOT_STATE_ERROR)
   {
     usbd_set_stall(pudev, USBD_MSC_BULK_IN_EPT);
-    msc_struct.bot_status = MSC_BOT_STATE_IDLE;
+    pmsc->bot_status = MSC_BOT_STATE_IDLE;
   }
-  else if(((ept_num & 0x80) == 0x80) && (msc_struct.bot_status != MSC_BOT_STATE_RECOVERY))
+  else if(((ept_num & 0x80) == 0x80) && (pmsc->bot_status != MSC_BOT_STATE_RECOVERY))
   {
     bot_scsi_send_csw(udev, CSW_BCSWSTATUS_FAILED);
   }
@@ -720,54 +751,56 @@ void bot_scsi_clear_feature(void *udev, uint8_t ept_num)
 usb_sts_type bot_scsi_cmd_process(void *udev)
 {
   usb_sts_type status = USB_FAIL;
-  switch(cbw_struct.CBWCB[0])
+  usbd_core_type *pudev = (usbd_core_type *)udev;
+  msc_type *pmsc = (msc_type *)pudev->class_handler->pdata;
+  switch(pmsc->cbw_struct.CBWCB[0])
   {
     case MSC_CMD_INQUIRY:
-      status = bot_scsi_inquiry(udev, cbw_struct.bCBWLUN);
+      status = bot_scsi_inquiry(udev, pmsc->cbw_struct.bCBWLUN);
       break;
     
     case MSC_CMD_START_STOP:
-      status = bot_scsi_start_stop(udev, cbw_struct.bCBWLUN);
+      status = bot_scsi_start_stop(udev, pmsc->cbw_struct.bCBWLUN);
       break;  
     
     case MSC_CMD_MODE_SENSE6:
-      status = bot_scsi_mode_sense6(udev, cbw_struct.bCBWLUN);
+      status = bot_scsi_mode_sense6(udev, pmsc->cbw_struct.bCBWLUN);
       break;
     
     case MSC_CMD_MODE_SENSE10:
-      status = bot_scsi_mode_sense10(udev, cbw_struct.bCBWLUN);
+      status = bot_scsi_mode_sense10(udev, pmsc->cbw_struct.bCBWLUN);
       break;
     
     case MSC_CMD_ALLOW_MEDIUM_REMOVAL:
-      status = bot_scsi_allow_medium_removal(udev, cbw_struct.bCBWLUN);
+      status = bot_scsi_allow_medium_removal(udev, pmsc->cbw_struct.bCBWLUN);
       break;
     
     case MSC_CMD_READ_10:
-      status = bot_scsi_read10(udev, cbw_struct.bCBWLUN);
+      status = bot_scsi_read10(udev, pmsc->cbw_struct.bCBWLUN);
       break;
     
     case MSC_CMD_READ_CAPACITY:
-      status = bot_scsi_capacity(udev, cbw_struct.bCBWLUN);
+      status = bot_scsi_capacity(udev, pmsc->cbw_struct.bCBWLUN);
       break;
     
     case MSC_CMD_REQUEST_SENSE:
-      status = bot_scsi_request_sense(udev, cbw_struct.bCBWLUN);
+      status = bot_scsi_request_sense(udev, pmsc->cbw_struct.bCBWLUN);
       break;
     
     case MSC_CMD_TEST_UNIT:
-      status = bot_scsi_test_unit(udev, cbw_struct.bCBWLUN);
+      status = bot_scsi_test_unit(udev, pmsc->cbw_struct.bCBWLUN);
       break;
     
     case MSC_CMD_VERIFY:
-      status = bot_scsi_verify(udev, cbw_struct.bCBWLUN);
+      status = bot_scsi_verify(udev, pmsc->cbw_struct.bCBWLUN);
       break;
     
     case MSC_CMD_WRITE_10:
-      status = bot_scsi_write10(udev, cbw_struct.bCBWLUN);
+      status = bot_scsi_write10(udev, pmsc->cbw_struct.bCBWLUN);
       break;
     
     case MSC_CMD_READ_FORMAT_CAPACITY:
-      status = bot_scsi_format_capacity(udev, cbw_struct.bCBWLUN);
+      status = bot_scsi_format_capacity(udev, pmsc->cbw_struct.bCBWLUN);
       break;
     
     default:

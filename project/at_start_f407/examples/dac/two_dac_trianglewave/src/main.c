@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -37,7 +37,7 @@
   */
   
 gpio_init_type gpio_init_struct = {0};
-
+crm_clocks_freq_type crm_clocks_freq_struct = {0};
 /**
   * @brief  main function.
   * @param  none
@@ -69,8 +69,11 @@ int main(void)
   gpio_init_struct.gpio_drive_strength = GPIO_DRIVE_STRENGTH_STRONGER;
   gpio_init(GPIOA, &gpio_init_struct);
   
-  /* tmr2 Configuration */
-  tmr_base_init(TMR2, 0xf, 0xf);
+  /* get system clock */
+  crm_clocks_freq_get(&crm_clocks_freq_struct);
+  
+  /* (systemclock/(systemclock/1000000))/100 = 10KHz */
+  tmr_base_init(TMR2, 99, (crm_clocks_freq_struct.sclk_freq/1000000 - 1));
   tmr_cnt_dir_set(TMR2, TMR_COUNT_UP);
   
   /* primary tmr2 output selection */

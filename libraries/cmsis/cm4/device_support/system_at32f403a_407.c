@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     system_at32f403a_407.c
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    contains all the functions for cmsis cortex-m4 system source file
   **************************************************************************
   *                       Copyright notice & Disclaimer

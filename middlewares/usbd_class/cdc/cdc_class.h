@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     cdc_class.h
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    usb cdc class file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -57,15 +57,9 @@ extern "C" {
 /**
   * @brief usb cdc in and out max packet size define
   */
-#define USBD_IN_MAXPACKET_SIZE           0x40
-#define USBD_OUT_MAXPACKET_SIZE          0x40
-#define USBD_CMD_MAXPACKET_SIZE          0x08
-
-/**
-  * @brief usb cdc class request code define
-  */
-#define SET_LINE_CODING                  0x20
-#define GET_LINE_CODING                  0x21
+#define USBD_CDC_IN_MAXPACKET_SIZE        0x40
+#define USBD_CDC_OUT_MAXPACKET_SIZE       0x40
+#define USBD_CDC_CMD_MAXPACKET_SIZE       0x08
 
 /**
   * @}
@@ -76,15 +70,19 @@ extern "C" {
   */
 
 /**
-  * @brief usb cdc class set line coding struct
+  * @brief usb cdc class struct
   */
-typedef struct 
+typedef struct
 {
-  uint32_t bitrate;                      /* line coding baud rate */
-  uint8_t format;                        /* line coding foramt */
-  uint8_t parity;                        /* line coding parity */
-  uint8_t data;                          /* line coding data bit */
-}linecoding_type;
+  uint32_t alt_setting;
+  uint8_t g_rx_buff[USBD_CDC_OUT_MAXPACKET_SIZE];
+  uint8_t g_cmd[USBD_CDC_CMD_MAXPACKET_SIZE];
+  uint8_t g_req;
+  uint16_t g_len, g_rxlen;
+  __IO uint8_t g_tx_completed, g_rx_completed;
+  linecoding_type linecoding;
+}cdc_struct_type;
+
 
 /**
   * @}
@@ -93,7 +91,7 @@ typedef struct
 /** @defgroup USB_cdc_class_exported_functions
   * @{
   */
-extern usbd_class_handler class_handler;
+extern usbd_class_handler cdc_class_handler;
 uint16_t usb_vcp_get_rxdata(void *udev, uint8_t *recv_data);
 error_status usb_vcp_send_data(void *udev, uint8_t *send_data, uint16_t len);
 

@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     msc_bot_scsi.h
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    usb mass storage bulk-only transport and scsi command header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -204,6 +204,12 @@ typedef struct
   
   uint32_t data_len;
   uint8_t data[MSC_MAX_DATA_BUF_LEN];
+  
+  uint32_t alt_setting;
+  
+  cbw_type cbw_struct;
+  csw_type csw_struct;
+  
 }msc_type;
 
 void bot_scsi_init(void *udev);

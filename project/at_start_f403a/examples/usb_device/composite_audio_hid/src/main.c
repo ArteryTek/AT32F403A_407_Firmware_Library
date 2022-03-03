@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -43,7 +43,7 @@
 /* usb global struct define */
 usbd_core_type usb_core_dev;
 
-uint8_t report_buf[USBD_IN_MAXPACKET_SIZE];
+uint8_t report_buf[USBD_AUHID_IN_MAXPACKET_SIZE];
 
 /**
   * @brief  usb 48M clock select
@@ -154,7 +154,7 @@ int main(void)
     {
       report_buf[0] = HID_REPORT_ID_5;
       report_buf[1] = (~report_buf[1]) & 0x1;
-      class_send_report(&usb_core_dev, report_buf, USBD_IN_MAXPACKET_SIZE);
+      audio_hid_class_send_report(&usb_core_dev, report_buf, USBD_AUHID_IN_MAXPACKET_SIZE);
     }
     delay_ms(100);
   }

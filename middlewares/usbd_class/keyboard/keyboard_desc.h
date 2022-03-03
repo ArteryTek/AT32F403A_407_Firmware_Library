@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     keyboard_desc.h
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    usb keyboard descriptor header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -50,41 +50,34 @@ extern "C" {
 /**
   * @brief usb bcd number define
   */
-#define HID_BCD_NUM                      0x0110
-
-/**
-  * @brief usb hid class descriptor define
-  */
-#define HID_CLASS_DESC_HID               0x21
-#define HID_CLASS_DESC_REPORT            0x22
-#define HID_CLASS_DESC_PHYSICAL          0x23
+#define KEYBOARD_BCD_NUM                      0x0110
 
 /**
   * @brief usb vendor id and product id define
   */
-#define USBD_VENDOR_ID                   0x2E3C
-#define USBD_PRODUCT_ID                  0x6040  
+#define USBD_KEYBOARD_VENDOR_ID          0x2E3C
+#define USBD_KEYBOARD_PRODUCT_ID         0x6040  
 
 /**
   * @brief usb descriptor size define
   */
-#define USBD_CONFIG_DESC_SIZE            34
-#define USBD_HID_SIZ_REPORT_DESC         63
-#define USBD_SIZ_STRING_LANGID           4
-#define USBD_SIZ_STRING_SERIAL           0x1A
+#define USBD_KEYBOARD_CONFIG_DESC_SIZE    34
+#define USBD_KEYBOARD_SIZ_REPORT_DESC     63
+#define USBD_KEYBOARD_SIZ_STRING_LANGID   4
+#define USBD_KEYBOARD_SIZ_STRING_SERIAL   0x1A
 
 /**
   * @brief usb string define(vendor, product configuration, interface)
   */
-#define USBD_DESC_MANUFACTURER_STRING    "Artery"
-#define USBD_DESC_PRODUCT_STRING         "Keyboard"
-#define USBD_DESC_CONFIGURATION_STRING   "Keyboard Config"
-#define USBD_DESC_INTERFACE_STRING       "Keyboard Interface"
+#define USBD_KEYBOARD_DESC_MANUFACTURER_STRING    "Artery"
+#define USBD_KEYBOARD_DESC_PRODUCT_STRING         "Keyboard"
+#define USBD_KEYBOARD_DESC_CONFIGURATION_STRING   "Keyboard Config"
+#define USBD_KEYBOARD_DESC_INTERFACE_STRING       "Keyboard Interface"
 
 /**
   * @brief usb hid endpoint interval define 
   */
-#define HID_BINTERVAL_TIME                0x0A
+#define KEYBOARD_BINTERVAL_TIME                0x0A
 
 /**
   * @brief usb mcu id address deine
@@ -96,11 +89,8 @@ extern "C" {
 /**
   * @}
   */
-
-extern uint8_t g_usbd_descriptor[USB_DEVICE_DESC_LEN];
-extern uint8_t g_usbd_configuration[USBD_CONFIG_DESC_SIZE];
-extern uint8_t g_usbd_hid_report[USBD_HID_SIZ_REPORT_DESC];
-extern uint8_t g_hid_usb_desc[9];
+extern uint8_t g_usbd_keyboard_report[USBD_KEYBOARD_SIZ_REPORT_DESC];
+extern uint8_t g_keyboard_usb_desc[9];
 extern usbd_desc_handler keyboard_desc_handler;
 
 /**
@@ -110,10 +100,10 @@ extern usbd_desc_handler keyboard_desc_handler;
 /**
   * @}
   */
-
 #ifdef __cplusplus
 }
 #endif
 
 #endif
+
 

@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -43,11 +43,16 @@
   */
 void tmr2_config(void)
 {
+  crm_clocks_freq_type crm_clocks_freq_struct = {0};
+  
   /* enable tmr 2 clock */
   crm_periph_clock_enable(CRM_TMR2_PERIPH_CLOCK, TRUE);
 
-  /* config the period value and divider value */  
-  tmr_base_init(TMR2, 65535, 5860);
+  /* get system clock */
+  crm_clocks_freq_get(&crm_clocks_freq_struct);
+  
+  /* (systemclock/(systemclock/10000))/10000 = 1Hz(1s) */
+  tmr_base_init(TMR2, 9999, (crm_clocks_freq_struct.sclk_freq/10000 - 1));
   
   /* config the counting direction */  
   tmr_cnt_dir_set(TMR2, TMR_COUNT_UP);

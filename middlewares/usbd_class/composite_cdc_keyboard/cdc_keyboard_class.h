@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     cdc_keyboard_class.h
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    usb cdc and keyboard class file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -50,35 +50,19 @@ extern "C" {
 /**
   * @brief usb use endpoint define
   */
-#define USBD_CDC_INT_EPT                 0x82
-#define USBD_CDC_BULK_IN_EPT             0x81
-#define USBD_CDC_BULK_OUT_EPT            0x01
-#define USBD_HID_IN_EPT                  0x83
+#define USBD_VCPKYBRD_CDC_INT_EPT                 0x82
+#define USBD_VCPKYBRD_CDC_BULK_IN_EPT             0x81
+#define USBD_VCPKYBRD_CDC_BULK_OUT_EPT            0x01
+#define USBD_VCPKYBRD_HID_IN_EPT                  0x83
 
 /**
   * @brief usb in and out max packet size define
   */
-#define USBD_IN_MAXPACKET_SIZE           0x40
-#define USBD_OUT_MAXPACKET_SIZE          0x40
-#define USBD_CMD_MAXPACKET_SIZE          0x08
+#define USBD_VCPKYBRD_IN_MAXPACKET_SIZE           0x40
+#define USBD_VCPKYBRD_OUT_MAXPACKET_SIZE          0x40
+#define USBD_VCPKYBRD_CMD_MAXPACKET_SIZE          0x08
 
-/**
-  * @brief usb cdc class request code define
-  */
-#define SET_LINE_CODING                  0x20
-#define GET_LINE_CODING                  0x21
 
-/**
-  * @brief usb hid class request code define
-  */
-#define HID_REQ_SET_PROTOCOL             0x0B
-#define HID_REQ_GET_PROTOCOL             0x03
-#define HID_REQ_SET_IDLE                 0x0A
-#define HID_REQ_GET_IDLE                 0x02
-#define HID_REQ_SET_REPORT               0x09
-#define HID_REQ_GET_REPORT               0x01
-#define HID_DESCRIPTOR_TYPE              0x21
-#define HID_REPORT_DESC                  0x22
 /**
   * @}
   */
@@ -87,16 +71,24 @@ extern "C" {
   * @{
   */
 
-/**
-  * @brief usb cdc class set line coding struct
-  */
-typedef struct 
+typedef struct
 {
-  uint32_t bitrate;                      /* line coding baud rate */
-  uint8_t format;                        /* line coding foramt */
-  uint8_t parity;                        /* line coding parity */
-  uint8_t data;                          /* line coding data bit */
-}linecoding_type;
+  uint32_t alt_setting;
+  uint32_t hid_protocol;
+  uint32_t hid_set_idle;
+
+  uint8_t hid_set_report[64];
+  uint8_t g_rx_buff[USBD_VCPKYBRD_OUT_MAXPACKET_SIZE];
+  uint8_t g_cmd[USBD_VCPKYBRD_CMD_MAXPACKET_SIZE];
+  uint8_t g_req;
+  uint8_t hid_state;
+  uint16_t g_len, g_rxlen;
+  __IO uint8_t g_tx_completed; 
+  __IO uint8_t g_rx_completed;
+  __IO uint8_t g_keyboard_tx_completed;
+  
+  linecoding_type linecoding;
+}vcp_keyboard_type;
 
 /**
   * @}
@@ -106,11 +98,10 @@ typedef struct
   * @{
   */
 extern usbd_class_handler cdc_keyboard_class_handler;
-extern __IO uint8_t g_keyboard_tx_completed;
-uint16_t usb_vcp_get_rxdata(void *udev, uint8_t *recv_data);
-error_status usb_vcp_send_data(void *udev, uint8_t *send_data, uint16_t len);
-usb_sts_type class_send_report(void *udev, uint8_t *report, uint16_t len);
-void usb_hid_keyboard_send_char(void *udev, uint8_t ascii_code);
+uint16_t usb_vcpkybrd_vcp_get_rxdata(void *udev, uint8_t *recv_data);
+error_status usb_vcpkybrd_vcp_send_data(void *udev, uint8_t *send_data, uint16_t len);
+usb_sts_type usb_vcpkybrd_class_send_report(void *udev, uint8_t *report, uint16_t len);
+void usb_vcpkybrd_keyboard_send_char(void *udev, uint8_t ascii_code);
 
 /**
   * @}

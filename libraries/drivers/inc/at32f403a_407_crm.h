@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_crm.h
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    at32f403a_407 crm header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -57,6 +57,7 @@ extern "C" {
 #define CRM_PLL_STABLE_FLAG              MAKE_VALUE(0x00, 25) /*!< phase locking loop stable flag */
 #define CRM_LEXT_STABLE_FLAG             MAKE_VALUE(0x20, 1)  /*!< low speed external crystal stable flag */
 #define CRM_LICK_STABLE_FLAG             MAKE_VALUE(0x24, 1)  /*!< low speed internal clock stable flag */
+#define CRM_ALL_RESET_FLAG               MAKE_VALUE(0x24, 24) /*!< all reset flag */
 #define CRM_NRST_RESET_FLAG              MAKE_VALUE(0x24, 26) /*!< nrst pin reset flag */
 #define CRM_POR_RESET_FLAG               MAKE_VALUE(0x24, 27) /*!< power on reset flag */
 #define CRM_SW_RESET_FLAG                MAKE_VALUE(0x24, 28) /*!< software reset flag */

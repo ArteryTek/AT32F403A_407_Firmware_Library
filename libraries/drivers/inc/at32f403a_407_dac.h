@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_dac.h
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    at32f403a_407 dac header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -344,7 +344,7 @@ void dac_reset(void);
 void dac_enable(dac_select_type dac_select, confirm_state new_state);
 void dac_output_buffer_enable(dac_select_type dac_select, confirm_state new_state);
 void dac_trigger_enable(dac_select_type dac_select, confirm_state new_state);
-void dac_trigger_select(dac_select_type dac_select, dac_trigger_type dac_trigger_select);
+void dac_trigger_select(dac_select_type dac_select, dac_trigger_type dac_trigger_source);
 void dac_software_trigger_generate(dac_select_type dac_select);
 void dac_dual_software_trigger_generate(void);
 void dac_wave_generate(dac_select_type dac_select, dac_wave_type dac_wave);

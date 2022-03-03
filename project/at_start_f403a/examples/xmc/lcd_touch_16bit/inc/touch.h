@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     touch.h
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    this file contains all the functions prototypes for the
   *           touch firmware driver.
   **************************************************************************
@@ -68,10 +68,10 @@ typedef struct
 #define TDIN_HIGH                        gpio_bits_set(GPIOB,GPIO_PINS_5)
 #define TDIN_LOW                         gpio_bits_reset(GPIOB,GPIO_PINS_5)
 
-#define PEN_HIGH                         gpio_input_data_bit_read(GPIOB,GPIO_PINS_11)
+#define PEN_HIGH                         gpio_input_data_bit_read(GPIOD,GPIO_PINS_5)
 
-#define TCS_HIGH                         gpio_bits_set(GPIOB,GPIO_PINS_6)
-#define TCS_LOW                          gpio_bits_reset(GPIOB,GPIO_PINS_6)
+#define TCS_HIGH                         gpio_bits_set(GPIOB,GPIO_PINS_8)
+#define TCS_LOW                          gpio_bits_reset(GPIOB,GPIO_PINS_8)
 
 extern touch_dev_type touch_dev_struct;
 extern touch_dev_type *touch_struct;

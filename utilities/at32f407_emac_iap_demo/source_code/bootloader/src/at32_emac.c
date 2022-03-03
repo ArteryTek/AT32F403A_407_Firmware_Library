@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32_emac.c
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    emac config program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -85,18 +85,23 @@ void emac_pins_configuration(void)
   crm_periph_clock_enable(CRM_GPIOE_PERIPH_CLOCK, TRUE);
   crm_periph_clock_enable(CRM_IOMUX_PERIPH_CLOCK, TRUE);
   
+  gpio_default_para_init(&gpio_init_struct);
+  
   #if RX_REMAP
   gpio_pin_remap_config(EMAC_MUX, TRUE);
   #endif
-  /* pa2 -> mdio */
+  
   gpio_init_struct.gpio_drive_strength = GPIO_DRIVE_STRENGTH_STRONGER;
-  gpio_init_struct.gpio_mode = GPIO_MODE_MUX;
   gpio_init_struct.gpio_out_type = GPIO_OUTPUT_PUSH_PULL;
-  gpio_init_struct.gpio_pins = GPIO_PINS_2;
   gpio_init_struct.gpio_pull = GPIO_PULL_NONE;
+  
+  /* pa2 -> mdio */
+  gpio_init_struct.gpio_mode = GPIO_MODE_MUX;
+  gpio_init_struct.gpio_pins = GPIO_PINS_2;
   gpio_init(GPIOA, &gpio_init_struct);
   
   /* pc1 -> mdc */
+  gpio_init_struct.gpio_mode = GPIO_MODE_MUX;
   gpio_init_struct.gpio_pins = GPIO_PINS_1;
   gpio_init(GPIOC, &gpio_init_struct);
   
@@ -109,10 +114,16 @@ void emac_pins_configuration(void)
     pb11 -> tx_en
     pc3  -> tx_clk
   */
+  gpio_init_struct.gpio_mode = GPIO_MODE_MUX;
   gpio_init_struct.gpio_pins = GPIO_PINS_8 | GPIO_PINS_11 | GPIO_PINS_12 | GPIO_PINS_13;
   gpio_init(GPIOB, &gpio_init_struct);
   
-  gpio_init_struct.gpio_pins = GPIO_PINS_2 | GPIO_PINS_3;
+  gpio_init_struct.gpio_mode = GPIO_MODE_MUX;
+  gpio_init_struct.gpio_pins = GPIO_PINS_2;
+  gpio_init(GPIOC, &gpio_init_struct);
+  
+  gpio_init_struct.gpio_mode = GPIO_MODE_INPUT;
+  gpio_init_struct.gpio_pins = GPIO_PINS_3;
   gpio_init(GPIOC, &gpio_init_struct);
   #if RX_REMAP
   /*
@@ -122,6 +133,7 @@ void emac_pins_configuration(void)
     pd11 -> rx_d2
     pd12 -> rx_d3
   */
+  gpio_init_struct.gpio_mode = GPIO_MODE_INPUT;
   gpio_init_struct.gpio_pins = GPIO_PINS_8 | GPIO_PINS_9 | GPIO_PINS_10 | GPIO_PINS_11 | GPIO_PINS_12;
   gpio_init(GPIOD, &gpio_init_struct); 
   #else
@@ -132,12 +144,15 @@ void emac_pins_configuration(void)
     pb0  -> rx_d2
     pb1  -> rx_d3
   */
+  gpio_init_struct.gpio_mode = GPIO_MODE_INPUT;
   gpio_init_struct.gpio_pins = GPIO_PINS_7;
   gpio_init(GPIOA, &gpio_init_struct);
   
+  gpio_init_struct.gpio_mode = GPIO_MODE_INPUT;
   gpio_init_struct.gpio_pins = GPIO_PINS_4 | GPIO_PINS_5;
   gpio_init(GPIOC, &gpio_init_struct);
   
+  gpio_init_struct.gpio_mode = GPIO_MODE_INPUT;
   gpio_init_struct.gpio_pins = GPIO_PINS_0 | GPIO_PINS_1;
   gpio_init(GPIOB, &gpio_init_struct);
   #endif  /* RX_REMAP */
@@ -147,9 +162,11 @@ void emac_pins_configuration(void)
     pa3  -> col
     pb10 -> rx_er
   */
+  gpio_init_struct.gpio_mode = GPIO_MODE_INPUT;
   gpio_init_struct.gpio_pins = GPIO_PINS_0 | GPIO_PINS_1 | GPIO_PINS_3;
   gpio_init(GPIOA, &gpio_init_struct);
   
+  gpio_init_struct.gpio_mode = GPIO_MODE_INPUT;
   gpio_init_struct.gpio_pins = GPIO_PINS_10;
   gpio_init(GPIOB, &gpio_init_struct);
   #endif  /* MII_MODE */
@@ -160,6 +177,7 @@ void emac_pins_configuration(void)
     pb13 -> tx_d1
     pb11 -> tx_en
   */
+  gpio_init_struct.gpio_mode = GPIO_MODE_MUX;
   gpio_init_struct.gpio_pins = GPIO_PINS_11 | GPIO_PINS_12 | GPIO_PINS_13;
   gpio_init(GPIOB, &gpio_init_struct);
   #if RX_REMAP
@@ -168,8 +186,8 @@ void emac_pins_configuration(void)
     pd9  -> rx_d0
     pd10 -> rx_d1    
   */
-  gpio_init_struct.gpio_pins = GPIO_PINS_8 | GPIO_PINS_9 | GPIO_PINS_10;
   gpio_init_struct.gpio_mode = GPIO_MODE_INPUT;
+  gpio_init_struct.gpio_pins = GPIO_PINS_8 | GPIO_PINS_9 | GPIO_PINS_10;
   gpio_init(GPIOD, &gpio_init_struct); 
   
   #else
@@ -179,9 +197,11 @@ void emac_pins_configuration(void)
     pc5  -> rx_d1
     pa1  -> ref_clk
   */
+  gpio_init_struct.gpio_mode = GPIO_MODE_INPUT;
   gpio_init_struct.gpio_pins = GPIO_PINS_1 | GPIO_PINS_7;
   gpio_init(GPIOA, &gpio_init_struct);
   
+  gpio_init_struct.gpio_mode = GPIO_MODE_INPUT;
   gpio_init_struct.gpio_pins = GPIO_PINS_4 | GPIO_PINS_5;
   gpio_init(GPIOC, &gpio_init_struct);
   #endif  /* RX_REMAP */
@@ -189,12 +209,13 @@ void emac_pins_configuration(void)
   /*
     pa1  -> ref_clk
   */
+  gpio_init_struct.gpio_mode = GPIO_MODE_INPUT;
   gpio_init_struct.gpio_pins = GPIO_PINS_1;
   gpio_init(GPIOA, &gpio_init_struct);
   
   #if !CRYSTAL_ON_PHY
-  gpio_init_struct.gpio_pins = GPIO_PINS_8;
   gpio_init_struct.gpio_mode = GPIO_MODE_MUX;
+  gpio_init_struct.gpio_pins = GPIO_PINS_8;
   gpio_init(GPIOA, &gpio_init_struct);
   #endif	
 }
@@ -208,7 +229,7 @@ error_status emac_layer2_configuration(void)
 {
   emac_control_config_type mac_control_para;
   emac_dma_config_type dma_control_para;
-  #ifdef MII
+  #ifdef MII_MODE
   gpio_pin_remap_config(MII_RMII_SEL_GMUX, FALSE);
   #elif defined RMII_MODE
   gpio_pin_remap_config(MII_RMII_SEL_GMUX, TRUE);
@@ -263,6 +284,8 @@ error_status emac_layer2_configuration(void)
 void static reset_phy(void)
 {
   gpio_init_type gpio_init_struct = {0};
+  
+  gpio_default_para_init(&gpio_init_struct);
   
   gpio_init_struct.gpio_drive_strength = GPIO_DRIVE_STRENGTH_STRONGER;
   gpio_init_struct.gpio_mode = GPIO_MODE_OUTPUT;

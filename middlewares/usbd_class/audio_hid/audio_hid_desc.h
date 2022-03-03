@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     audio_desc.h
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    usb audio descriptor header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -25,8 +25,8 @@
   */
   
 /* define to prevent recursive inclusion -------------------------------------*/
-#ifndef __AUDIO_DESC_H
-#define __AUDIO_DESC_H
+#ifndef __AUDIO_HID_DESC_H
+#define __AUDIO_HID_DESC_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -47,20 +47,19 @@ extern "C" {
 /** @defgroup USB_audio_hid_desc_definition 
   * @{
   */
+  
+#define AUHID_BCD_NUM                    0x0100
 
-#define BCD_NUM                          0x0100
+#define USBD_AUHID_VENDOR_ID             0x2E3C
+#define USBD_AUHID_PRODUCT_ID            0x5555
 
-#define USBD_VENDOR_ID                   0x2E3C
-#define USBD_PRODUCT_ID                  0x5730
+#define USBD_AUHID_SIZ_STRING_LANGID     4
+#define USBD_AUHID_SIZ_STRING_SERIAL     0x1A
 
-#define USBD_SIZ_STRING_LANGID           4
-#define USBD_SIZ_STRING_SERIAL           0x1A
-
-#define USBD_DESC_MANUFACTURER_STRING    "Artery"
-#define USBD_DESC_PRODUCT_STRING         "AT32 Audio"
-#define USBD_DESC_CONFIGURATION_STRING   "Audio Config"
-#define USBD_DESC_INTERFACE_STRING       "Audio Interface"
-
+#define USBD_AUHID_DESC_MANUFACTURER_STRING    "Artery"
+#define USBD_AUHID_DESC_PRODUCT_STRING         "AT32 Audio"
+#define USBD_AUHID_DESC_CONFIGURATION_STRING   "Audio Config"
+#define USBD_AUHID_DESC_INTERFACE_STRING       "Audio Interface"
 /**
   * @brief audio interface subclass codes
   */
@@ -203,12 +202,12 @@ extern "C" {
 #define AUDIO_SPK_CHR                    AUDIO_SPK_CHANEL_NUM
 #define AUDIO_SPK_BITW                   (AUDIO_SPK_DEFAULT_BITW)
 
-#define HID_BINTERVAL_TIME                0x01
+#define AUHID_HID_BINTERVAL_TIME         0x01
 
 /**
   * @brief usb bcd number define
   */
-#define HID_BCD_NUM                      0x0110
+#define AUHID_HID_BCD_NUM                      0x0110
 
 /**
   * @brief usb hid class descriptor define
@@ -227,24 +226,24 @@ extern "C" {
 #define HID_REPORT_ID_5                   0x05
 #define HID_REPORT_ID_6                   0xF0
 
-#define USBD_HID_DESC_SIZE                32
-#define USBD_CONFIG_DESC_SIZE             ( 0x12 + AUDIO_INTERFACE_LEN + \
-                                          + (0x31 + AUDIO_SPK_FREQ_SIZE * 3) \
-                                          + (0x31 + AUDIO_MIC_FREQ_SIZE * 3) \
-                                          + (9 * AUDIO_SUPPORT_FEEDBACK) \
-                                          + USBD_HID_DESC_SIZE)
-#define USBD_HID_SIZ_REPORT_DESC         126
+#define MCU_ID1                           (0x1FFFF7E8)
+#define MCU_ID2                           (0x1FFFF7EC)
+#define MCU_ID3                           (0x1FFFF7F0)
+
 
 #define SAMPLE_FREQ(frq)                 (uint8_t)(frq), (uint8_t)((frq >> 8)), (uint8_t)((frq >> 16))
 
-#define         MCU_ID1                   (0x1FFFF7E8)
-#define         MCU_ID2                   (0x1FFFF7EC)
-#define         MCU_ID3                   (0x1FFFF7F0)
+#define USBD_AUHID_HID_SIZ_REPORT_DESC         126
+#define USBD_AUHID_HID_DESC_SIZE                32
+#define USBD_AUHID_CONFIG_DESC_SIZE             ( 0x12 + AUDIO_INTERFACE_LEN + \
+                                          + (0x31 + AUDIO_SPK_FREQ_SIZE * 3) \
+                                          + (0x31 + AUDIO_MIC_FREQ_SIZE * 3) \
+                                          + (9 * AUDIO_SUPPORT_FEEDBACK) \
+                                          + USBD_AUHID_HID_DESC_SIZE)
 
-extern uint8_t g_usbd_hid_report[USBD_HID_SIZ_REPORT_DESC];
-extern uint8_t g_hid_usb_desc[9];
-extern uint8_t g_usbd_descriptor[USB_DEVICE_DESC_LEN];
-extern uint8_t g_usbd_configuration[USBD_CONFIG_DESC_SIZE];
+extern uint8_t g_usbd_audio_hid_report[USBD_AUHID_HID_SIZ_REPORT_DESC];
+extern uint8_t g_audio_hid_usb_desc[9];
+
 extern usbd_desc_handler audio_hid_desc_handler;
 
 /**

@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     usbd_core.h
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    usb device core header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -100,6 +100,7 @@ typedef struct
   usb_sts_type (*out_handler)(void *udev, uint8_t ept_num);          /*!< usb class out transfer complete handler */
   usb_sts_type (*sof_handler)(void *udev);                           /*!< usb class sof handler */
   usb_sts_type (*event_handler)(void *udev, usbd_event_type event);  /*!< usb class event handler */
+  void         *pdata;                                               /*!< usb class data pointer */
 }usbd_class_handler;
 
 /**

@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     cdc_desc.h
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    usb cdc descriptor header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -46,51 +46,36 @@ extern "C" {
 /** @defgroup USB_cdc_desc_definition 
   * @{
   */
-
 /**
   * @brief usb bcd number define
   */
-#define BCD_NUM                          0x0110
+#define CDC_BCD_NUM                      0x0110
 
 /**
   * @brief usb vendor id and product id define
   */
-#define USBD_VENDOR_ID                   0x2E3C
-#define USBD_PRODUCT_ID                  0x5740 
+#define USBD_CDC_VENDOR_ID               0x2E3C
+#define USBD_CDC_PRODUCT_ID              0x5740 
 
 /**
   * @brief usb descriptor size define
   */
-#define USBD_CONFIG_DESC_SIZE            67
-#define USBD_SIZ_STRING_LANGID           4
-#define USBD_SIZ_STRING_SERIAL           0x1A
+#define USBD_CDC_CONFIG_DESC_SIZE        67
+#define USBD_CDC_SIZ_STRING_LANGID       4
+#define USBD_CDC_SIZ_STRING_SERIAL       0x1A
 
 /**
   * @brief usb string define(vendor, product configuration, interface)
   */
-#define USBD_DESC_MANUFACTURER_STRING    "Artery"
-#define USBD_DESC_PRODUCT_STRING         "AT32 Virtual Com Port"
-#define USBD_DESC_CONFIGURATION_STRING   "Virtual ComPort Config"
-#define USBD_DESC_INTERFACE_STRING       "Virtual ComPort Interface"
+#define USBD_CDC_DESC_MANUFACTURER_STRING    "Artery"
+#define USBD_CDC_DESC_PRODUCT_STRING         "AT32 Virtual Com Port  "
+#define USBD_CDC_DESC_CONFIGURATION_STRING   "Virtual ComPort Config"
+#define USBD_CDC_DESC_INTERFACE_STRING       "Virtual ComPort Interface"
 
 /**
   * @brief usb endpoint interval define 
   */
-#define HID_BINTERVAL_TIME                0xFF
-
-/**
-  * @brief usb hid class descriptor define
-  */
-#define USBD_CDC_CS_INTERFACE             0x24
-#define USBD_CDC_CS_ENDPOINT              0x25
-
-/**
-  * @brief usb hid class sub-type define
-  */
-#define USBD_CDC_SUBTYPE_HEADER           0x00
-#define USBD_CDC_SUBTYPE_CMF              0x01
-#define USBD_CDC_SUBTYPE_ACM              0x02
-#define USBD_CDC_SUBTYPE_UFD              0x06
+#define CDC_HID_BINTERVAL_TIME                0xFF
 
 /**
   * @brief usb mcu id address deine
@@ -98,26 +83,22 @@ extern "C" {
 #define         MCU_ID1                   (0x1FFFF7E8)
 #define         MCU_ID2                   (0x1FFFF7EC)
 #define         MCU_ID3                   (0x1FFFF7F0)
+/**
+  * @}
+  */
+  
+extern usbd_desc_handler cdc_desc_handler;
+
 
 /**
   * @}
   */
   
-extern uint8_t g_usbd_descriptor[USB_DEVICE_DESC_LEN];
-extern uint8_t g_usbd_configuration[USBD_CONFIG_DESC_SIZE];
-extern usbd_desc_handler desc_handler;
-
+/**
+  * @}
+  */
 #ifdef __cplusplus
 }
 #endif
 
-
 #endif
-
-/**
-  * @}
-  */
-  
-/**
-  * @}
-  */

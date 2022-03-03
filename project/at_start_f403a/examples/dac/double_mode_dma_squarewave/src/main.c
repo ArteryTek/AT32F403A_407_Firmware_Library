@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -83,8 +83,8 @@ int main(void)
   dac_wave_generate(DAC1_SELECT, DAC_WAVE_GENERATE_NONE);
   dac_wave_generate(DAC2_SELECT, DAC_WAVE_GENERATE_NONE);
 
-  dac_output_buffer_enable(DAC1_SELECT, FALSE);
-  dac_output_buffer_enable(DAC2_SELECT, FALSE);
+  dac_output_buffer_enable(DAC1_SELECT, TRUE);
+  dac_output_buffer_enable(DAC2_SELECT, TRUE);
 
   dac_dma_enable(DAC1_SELECT, TRUE);
   dac_dma_enable(DAC2_SELECT, TRUE);

@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_tmr.h
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    at32f403a_407 tmr header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -174,8 +174,8 @@ typedef enum
   TMR_OUTPUT_CONTROL_HIGH                = 0x01, /*!< tmr output control mode high */
   TMR_OUTPUT_CONTROL_LOW                 = 0x02, /*!< tmr output control mode low */
   TMR_OUTPUT_CONTROL_SWITCH              = 0x03, /*!< tmr output control mode switch */
-  TMR_OUTPUT_CONTROL_FORCE_HIGH          = 0x04, /*!< tmr output control mode force high */
-  TMR_OUTPUT_CONTROL_FORCE_LOW           = 0x05, /*!< tmr output control mode force low */
+  TMR_OUTPUT_CONTROL_FORCE_LOW           = 0x04, /*!< tmr output control mode force low */
+  TMR_OUTPUT_CONTROL_FORCE_HIGH          = 0x05, /*!< tmr output control mode force high */
   TMR_OUTPUT_CONTROL_PWM_MODE_A          = 0x06, /*!< tmr output control mode pwm a */
   TMR_OUTPUT_CONTROL_PWM_MODE_B          = 0x07  /*!< tmr output control mode pwm b */
 } tmr_output_control_mode_type;

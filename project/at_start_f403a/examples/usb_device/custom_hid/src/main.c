@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -40,7 +40,7 @@
   */
 
 usbd_core_type usb_core_dev;
-uint8_t report_buf[USBD_IN_MAXPACKET_SIZE];
+uint8_t report_buf[USBD_CUSTOM_IN_MAXPACKET_SIZE];
 
 /**
   * @brief  usb 48M clock select
@@ -134,7 +134,7 @@ int main(void)
   nvic_irq_enable(USBFS_L_CAN1_RX0_IRQn, 0, 0);
 
   /* usb core init */
-  usbd_core_init(&usb_core_dev, USB, &custom_hid_class_handler, &hid_desc_handler, 0);
+  usbd_core_init(&usb_core_dev, USB, &custom_hid_class_handler, &custom_hid_desc_handler, 0);
 
   /* enable usb pull-up */
   usbd_connect(&usb_core_dev);
@@ -145,7 +145,7 @@ int main(void)
     {
       report_buf[1] = (~report_buf[1]) & 0x1;
       report_buf[0] = HID_REPORT_ID_5;
-      class_send_report(&usb_core_dev, report_buf, USBD_IN_MAXPACKET_SIZE);
+      custom_hid_class_send_report(&usb_core_dev, report_buf, USBD_CUSTOM_IN_MAXPACKET_SIZE);
 
     }
   }

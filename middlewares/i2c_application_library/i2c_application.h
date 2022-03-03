@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     i2c_application.h
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    i2c application libray header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -135,7 +135,9 @@ typedef struct
 
 void            i2c_config                (i2c_handle_type* hi2c);
 void            i2c_lowlevel_init         (i2c_handle_type* hi2c);
+void            i2c_reset_ctrl2_register  (i2c_handle_type* hi2c);
 i2c_status_type i2c_wait_end              (i2c_handle_type* hi2c, uint32_t timeout);
+i2c_status_type i2c_wait_flag             (i2c_handle_type* hi2c, uint32_t flag, flag_status status, uint32_t event_check, uint32_t timeout);
                                           
 i2c_status_type i2c_master_transmit       (i2c_handle_type* hi2c, uint16_t address, uint8_t* pdata, uint16_t size, uint32_t timeout);
 i2c_status_type i2c_master_receive        (i2c_handle_type* hi2c, uint16_t address, uint8_t* pdata, uint16_t size, uint32_t timeout);
@@ -152,12 +154,12 @@ i2c_status_type i2c_master_receive_dma    (i2c_handle_type* hi2c, uint16_t addre
 i2c_status_type i2c_slave_transmit_dma    (i2c_handle_type* hi2c, uint8_t* pdata, uint16_t size, uint32_t timeout);
 i2c_status_type i2c_slave_receive_dma     (i2c_handle_type* hi2c, uint8_t* pdata, uint16_t size, uint32_t timeout);
                                          
-i2c_status_type i2c_memory_write          (i2c_handle_type* hi2c, uint16_t address, uint16_t memaddress, uint8_t* pdata, uint16_t size, uint32_t timeout);
-i2c_status_type i2c_memory_write_int      (i2c_handle_type* hi2c, uint16_t address, uint16_t memaddress, uint8_t* pdata, uint16_t size, uint32_t timeout);
-i2c_status_type i2c_memory_write_dma      (i2c_handle_type* hi2c, uint16_t address, uint16_t memaddress, uint8_t* pdata, uint16_t size, uint32_t timeout);
-i2c_status_type i2c_memory_read           (i2c_handle_type* hi2c, uint16_t address, uint16_t memaddress, uint8_t* pdata, uint16_t size, uint32_t timeout);
-i2c_status_type i2c_memory_read_int       (i2c_handle_type* hi2c, uint16_t address, uint16_t memaddress, uint8_t* pdata, uint16_t size, uint32_t timeout);
-i2c_status_type i2c_memory_read_dma       (i2c_handle_type* hi2c, uint16_t address, uint16_t memaddress, uint8_t* pdata, uint16_t size, uint32_t timeout);
+i2c_status_type i2c_memory_write          (i2c_handle_type* hi2c, uint16_t address, uint16_t mem_address, uint8_t* pdata, uint16_t size, uint32_t timeout);
+i2c_status_type i2c_memory_write_int      (i2c_handle_type* hi2c, uint16_t address, uint16_t mem_address, uint8_t* pdata, uint16_t size, uint32_t timeout);
+i2c_status_type i2c_memory_write_dma      (i2c_handle_type* hi2c, uint16_t address, uint16_t mem_address, uint8_t* pdata, uint16_t size, uint32_t timeout);
+i2c_status_type i2c_memory_read           (i2c_handle_type* hi2c, uint16_t address, uint16_t mem_address, uint8_t* pdata, uint16_t size, uint32_t timeout);
+i2c_status_type i2c_memory_read_int       (i2c_handle_type* hi2c, uint16_t address, uint16_t mem_address, uint8_t* pdata, uint16_t size, uint32_t timeout);
+i2c_status_type i2c_memory_read_dma       (i2c_handle_type* hi2c, uint16_t address, uint16_t mem_address, uint8_t* pdata, uint16_t size, uint32_t timeout);
                                           
 void            i2c_evt_irq_handler       (i2c_handle_type* hi2c);
 void            i2c_err_irq_handler       (i2c_handle_type* hi2c);

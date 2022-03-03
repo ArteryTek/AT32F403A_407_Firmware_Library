@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_xmc.h
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    at32f403a_407 xmc header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -402,7 +402,7 @@ typedef struct
   /**
     * @brief xmc bank1 reserved register, offset:0x120~0x21C
     */
-  __IO uint32_t reserved2[64];
+  __IO uint32_t reserved2[63];
 
   /**
     * @brief xmc bank1 ext register, offset:0x220~0x22C

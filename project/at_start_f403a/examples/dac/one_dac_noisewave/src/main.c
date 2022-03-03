@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -77,7 +77,7 @@ int main(void)
 
   dac_mask_amplitude_select(DAC1_SELECT, DAC_LSFR_BITB0_AMPLITUDE_4095);
 
-  dac_output_buffer_enable(DAC1_SELECT, FALSE);
+  dac_output_buffer_enable(DAC1_SELECT, TRUE);
 
   /* enable dac1: once the dac1 is enabled, pa.04 is
      automatically connected to the dac converter. */
@@ -86,6 +86,7 @@ int main(void)
   while(1)
   {
     dac_software_trigger_generate(DAC1_SELECT);
+    delay_us(1);
   }
 }
 

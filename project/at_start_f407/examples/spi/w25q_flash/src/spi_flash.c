@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     spi_flash.c
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    spi_flash source code
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -62,13 +62,13 @@ void spiflash_init(void)
   gpio_initstructure.gpio_pins = GPIO_PINS_5;
   gpio_init(GPIOA, &gpio_initstructure);
   
-  /* mosi */
+  /* miso */
   gpio_initstructure.gpio_pull           = GPIO_PULL_UP;  
   gpio_initstructure.gpio_mode           = GPIO_MODE_INPUT;  
   gpio_initstructure.gpio_pins = GPIO_PINS_6;
   gpio_init(GPIOA, &gpio_initstructure);
   
-  /* miso */
+  /* mosi */
   gpio_initstructure.gpio_pull           = GPIO_PULL_UP;  
   gpio_initstructure.gpio_mode           = GPIO_MODE_MUX;  
   gpio_initstructure.gpio_pins = GPIO_PINS_7;
@@ -323,7 +323,7 @@ void spi_bytes_write(uint8_t *pbuffer, uint32_t length)
   
   dma_init_struct.buffer_size = length;
   dma_init_struct.direction = DMA_DIR_MEMORY_TO_PERIPHERAL;
-  dma_init_struct.memory_base_addr = (uint32_t)&pbuffer;
+  dma_init_struct.memory_base_addr = (uint32_t)pbuffer;
   dma_init_struct.memory_data_width = DMA_MEMORY_DATA_WIDTH_BYTE;
   dma_init_struct.memory_inc_enable = TRUE;
   dma_init_struct.peripheral_base_addr = (uint32_t)(&SPI1->dt);

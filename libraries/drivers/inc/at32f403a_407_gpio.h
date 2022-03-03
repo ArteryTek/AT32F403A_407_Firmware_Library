@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_gpio.h
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    at32f403a_407 gpio header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -259,7 +259,7 @@ extern "C" {
 #define SWJTAG_GMUX_100                  IOMUX_MAKE_VALUE(0x30, 16, 3, 0x04) /*!< full swj disabled  (jtag-dp  +  sw-dp) */
 #define PD01_GMUX                        IOMUX_MAKE_VALUE(0x30, 20, 1, 0x01) /*!< pd0/pd1 mapping on osc_in/osc_out */
 #define XMC_GMUX_001                     IOMUX_MAKE_VALUE(0x30, 24, 3, 0x01) /*!< xmc_nwe(pd2), xmc_d0(pb14), xmc_d1(pc6), xmc_d2(pc11), xmc_d3(pc12), xmc_d4(pa2), xmc_d5(pa3), xmc_d6(pa4), xmc_d7(pa5), xmc_d13(pb12), xmc_noe(pc5) */
-#define XMC_GMUX_010                     IOMUX_MAKE_VALUE(0x30, 24, 3, 0x02) /*!< xmc_nwe(pd2), xmc_d0(pb14), xmc_d1(pc6), xmc_d2(pc11), xmc_d3(pc12), xmc_d4(pa2), xmc_d5(pa3), xmc_d6(pa4), xmc_d7(pa5), xmc_d13(pb12), xmc_noe(pc5) */
+#define XMC_GMUX_010                     IOMUX_MAKE_VALUE(0x30, 24, 3, 0x02) /*!< xmc_nwe(pc2), xmc_d0(pb14), xmc_d1(pc6), xmc_d2(pc11), xmc_d3(pc12), xmc_d4(pa2), xmc_d5(pa3), xmc_d6(pa4), xmc_d7(pa5), xmc_d13(pb12), xmc_noe(pc5) */
 #define XMC_NADV_GMUX                    IOMUX_MAKE_VALUE(0x30, 27, 1, 0x01) /*!< xmc_nadv not used */
 
 /**

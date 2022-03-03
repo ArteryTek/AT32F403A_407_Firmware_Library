@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     keyboard_class.h
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    usb hid keyboard header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -50,45 +50,40 @@ extern "C" {
 /**
   * @brief usb hid use endpoint define
   */
-#define USBD_HID_IN_EPT                  0x81
+#define USBD_KEYBOARD_IN_EPT                  0x81
 
 /**
   * @brief usb hid in and out max packet size define
   */
-#define USBD_IN_MAXPACKET_SIZE           0x40
-#define USBD_OUT_MAXPACKET_SIZE          0x40
+#define USBD_KEYBOARD_IN_MAXPACKET_SIZE       0x40
+#define USBD_KEYBOARD_OUT_MAXPACKET_SIZE      0x40
 
 /**
   * @}
   */
 
-/** @defgroup USB_hid_class_request_code_definition 
-  * @{
-  */
+
+typedef struct
+{
+  uint32_t hid_protocol;
+  uint32_t hid_set_idle;
+  uint32_t alt_setting;
+  uint8_t hid_set_report[64];
+  uint8_t keyboard_buf[8];
   
-/**
-  * @brief usb hid class request code define
-  */
-#define HID_REQ_SET_PROTOCOL             0x0B
-#define HID_REQ_GET_PROTOCOL             0x03
-#define HID_REQ_SET_IDLE                 0x0A
-#define HID_REQ_GET_IDLE                 0x02
-#define HID_REQ_SET_REPORT               0x09
-#define HID_REQ_GET_REPORT               0x01
-#define HID_DESCRIPTOR_TYPE              0x21
-#define HID_REPORT_DESC                  0x22
-
-/**
-  * @}
-  */
+  __IO uint8_t hid_suspend_flag;
+  __IO uint8_t g_u8tx_completed;
+  uint8_t hid_state;
+  uint8_t temp;
+  
+}keyboard_type;
 
 /** @defgroup USB_hid_class_exported_functions
   * @{
   */
 extern usbd_class_handler keyboard_class_handler;
-extern __IO uint8_t g_u8tx_completed;
 
-usb_sts_type class_send_report(void *udev, uint8_t *report, uint16_t len);
+usb_sts_type usb_keyboard_class_send_report(void *udev, uint8_t *report, uint16_t len);
 void usb_hid_keyboard_send_char(void *udev, uint8_t ascii_code);
 /**
   * @}

@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     hid_iap_class.h
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    usb hid iap header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -35,6 +35,7 @@ extern "C" {
 #include "usb_std.h"
 #include "usbd_core.h"
 
+
 /** @addtogroup AT32F403A_407_middlewares_usbd_class
   * @{
   */
@@ -47,23 +48,12 @@ extern "C" {
   * @{
   */
 
-#define USBD_HID_IN_EPT                  0x81
-#define USBD_HID_OUT_EPT                 0x01
 
-#define USBD_IN_MAXPACKET_SIZE           0x40
-#define USBD_OUT_MAXPACKET_SIZE          0x40
+#define USBD_HIDIAP_IN_EPT                  0x81
+#define USBD_HIDIAP_OUT_EPT                 0x01
 
-#define HID_REQ_SET_PROTOCOL             0x0B
-#define HID_REQ_GET_PROTOCOL             0x03
-
-#define HID_REQ_SET_IDLE                 0x0A
-#define HID_REQ_GET_IDLE                 0x02
-
-#define HID_REQ_SET_REPORT               0x09
-#define HID_REQ_GET_REPORT               0x01
-
-#define HID_DESCRIPTOR_TYPE              0x21
-#define HID_REPORT_DESC                  0x22
+#define USBD_HIDIAP_IN_MAXPACKET_SIZE       0x40
+#define USBD_HIDIAP_OUT_MAXPACKET_SIZE      0x40
 
 #define FLASH_SIZE_REG()                 ((*(uint32_t *)0x1FFFF7E0) & 0xFFFF) /*Get Flash size*/
 #define KB_TO_B(kb)                      ((kb) << 10)
@@ -115,8 +105,8 @@ typedef struct
 {
   
   uint8_t iap_fifo[HID_IAP_BUFFER_LEN];
-  uint8_t iap_rx[USBD_OUT_MAXPACKET_SIZE];
-  uint8_t iap_tx[USBD_IN_MAXPACKET_SIZE];
+  uint8_t iap_rx[USBD_HIDIAP_OUT_MAXPACKET_SIZE];
+  uint8_t iap_tx[USBD_HIDIAP_IN_MAXPACKET_SIZE];
   
   uint32_t fifo_length;
   uint32_t tx_length;
@@ -131,14 +121,21 @@ typedef struct
   uint32_t sector_size;
   uint32_t flash_size;
   
+  uint32_t respond_flag;
+  
+  uint8_t g_rxhid_buff[USBD_HIDIAP_OUT_MAXPACKET_SIZE];
+  uint32_t hid_protocol;
+  uint32_t hid_set_idle;
+  uint32_t alt_setting;
+  uint32_t hid_state;
+  uint8_t hid_set_report[64];
+  
   iap_machine_state_type state;
-  uint8_t respond_flag;
 }iap_info_type;
 
 extern usbd_class_handler hid_iap_class_handler;
 extern iap_info_type iap_info;
-usb_sts_type class_send_report(void *udev, uint8_t *report, uint16_t len);
-
+usb_sts_type usb_iap_class_send_report(void *udev, uint8_t *report, uint16_t len);
 iap_result_type usbd_hid_iap_process(void *udev, uint8_t *report, uint16_t len);
 void usbd_hid_iap_in_complete(void *udev);
 
@@ -153,9 +150,10 @@ void usbd_hid_iap_in_complete(void *udev);
 /**
   * @}
   */
-
 #ifdef __cplusplus
 }
 #endif
 
 #endif
+
+

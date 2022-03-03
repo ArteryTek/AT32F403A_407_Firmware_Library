@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     audio_class.h
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    usb audio class file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -25,8 +25,8 @@
   */
   
  /* define to prevent recursive inclusion -------------------------------------*/
-#ifndef __AUDIO_CLASS_H
-#define __AUDIO_CLASS_H
+#ifndef __AUDIO_HID_CLASS_H
+#define __AUDIO_HID_CLASS_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -51,21 +51,21 @@ extern "C" {
 /**
   * @brief endpoint define
   */
-#define USBD_AUDIO_MIC_IN_EPT            0x81
-#define USBD_AUDIO_SPK_OUT_EPT           0x02
-#define USBD_AUDIO_FEEDBACK_EPT          0x83
+#define USBD_AUHID_AUDIO_MIC_IN_EPT            0x81
+#define USBD_AUHID_AUDIO_SPK_OUT_EPT           0x02
+#define USBD_AUHID_AUDIO_FEEDBACK_EPT          0x83
 
 /**
   * @brief usb custom hid use endpoint define
   */
-#define USBD_HID_IN_EPT                  0x84
-#define USBD_HID_OUT_EPT                 0x05
+#define USBD_AUHID_HID_IN_EPT                  0x84
+#define USBD_AUHID_HID_OUT_EPT                 0x05
 
 /**
   * @brief usb custom hid in and out max packet size define
   */
-#define USBD_IN_MAXPACKET_SIZE           0x40
-#define USBD_OUT_MAXPACKET_SIZE          0x40
+#define USBD_AUHID_IN_MAXPACKET_SIZE           0x40
+#define USBD_AUHID_OUT_MAXPACKET_SIZE          0x40
 
 /**
   * @brief endpoint support max size
@@ -107,19 +107,6 @@ extern "C" {
 #define AUDIO_DESCRIPTOR_SIZE             0x09
 
 /**
-  * @brief usb custom hid class request code define
-  */
-#define HID_REQ_SET_PROTOCOL             0x0B
-#define HID_REQ_GET_PROTOCOL             0x03
-#define HID_REQ_SET_IDLE                 0x0A
-#define HID_REQ_GET_IDLE                 0x02
-#define HID_REQ_SET_REPORT               0x09
-#define HID_REQ_GET_REPORT               0x01
-#define HID_DESCRIPTOR_TYPE              0x21
-#define HID_REPORT_DESC                  0x22
-
-
-/**
   * @brief usb audio control struct
   */
 typedef struct
@@ -144,11 +131,21 @@ typedef struct
   uint8_t audio_spk_data[AUDIO_SPK_OUT_MAXPACKET_SIZE];
   uint8_t audio_mic_data[AUDIO_MIC_IN_MAXPACKET_SIZE];
   uint8_t audio_feed_back[AUDIO_FEEDBACK_MAXPACKET_SIZE+1];
-}usb_audio_type;
+  
+  
+  /* hid */
+  uint32_t hid_protocol;
+  uint32_t hid_set_idle;
+  uint32_t alt_setting;
+  uint8_t hid_state;
+  uint8_t hid_set_report[64];
+  uint8_t g_rxhid_buff[USBD_AUHID_OUT_MAXPACKET_SIZE];
+  uint8_t g_txhid_buff[USBD_AUHID_IN_MAXPACKET_SIZE];
+}usb_audio_hid_type;
 
 extern usbd_class_handler audio_hid_class_handler;
 
-usb_sts_type class_send_report(void *udev, uint8_t *report, uint16_t len);
+usb_sts_type audio_hid_class_send_report(void *udev, uint8_t *report, uint16_t len);
 
 /**
   * @}

@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     hid_iap_user.c
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    usb hid iap user file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -226,7 +226,7 @@ iap_result_type usbd_hid_iap_process(void *udev, uint8_t *pdata, uint16_t len)
   
   if(iap_info.respond_flag)
   {
-    class_send_report(udev, iap_info.iap_tx, 64);
+    usb_iap_class_send_report(udev, iap_info.iap_tx, 64);
   }
   
   return status;

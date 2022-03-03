@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -26,6 +26,7 @@
 
 #include "at32f403a_407_board.h"
 #include "at32f403a_407_clock.h"
+#include <stdio.h>
 
 /** @addtogroup AT32F403A_periph_examples
   * @{
@@ -211,8 +212,9 @@ int main(void)
   /* transfer procedure:the "BUFFER_SIZE" data transfer */
   while(tx_index < BUFFER_SIZE)
   {
-    while(spi_i2s_flag_get(SPI1, SPI_I2S_TDBE_FLAG) == RESET);
+    while(spi_i2s_flag_get(SPI2, SPI_I2S_TDBE_FLAG) == RESET);
     spi_i2s_data_transmit(SPI2, spi2_tx_buffer[tx_index]);
+    while(spi_i2s_flag_get(SPI1, SPI_I2S_TDBE_FLAG) == RESET);
     spi_i2s_data_transmit(SPI1, spi1_tx_buffer[tx_index++]);
     while(spi_i2s_flag_get(SPI2, SPI_I2S_RDBF_FLAG) == RESET);
     spi2_rx_buffer[rx_index] = spi_i2s_data_receive(SPI2);
@@ -247,8 +249,9 @@ int main(void)
   /* transfer procedure:the "BUFFER_SIZE" data transfer */
   while(tx_index < BUFFER_SIZE)
   {
-    while(spi_i2s_flag_get(SPI2, SPI_I2S_TDBE_FLAG) == RESET);
+    while(spi_i2s_flag_get(SPI1, SPI_I2S_TDBE_FLAG) == RESET);
     spi_i2s_data_transmit(SPI1, spi1_tx_buffer[tx_index]);
+    while(spi_i2s_flag_get(SPI2, SPI_I2S_TDBE_FLAG) == RESET);
     spi_i2s_data_transmit(SPI2, spi2_tx_buffer[tx_index++]);
     while(spi_i2s_flag_get(SPI1, SPI_I2S_RDBF_FLAG) == RESET);
     spi1_rx_buffer[rx_index] = spi_i2s_data_receive(SPI1);

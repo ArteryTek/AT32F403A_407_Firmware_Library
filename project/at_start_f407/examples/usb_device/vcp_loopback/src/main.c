@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -140,7 +140,7 @@ int main(void)
   nvic_irq_enable(USBFS_L_CAN1_RX0_IRQn, 0, 0);
 
   /* usb core init */
-  usbd_core_init(&usb_core_dev, USB, &class_handler, &desc_handler, 0);
+  usbd_core_init(&usb_core_dev, USB, &cdc_class_handler, &cdc_desc_handler, 0);
 
   /* enable usb pull-up */
   usbd_connect(&usb_core_dev);
@@ -163,7 +163,7 @@ int main(void)
       if(data_len == 0)
         send_zero_packet = 0;
 
-      timeout = 50000;
+      timeout = 5000000;
       do
       {
         /* send data to host */

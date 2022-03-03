@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     custom_hid_desc.h
-  * @version  v2.0.6
-  * @date     2021-12-31
+  * @version  v2.0.7
+  * @date     2022-02-11
   * @brief    usb custom hid descriptor header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -46,46 +46,40 @@ extern "C" {
 /** @defgroup USB_custom_hid_desc_definition 
   * @{
   */
-
+  
+  
 /**
   * @brief usb bcd number define
   */
-#define HID_BCD_NUM                      0x0110
-
-/**
-  * @brief usb hid class descriptor define
-  */
-#define HID_CLASS_DESC_HID               0x21
-#define HID_CLASS_DESC_REPORT            0x22
-#define HID_CLASS_DESC_PHYSICAL          0x23
+#define CUSHID_BCD_NUM                   0x0110
 
 /**
   * @brief usb vendor id and product id define
   */
-#define USBD_VENDOR_ID                   0x2E3C
-#define USBD_PRODUCT_ID                  0x5745  
+#define USBD_CUSHID_VENDOR_ID            0x2E3C
+#define USBD_CUSHID_PRODUCT_ID           0x5745  
 
 /**
   * @brief usb descriptor size define
   */
-#define USBD_CONFIG_DESC_SIZE            41
-#define USBD_HID_SIZ_REPORT_DESC         126
-#define USBD_SIZ_STRING_LANGID           4
-#define USBD_SIZ_STRING_SERIAL           0x1A
+#define USBD_CUSHID_CONFIG_DESC_SIZE     41
+#define USBD_CUSHID_SIZ_REPORT_DESC      126
+#define USBD_CUSHID_SIZ_STRING_LANGID    4
+#define USBD_CUSHID_SIZ_STRING_SERIAL    0x1A
 
 /**
   * @brief usb string define(vendor, product configuration, interface)
   */
-#define USBD_DESC_MANUFACTURER_STRING    "Artery"
-#define USBD_DESC_PRODUCT_STRING         "Custom HID"
-#define USBD_DESC_CONFIGURATION_STRING   "Custom HID Config"
-#define USBD_DESC_INTERFACE_STRING       "Custom HID Interface"
+#define USBD_CUSHID_DESC_MANUFACTURER_STRING    "Artery"
+#define USBD_CUSHID_DESC_PRODUCT_STRING         "Custom HID"
+#define USBD_CUSHID_DESC_CONFIGURATION_STRING   "Custom HID Config"
+#define USBD_CUSHID_DESC_INTERFACE_STRING       "Custom HID Interface"
+
+#define CUSHID_BINTERVAL_TIME            0x0A
 
 /**
-  * @brief usb hid endpoint interval define 
+  * @brief usb hid report id define 
   */
-#define HID_BINTERVAL_TIME                0x0A
-
 /**
   * @brief usb hid report id define 
   */
@@ -99,19 +93,16 @@ extern "C" {
 /**
   * @brief usb mcu id address deine
   */
-#define         MCU_ID1                   (0x1FFFF7E8)
-#define         MCU_ID2                   (0x1FFFF7EC)
-#define         MCU_ID3                   (0x1FFFF7F0)
+#define MCU_ID1                          (0x1FFFF7E8)
+#define MCU_ID2                          (0x1FFFF7EC)
+#define MCU_ID3                          (0x1FFFF7F0)
 
 /**
   * @}
   */
-
-extern uint8_t g_usbd_descriptor[USB_DEVICE_DESC_LEN];
-extern uint8_t g_usbd_configuration[USBD_CONFIG_DESC_SIZE];
-extern uint8_t g_usbd_hid_report[USBD_HID_SIZ_REPORT_DESC];
-extern uint8_t g_hid_usb_desc[9];
-extern usbd_desc_handler hid_desc_handler;
+extern uint8_t g_usbd_custom_hid_report[USBD_CUSHID_SIZ_REPORT_DESC];
+extern uint8_t g_custom_hid_usb_desc[9];
+extern usbd_desc_handler custom_hid_desc_handler;
 
 /**
   * @}
@@ -120,10 +111,10 @@ extern usbd_desc_handler hid_desc_handler;
 /**
   * @}
   */
-
 #ifdef __cplusplus
 }
 #endif
 
 #endif
+
 
