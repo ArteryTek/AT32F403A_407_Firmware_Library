@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     custom_hid_desc.h
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    usb custom hid descriptor header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -23,7 +23,7 @@
   *
   **************************************************************************
   */
-  
+
 /* define to prevent recursive inclusion -------------------------------------*/
 #ifndef __CUSTOM_HID_DESC_H
 #define __CUSTOM_HID_DESC_H
@@ -31,23 +31,23 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
- 
+
 #include "custom_hid_class.h"
 #include "usbd_core.h"
 
 /** @addtogroup AT32F403A_407_middlewares_usbd_class
   * @{
   */
-  
+
 /** @addtogroup USB_custom_hid_desc
   * @{
   */
 
-/** @defgroup USB_custom_hid_desc_definition 
+/** @defgroup USB_custom_hid_desc_definition
   * @{
   */
-  
-  
+
+
 /**
   * @brief usb bcd number define
   */
@@ -57,7 +57,7 @@ extern "C" {
   * @brief usb vendor id and product id define
   */
 #define USBD_CUSHID_VENDOR_ID            0x2E3C
-#define USBD_CUSHID_PRODUCT_ID           0x5745  
+#define USBD_CUSHID_PRODUCT_ID           0x5745
 
 /**
   * @brief usb descriptor size define
@@ -78,10 +78,10 @@ extern "C" {
 #define CUSHID_BINTERVAL_TIME            0x0A
 
 /**
-  * @brief usb hid report id define 
+  * @brief usb hid report id define
   */
 /**
-  * @brief usb hid report id define 
+  * @brief usb hid report id define
   */
 #define HID_REPORT_ID_1                   0x01
 #define HID_REPORT_ID_2                   0x02
@@ -107,7 +107,7 @@ extern usbd_desc_handler custom_hid_desc_handler;
 /**
   * @}
   */
-  
+
 /**
   * @}
   */

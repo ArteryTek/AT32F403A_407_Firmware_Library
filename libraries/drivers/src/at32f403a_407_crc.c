@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_crc.c
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    contains all the functions for the crc firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -125,7 +125,7 @@ void crc_init_data_set(uint32_t value)
   * @brief  control the reversal of the bit order in the input data
   * @param  value
   *         this parameter can be one of the following values:
-  *         - CRC_REVERSE_INPUT_NO_AFFECTE 
+  *         - CRC_REVERSE_INPUT_NO_AFFECTE
   *         - CRC_REVERSE_INPUT_BY_BYTE
   *         - CRC_REVERSE_INPUT_BY_HALFWORD
   *         - CRC_REVERSE_INPUT_BY_WORD
@@ -140,7 +140,7 @@ void crc_reverse_input_data_set(crc_reverse_input_type value)
   * @brief  control the reversal of the bit order in the output data
   * @param  value
   *         this parameter can be one of the following values:
-  *         - CRC_REVERSE_OUTPUT_NO_AFFECTE 
+  *         - CRC_REVERSE_OUTPUT_NO_AFFECTE
   *         - CRC_REVERSE_OUTPUT_DATA
   * @retval none.
   */

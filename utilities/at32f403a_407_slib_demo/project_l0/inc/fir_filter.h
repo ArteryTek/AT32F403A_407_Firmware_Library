@@ -1,6 +1,6 @@
 /**
   ******************************************************************************
-  * File   : Step1-ST_Customer_level_n/Inc/fir_filter.h 
+  * File   : Step1-ST_Customer_level_n/Inc/fir_filter.h
   * Version: V1.3.0
   * Date   : 2021-03-18
   * Brief  : This file contains the headers of FIR filter IP-Code.
@@ -35,7 +35,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "arm_math.h"
-   
+
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/

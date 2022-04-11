@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -30,7 +30,7 @@
 /** @addtogroup AT32F407_periph_examples
   * @{
   */
-  
+
 /** @addtogroup 407_TMR_6_steps TMR_6_steps
   * @{
   */
@@ -135,15 +135,15 @@ int main(void)
   tmr_output_struct.occ_output_state = TRUE;
   tmr_output_struct.occ_polarity = TMR_OUTPUT_ACTIVE_HIGH;
   tmr_output_struct.occ_idle_state = TRUE;
-  
+
   /* channel 1 */
   tmr_output_channel_config(TMR1, TMR_SELECT_CHANNEL_1, &tmr_output_struct);
   tmr_channel_value_set(TMR1, TMR_SELECT_CHANNEL_1, 2047);
-  
+
   /* channel 2 */
   tmr_output_channel_config(TMR1, TMR_SELECT_CHANNEL_2, &tmr_output_struct);
   tmr_channel_value_set(TMR1, TMR_SELECT_CHANNEL_2, 1023);
-  
+
   /* channel 3 */
   tmr_output_channel_config(TMR1, TMR_SELECT_CHANNEL_3, &tmr_output_struct);
   tmr_channel_value_set(TMR1, TMR_SELECT_CHANNEL_3, 511);
@@ -169,7 +169,7 @@ int main(void)
 
   /* tmr1 output enable */
   tmr_output_enable(TMR1, TRUE);
-  
+
   /* enable tmr1 */
   tmr_counter_enable(TMR1, TRUE);
 
@@ -315,8 +315,8 @@ void TMR1_TRG_HALL_TMR11_IRQHandler(void)
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */

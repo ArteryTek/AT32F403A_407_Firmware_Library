@@ -34,7 +34,7 @@ typedef struct
   /* timer interrupt count when last packet was sent */
   /* this should be used to resend packets on timeout */
   unsigned long long last_time;
- 
+
 }tftp_connection_args;
 
 /* tftp opcodes as specified in rfc1350   */

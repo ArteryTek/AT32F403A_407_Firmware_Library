@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     at32_emac.c
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    emac config program
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -23,15 +23,15 @@
   *
   **************************************************************************
   */
-  
-/* includes ------------------------------------------------------------------*/                                                                               
+
+/* includes ------------------------------------------------------------------*/
 #include "at32f403a_407_board.h"
 #include "at32_emac.h"
 
 /** @addtogroup AT32F407_periph_examples
   * @{
   */
-  
+
 /** @addtogroup 407_EMAC_iperf
   * @{
   */
@@ -44,17 +44,17 @@
 error_status emac_system_init(void)
 {
   error_status status;
- 
+
   emac_nvic_configuration();
-  
+
   /* emac periph clock enable */
   crm_periph_clock_enable(CRM_EMAC_PERIPH_CLOCK, TRUE);
   crm_periph_clock_enable(CRM_EMACTX_PERIPH_CLOCK, TRUE);
   crm_periph_clock_enable(CRM_EMACRX_PERIPH_CLOCK, TRUE);
-  
+
   emac_pins_configuration();
   status = emac_layer2_configuration();
-  
+
   return status;
 }
 
@@ -76,7 +76,7 @@ void emac_nvic_configuration(void)
 void emac_pins_configuration(void)
 {
   gpio_init_type gpio_init_struct = {0};
-  
+
   /* emac pins clock enable */
   crm_periph_clock_enable(CRM_GPIOA_PERIPH_CLOCK, TRUE);
   crm_periph_clock_enable(CRM_GPIOB_PERIPH_CLOCK, TRUE);
@@ -84,27 +84,27 @@ void emac_pins_configuration(void)
   crm_periph_clock_enable(CRM_GPIOD_PERIPH_CLOCK, TRUE);
   crm_periph_clock_enable(CRM_GPIOE_PERIPH_CLOCK, TRUE);
   crm_periph_clock_enable(CRM_IOMUX_PERIPH_CLOCK, TRUE);
-  
+
   gpio_default_para_init(&gpio_init_struct);
-  
+
   #if RX_REMAP
   gpio_pin_remap_config(EMAC_MUX, TRUE);
   #endif
-  
+
   gpio_init_struct.gpio_drive_strength = GPIO_DRIVE_STRENGTH_STRONGER;
   gpio_init_struct.gpio_out_type = GPIO_OUTPUT_PUSH_PULL;
   gpio_init_struct.gpio_pull = GPIO_PULL_NONE;
-  
+
   /* pa2 -> mdio */
   gpio_init_struct.gpio_mode = GPIO_MODE_MUX;
   gpio_init_struct.gpio_pins = GPIO_PINS_2;
   gpio_init(GPIOA, &gpio_init_struct);
-  
+
   /* pc1 -> mdc */
   gpio_init_struct.gpio_mode = GPIO_MODE_MUX;
   gpio_init_struct.gpio_pins = GPIO_PINS_1;
   gpio_init(GPIOC, &gpio_init_struct);
-  
+
   #ifdef MII_MODE
   /*
     pb12 -> tx_d0
@@ -117,11 +117,11 @@ void emac_pins_configuration(void)
   gpio_init_struct.gpio_mode = GPIO_MODE_MUX;
   gpio_init_struct.gpio_pins = GPIO_PINS_8 | GPIO_PINS_11 | GPIO_PINS_12 | GPIO_PINS_13;
   gpio_init(GPIOB, &gpio_init_struct);
-  
+
   gpio_init_struct.gpio_mode = GPIO_MODE_MUX;
   gpio_init_struct.gpio_pins = GPIO_PINS_2;
   gpio_init(GPIOC, &gpio_init_struct);
-  
+
   gpio_init_struct.gpio_mode = GPIO_MODE_INPUT;
   gpio_init_struct.gpio_pins = GPIO_PINS_3;
   gpio_init(GPIOC, &gpio_init_struct);
@@ -135,7 +135,7 @@ void emac_pins_configuration(void)
   */
   gpio_init_struct.gpio_mode = GPIO_MODE_INPUT;
   gpio_init_struct.gpio_pins = GPIO_PINS_8 | GPIO_PINS_9 | GPIO_PINS_10 | GPIO_PINS_11 | GPIO_PINS_12;
-  gpio_init(GPIOD, &gpio_init_struct); 
+  gpio_init(GPIOD, &gpio_init_struct);
   #else
   /*
     pa7  -> rx_dv
@@ -147,11 +147,11 @@ void emac_pins_configuration(void)
   gpio_init_struct.gpio_mode = GPIO_MODE_INPUT;
   gpio_init_struct.gpio_pins = GPIO_PINS_7;
   gpio_init(GPIOA, &gpio_init_struct);
-  
+
   gpio_init_struct.gpio_mode = GPIO_MODE_INPUT;
   gpio_init_struct.gpio_pins = GPIO_PINS_4 | GPIO_PINS_5;
   gpio_init(GPIOC, &gpio_init_struct);
-  
+
   gpio_init_struct.gpio_mode = GPIO_MODE_INPUT;
   gpio_init_struct.gpio_pins = GPIO_PINS_0 | GPIO_PINS_1;
   gpio_init(GPIOB, &gpio_init_struct);
@@ -165,12 +165,12 @@ void emac_pins_configuration(void)
   gpio_init_struct.gpio_mode = GPIO_MODE_INPUT;
   gpio_init_struct.gpio_pins = GPIO_PINS_0 | GPIO_PINS_1 | GPIO_PINS_3;
   gpio_init(GPIOA, &gpio_init_struct);
-  
+
   gpio_init_struct.gpio_mode = GPIO_MODE_INPUT;
   gpio_init_struct.gpio_pins = GPIO_PINS_10;
   gpio_init(GPIOB, &gpio_init_struct);
   #endif  /* MII_MODE */
-  
+
   #ifdef RMII_MODE
   /*
     pb12 -> tx_d0
@@ -184,12 +184,12 @@ void emac_pins_configuration(void)
   /*
     pd8  -> rx_dv
     pd9  -> rx_d0
-    pd10 -> rx_d1    
+    pd10 -> rx_d1
   */
   gpio_init_struct.gpio_mode = GPIO_MODE_INPUT;
   gpio_init_struct.gpio_pins = GPIO_PINS_8 | GPIO_PINS_9 | GPIO_PINS_10;
-  gpio_init(GPIOD, &gpio_init_struct); 
-  
+  gpio_init(GPIOD, &gpio_init_struct);
+
   #else
   /*
     pa7  -> rx_dv
@@ -200,7 +200,7 @@ void emac_pins_configuration(void)
   gpio_init_struct.gpio_mode = GPIO_MODE_INPUT;
   gpio_init_struct.gpio_pins = GPIO_PINS_1 | GPIO_PINS_7;
   gpio_init(GPIOA, &gpio_init_struct);
-  
+
   gpio_init_struct.gpio_mode = GPIO_MODE_INPUT;
   gpio_init_struct.gpio_pins = GPIO_PINS_4 | GPIO_PINS_5;
   gpio_init(GPIOC, &gpio_init_struct);
@@ -212,12 +212,12 @@ void emac_pins_configuration(void)
   gpio_init_struct.gpio_mode = GPIO_MODE_INPUT;
   gpio_init_struct.gpio_pins = GPIO_PINS_1;
   gpio_init(GPIOA, &gpio_init_struct);
-  
+
   #if !CRYSTAL_ON_PHY
   gpio_init_struct.gpio_mode = GPIO_MODE_MUX;
   gpio_init_struct.gpio_pins = GPIO_PINS_8;
   gpio_init(GPIOA, &gpio_init_struct);
-  #endif	
+  #endif
 }
 
 /**
@@ -236,28 +236,28 @@ error_status emac_layer2_configuration(void)
   #endif
   crm_clock_out_set(CRM_CLKOUT_SCLK);
   crm_clkout_div_set(CRM_CLKOUT_DIV_8);
-  
+
   /* reset phy */
   reset_phy();
   /* reset emac ahb bus */
   emac_reset();
-  
+
   /* software reset emac dma */
   emac_dma_software_reset_set();
-  
+
   while(emac_dma_software_reset_get() == SET);
-  
+
   emac_control_para_init(&mac_control_para);
-  
+
   mac_control_para.auto_nego = EMAC_AUTO_NEGOTIATION_ON;
-    
+
   if(emac_phy_init(&mac_control_para) == ERROR)
   {
     return ERROR;
   }
-    
+
   emac_dma_para_init(&dma_control_para);
-  
+
   dma_control_para.rsf_enable = TRUE;
   dma_control_para.tsf_enable = TRUE;
   dma_control_para.osf_enable = TRUE;
@@ -268,11 +268,11 @@ error_status emac_layer2_configuration(void)
   dma_control_para.rx_dma_pal = EMAC_DMA_PBL_32;
   dma_control_para.tx_dma_pal = EMAC_DMA_PBL_32;
   dma_control_para.priority_ratio = EMAC_DMA_2_RX_1_TX;
-  
+
   emac_dma_config(&dma_control_para);
   emac_dma_interrupt_enable(EMAC_DMA_INTERRUPT_NORMAL_SUMMARY, TRUE);
   emac_dma_interrupt_enable(EMAC_DMA_INTERRUPT_RX, TRUE);
-  
+
   return SUCCESS;
 }
 
@@ -284,16 +284,16 @@ error_status emac_layer2_configuration(void)
 void static reset_phy(void)
 {
   gpio_init_type gpio_init_struct = {0};
-  
+
   gpio_default_para_init(&gpio_init_struct);
-  
+
   gpio_init_struct.gpio_drive_strength = GPIO_DRIVE_STRENGTH_STRONGER;
   gpio_init_struct.gpio_mode = GPIO_MODE_OUTPUT;
   gpio_init_struct.gpio_out_type = GPIO_OUTPUT_PUSH_PULL;
   gpio_init_struct.gpio_pins = GPIO_PINS_8;
   gpio_init_struct.gpio_pull = GPIO_PULL_NONE;
   gpio_init(GPIOC, &gpio_init_struct);
-  
+
   gpio_bits_reset(GPIOC, GPIO_PINS_8);
   delay_ms(2);
   gpio_bits_set(GPIOC, GPIO_PINS_8);
@@ -487,8 +487,8 @@ error_status emac_phy_init(emac_control_config_type *control_para)
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */

@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     netconf.c
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    network connection configuration
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -67,7 +67,7 @@ void tcpip_stack_init(void)
   ip_addr_t ipaddr;
   ip_addr_t netmask;
   ip_addr_t gw;
-  
+
   /* Initializes the dynamic memory heap defined by MEM_SIZE.*/
   mem_init();
 
@@ -92,7 +92,7 @@ void tcpip_stack_init(void)
             struct ip_addr *netmask, struct ip_addr *gw,
             void *state, err_t (* init)(struct netif *netif),
             err_t (* input)(struct pbuf *p, struct netif *netif))
-    
+
    Adds your network interface to the netif_list. Allocate a struct
   netif and pass a pointer to this structure as the first argument.
   Give pointers to cleared ip_addr structures when using DHCP,
@@ -100,12 +100,12 @@ void tcpip_stack_init(void)
 
   The init function pointer must point to a initialization function for
   your ethernet netif interface. The following code illustrates it's use.*/
-  
+
   if(netif_add(&netif, &ipaddr, &netmask, &gw, NULL, &ethernetif_init, &netif_input) == NULL)
   {
     while(1);
   }
-  
+
   /*  Registers the default network interface.*/
   netif_set_default(&netif);
 
@@ -118,7 +118,7 @@ void tcpip_stack_init(void)
 #endif
 
   /*  When the netif is fully configured this function must be called.*/
-  netif_set_up(&netif);  
+  netif_set_up(&netif);
 }
 
 /**

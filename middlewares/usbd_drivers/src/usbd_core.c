@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     usbd_core.c
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    usb driver
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -29,16 +29,16 @@
 /** @addtogroup AT32F403A_407_middlewares_usbd_drivers
   * @{
   */
-  
+
 /** @defgroup USBD_drivers_core
   * @brief usb device drivers core
   * @{
-  */  
+  */
 
 /** @defgroup USBD_core_private_functions
   * @{
   */
-  
+
 /**
   * @brief  usb core in transfer complete handler
   * @param  udev: to the structure of usbd_core_type
@@ -49,20 +49,21 @@ void usbd_core_in_handler(usbd_core_type *udev, uint8_t ept_addr)
 {
   /* get endpoint info*/
   usb_ept_info *ept_info = &udev->ept_in[ept_addr & 0x7F];
-  
+
   if(ept_addr == 0)
   {
-    /* endpoint 0 */
     if(udev->ept0_sts == USB_EPT0_DATA_IN)
     {
-      if(ept_info->ept0_slen > ept_info->maxpacket)
+      if(ept_info->rem0_len > ept_info->maxpacket)
       {
-        ept_info->ept0_slen -= ept_info->maxpacket;
-        usbd_ept_send(udev, 0, ept_info->trans_buf, 
-                      MIN(ept_info->ept0_slen, ept_info->maxpacket));
+        ept_info->rem0_len -= ept_info->maxpacket;
+        usbd_ept_send(udev, 0, ept_info->trans_buf,
+                      MIN(ept_info->rem0_len, ept_info->maxpacket));
       }
+      /* endpoint 0 */
       else if(ept_info->last_len == ept_info->maxpacket
-        && ept_info->ept0_slen <= udev->ept0_wlength)
+        && ept_info->ept0_slen >= ept_info->maxpacket
+        && ept_info->ept0_slen < udev->ept0_wlength)
       {
         ept_info->last_len = 0;
         usbd_ept_send(udev, 0, 0, 0);
@@ -70,16 +71,18 @@ void usbd_core_in_handler(usbd_core_type *udev, uint8_t ept_addr)
       }
       else
       {
-        if(udev->class_handler->ept0_tx_handler != 0 && 
+
+        if(udev->class_handler->ept0_tx_handler != 0 &&
             udev->conn_state == USB_CONN_STATE_CONFIGURED)
-          {
-            udev->class_handler->ept0_tx_handler(udev);
-          }
-          usbd_ctrl_recv_status(udev);
+        {
+          udev->class_handler->ept0_tx_handler(udev);
+        }
+        usbd_ctrl_recv_status(udev);
+
       }
     }
   }
-  else if(udev->class_handler->in_handler != 0 && 
+  else if(udev->class_handler->in_handler != 0 &&
           udev->conn_state == USB_CONN_STATE_CONFIGURED)
   {
     /* other user define endpoint */
@@ -97,17 +100,17 @@ void usbd_core_out_handler(usbd_core_type *udev, uint8_t ept_addr)
 {
    /* get endpoint info*/
   usb_ept_info *ept_info = &udev->ept_out[ept_addr & 0x7F];
-  
+
   if(ept_addr == 0)
   {
     /* endpoint 0 */
     if(udev->ept0_sts == USB_EPT0_DATA_OUT)
     {
-      if(ept_info->ept0_slen > ept_info->maxpacket)
+      if(ept_info->rem0_len > ept_info->maxpacket)
       {
-        ept_info->ept0_slen -= ept_info->maxpacket;
-        usbd_ept_recv(udev, ept_addr, ept_info->trans_buf, 
-                      MIN(ept_info->ept0_slen, ept_info->maxpacket));
+        ept_info->rem0_len -= ept_info->maxpacket;
+        usbd_ept_recv(udev, ept_addr, ept_info->trans_buf,
+                      MIN(ept_info->rem0_len, ept_info->maxpacket));
       }
       else
       {
@@ -119,7 +122,7 @@ void usbd_core_out_handler(usbd_core_type *udev, uint8_t ept_addr)
       }
     }
   }
-  else if(udev->class_handler->out_handler != 0 && 
+  else if(udev->class_handler->out_handler != 0 &&
           udev->conn_state == USB_CONN_STATE_CONFIGURED)
   {
     /* other user define endpoint */
@@ -137,11 +140,11 @@ void usbd_core_setup_handler(usbd_core_type *udev, uint8_t ept_num)
 {
   /* setup parse */
   usbd_setup_request_parse(&udev->setup, udev->setup_buffer);
-  
+
   /* set ept0 status */
   udev->ept0_sts = USB_EPT0_SETUP;
   udev->ept0_wlength = udev->setup.wLength;
-  
+
   switch(udev->setup.bmRequestType & USB_REQ_RECIPIENT_MASK)
   {
     case USB_REQ_RECIPIENT_DEVICE:
@@ -172,10 +175,11 @@ void usbd_core_setup_handler(usbd_core_type *udev, uint8_t ept_num)
 void usbd_ctrl_send(usbd_core_type *udev, uint8_t *buffer, uint16_t len)
 {
   usb_ept_info *ept_info = &udev->ept_in[0];
-  
+
   ept_info->ept0_slen = len;
+  ept_info->rem0_len = len;
   udev->ept0_sts = USB_EPT0_DATA_IN;
-  
+
   usbd_ept_send(udev, 0, buffer, len);
 }
 
@@ -192,8 +196,9 @@ void usbd_ctrl_recv(usbd_core_type *udev, uint8_t *buffer, uint16_t len)
   usb_ept_info *ept_info = &udev->ept_out[0];
 
   ept_info->ept0_slen = len;
+  ept_info->rem0_len = len;
   udev->ept0_sts = USB_EPT0_DATA_OUT;
-  
+
   usbd_ept_recv(udev, 0, buffer, len);
 }
 
@@ -205,7 +210,7 @@ void usbd_ctrl_recv(usbd_core_type *udev, uint8_t *buffer, uint16_t len)
 void usbd_ctrl_send_status(usbd_core_type *udev)
 {
   udev->ept0_sts = USB_EPT0_STATUS_IN;
-  
+
   usbd_ept_send(udev, 0, 0, 0);
 }
 
@@ -217,7 +222,7 @@ void usbd_ctrl_send_status(usbd_core_type *udev)
 void usbd_ctrl_recv_status(usbd_core_type *udev)
 {
   udev->ept0_sts = USB_EPT0_STATUS_OUT;
-  
+
   usbd_ept_recv(udev, 0, 0, 0);
 }
 
@@ -230,8 +235,8 @@ void usbd_ctrl_recv_status(usbd_core_type *udev)
 void usbd_clear_stall(usbd_core_type *udev, uint8_t ept_addr)
 {
   usb_ept_info *ept_info;
-  
-  if(ept_addr & 0x80) 
+
+  if(ept_addr & 0x80)
   {
     /* in endpoint */
     ept_info = &udev->ept_in[ept_addr & 0x7F];
@@ -255,7 +260,7 @@ void usbd_clear_stall(usbd_core_type *udev, uint8_t ept_addr)
 void usbd_set_stall(usbd_core_type *udev, uint8_t ept_addr)
 {
   usb_ept_info *ept_info;
-  
+
   if(ept_addr & 0x80)
   {
     /* in endpoint */
@@ -268,7 +273,7 @@ void usbd_set_stall(usbd_core_type *udev, uint8_t ept_addr)
     ept_info = &udev->ept_out[ept_addr & 0x7F];
     USB_SET_RXSTS(ept_info->eptn, USB_RX_STALL)
   }
-  
+
   ept_info->stall = 1;
 }
 
@@ -298,12 +303,12 @@ void usbd_ept_send(usbd_core_type *udev, uint8_t ept_addr, uint8_t *buffer, uint
   usb_ept_info *ept_info = &udev->ept_in[ept_addr & 0x7F];
   uint16_t trs_len = 0;
   usbd_type *usbx = udev->usb_reg;
-  
+
   /* set send data buffer and length */
   ept_info->trans_buf = buffer;
   ept_info->total_len = len;
   ept_info->trans_len = 0;
-  
+
   if(ept_info->total_len > ept_info->maxpacket)
   {
     trs_len = ept_info->maxpacket;
@@ -314,14 +319,14 @@ void usbd_ept_send(usbd_core_type *udev, uint8_t ept_addr, uint8_t *buffer, uint
     trs_len = len;
     ept_info->total_len = 0;
   }
-  
+
   ept_info->last_len = trs_len;
-  
+
   if(ept_info->is_double_buffer == 0)
   {
     /* write data to endpoint buffer */
     usb_write_packet(ept_info->trans_buf, ept_info->tx_addr, trs_len);
-    
+
     /* set send data length */
     USB_SET_TXLEN((ept_addr & 0x7F), trs_len);
   }
@@ -339,7 +344,7 @@ void usbd_ept_send(usbd_core_type *udev, uint8_t ept_addr, uint8_t *buffer, uint
     }
     USB_FREE_DB_USER_BUFFER((ept_addr & 0x7F), DATA_TRANS_IN);
   }
-  
+
   /* set tx status valid */
   USB_SET_TXSTS((ept_addr & 0x7F), USB_TX_VALID);
 }
@@ -357,12 +362,12 @@ void usbd_ept_recv(usbd_core_type *udev, uint8_t ept_addr, uint8_t *buffer, uint
   /* get endpoint info struct and register */
   usb_ept_info *ept_info = &udev->ept_out[ept_addr & 0x7F];
   uint32_t trs_len = 0;
-  
+
    /* set receive data buffer and length */
   ept_info->trans_buf = buffer;
   ept_info->total_len = len;
   ept_info->trans_len = 0;
-  
+
   if(ept_info->total_len > ept_info->maxpacket)
   {
     trs_len = ept_info->maxpacket;
@@ -373,7 +378,7 @@ void usbd_ept_recv(usbd_core_type *udev, uint8_t ept_addr, uint8_t *buffer, uint
     trs_len = len;
     ept_info->total_len = 0;
   }
-  
+
   /* set rx status valid */
   USB_SET_RXSTS((ept_addr & 0x7F), USB_RX_VALID);
 }
@@ -416,7 +421,7 @@ void usbd_ept_dbuffer_enable(usbd_core_type *udev, uint8_t ept_addr)
 /**
   * @brief  usb auto define endpoint buffer
   * @param  usb_ept_info: endpoint information
-  * @retval none                            
+  * @retval none
   */
 void usbd_ept_buf_auto_define(usb_ept_info *ept_info)
 {
@@ -450,9 +455,9 @@ void usbd_ept_buf_auto_define(usb_ept_info *ept_info)
   * @param  udev: to the structure of usbd_core_type
   * @param  ept_addr: endpoint number
   * @param  addr: usb fifo offset address
-  * @retval none                            
+  * @retval none
   */
-void usbd_ept_buf_custom_define(usbd_core_type *udev, uint8_t ept_addr, 
+void usbd_ept_buf_custom_define(usbd_core_type *udev, uint8_t ept_addr,
                                 uint32_t addr)
 {
   usb_ept_info *ept_info;
@@ -466,7 +471,7 @@ void usbd_ept_buf_custom_define(usbd_core_type *udev, uint8_t ept_addr,
     /* in endpoint info */
     ept_info = &udev->ept_in[ept_addr & 0x7F];
   }
-  
+
   if(ept_info->is_double_buffer == 0)
   {
     if( ept_info->inout == DATA_TRANS_IN )
@@ -498,7 +503,7 @@ void usbd_ept_open(usbd_core_type *udev, uint8_t ept_addr, uint8_t ept_type, uin
 {
   usbd_type *usbx = udev->usb_reg;
   usb_ept_info *ept_info;
-  
+
   if((ept_addr & 0x80) == 0)
   {
     /* out endpoint info */
@@ -511,11 +516,11 @@ void usbd_ept_open(usbd_core_type *udev, uint8_t ept_addr, uint8_t ept_type, uin
     ept_info = &udev->ept_in[ept_addr & 0x7F];
     ept_info->inout = DATA_TRANS_IN;
   }
-  
+
   /* set endpoint maxpacket and type */
   ept_info->maxpacket = (maxpacket + 1) & 0xFFFE;
   ept_info->trans_type = ept_type;
-  
+
 #ifdef USB_EPT_AUTO_MALLOC_BUFFER
   usbd_ept_buf_auto_define(ept_info);
 #endif
@@ -531,7 +536,7 @@ void usbd_ept_open(usbd_core_type *udev, uint8_t ept_addr, uint8_t ept_type, uin
   */
 void usbd_ept_close(usbd_core_type *udev, uint8_t ept_addr)
 {
-  usb_ept_info *ept_info; 
+  usb_ept_info *ept_info;
   if(ept_addr & 0x80)
   {
     /* in endpoint */
@@ -542,7 +547,7 @@ void usbd_ept_close(usbd_core_type *udev, uint8_t ept_addr)
     /* out endpoint */
     ept_info = &udev->ept_out[ept_addr & 0x7F];
   }
-  
+
   /* close endpoint */
   usb_ept_close(udev->usb_reg, ept_info);
 }
@@ -597,15 +602,15 @@ void usbd_remote_wakeup(usbd_core_type *udev)
 {
   /* set connect state */
   udev->conn_state = udev->old_conn_state;
-  
+
   usb_exit_suspend(udev->usb_reg);
-  
+
   usb_remote_wkup_set(udev->usb_reg);
-  
+
   usb_delay_ms(10);
-  
+
   usb_remote_wkup_clear(udev->usb_reg);
-  
+
 }
 
 /**
@@ -636,9 +641,9 @@ void usbd_ept_defaut_init(usbd_core_type *udev)
     udev->ept_in[i_index].trans_buf   = 0;
     udev->ept_in[i_index].total_len   = 0;
     udev->ept_in[i_index].tx_addr     = 0;
-    udev->ept_in[i_index].rx_addr     = 0;      
+    udev->ept_in[i_index].rx_addr     = 0;
   }
-  
+
   /* init out endpoint info structure */
   for(i_index = 0; i_index < USB_EPT_MAX_NUM; i_index ++)
   {
@@ -648,14 +653,14 @@ void usbd_ept_defaut_init(usbd_core_type *udev)
     udev->ept_out[i_index].maxpacket   = 0;
     udev->ept_out[i_index].trans_buf   = 0;
     udev->ept_out[i_index].total_len   = 0;
-    udev->ept_out[i_index].rx_addr     = 0; 
-    udev->ept_out[i_index].tx_addr     = 0; 
+    udev->ept_out[i_index].rx_addr     = 0;
+    udev->ept_out[i_index].tx_addr     = 0;
   }
   return;
 }
 
 /**
-  * @brief  initializes the usb core 
+  * @brief  initializes the usb core
   * @param  udev: to the structure of usbd_core_type
   * @param  usb_reg: usb register pointer (USB)
   * @param  class_handler: usb class handler
@@ -665,37 +670,33 @@ void usbd_ept_defaut_init(usbd_core_type *udev)
   */
 void usbd_core_init(usbd_core_type *udev,
                     usb_reg_type *usb_reg,
-                    usbd_class_handler *class_handler, 
+                    usbd_class_handler *class_handler,
                     usbd_desc_handler *desc_handler,
                     uint8_t core_id)
 {
   /* usb class handler */
   udev->class_handler = class_handler;
-  
+
   /* usb description handler */
   udev->desc_handler = desc_handler;
-  
+
   /* set usb register type */
   udev->usb_reg = usb_reg;
-  
+
   /* set usb connect state to default */
   udev->conn_state = USB_CONN_STATE_DEFAULT;
-  
+
   /* init in endpoint info structure */
   usbd_ept_defaut_init(udev);
-  
+
 #ifdef USB_BUFFER_SIZE_EX
   /* usb buffer size extend 768-1280 byte */
   usb_usbbufs_enable(usb_reg, TRUE);
 #endif
-  
+
   /*usb register config */
   usb_dev_init(udev->usb_reg);
 }
-
-/**
-  * @}
-  */ 
 
 /**
   * @}
@@ -703,4 +704,8 @@ void usbd_core_init(usbd_core_type *udev,
 
 /**
   * @}
-  */ 
+  */
+
+/**
+  * @}
+  */

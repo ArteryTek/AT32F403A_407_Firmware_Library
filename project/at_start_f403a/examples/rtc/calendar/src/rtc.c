@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     rtc.c
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    this file provides template for calendar api.
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -29,7 +29,7 @@
 /** @addtogroup AT32F403A_periph_examples
   * @{
   */
-  
+
 /** @addtogroup 403A_RTC_calendar
   * @{
   */
@@ -78,10 +78,10 @@ uint8_t rtc_init(calendar_type *calendar)
 
     /* wait for the register write to complete */
     rtc_wait_config_finish();
-    
+
     /* set rtc divider: set rtc period to 1sec */
     rtc_divider_set(32767);
-    
+
     /* wait for the register write to complete */
     rtc_wait_config_finish();
 
@@ -90,7 +90,7 @@ uint8_t rtc_init(calendar_type *calendar)
 
     /* writes data to bpr register */
     bpr_data_write(BPR_DATA1, 0x1234);
-    
+
     return 1;
   }
   else
@@ -100,8 +100,8 @@ uint8_t rtc_init(calendar_type *calendar)
 
     /* wait for the register write to complete */
     rtc_wait_config_finish();
-    
-    return 0;    
+
+    return 0;
   }
 }
 
@@ -183,11 +183,11 @@ uint8_t rtc_time_set(calendar_type *calendar)
   }
 
   seccount += (uint8_t)(calendar->date - 1) * 86400;
-  
+
   seccount += (uint8_t)calendar->hour * 3600;
-  
+
   seccount += (uint8_t)calendar->min * 60;
-  
+
   seccount += calendar->sec;
 
   /* enable pwc and bpr clocks */
@@ -387,8 +387,8 @@ void rtc_time_get(void)
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */

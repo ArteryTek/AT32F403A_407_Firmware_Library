@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_int.c
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    main interrupt service routines.
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -32,12 +32,12 @@
 /** @addtogroup AT32F407_periph_examples
   * @{
   */
-  
+
 /** @addtogroup 407_PWC_sleep_usart1
   * @{
   */
-  
-  
+
+
 uint16_t usart1_index = 0;
 /**
   * @brief  this function handles nmi exception.
@@ -147,7 +147,7 @@ void USART1_IRQHandler(void)
   {
     /* clear rdbf flag */
     usart1_index = usart_data_receive(USART1);
-    
+
     /* toggle led */
     at32_led_toggle(LED4);
   }
@@ -156,8 +156,8 @@ void USART1_IRQHandler(void)
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */

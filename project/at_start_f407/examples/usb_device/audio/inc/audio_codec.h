@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     audio_codec.h
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    audio codec header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -31,20 +31,20 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
- 
+
 
 /** @addtogroup AT32F407_periph_examples
   * @{
   */
-  
+
 /** @addtogroup 407_USB_device_audio
   * @{
   */
-  
+
 /* includes ------------------------------------------------------------------*/
 #include "at32f403a_407.h"
 
-/** @defgroup USB_device_audio_codec_reg_definition 
+/** @defgroup USB_device_audio_codec_reg_definition
   * @{
   */
 #define WM8988_R0_LEFT_INPUT_VOLUME                0x00    /*Left channel PGA control*/
@@ -97,7 +97,7 @@ extern "C" {
   * @}
   */
 
-/** @defgroup USB_device_audio_codec_pin_definition 
+/** @defgroup USB_device_audio_codec_pin_definition
   * @{
   */
 #define I2S1_WS_PIN                      GPIO_PINS_4
@@ -143,7 +143,7 @@ typedef struct
   uint16_t spk_threshold;
   uint16_t spk_calc;
   uint8_t  spk_stage;
-  
+
   //mic part
   uint16_t mic_buffer[MIC_BUFFER_SIZE];
   uint16_t *mic_roff;
@@ -156,19 +156,19 @@ typedef struct
   uint16_t mic_adj_count;
   uint8_t  mic_adj_stage;
   uint8_t  mic_stage;
-  
+
   uint8_t mic_mute;
   uint8_t spk_mute;
-  
+
   uint16_t mic_volume;
   uint16_t spk_volume;
-  
+
   uint32_t spk_tx_size;
   uint32_t mic_rx_size;
-  
+
   uint32_t spk_enable;
   uint32_t mic_enable;
-  
+
 }audio_codec_type;
 
 error_status audio_codec_init(void);

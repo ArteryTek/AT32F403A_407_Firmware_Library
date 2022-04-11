@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -49,35 +49,35 @@
 int main(void)
 {
   error_status status;
-  /* config vector table offset */ 
+  /* config vector table offset */
   nvic_vector_table_set(NVIC_VECTTAB_FLASH, 0x10000);
- 
+
   /* config nvic priority group */
   nvic_priority_group_config(NVIC_PRIORITY_GROUP_4);
- 
+
   system_clock_config();
 
   at32_board_init();
-  
+
   delay_init();
-  
+
    /* check and clear iap_upgrade_flag flag */
   iap_init();
-  
+
   status = emac_system_init();
 
   while(status == ERROR);
-  
+
   tcpip_stack_init();
-  
+
   tmr_init();
 
-  while(1);  
+  while(1);
 }
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}

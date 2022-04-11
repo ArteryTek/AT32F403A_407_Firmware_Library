@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -30,7 +30,7 @@
 /** @addtogroup AT32F403A_periph_examples
   * @{
   */
-  
+
 /** @addtogroup 403A_TMR_oc_high TMR_oc_high
   * @{
   */
@@ -55,7 +55,7 @@ void gpio_configuration(void)
   gpio_init_type gpio_init_struct;
 
   gpio_default_para_init(&gpio_init_struct);
-  
+
   /* gpioc configuration: pin6, 7, 8 and 9 as output push-pull */
   gpio_init_struct.gpio_pins = GPIO_PINS_6 | GPIO_PINS_7 | GPIO_PINS_8 | GPIO_PINS_9;
   gpio_init_struct.gpio_out_type = GPIO_OUTPUT_PUSH_PULL;
@@ -75,7 +75,7 @@ int main(void)
 {
   /* config nvic priority group */
   nvic_priority_group_config(NVIC_PRIORITY_GROUP_4);
- 
+
   system_clock_config();
 
   at32_board_init();
@@ -134,8 +134,8 @@ int main(void)
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */

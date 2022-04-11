@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -30,7 +30,7 @@
 /** @addtogroup AT32F403A_periph_examples
   * @{
   */
-  
+
 /** @addtogroup 403A_TMR_7_pwm_output TMR_7_pwm_output
   * @{
   */
@@ -100,19 +100,19 @@ int main(void)
    the channel 4 duty cycle is set to 12.5%
    the timer pulse is calculated as follows:
      - channelxpulse = duty_cycle * (tim1_period - 1) / 100 */
-  
+
   /* compute the value to be set in arr regiter to generate signal frequency at 17.57 khz */
   timer_period = (crm_clocks_freq_struct.sclk_freq / 17570 ) - 1;
-  
+
   /* compute ccr1 value to generate a duty cycle at 50% for channel 1 and 1n */
   channel1_pulse = (uint16_t)(((uint32_t) 5 * (timer_period - 1)) / 10);
-  
+
   /* compute ccr2 value to generate a duty cycle at 37.5%  for channel 2 and 2n */
   channel2_pulse = (uint16_t)(((uint32_t) 375 * (timer_period - 1)) / 1000);
-  
+
   /* compute ccr3 value to generate a duty cycle at 25%  for channel 3 and 3n */
   channel3_pulse = (uint16_t)(((uint32_t) 25 * (timer_period - 1)) / 100);
-  
+
   /* compute ccr4 value to generate a duty cycle at 12.5%  for channel 4 */
   channel4_pulse = (uint16_t)(((uint32_t) 125 * (timer_period- 1)) / 1000);
 
@@ -128,26 +128,26 @@ int main(void)
   tmr_output_struct.occ_output_state = TRUE;
   tmr_output_struct.occ_polarity = TMR_OUTPUT_ACTIVE_HIGH;
   tmr_output_struct.occ_idle_state = FALSE;
-  
+
   /* channel 1 */
   tmr_output_channel_config(TMR1, TMR_SELECT_CHANNEL_1, &tmr_output_struct);
   tmr_channel_value_set(TMR1, TMR_SELECT_CHANNEL_1, channel1_pulse);
-  
+
   /* channel 2 */
   tmr_output_channel_config(TMR1, TMR_SELECT_CHANNEL_2, &tmr_output_struct);
   tmr_channel_value_set(TMR1, TMR_SELECT_CHANNEL_2, channel2_pulse);
-  
+
   /* channel 3 */
   tmr_output_channel_config(TMR1, TMR_SELECT_CHANNEL_3, &tmr_output_struct);
   tmr_channel_value_set(TMR1, TMR_SELECT_CHANNEL_3, channel3_pulse);
-  
+
   /* channel 4 */
   tmr_output_channel_config(TMR1, TMR_SELECT_CHANNEL_4, &tmr_output_struct);
   tmr_channel_value_set(TMR1, TMR_SELECT_CHANNEL_4, channel4_pulse);
 
   /* output enable */
   tmr_output_enable(TMR1, TRUE);
-  
+
   /* enable tmr1 */
   tmr_counter_enable(TMR1, TRUE);
 
@@ -158,8 +158,8 @@ int main(void)
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */

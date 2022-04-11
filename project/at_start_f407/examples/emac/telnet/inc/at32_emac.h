@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     at32_emac.h
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    header file of emac config program.
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -23,7 +23,7 @@
   *
   **************************************************************************
   */
-  
+
 /* define to prevent recursive inclusion -------------------------------------*/
 #ifndef __AT32_EMAC_H
 #define __AT32_EMAC_H
@@ -31,21 +31,21 @@
 #ifdef __cplusplus
  extern "C" {
 #endif
-   
-/* includes ------------------------------------------------------------------*/                                                                               
+
+/* includes ------------------------------------------------------------------*/
 #include "at32f403a_407.h"
-   
+
 /** @addtogroup AT32F407_periph_examples
   * @{
   */
-  
+
 /** @addtogroup 407_EMAC_telnet
   * @{
   */
 
 #define RX_REMAP                         (1)
 #define CRYSTAL_ON_PHY                   (0)
-  
+
 //#define MII_MODE
 #define RMII_MODE
 
@@ -81,11 +81,11 @@
   /* phy status register */
   #define PHY_LINKED_STATUS_BIT            (0x0004)     /*!< link status */
   #define PHY_NEGO_COMPLETE_BIT            (0x0020)     /*!< auto negotiation complete */
-  
+
   #define PHY_DUPLEX_MODE                  (0x0004)     /*!< full duplex mode */
   #define PHY_SPEED_MODE                   (0x0002)     /*!< 10 mbps */
 #endif
-  
+
 error_status emac_system_init(void);
 void emac_nvic_configuration(void);
 void emac_pins_configuration(void);

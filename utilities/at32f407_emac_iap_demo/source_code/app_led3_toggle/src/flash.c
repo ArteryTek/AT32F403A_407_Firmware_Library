@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     flash.c
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    flash program
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -43,7 +43,7 @@
   */
 void flash_2kb_write(uint32_t write_addr, uint8_t *pbuffer)
 {
-  uint16_t index, write_data;  
+  uint16_t index, write_data;
   flash_unlock();
   flash_sector_erase(write_addr);
   if(FLASH_SIZE < 0x100)  /* less than 256kb, 1kb/sector */
@@ -75,7 +75,7 @@ flag_status flash_upgrade_flag_read(void)
   * @note   after writing data buffer, the flash content is checked.
   * @param  flash_address: start address for writing data buffer
   * @param  data: pointer on data buffer
-  * @param  data_length: length of data buffer (unit is 32-bit word)   
+  * @param  data_length: length of data buffer (unit is 32-bit word)
   * @retval 0: data successfully written to flash memory
   *         1: error occurred while writing data in flash memory
   *         2: written data in flash memory is different from expected one
@@ -87,7 +87,7 @@ uint32_t flash_if_write(__IO uint32_t* flash_address, uint32_t* data ,uint16_t d
   for (i = 0; (i < data_length) && (*flash_address <= (USER_FLASH_END_ADDRESS - 4)); i++)
   {
     /* device voltage range supposed to be [2.7v to 3.6v], the operation will
-       be done by word */ 
+       be done by word */
     if (flash_word_program(*flash_address, *(uint32_t*)(data + i)) == FLASH_OPERATE_DONE)
     {
      /* check the written value */
@@ -111,7 +111,7 @@ uint32_t flash_if_write(__IO uint32_t* flash_address, uint32_t* data ,uint16_t d
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}

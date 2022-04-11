@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     tmr.c
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    tmr program
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -23,7 +23,7 @@
   *
   **************************************************************************
   */
-  
+
 #include "at32f403a_407_board.h"
 #include "tmr.h"
 #include "iap.h"
@@ -55,7 +55,7 @@ void tmr_init(void)
 
   /* time base configuration */
   tmr_base_init(TMR3, 5000, crm_clocks_freq_struct.ahb_freq / 5000);
-  tmr_cnt_dir_set(TMR3, TMR_COUNT_UP);  
+  tmr_cnt_dir_set(TMR3, TMR_COUNT_UP);
 
   /* overflow interrupt enable */
   tmr_interrupt_enable(TMR3, TMR_OVF_INT, TRUE);
@@ -75,13 +75,13 @@ void TMR3_GLOBAL_IRQHandler(void)
   if(tmr_flag_get(TMR3, TMR_OVF_FLAG) == SET)
   {
     tmr_flag_clear(TMR3, TMR_OVF_FLAG);
-    at32_led_toggle(LED2);    
-  }  
+    at32_led_toggle(LED2);
+  }
 }
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}

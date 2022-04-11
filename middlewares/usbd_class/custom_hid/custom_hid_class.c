@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     custom_hid_class.c
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    usb custom hid class type
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -30,11 +30,11 @@
 /** @addtogroup AT32F403A_407_middlewares_usbd_class
   * @{
   */
-  
+
 /** @defgroup USB_custom_hid_class
   * @brief usb device custom hid demo
   * @{
-  */  
+  */
 
 /** @defgroup USB_custom_hid_class_private_functions
   * @{
@@ -54,7 +54,7 @@ static void usb_hid_buf_process(void *udev, uint8_t *report, uint16_t len);
 custom_hid_type custom_hid_struct;
 
 /* usb device class handler */
-usbd_class_handler custom_hid_class_handler = 
+usbd_class_handler custom_hid_class_handler =
 {
   class_init_handler,
   class_clear_handler,
@@ -71,7 +71,7 @@ usbd_class_handler custom_hid_class_handler =
 /**
   * @brief  initialize usb endpoint
   * @param  udev: to the structure of usbd_core_type
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 usb_sts_type class_init_handler(void *udev)
 {
@@ -83,35 +83,35 @@ usb_sts_type class_init_handler(void *udev)
   usbd_ept_buf_custom_define(pudev, USBD_CUSTOM_HID_IN_EPT, EPT1_TX_ADDR);
   usbd_ept_buf_custom_define(pudev, USBD_CUSTOM_HID_OUT_EPT, EPT1_RX_ADDR);
 #endif
-  
+
   /* open custom hid in endpoint */
   usbd_ept_open(pudev, USBD_CUSTOM_HID_IN_EPT, EPT_INT_TYPE, USBD_CUSTOM_IN_MAXPACKET_SIZE);
-  
+
   /* open custom hid out endpoint */
   usbd_ept_open(pudev, USBD_CUSTOM_HID_OUT_EPT, EPT_INT_TYPE, USBD_CUSTOM_OUT_MAXPACKET_SIZE);
-  
+
   /* set out endpoint to receive status */
   usbd_ept_recv(pudev, USBD_CUSTOM_HID_OUT_EPT, pcshid->g_rxhid_buff, USBD_CUSTOM_OUT_MAXPACKET_SIZE);
-  
+
   return status;
 }
 
 /**
   * @brief  clear endpoint or other state
   * @param  udev: to the structure of usbd_core_type
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type class_clear_handler(void *udev)
 {
   usb_sts_type status = USB_OK;
   usbd_core_type *pudev = (usbd_core_type *)udev;
-  
+
   /* close custom hid in endpoint */
   usbd_ept_close(pudev, USBD_CUSTOM_HID_IN_EPT);
-  
+
   /* close custom hid out endpoint */
   usbd_ept_close(pudev, USBD_CUSTOM_HID_OUT_EPT);
-  
+
   return status;
 }
 
@@ -119,7 +119,7 @@ static usb_sts_type class_clear_handler(void *udev)
   * @brief  usb device class setup request handler
   * @param  udev: to the structure of usbd_core_type
   * @param  setup: setup packet
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type class_setup_handler(void *udev, usb_setup_type *setup)
 {
@@ -193,21 +193,21 @@ static usb_sts_type class_setup_handler(void *udev, usb_setup_type *setup)
 /**
   * @brief  usb device class endpoint 0 in status stage complete
   * @param  udev: to the structure of usbd_core_type
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type class_ept0_tx_handler(void *udev)
 {
   usb_sts_type status = USB_OK;
-  
+
   /* ...user code... */
-  
+
   return status;
 }
 
 /**
   * @brief  usb device class endpoint 0 out status stage complete
   * @param  udev: to the structure of usbd_core_type
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type class_ept0_rx_handler(void *udev)
 {
@@ -222,7 +222,7 @@ static usb_sts_type class_ept0_rx_handler(void *udev)
     usb_hid_buf_process(udev, pcshid->hid_set_report, recv_len);
     pcshid->hid_state = 0;
   }
-  
+
   return status;
 }
 
@@ -230,16 +230,16 @@ static usb_sts_type class_ept0_rx_handler(void *udev)
   * @brief  usb device class transmision complete handler
   * @param  udev: to the structure of usbd_core_type
   * @param  ept_num: endpoint number
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type class_in_handler(void *udev, uint8_t ept_num)
 {
   usb_sts_type status = USB_OK;
-  
+
   /* ...user code...
     trans next packet data
   */
-  
+
   return status;
 }
 
@@ -247,37 +247,37 @@ static usb_sts_type class_in_handler(void *udev, uint8_t ept_num)
   * @brief  usb device class endpoint receive data
   * @param  udev: to the structure of usbd_core_type
   * @param  ept_num: endpoint number
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type class_out_handler(void *udev, uint8_t ept_num)
 {
   usb_sts_type status = USB_OK;
   usbd_core_type *pudev = (usbd_core_type *)udev;
   custom_hid_type *pcshid = (custom_hid_type *)pudev->class_handler->pdata;
-  
+
   /* get endpoint receive data length  */
   uint32_t recv_len = usbd_get_recv_len(pudev, ept_num);
-  
+
   /* hid buffer process */
   usb_hid_buf_process(udev, pcshid->g_rxhid_buff, recv_len);
-  
+
   /* start receive next packet */
   usbd_ept_recv(pudev, USBD_CUSTOM_HID_OUT_EPT, pcshid->g_rxhid_buff, recv_len);
-  
+
   return status;
 }
 
 /**
   * @brief  usb device class sof handler
   * @param  udev: to the structure of usbd_core_type
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type class_sof_handler(void *udev)
 {
   usb_sts_type status = USB_OK;
-  
+
   /* ...user code... */
-  
+
   return status;
 }
 
@@ -285,7 +285,7 @@ static usb_sts_type class_sof_handler(void *udev)
   * @brief  usb device class event handler
   * @param  udev: to the structure of usbd_core_type
   * @param  event: usb device event
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type class_event_handler(void *udev, usbd_event_type event)
 {
@@ -293,18 +293,18 @@ static usb_sts_type class_event_handler(void *udev, usbd_event_type event)
   switch(event)
   {
     case USBD_RESET_EVENT:
-      
+
       /* ...user code... */
-    
+
       break;
     case USBD_SUSPEND_EVENT:
-      
+
       /* ...user code... */
-    
+
       break;
     case USBD_WAKEUP_EVENT:
       /* ...user code... */
-    
+
       break;
     default:
       break;
@@ -317,7 +317,7 @@ static usb_sts_type class_event_handler(void *udev, usbd_event_type event)
   * @param  udev: to the structure of usbd_core_type
   * @param  report: report buffer
   * @param  len: report length
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 usb_sts_type custom_hid_class_send_report(void *udev, uint8_t *report, uint16_t len)
 {
@@ -326,7 +326,7 @@ usb_sts_type custom_hid_class_send_report(void *udev, uint8_t *report, uint16_t 
 
   if(usbd_connect_state_get(pudev) == USB_CONN_STATE_CONFIGURED)
     usbd_ept_send(pudev, USBD_CUSTOM_HID_IN_EPT, report, len);
-  
+
   return status;
 }
 
@@ -335,14 +335,14 @@ usb_sts_type custom_hid_class_send_report(void *udev, uint8_t *report, uint16_t 
   * @param  udev: to the structure of usbd_core_type
   * @param  report: report buffer
   * @param  len: report length
-  * @retval none                            
+  * @retval none
   */
 static void usb_hid_buf_process(void *udev, uint8_t *report, uint16_t len)
 {
   uint32_t i_index;
   usbd_core_type *pudev = (usbd_core_type *)udev;
   custom_hid_type *pcshid = (custom_hid_type *)pudev->class_handler->pdata;
-  
+
   switch(report[0])
   {
     case HID_REPORT_ID_2:
@@ -382,14 +382,14 @@ static void usb_hid_buf_process(void *udev, uint8_t *report, uint16_t len)
       }
       usbd_ept_send(pudev, USBD_CUSTOM_HID_IN_EPT, pcshid->g_txhid_buff, len);
     default:
-      break;   
+      break;
   }
-  
+
 }
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}

@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     audio_desc.h
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    usb audio descriptor header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -23,7 +23,7 @@
   *
   **************************************************************************
   */
-  
+
 /* define to prevent recursive inclusion -------------------------------------*/
 #ifndef __AUDIO_DESC_H
 #define __AUDIO_DESC_H
@@ -31,7 +31,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
- 
+
 #include "audio_class.h"
 #include "usbd_core.h"
 #include "audio_conf.h"
@@ -39,12 +39,12 @@ extern "C" {
 /** @addtogroup AT32F403A_407_middlewares_usbd_class
   * @{
   */
-  
+
 /** @addtogroup USB_audio_desc
   * @{
   */
 
-/** @defgroup USB_audio_desc_definition 
+/** @defgroup USB_audio_desc_definition
   * @{
   */
 
@@ -70,7 +70,7 @@ extern "C" {
 #define AUDIO_SUBCLASS_MIDISTREMING      0x03
 
 /**
-  * @brief audio class-specific descriptor types 
+  * @brief audio class-specific descriptor types
   */
 #define AUDIO_CS_INTERFACE               0x24
 #define AUDIO_CS_ENDPOINT                0x25
@@ -98,7 +98,7 @@ extern "C" {
 #define AUDIO_AC_EXTENSION_UNIT          0x08
 
 /**
-  * @brief audio class-specific as interface descriptor subtypes 
+  * @brief audio class-specific as interface descriptor subtypes
   */
 #define AUDIO_AS_DESCRIPTOR_UNDEFINED    0x00
 #define AUDIO_AS_GENERAL                 0x01
@@ -221,11 +221,11 @@ extern usbd_desc_handler audio_desc_handler;
 /**
   * @}
   */
-  
+
 /**
   * @}
   */
-  
+
 /**
   * @}
   */

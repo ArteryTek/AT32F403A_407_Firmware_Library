@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     touch.h
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    this file contains all the functions prototypes for the
   *           touch firmware driver.
   **************************************************************************
@@ -104,7 +104,7 @@ error_status touch_adjust(void);
 /**
   * @}
   */
-  
+
 #ifdef __cplusplus
 }
 #endif

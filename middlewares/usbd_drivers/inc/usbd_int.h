@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     usb_int.h
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    usb header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -39,11 +39,11 @@ extern "C" {
 /** @addtogroup AT32F403A_407_middlewares_usbd_drivers
   * @{
   */
-  
+
 /** @addtogroup USBD_drivers_interrupt
   * @{
   */
-  
+
 /** @defgroup USBD_int_exported_functions
   * @{
   */
@@ -57,11 +57,11 @@ void usbd_wakeup_handler(usbd_core_type *udev);
 
 /**
   * @}
-  */ 
-  
+  */
+
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}

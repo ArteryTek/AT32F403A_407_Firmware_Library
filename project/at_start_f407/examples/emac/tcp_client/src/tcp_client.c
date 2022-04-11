@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     tcp_client.c
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    implement tcp client
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -23,7 +23,7 @@
   *
   **************************************************************************
   */
-  
+
 #include "tcp_client.h"
 #include "lwip/tcp.h"
 
@@ -55,7 +55,7 @@ err_t tcp_client_send_data(struct tcp_pcb *cpcb,unsigned char *buff,unsigned int
 
 	err = tcp_write(cpcb,buff,length,TCP_WRITE_FLAG_COPY);	//send data
 	tcp_output(cpcb);
-	return err;					
+	return err;
 }
 
 /**
@@ -68,11 +68,11 @@ struct tcp_pcb *check_tcp_connect(void)
 	struct tcp_pcb *cpcb = 0;
 	connect_flag = 0;
 	for(cpcb = tcp_active_pcbs;cpcb != NULL; cpcb = cpcb->next)
-	{	
-		if(cpcb -> state == ESTABLISHED) 
+	{
+		if(cpcb -> state == ESTABLISHED)
 		{
 			connect_flag = 1;
-			break;							   	
+			break;
 		}
 	}
 
@@ -81,12 +81,12 @@ struct tcp_pcb *check_tcp_connect(void)
 		tcp_client_init(TCP_LOCAL_PORT,TCP_SERVER_PORT,TCP_SERVER_IP);
 		cpcb = 0;
 	}
-	return cpcb;	
+	return cpcb;
 }
 
 /**
   * @brief  report connection is establish
-  * @param  arg: user supplied argument 
+  * @param  arg: user supplied argument
   * @param  pcb: the tcp_pcb which accepted the connection
   * @param  err: error value
   * @retval err_t: it will response error code
@@ -112,15 +112,15 @@ err_t tcp_client_recv(void *arg, struct tcp_pcb *pcb,struct pbuf *p,err_t err)
 	{
 		tcp_recved(pcb, p->tot_len);
 		tcp_write(pcb,p->payload,p->tot_len,TCP_WRITE_FLAG_COPY);
-		tcp_output(pcb);			    
+		tcp_output(pcb);
 	}
 	else
 	{
-		tcp_close(pcb); 						
+		tcp_close(pcb);
 	}
-	pbuf_free(p); 				
+	pbuf_free(p);
 	err = ERR_OK;
-	return err;	
+	return err;
 }
 
 /**
@@ -144,7 +144,7 @@ void tcp_client_init(uint16_t local_port,uint16_t remote_port,unsigned char a,un
 	if (!tcp_client_pcb)
 	{
 		return ;
-	}	
+	}
 	err = tcp_bind(tcp_client_pcb,IP_ADDR_ANY,local_port);
     if(err != ERR_OK)
 	{

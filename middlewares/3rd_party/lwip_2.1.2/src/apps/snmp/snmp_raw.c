@@ -94,12 +94,12 @@ snmp_init(void)
   LWIP_ASSERT_CORE_LOCKED();
 
   snmp_traps_handle = snmp_pcb;
-  
+
   err = udp_bind(snmp_pcb, IP_ANY_TYPE, LWIP_IANA_PORT_SNMP);
 
   if(err == ERR_OK)
   {
-    
+
     /* Set a receive callback for the snmp_pcb */
     udp_recv(snmp_pcb, snmp_recv, NULL);
   }
@@ -108,7 +108,7 @@ snmp_init(void)
     udp_remove(snmp_pcb);
     printf("can not bind pcb");
   }
-  
+
   LWIP_ERROR("snmp_raw: Unable to bind PCB", (err == ERR_OK), return;);
 }
 

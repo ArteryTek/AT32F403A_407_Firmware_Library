@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     keyboard_class.c
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    usb hid keyboard class type
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -30,11 +30,11 @@
 /** @addtogroup AT32F403A_407_middlewares_usbd_class
   * @{
   */
-  
+
 /** @defgroup USB_keyboard_class
   * @brief usb device keyboard demo
   * @{
-  */  
+  */
 
 /** @defgroup USB_keyboard_class_private_functions
   * @{
@@ -65,7 +65,7 @@ const static unsigned char _asciimap[128] =
 	0x2A,// BS Backspace
 	0x2B,// TAB	Tab
 	0x28,// LF	Enter
-	0x00,// VT 
+	0x00,// VT
 	0x00,// FF
 	0x00,// CR
 	0x00,// SO
@@ -186,7 +186,7 @@ const static unsigned char _asciimap[128] =
 };
 
 /* usb device class handler */
-usbd_class_handler keyboard_class_handler = 
+usbd_class_handler keyboard_class_handler =
 {
   class_init_handler,
   class_clear_handler,
@@ -203,7 +203,7 @@ usbd_class_handler keyboard_class_handler =
 /**
   * @brief  initialize usb endpoint
   * @param  udev: to the structure of usbd_core_type
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type class_init_handler(void *udev)
 {
@@ -214,28 +214,28 @@ static usb_sts_type class_init_handler(void *udev)
   /* use user define buffer address */
   usbd_ept_buf_custom_define(pudev, USBD_KEYBOARD_IN_EPT, EPT1_TX_ADDR);
 #endif
-  
+
   /* open hid in endpoint */
   usbd_ept_open(pudev, USBD_KEYBOARD_IN_EPT, EPT_INT_TYPE, USBD_KEYBOARD_IN_MAXPACKET_SIZE);
-  
+
   pkeyboard->g_u8tx_completed = 1;
-  
+
   return status;
 }
 
 /**
   * @brief  clear endpoint or other state
   * @param  udev: to the structure of usbd_core_type
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type class_clear_handler(void *udev)
 {
   usb_sts_type status = USB_OK;
   usbd_core_type *pudev = (usbd_core_type *)udev;
-  
+
   /* close hid in endpoint */
   usbd_ept_close(pudev, USBD_KEYBOARD_IN_EPT);
-  
+
   return status;
 }
 
@@ -243,7 +243,7 @@ static usb_sts_type class_clear_handler(void *udev)
   * @brief  usb device class setup request handler
   * @param  udev: to the structure of usbd_core_type
   * @param  setup: setup packet
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type class_setup_handler(void *udev, usb_setup_type *setup)
 {
@@ -317,21 +317,21 @@ static usb_sts_type class_setup_handler(void *udev, usb_setup_type *setup)
 /**
   * @brief  usb device class endpoint 0 in status stage complete
   * @param  udev: to the structure of usbd_core_type
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type class_ept0_tx_handler(void *udev)
 {
   usb_sts_type status = USB_OK;
-  
+
   /* ...user code... */
-  
+
   return status;
 }
 
 /**
   * @brief  usb device class endpoint 0 out status stage complete
   * @param  udev: to the structure of usbd_core_type
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type class_ept0_rx_handler(void *udev)
 {
@@ -345,7 +345,7 @@ static usb_sts_type class_ept0_rx_handler(void *udev)
     /* hid buffer process */
     pkeyboard->hid_state = 0;
   }
-  
+
   return status;
 }
 
@@ -353,19 +353,19 @@ static usb_sts_type class_ept0_rx_handler(void *udev)
   * @brief  usb device class transmision complete handler
   * @param  udev: to the structure of usbd_core_type
   * @param  ept_num: endpoint number
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type class_in_handler(void *udev, uint8_t ept_num)
 {
   usb_sts_type status = USB_OK;
   usbd_core_type *pudev = (usbd_core_type *)udev;
   keyboard_type *pkeyboard = (keyboard_type *)pudev->class_handler->pdata;
-  
+
   /* ...user code...
     trans next packet data
   */
   pkeyboard->g_u8tx_completed = 1;
-  
+
   return status;
 }
 
@@ -373,26 +373,26 @@ static usb_sts_type class_in_handler(void *udev, uint8_t ept_num)
   * @brief  usb device class endpoint receive data
   * @param  udev: to the structure of usbd_core_type
   * @param  ept_num: endpoint number
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type class_out_handler(void *udev, uint8_t ept_num)
 {
   usb_sts_type status = USB_OK;
-  
+
   return status;
 }
 
 /**
   * @brief  usb device class sof handler
   * @param  udev: to the structure of usbd_core_type
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type class_sof_handler(void *udev)
 {
   usb_sts_type status = USB_OK;
-  
+
   /* ...user code... */
-  
+
   return status;
 }
 
@@ -400,7 +400,7 @@ static usb_sts_type class_sof_handler(void *udev)
   * @brief  usb device class event handler
   * @param  udev: to the structure of usbd_core_type
   * @param  event: usb device event
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type class_event_handler(void *udev, usbd_event_type event)
 {
@@ -410,18 +410,18 @@ static usb_sts_type class_event_handler(void *udev, usbd_event_type event)
   switch(event)
   {
     case USBD_RESET_EVENT:
-      
+
       /* ...user code... */
-    
+
       break;
     case USBD_SUSPEND_EVENT:
       pkeyboard->hid_suspend_flag = 1;
       /* ...user code... */
-    
+
       break;
     case USBD_WAKEUP_EVENT:
       /* ...user code... */
-    
+
       break;
     default:
       break;
@@ -434,7 +434,7 @@ static usb_sts_type class_event_handler(void *udev, usbd_event_type event)
   * @param  udev: to the structure of usbd_core_type
   * @param  report: report buffer
   * @param  len: report length
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 usb_sts_type usb_keyboard_class_send_report(void *udev, uint8_t *report, uint16_t len)
 {
@@ -443,7 +443,7 @@ usb_sts_type usb_keyboard_class_send_report(void *udev, uint8_t *report, uint16_
 
   if(usbd_connect_state_get(pudev) == USB_CONN_STATE_CONFIGURED)
     usbd_ept_send(pudev, USBD_KEYBOARD_IN_EPT, report, len);
-  
+
   return status;
 }
 
@@ -452,14 +452,14 @@ usb_sts_type usb_keyboard_class_send_report(void *udev, uint8_t *report, uint16_
   * @brief  usb device class report function
   * @param  udev: to the structure of usbd_core_type
   * @param  op: operation
-  * @retval none                            
+  * @retval none
   */
 void usb_hid_keyboard_send_char(void *udev, uint8_t ascii_code)
 {
   uint8_t key_data = 0;
   usbd_core_type *pudev = (usbd_core_type *)udev;
   keyboard_type *pkeyboard = (keyboard_type *)pudev->class_handler->pdata;
-  
+
   if(ascii_code > 128)
   {
     ascii_code = 0;
@@ -471,14 +471,14 @@ void usb_hid_keyboard_send_char(void *udev, uint8_t ascii_code)
     {
       ascii_code = 0;
     }
-    
+
     if(ascii_code & SHIFT)
     {
       key_data = 0x2;
       ascii_code &= 0x7F;
     }
   }
-  
+
   if((pkeyboard->temp == ascii_code) && (ascii_code != 0))
   {
     pkeyboard->keyboard_buf[0] = 0;
@@ -496,7 +496,7 @@ void usb_hid_keyboard_send_char(void *udev, uint8_t ascii_code)
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}

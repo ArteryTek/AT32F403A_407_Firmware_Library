@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     hid_iap_class.c
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    usb hid iap class type
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -30,11 +30,11 @@
 /** @addtogroup AT32F403A_407_middlewares_usbd_class
   * @{
   */
-  
+
 /** @defgroup USB_hid_iap_class
   * @brief usb device class hid iap demo
   * @{
-  */  
+  */
 
 /** @defgroup USB_hid_iap_class_private_functions
   * @{
@@ -54,7 +54,7 @@ static usb_sts_type class_event_handler(void *udev, usbd_event_type event);
 iap_info_type iap_info;
 
 /* usb device class handler */
-usbd_class_handler hid_iap_class_handler = 
+usbd_class_handler hid_iap_class_handler =
 {
   class_init_handler,
   class_clear_handler,
@@ -71,7 +71,7 @@ usbd_class_handler hid_iap_class_handler =
 /**
   * @brief  initialize usb custom hid endpoint
   * @param  udev: to the structure of usbd_core_type
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type class_init_handler(void *udev)
 {
@@ -80,32 +80,32 @@ static usb_sts_type class_init_handler(void *udev)
   iap_info_type *piap = (iap_info_type *)pudev->class_handler->pdata;
   /* open hid iap in endpoint */
   usbd_ept_open(pudev, USBD_HIDIAP_IN_EPT, EPT_INT_TYPE, USBD_HIDIAP_IN_MAXPACKET_SIZE);
-  
+
   /* open hid iap out endpoint */
   usbd_ept_open(pudev, USBD_HIDIAP_OUT_EPT, EPT_INT_TYPE, USBD_HIDIAP_OUT_MAXPACKET_SIZE);
-  
+
   /* set out endpoint to receive status */
   usbd_ept_recv(pudev, USBD_HIDIAP_OUT_EPT, piap->g_rxhid_buff, USBD_HIDIAP_OUT_MAXPACKET_SIZE);
-  
+
   return status;
 }
 
 /**
   * @brief  clear endpoint or other state
   * @param  udev: to the structure of usbd_core_type
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type class_clear_handler(void *udev)
 {
   usb_sts_type status = USB_OK;
   usbd_core_type *pudev = (usbd_core_type *)udev;
-  
+
   /* close hid iap  in endpoint */
   usbd_ept_close(pudev, USBD_HIDIAP_IN_EPT);
-  
+
   /* close hid iap  out endpoint */
   usbd_ept_close(pudev, USBD_HIDIAP_OUT_EPT);
-  
+
   return status;
 }
 
@@ -113,7 +113,7 @@ static usb_sts_type class_clear_handler(void *udev)
   * @brief  usb device class setup request handler
   * @param  udev: to the structure of usbd_core_type
   * @param  setup: setup packet
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type class_setup_handler(void *udev, usb_setup_type *setup)
 {
@@ -187,21 +187,21 @@ static usb_sts_type class_setup_handler(void *udev, usb_setup_type *setup)
 /**
   * @brief  usb device endpoint 0 in status stage complete
   * @param  udev: to the structure of usbd_core_type
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type class_ept0_tx_handler(void *udev)
 {
   usb_sts_type status = USB_OK;
-  
+
   /* ...user code... */
-  
+
   return status;
 }
 
 /**
   * @brief  usb device endpoint 0 out status stage complete
   * @param  udev: to the structure of usbd_core_type
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type class_ept0_rx_handler(void *udev)
 {
@@ -215,7 +215,7 @@ static usb_sts_type class_ept0_rx_handler(void *udev)
     /* hid buffer process */
     piap->hid_state = 0;
   }
-  
+
   return status;
 }
 
@@ -223,17 +223,17 @@ static usb_sts_type class_ept0_rx_handler(void *udev)
   * @brief  usb device transmision complete handler
   * @param  udev: to the structure of usbd_core_type
   * @param  ept_num: endpoint number
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type class_in_handler(void *udev, uint8_t ept_num)
 {
   usb_sts_type status = USB_OK;
-  
+
   /* ...user code...
     trans next packet data
   */
   usbd_hid_iap_in_complete(udev);
-  
+
   return status;
 }
 
@@ -241,37 +241,37 @@ static usb_sts_type class_in_handler(void *udev, uint8_t ept_num)
   * @brief  usb device endpoint receive data
   * @param  udev: to the structure of usbd_core_type
   * @param  ept_num: endpoint number
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type class_out_handler(void *udev, uint8_t ept_num)
 {
   usb_sts_type status = USB_OK;
   usbd_core_type *pudev = (usbd_core_type *)udev;
   iap_info_type *piap = (iap_info_type *)pudev->class_handler->pdata;
-  
+
   /* get endpoint receive data length  */
   uint32_t recv_len = usbd_get_recv_len(pudev, ept_num);
-  
+
   /* hid iap process */
   usbd_hid_iap_process(udev, piap->g_rxhid_buff, recv_len);
-  
+
   /* start receive next packet */
   usbd_ept_recv(pudev, USBD_HIDIAP_OUT_EPT, piap->g_rxhid_buff, USBD_HIDIAP_OUT_MAXPACKET_SIZE);
-  
+
   return status;
 }
 
 /**
   * @brief  usb device sof handler
   * @param  udev: to the structure of usbd_core_type
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type class_sof_handler(void *udev)
 {
   usb_sts_type status = USB_OK;
-  
+
   /* ...user code... */
-  
+
   return status;
 }
 
@@ -279,7 +279,7 @@ static usb_sts_type class_sof_handler(void *udev)
   * @brief  usb device event handler
   * @param  udev: to the structure of usbd_core_type
   * @param  event: usb device event
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type class_event_handler(void *udev, usbd_event_type event)
 {
@@ -287,18 +287,18 @@ static usb_sts_type class_event_handler(void *udev, usbd_event_type event)
   switch(event)
   {
     case USBD_RESET_EVENT:
-      
+
       /* ...user code... */
-    
+
       break;
     case USBD_SUSPEND_EVENT:
-      
+
       /* ...user code... */
-    
+
       break;
     case USBD_WAKEUP_EVENT:
       /* ...user code... */
-    
+
       break;
     default:
       break;
@@ -311,7 +311,7 @@ static usb_sts_type class_event_handler(void *udev, usbd_event_type event)
   * @param  udev: to the structure of usbd_core_type
   * @param  report: report buffer
   * @param  len: report length
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 usb_sts_type usb_iap_class_send_report(void *udev, uint8_t *report, uint16_t len)
 {
@@ -320,13 +320,13 @@ usb_sts_type usb_iap_class_send_report(void *udev, uint8_t *report, uint16_t len
 
   if(usbd_connect_state_get(pudev) == USB_CONN_STATE_CONFIGURED)
     usbd_ept_send(pudev, USBD_HIDIAP_IN_EPT, report, len);
-  
+
   return status;
 }
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}

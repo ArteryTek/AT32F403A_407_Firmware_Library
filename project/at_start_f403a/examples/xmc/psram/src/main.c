@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -31,11 +31,11 @@
 /** @addtogroup AT32F403A_periph_examples
   * @{
   */
-  
+
 /** @addtogroup 403A_XMC_psram XMC_psram
   * @{
   */
-  
+
 #define BUFFER_SIZE        0x400
 #define WRITE_READ_ADDR    0x8000
 
@@ -58,7 +58,7 @@ int main(void)
 
   /* initialize leds */
   at32_board_init();
-  
+
   /* initialize usart */
   uart_print_init(115200);
 
@@ -72,9 +72,9 @@ int main(void)
   psram_writebuffer(txbuffer, WRITE_READ_ADDR, BUFFER_SIZE);
 
   /* read data from xmc sram memory */
-  psram_readbuffer(rxbuffer, WRITE_READ_ADDR, BUFFER_SIZE);  
+  psram_readbuffer(rxbuffer, WRITE_READ_ADDR, BUFFER_SIZE);
 
-  /* read back sram memory and check content correctness */   
+  /* read back sram memory and check content correctness */
   for(index_cnt = 0x00; (index_cnt < BUFFER_SIZE) && (writereadstatus == 0); index_cnt++)
   {
     if(rxbuffer[index_cnt] != txbuffer[index_cnt])
@@ -86,12 +86,12 @@ int main(void)
   if(writereadstatus == 0)
   {
     /* pass */
-    printf("data is right\r\n");  
+    printf("data is right\r\n");
   }
   else
-  { 
+  {
     /* fail */
-    printf("data is error\r\n");   
+    printf("data is error\r\n");
   }
 
   while(1)
@@ -118,9 +118,9 @@ void fill_buffer(uint16_t *pbuffer, uint16_t bufferlenght, uint32_t offset)
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
-  
+  */
+

@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -32,7 +32,7 @@
 /** @addtogroup AT32F403A_periph_examples
   * @{
   */
-  
+
 /** @addtogroup 403A_FLASH_run_in_spim FLASH_run_in_spim
   * @{
   */
@@ -45,7 +45,7 @@
 void spim_init(void)
 {
   gpio_init_type gpio_init_struct;
-  
+
   /* enable the clock */
   crm_periph_clock_enable(CRM_IOMUX_PERIPH_CLOCK, TRUE);
   crm_periph_clock_enable(CRM_GPIOA_PERIPH_CLOCK, TRUE);
@@ -61,21 +61,21 @@ void spim_init(void)
   gpio_init(GPIOA, &gpio_init_struct);
   gpio_init_struct.gpio_pins = GPIO_PINS_1 | GPIO_PINS_6 | GPIO_PINS_7 | GPIO_PINS_10 | GPIO_PINS_11;
   gpio_init(GPIOB, &gpio_init_struct);
-  
+
   /* enable spim, and select pb10, pb11 as spim io */
   gpio_pin_remap_config(EXT_SPIM_GMUX_1001, TRUE);
 
   /* in this example, use on-board en25qh128a as spim flash */
   flash_spim_model_select(FLASH_SPIM_MODEL2);
-  
-  /* unlock the spim flash program erase controller */  
+
+  /* unlock the spim flash program erase controller */
   while(flash_flag_get(FLASH_SPIM_OBF_FLAG));
   flash_spim_unlock();
   while(FLASH->ctrl3_bit.oplk);
-    
+
   /* if the data written to spim flash need to be scrambled, please specify the scrambled range */
   flash_spim_encryption_range_set(0);
-  
+
   return;
 }
 
@@ -85,24 +85,24 @@ void spim_init(void)
   * @retval none
   */
 int main(void)
-{ 
+{
   system_clock_config();
   at32_board_init();
-  
+
   /* configures the spim flash */
   spim_init();
-  
+
   /* check the led toggle in spim */
-  spim_run(); 
-  
+  spim_run();
+
   while(1)
   {
-  }  
+  }
 }
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */

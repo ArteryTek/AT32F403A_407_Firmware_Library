@@ -1,18 +1,18 @@
 /**
   **************************************************************************
   * @file     at32_sdio.c
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    this file provides a set of functions needed to manage the
   *           sdio/mmc card memory.
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -62,7 +62,7 @@ sd_error_status_type check_card_programming(uint8_t *p_status);
 sd_error_status_type speed_change(uint8_t speed);
 sd_error_status_type scr_find(void);
 uint8_t convert_from_bytes_to_power_of_two(uint16_t number_of_bytes);
-  
+
 /**
   * @brief  initializes the sd card and put it into standby state (ready for data
   *         transfer).
@@ -163,7 +163,7 @@ sd_error_status_type sd_init(void)
     /* set transfer mode */
     status = sd_device_mode_set(SD_TRANSFER_DMA_MODE);
   }
-  
+
   if(status == SD_OK)
   {
     /* Set data width */
@@ -207,7 +207,7 @@ sd_error_status_type sd_power_on(void)
   {
     clk_psc = 0x3FF;
   }
- 
+
   /* config sdio clock divide and edge phase */
   sdio_clock_config(SDIOx, clk_psc, SDIO_CLOCK_EDGE_FALLING);
   /* config sdio bus width */
@@ -845,9 +845,9 @@ sd_error_status_type sdio_command_data_send(sdio_command_struct_type *sdio_cmd_i
   sdio_data_config(SDIOx, sdio_data_init_t);
   /* enable dcsm */
   sdio_data_state_machine_enable(SDIOx, TRUE);
-  
+
   length = sdio_data_init_t->data_length;
-  
+
   if(device_mode == SD_TRANSFER_DMA_MODE)
   {
     if(sdio_data_init_t->transfer_direction == SDIO_DATA_TRANSFER_TO_CONTROLLER)
@@ -1860,7 +1860,7 @@ sd_error_status_type sd_irq_service(void)
   /* disable interrupt */
   sdio_interrupt_enable(SDIOx, (SDIO_DTFAIL_INT  | SDIO_DTTIMEOUT_INT | \
                                SDIO_DTCMP_INT | SDIO_TXBUFH_INT | SDIO_RXBUFH_INT    | \
-                               SDIO_TXERRU_INT| SDIO_RXERRO_INT | SDIO_SBITERR_INT), FALSE); 
+                               SDIO_TXERRU_INT| SDIO_RXERRO_INT | SDIO_SBITERR_INT), FALSE);
   return(SD_OK);
 }
 
@@ -2698,7 +2698,7 @@ uint8_t convert_from_bytes_to_power_of_two(uint16_t number_of_bytes)
   * @brief  set dma configuation for sdio
   * @param  mbuf: buffer address
   * @param  buf_size: transmission data size
-  * @param  dir: dma direction, it is DMA_DIR_MEMORY_TO_PERIPHERAL(writing data) 
+  * @param  dir: dma direction, it is DMA_DIR_MEMORY_TO_PERIPHERAL(writing data)
   *              or DMA_DIR_PERIPHERAL_TO_MEMORY(read data)
   * @retval none
   */
@@ -2729,8 +2729,8 @@ void sd_dma_config(uint32_t *mbuf, uint32_t buf_size, dma_dir_type dir)
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */

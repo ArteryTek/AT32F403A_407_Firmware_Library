@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     usbd_sdr.c
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    usb standard device request
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -28,11 +28,11 @@
 /** @addtogroup AT32F403A_407_middlewares_usbd_drivers
   * @{
   */
-  
+
 /** @defgroup USBD_drivers_standard_request
   * @brief usb device standard_request
   * @{
-  */  
+  */
 
 /** @defgroup USBD_sdr_private_functions
   * @{
@@ -50,7 +50,7 @@ static usb_sts_type usbd_set_configuration(usbd_core_type *udev);
   * @brief  usb parse standard setup request
   * @param  setup: setup structure
   * @param  buf: setup buffer
-  * @retval none                            
+  * @retval none
   */
 void usbd_setup_request_parse(usb_setup_type *setup, uint8_t *buf)
 {
@@ -64,7 +64,7 @@ void usbd_setup_request_parse(usb_setup_type *setup, uint8_t *buf)
 /**
   * @brief  get usb standard device description request
   * @param  udev: to the structure of usbd_core_type
-  * @retval status of usb_sts_type                           
+  * @retval status of usb_sts_type
   */
 static usb_sts_type usbd_get_descriptor(usbd_core_type *udev)
 {
@@ -104,7 +104,7 @@ static usb_sts_type usbd_get_descriptor(usbd_core_type *udev)
           desc = udev->desc_handler->get_device_interface_string();
           break;
         default:
-          usbd_ctrl_unsupport(udev);
+          udev->class_handler->setup_handler(udev, &udev->setup);
           return ret;
       }
       break;
@@ -119,7 +119,7 @@ static usb_sts_type usbd_get_descriptor(usbd_core_type *udev)
       usbd_ctrl_unsupport(udev);
       return ret;
   }
-  
+
   if(desc != NULL)
   {
     if((desc->length != 0) && (udev->setup.wLength != 0))
@@ -134,22 +134,22 @@ static usb_sts_type usbd_get_descriptor(usbd_core_type *udev)
 /**
   * @brief  this request sets the device address
   * @param  udev: to the structure of usbd_core_type
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type usbd_set_address(usbd_core_type *udev)
 {
   usb_sts_type ret = USB_OK;
   usb_setup_type *setup = &udev->setup;
   uint8_t dev_addr;
-  
+
   /* if wIndex or wLength are non-zero, then the behavior of
      the device is not specified
   */
   if(setup->wIndex == 0 && setup->wLength == 0)
   {
     dev_addr = (uint8_t)(setup->wValue) & 0x7f;
-    
-    /* device behavior when this request is received 
+
+    /* device behavior when this request is received
        while the device is in the configured state is not specified.*/
     if(udev->conn_state == USB_CONN_STATE_CONFIGURED )
     {
@@ -158,7 +158,7 @@ static usb_sts_type usbd_set_address(usbd_core_type *udev)
     else
     {
       udev->device_addr = dev_addr;
-      
+
       if(dev_addr != 0)
       {
         udev->conn_state = USB_CONN_STATE_ADDRESSED;
@@ -180,7 +180,7 @@ static usb_sts_type usbd_set_address(usbd_core_type *udev)
 /**
   * @brief  get usb status request
   * @param  udev: to the structure of usbd_core_type
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type usbd_get_status(usbd_core_type *udev)
 {
@@ -205,7 +205,7 @@ static usb_sts_type usbd_get_status(usbd_core_type *udev)
 /**
   * @brief  clear usb feature request
   * @param  udev: to the structure of usbd_core_type
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type usbd_clear_feature(usbd_core_type *udev)
 {
@@ -233,7 +233,7 @@ static usb_sts_type usbd_clear_feature(usbd_core_type *udev)
 /**
   * @brief  set usb feature request
   * @param  udev: to the structure of usbd_core_type
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type usbd_set_feature(usbd_core_type *udev)
 {
@@ -251,7 +251,7 @@ static usb_sts_type usbd_set_feature(usbd_core_type *udev)
 /**
   * @brief  get usb configuration request
   * @param  udev: to the structure of usbd_core_type
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type usbd_get_configuration(usbd_core_type *udev)
 {
@@ -283,7 +283,7 @@ static usb_sts_type usbd_get_configuration(usbd_core_type *udev)
 /**
   * @brief  sets the usb device configuration request
   * @param  udev: to the structure of usbd_core_type
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type usbd_set_configuration(usbd_core_type *udev)
 {
@@ -291,7 +291,7 @@ static usb_sts_type usbd_set_configuration(usbd_core_type *udev)
   static uint8_t config_value;
   usb_setup_type *setup = &udev->setup;
   config_value = (uint8_t)setup->wValue;
-  
+
   if(setup->wIndex == 0 && setup->wLength == 0)
   {
     switch(udev->conn_state)
@@ -308,7 +308,7 @@ static usb_sts_type usbd_set_configuration(usbd_core_type *udev)
         {
           usbd_ctrl_send_status(udev);
         }
-      
+
         break;
       case USB_CONN_STATE_CONFIGURED:
         if(config_value == 0)
@@ -316,11 +316,11 @@ static usb_sts_type usbd_set_configuration(usbd_core_type *udev)
           udev->conn_state = USB_CONN_STATE_ADDRESSED;
           udev->dev_config = config_value;
           udev->class_handler->clear_handler(udev);
-          usbd_ctrl_send_status(udev);   
+          usbd_ctrl_send_status(udev);
         }
         else if(config_value == udev->dev_config)
         {
-          udev->class_handler->clear_handler(udev); 
+          udev->class_handler->clear_handler(udev);
           udev->dev_config = config_value;
           udev->class_handler->init_handler(udev);
           usbd_ctrl_send_status(udev);
@@ -345,7 +345,7 @@ static usb_sts_type usbd_set_configuration(usbd_core_type *udev)
 /**
   * @brief  standard usb device requests
   * @param  udev: to the structure of usbd_core_type
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 usb_sts_type usbd_device_request(usbd_core_type *udev)
 {
@@ -389,7 +389,7 @@ usb_sts_type usbd_device_request(usbd_core_type *udev)
 /**
   * @brief  standard usb interface requests
   * @param  udev: to the structure of usbd_core_type
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 usb_sts_type usbd_interface_request(usbd_core_type *udev)
 {
@@ -414,7 +414,7 @@ usb_sts_type usbd_interface_request(usbd_core_type *udev)
 /**
   * @brief  standard usb endpoint requests
   * @param  udev: to the structure of usbd_core_type
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 usb_sts_type usbd_endpoint_request(usbd_core_type *udev)
 {
@@ -422,7 +422,7 @@ usb_sts_type usbd_endpoint_request(usbd_core_type *udev)
   usb_setup_type *setup = &udev->setup;
   uint8_t ept_addr = LBYTE(setup->wIndex);
   usb_ept_info *ept_info;
-  
+
   if((setup->bmRequestType & USB_REQ_TYPE_RESERVED) == USB_REQ_TYPE_CLASS)
   {
     udev->class_handler->setup_handler(udev, &udev->setup);
@@ -442,11 +442,11 @@ usb_sts_type usbd_endpoint_request(usbd_core_type *udev)
         {
           if((ept_addr & 0x80) != 0)
           {
-           ept_info = &udev->ept_in[ept_addr & 0x7F]; 
+           ept_info = &udev->ept_in[ept_addr & 0x7F];
           }
           else
           {
-            ept_info = &udev->ept_out[ept_addr & 0x7F]; 
+            ept_info = &udev->ept_out[ept_addr & 0x7F];
           }
           if(ept_info->stall == 1)
           {
@@ -504,7 +504,7 @@ usb_sts_type usbd_endpoint_request(usbd_core_type *udev)
             if((ept_addr != 0x00) && (ept_addr != 0x80))
             {
               usbd_set_stall(udev, ept_addr);
-            }  
+            }
           }
           udev->class_handler->setup_handler(udev, &udev->setup);
           usbd_ctrl_send_status(udev);
@@ -523,7 +523,7 @@ usb_sts_type usbd_endpoint_request(usbd_core_type *udev)
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}

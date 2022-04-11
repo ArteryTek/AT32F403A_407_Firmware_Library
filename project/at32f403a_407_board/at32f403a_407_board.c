@@ -1,18 +1,18 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_board.c
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    set of firmware functions to manage leds and push-button.
   *           initialize delay function.
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -175,7 +175,7 @@ void at32_button_init(void)
 }
 
 /**
-  * @brief  returns the selected button state   
+  * @brief  returns the selected button state
   * @param  none
   * @retval the button gpio pin value
   */
@@ -185,7 +185,7 @@ uint8_t at32_button_state(void)
 }
 
 /**
-  * @brief  returns which button have press down 
+  * @brief  returns which button have press down
   * @param  none
   * @retval the button have press down
   */
@@ -209,7 +209,7 @@ button_type at32_button_press()
 }
 
 /**
-  * @brief  configure led gpio   
+  * @brief  configure led gpio
   * @param  led: specifies the led to be configured.
   * @retval none
   */
@@ -234,11 +234,11 @@ void at32_led_init(led_type led)
 
 /**
   * @brief  turns selected led on.
-  * @param  led: specifies the led to be set on. 
+  * @param  led: specifies the led to be set on.
   *   this parameter can be one of following parameters:
   *     @arg LED2
   *     @arg LED3
-  *     @arg LED4  
+  *     @arg LED4
   * @retval none
   */
 void at32_led_on(led_type led)
@@ -251,11 +251,11 @@ void at32_led_on(led_type led)
 
 /**
   * @brief  turns selected led off.
-  * @param  led: specifies the led to be set off. 
+  * @param  led: specifies the led to be set off.
   *   this parameter can be one of following parameters:
   *     @arg LED2
   *     @arg LED3
-  *     @arg LED4 
+  *     @arg LED4
   * @retval none
   */
 void at32_led_off(led_type led)
@@ -268,11 +268,11 @@ void at32_led_off(led_type led)
 
 /**
   * @brief  turns selected led tooggle.
-  * @param  led: specifies the led to be set off. 
+  * @param  led: specifies the led to be set off.
   *   this parameter can be one of following parameters:
   *     @arg LED2
   *     @arg LED3
-  *     @arg LED4 
+  *     @arg LED4
   * @retval none
   */
 void at32_led_toggle(led_type led)
@@ -284,7 +284,7 @@ void at32_led_toggle(led_type led)
 }
 
 /**
-  * @brief  initialize delay function   
+  * @brief  initialize delay function
   * @param  none
   * @retval none
   */

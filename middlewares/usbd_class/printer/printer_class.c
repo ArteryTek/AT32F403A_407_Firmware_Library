@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     printer_class.c
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    usb printer class type
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -30,11 +30,11 @@
 /** @addtogroup AT32F403A_407_middlewares_usbd_class
   * @{
   */
-  
+
 /** @defgroup USB_printer_class
   * @brief usb device class printer demo
   * @{
-  */  
+  */
 
 /** @defgroup USB_printer_class_private_functions
   * @{
@@ -61,7 +61,7 @@ ALIGNED_HEAD static uint8_t printer_device_id[PRINTER_DEVICE_ID_LEN] ALIGNED_TAI
 printer_type printer_struct;
 
 /* usb device class handler */
-usbd_class_handler printer_class_handler = 
+usbd_class_handler printer_class_handler =
 {
   class_init_handler,
   class_clear_handler,
@@ -78,45 +78,45 @@ usbd_class_handler printer_class_handler =
 /**
   * @brief  initialize usb custom hid endpoint
   * @param  udev: to the structure of usbd_core_type
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type class_init_handler(void *udev)
 {
   usb_sts_type status = USB_OK;
   usbd_core_type *pudev = (usbd_core_type *)udev;
   printer_type *pprter = (printer_type *)pudev->class_handler->pdata;
-    
+
   /* open in endpoint */
   usbd_ept_open(pudev, USBD_PRINTER_BULK_IN_EPT, EPT_BULK_TYPE, USBD_PRINTER_IN_MAXPACKET_SIZE);
-  
+
   /* open out endpoint */
   usbd_ept_open(pudev, USBD_PRINTER_BULK_OUT_EPT, EPT_BULK_TYPE, USBD_PRINTER_OUT_MAXPACKET_SIZE);
-  
+
   /* set out endpoint to receive status */
   usbd_ept_recv(pudev, USBD_PRINTER_BULK_OUT_EPT, pprter->g_rx_buff, USBD_PRINTER_OUT_MAXPACKET_SIZE);
-  
+
   pprter->g_tx_completed = 1;
   pprter->g_printer_port_status = 0x18;
-  
+
   return status;
 }
 
 /**
   * @brief  clear endpoint or other state
   * @param  udev: to the structure of usbd_core_type
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type class_clear_handler(void *udev)
 {
   usb_sts_type status = USB_OK;
   usbd_core_type *pudev = (usbd_core_type *)udev;
-  
+
   /* close in endpoint */
   usbd_ept_close(pudev, USBD_PRINTER_BULK_IN_EPT);
-  
+
   /* close out endpoint */
   usbd_ept_close(pudev, USBD_PRINTER_BULK_OUT_EPT);
-  
+
   return status;
 }
 
@@ -124,7 +124,7 @@ static usb_sts_type class_clear_handler(void *udev)
   * @brief  usb device class setup request handler
   * @param  udev: to the structure of usbd_core_type
   * @param  setup: setup packet
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type class_setup_handler(void *udev, usb_setup_type *setup)
 {
@@ -179,28 +179,28 @@ static usb_sts_type class_setup_handler(void *udev, usb_setup_type *setup)
 /**
   * @brief  usb device endpoint 0 in status stage complete
   * @param  udev: to the structure of usbd_core_type
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type class_ept0_tx_handler(void *udev)
 {
   usb_sts_type status = USB_OK;
-  
+
   /* ...user code... */
-  
+
   return status;
 }
 
 /**
   * @brief  usb device endpoint 0 out status stage complete
   * @param  udev: usb device core handler type
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type class_ept0_rx_handler(void *udev)
 {
   usb_sts_type status = USB_OK;
-  
+
   /* ...user code... */
-  
+
   return status;
 }
 
@@ -208,19 +208,19 @@ static usb_sts_type class_ept0_rx_handler(void *udev)
   * @brief  usb device transmision complete handler
   * @param  udev: to the structure of usbd_core_type
   * @param  ept_num: endpoint number
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type class_in_handler(void *udev, uint8_t ept_num)
 {
   usbd_core_type *pudev = (usbd_core_type *)udev;
   printer_type *pprter = (printer_type *)pudev->class_handler->pdata;
   usb_sts_type status = USB_OK;
-  
+
   /* ...user code...
     trans next packet data
   */
   pprter->g_tx_completed = 1;
-  
+
   return status;
 }
 
@@ -228,7 +228,7 @@ static usb_sts_type class_in_handler(void *udev, uint8_t ept_num)
   * @brief  usb device endpoint receive data
   * @param  udev: to the structure of usbd_core_type
   * @param  ept_num: endpoint number
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type class_out_handler(void *udev, uint8_t ept_num)
 {
@@ -237,24 +237,24 @@ static usb_sts_type class_out_handler(void *udev, uint8_t ept_num)
   printer_type *pprter = (printer_type *)pudev->class_handler->pdata;
   /* get endpoint receive data length  */
   pprter->g_rxlen = usbd_get_recv_len(pudev, ept_num);
-  
+
   /*set recv flag*/
    pprter->g_rx_completed = 1;
-  
+
   return status;
 }
 
 /**
   * @brief  usb device sof handler
   * @param  udev: to the structure of usbd_core_type
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type class_sof_handler(void *udev)
 {
   usb_sts_type status = USB_OK;
-  
+
   /* ...user code... */
-  
+
   return status;
 }
 
@@ -262,7 +262,7 @@ static usb_sts_type class_sof_handler(void *udev)
   * @brief  usb device event handler
   * @param  udev: to the structure of usbd_core_type
   * @param  event: usb device event
-  * @retval status of usb_sts_type                            
+  * @retval status of usb_sts_type
   */
 static usb_sts_type class_event_handler(void *udev, usbd_event_type event)
 {
@@ -270,20 +270,20 @@ static usb_sts_type class_event_handler(void *udev, usbd_event_type event)
   switch(event)
   {
     case USBD_RESET_EVENT:
-      
+
       /* ...user code... */
-    
+
       break;
     case USBD_SUSPEND_EVENT:
-      
+
       /* ...user code... */
-    
+
       break;
     case USBD_WAKEUP_EVENT:
       /* ...user code... */
-    
+
       break;
-    
+
     default:
       break;
   }
@@ -294,7 +294,7 @@ static usb_sts_type class_event_handler(void *udev, usbd_event_type event)
   * @brief  usb device class rx data process
   * @param  udev: to the structure of usbd_core_type
   * @param  recv_data: receive buffer
-  * @retval receive data len                            
+  * @retval receive data len
   */
 uint16_t usb_printer_get_rxdata(void *udev, uint8_t *recv_data)
 {
@@ -302,7 +302,7 @@ uint16_t usb_printer_get_rxdata(void *udev, uint8_t *recv_data)
   usbd_core_type *pudev = (usbd_core_type *)udev;
   printer_type *pprter = (printer_type *)pudev->class_handler->pdata;
   uint16_t tmp_len = 0;
-  
+
   if(pprter->g_rx_completed == 0)
   {
     return 0;
@@ -313,9 +313,9 @@ uint16_t usb_printer_get_rxdata(void *udev, uint8_t *recv_data)
   {
     recv_data[i_index] = pprter->g_rx_buff[i_index];
   }
-  
+
   usbd_ept_recv(pudev, USBD_PRINTER_BULK_OUT_EPT, pprter->g_rx_buff, USBD_PRINTER_OUT_MAXPACKET_SIZE);
-  
+
   return tmp_len;
 }
 
@@ -324,7 +324,7 @@ uint16_t usb_printer_get_rxdata(void *udev, uint8_t *recv_data)
   * @param  udev: to the structure of usbd_core_type
   * @param  send_data: send data buffer
   * @param  len: send length
-  * @retval error status                            
+  * @retval error status
   */
 error_status usb_printer_send_data(void *udev, uint8_t *send_data, uint16_t len)
 {
@@ -346,7 +346,7 @@ error_status usb_printer_send_data(void *udev, uint8_t *send_data, uint16_t len)
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}

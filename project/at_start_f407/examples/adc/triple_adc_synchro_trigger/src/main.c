@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -30,11 +30,11 @@
 /** @addtogroup AT32F407_periph_examples
   * @{
   */
-  
+
 /** @addtogroup 407_ADC_triple_adc_synchro_trigger ADC_triple_adc_synchro_trigger
   * @{
   */
-  
+
 __IO uint32_t adc1_ordinary_valuetab[5][3];
 __IO uint16_t adc3_ordinary_valuetab[5][3];
 __IO uint32_t dma1_trans_complete_flag = 0;
@@ -61,11 +61,11 @@ static void gpio_config(void)
   gpio_initstructure.gpio_mode = GPIO_MODE_ANALOG;
   gpio_initstructure.gpio_pins = GPIO_PINS_4 | GPIO_PINS_5 | GPIO_PINS_6 | GPIO_PINS_7;
   gpio_init(GPIOA, &gpio_initstructure);
-  
+
   gpio_initstructure.gpio_mode = GPIO_MODE_ANALOG;
   gpio_initstructure.gpio_pins = GPIO_PINS_0 | GPIO_PINS_1;
   gpio_init(GPIOB, &gpio_initstructure);
-  
+
   gpio_initstructure.gpio_mode = GPIO_MODE_ANALOG;
   gpio_initstructure.gpio_pins = GPIO_PINS_0 | GPIO_PINS_1 | GPIO_PINS_2;
   gpio_init(GPIOC, &gpio_initstructure);
@@ -236,8 +236,8 @@ int main(void)
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */

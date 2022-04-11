@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     audio_class.h
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    usb audio class file
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -23,7 +23,7 @@
   *
   **************************************************************************
   */
-  
+
  /* define to prevent recursive inclusion -------------------------------------*/
 #ifndef __AUDIO_HID_CLASS_H
 #define __AUDIO_HID_CLASS_H
@@ -31,7 +31,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
- 
+
 #include "usb_std.h"
 #include "usbd_core.h"
 #include "audio_conf.h"
@@ -39,12 +39,12 @@ extern "C" {
 /** @addtogroup AT32F403A_407_middlewares_usbd_class
   * @{
   */
-  
+
 /** @addtogroup USB_audio_hid_class
   * @{
   */
 
-/** @defgroup USB_audio_hid_class_definition 
+/** @defgroup USB_audio_hid_class_definition
   * @{
   */
 
@@ -122,7 +122,7 @@ typedef struct
   uint32_t mic_freq;
   uint16_t spk_volume_limits[3]; /*[0] is mininum value, [1] is maxnum value, [2] is volume resolution */
   uint16_t mic_volume_limits[3]; /*[0] is mininum value, [1] is maxnum value, [2] is volume resolution */
-  
+
   uint8_t audio_cmd;
   uint32_t audio_cmd_len;
   uint32_t spk_alt_setting;
@@ -131,8 +131,8 @@ typedef struct
   uint8_t audio_spk_data[AUDIO_SPK_OUT_MAXPACKET_SIZE];
   uint8_t audio_mic_data[AUDIO_MIC_IN_MAXPACKET_SIZE];
   uint8_t audio_feed_back[AUDIO_FEEDBACK_MAXPACKET_SIZE+1];
-  
-  
+
+
   /* hid */
   uint32_t hid_protocol;
   uint32_t hid_set_idle;
@@ -154,7 +154,7 @@ usb_sts_type audio_hid_class_send_report(void *udev, uint8_t *report, uint16_t l
 /**
   * @}
   */
-  
+
 /**
   * @}
   */

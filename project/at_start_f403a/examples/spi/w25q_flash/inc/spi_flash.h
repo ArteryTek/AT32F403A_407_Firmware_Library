@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     spi_flash.h
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    header file of spi_flash
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -45,7 +45,7 @@ extern "C" {
  /* use dma transfer spi data */
 //#define SPI_TRANS_DMA
 
-/** @defgroup SPI_flash_cs_pin_definition 
+/** @defgroup SPI_flash_cs_pin_definition
   * @{
   */
 
@@ -56,14 +56,14 @@ extern "C" {
   * @}
   */
 
-/** @defgroup SPI_flash_id_definition 
+/** @defgroup SPI_flash_id_definition
   * @{
   */
 
 /*
- * flash define 
+ * flash define
  */
-#define W25Q80                           0xEF13  
+#define W25Q80                           0xEF13
 #define W25Q16                           0xEF14
 #define W25Q32                           0xEF15
 #define W25Q64                           0xEF16
@@ -74,7 +74,7 @@ extern "C" {
   * @}
   */
 
-/** @defgroup SPI_flash_operation_definition 
+/** @defgroup SPI_flash_operation_definition
   * @{
   */
 
@@ -82,7 +82,7 @@ extern "C" {
 #define SPIF_SECTOR_SIZE                 4096
 #define SPIF_PAGE_SIZE                   256
 
-#define SPIF_WRITEENABLE                 0x06 
+#define SPIF_WRITEENABLE                 0x06
 #define SPIF_WRITEDISABLE                0x04
 /* s7-s0 */
 #define SPIF_READSTATUSREG1              0x05
@@ -92,20 +92,20 @@ extern "C" {
 #define SPIF_WRITESTATUSREG2             0x31
 /* s23-s16 */
 #define SPIF_READSTATUSREG3              0x15
-#define SPIF_WRITESTATUSREG3             0x11 
-#define SPIF_READDATA                    0x03 
-#define SPIF_FASTREADDATA                0x0B 
-#define SPIF_FASTREADDUAL                0x3B 
-#define SPIF_PAGEPROGRAM                 0x02 
+#define SPIF_WRITESTATUSREG3             0x11
+#define SPIF_READDATA                    0x03
+#define SPIF_FASTREADDATA                0x0B
+#define SPIF_FASTREADDUAL                0x3B
+#define SPIF_PAGEPROGRAM                 0x02
 /* block size:64kb */
 #define SPIF_BLOCKERASE                  0xD8
-#define SPIF_SECTORERASE                 0x20 
-#define SPIF_CHIPERASE                   0xC7 
-#define SPIF_POWERDOWN                   0xB9 
-#define SPIF_RELEASEPOWERDOWN            0xAB 
-#define SPIF_DEVICEID                    0xAB 
-#define SPIF_MANUFACTDEVICEID            0x90 
-#define SPIF_JEDECDEVICEID               0x9F 
+#define SPIF_SECTORERASE                 0x20
+#define SPIF_CHIPERASE                   0xC7
+#define SPIF_POWERDOWN                   0xB9
+#define SPIF_RELEASEPOWERDOWN            0xAB
+#define SPIF_DEVICEID                    0xAB
+#define SPIF_MANUFACTDEVICEID            0x90
+#define SPIF_JEDECDEVICEID               0x9F
 #define FLASH_SPI_DUMMY_BYTE             0xA5
 
 /**
@@ -142,7 +142,7 @@ uint8_t spi_byte_read(void);
 /**
   * @}
   */
-  
+
 #ifdef __cplusplus
 }
 #endif

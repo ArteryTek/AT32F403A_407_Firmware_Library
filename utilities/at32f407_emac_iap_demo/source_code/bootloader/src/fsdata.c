@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     fsdata.c
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    fsdata
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -23,10 +23,10 @@
   *
   **************************************************************************
   */
-  
+
 #include "at32f403a_407_board.h"
-#include "fsdata.h" 
-#include "stdio.h" 
+#include "fsdata.h"
+#include "stdio.h"
 
 static const char data_index_html[] = {
 	0x2f,0x69,0x6e,0x64,0x65,0x78,0x2e,0x68,

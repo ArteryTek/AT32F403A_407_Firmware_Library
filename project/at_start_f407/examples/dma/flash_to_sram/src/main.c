@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -23,14 +23,14 @@
   *
   **************************************************************************
   */
-  
+
 #include "at32f403a_407_board.h"
 #include "at32f403a_407_clock.h"
 
 /** @addtogroup AT32F407_periph_examples
   * @{
   */
-  
+
 /** @addtogroup 407_DMA_flash_to_sram DMA_flash_to_sram
   * @{
   */
@@ -83,12 +83,12 @@ error_status buffer_compare(const uint32_t* pbuffer, uint32_t* pbuffer1, uint16_
     {
       return ERROR;
     }
-    
+
     pbuffer++;
     pbuffer1++;
   }
 
-  return SUCCESS;  
+  return SUCCESS;
 }
 
 /**
@@ -104,7 +104,7 @@ int main(void)
 
   /* enable dma1 clock */
   crm_periph_clock_enable(CRM_DMA1_PERIPH_CLOCK, TRUE);
-  
+
   /* dma1 channel1 configuration */
   dma_reset(DMA1_CHANNEL1);
   dma_init_struct.buffer_size = BUFFER_SIZE;
@@ -118,24 +118,24 @@ int main(void)
   dma_init_struct.priority = DMA_PRIORITY_MEDIUM;
   dma_init_struct.loop_mode_enable = FALSE;
   dma_init(DMA1_CHANNEL1, &dma_init_struct);
-  
+
   /* enable transfer full data intterrupt */
   dma_interrupt_enable(DMA1_CHANNEL1, DMA_FDT_INT, TRUE);
-  
+
   /* dma1 channel1 interrupt nvic init */
   nvic_priority_group_config(NVIC_PRIORITY_GROUP_4);
   nvic_irq_enable(DMA1_Channel1_IRQn, 1, 0);
-  
+
   dma_channel_enable(DMA1_CHANNEL1, TRUE);
-  
+
   /* wait the end of transmission */
   while(data_counter_end != 0)
   {
   }
-  
+
   /* check if the transmitted and received data are equal */
   transfer_status = buffer_compare(src_const_buffer, dst_buffer, BUFFER_SIZE);
-  
+
   /* transfer_status = passed, if the transmitted and received data are the same
      transfer_status = failed, if the transmitted and received data are different */
   if(transfer_status == SUCCESS)
@@ -145,7 +145,7 @@ int main(void)
     at32_led_on(LED3);
     at32_led_on(LED4);
   }
-  
+
   while(1)
   {
   }
@@ -154,9 +154,9 @@ int main(void)
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 

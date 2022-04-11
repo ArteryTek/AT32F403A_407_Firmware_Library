@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     cdc_desc.h
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    usb cdc descriptor header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -23,7 +23,7 @@
   *
   **************************************************************************
   */
-  
+
 /* define to prevent recursive inclusion -------------------------------------*/
 #ifndef __CDC_DESC_H
 #define __CDC_DESC_H
@@ -31,19 +31,19 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
- 
+
 #include "cdc_class.h"
 #include "usbd_core.h"
 
 /** @addtogroup AT32F403A_407_middlewares_usbd_class
   * @{
   */
-  
+
 /** @addtogroup USB_cdc_desc
   * @{
   */
 
-/** @defgroup USB_cdc_desc_definition 
+/** @defgroup USB_cdc_desc_definition
   * @{
   */
 /**
@@ -55,7 +55,7 @@ extern "C" {
   * @brief usb vendor id and product id define
   */
 #define USBD_CDC_VENDOR_ID               0x2E3C
-#define USBD_CDC_PRODUCT_ID              0x5740 
+#define USBD_CDC_PRODUCT_ID              0x5740
 
 /**
   * @brief usb descriptor size define
@@ -73,7 +73,7 @@ extern "C" {
 #define USBD_CDC_DESC_INTERFACE_STRING       "Virtual ComPort Interface"
 
 /**
-  * @brief usb endpoint interval define 
+  * @brief usb endpoint interval define
   */
 #define CDC_HID_BINTERVAL_TIME                0xFF
 
@@ -86,14 +86,14 @@ extern "C" {
 /**
   * @}
   */
-  
+
 extern usbd_desc_handler cdc_desc_handler;
 
 
 /**
   * @}
   */
-  
+
 /**
   * @}
   */

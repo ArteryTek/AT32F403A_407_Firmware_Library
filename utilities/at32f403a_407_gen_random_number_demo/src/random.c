@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     random.c
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    set of firmware functions to random function
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -27,7 +27,7 @@
 #include "at32f403a_407_board.h"
 #include "random.h"
 #include "stdio.h"
-#include <stdlib.h> 
+#include <stdlib.h>
 
 /** @addtogroup UTILITIES_examples
   * @{
@@ -49,7 +49,7 @@ int get_uid_for_seed (void)
 {
   uint32_t   id[3] = {0};
   uint32_t   uid_one_word;
-  
+
   /* get uid */
   id[0] = *(int*)DEVICE_ID_ADDR1;
   id[2] = *(int*)(DEVICE_ID_ADDR1+8);
@@ -68,22 +68,22 @@ void rtc_init_for_seed (void)
   /* enable pwc and bpr clocks */
   crm_periph_clock_enable(CRM_PWC_PERIPH_CLOCK, TRUE);
   crm_periph_clock_enable(CRM_BPR_PERIPH_CLOCK, TRUE);
-  
+
   /* allow access to bpr domain */
   pwc_battery_powered_domain_access(TRUE);
-    
-  if (bpr_data_read(BPR_DATA1) != 0x5051)  
-  {         
+
+  if (bpr_data_read(BPR_DATA1) != 0x5051)
+  {
     /* reset bpr domain */
     bpr_reset();
-    
+
     /* enable the lext osc */
     crm_clock_source_enable(CRM_CLOCK_SOURCE_LEXT, TRUE);
     /* wait lext is ready */
     while(crm_flag_get(CRM_LEXT_STABLE_FLAG) == RESET);
     /* select the rtc clock source */
     crm_rtc_clock_select(CRM_RTC_CLOCK_LEXT);
-            
+
     /* enable rtc clock */
     crm_rtc_clock_enable(TRUE);
 
@@ -92,10 +92,10 @@ void rtc_init_for_seed (void)
 
     /* wait for the register write to complete */
     rtc_wait_config_finish();
-    
+
     /* set rtc divider: set rtc period to 1sec */
     rtc_divider_set(32767);
-    
+
     /* wait for the register write to complete */
     rtc_wait_config_finish();
 
@@ -108,11 +108,11 @@ void rtc_init_for_seed (void)
     rtc_wait_update_finish();
 
     /* wait for the register write to complete */
-    rtc_wait_config_finish(); 
+    rtc_wait_config_finish();
   }
 }
 
-#endif 
+#endif
 
 /**
   * @brief  random number test
@@ -121,12 +121,12 @@ void rtc_init_for_seed (void)
   */
 void randnum_test( void)
 {
-#if ENABLE_RTC_ASSEED     
+#if ENABLE_RTC_ASSEED
   rtc_init_for_seed();
-  
-  /* set uid and rtc as seed for random */  
-  srand(rtc_counter_get()+get_uid_for_seed()); 
-#else 
+
+  /* set uid and rtc as seed for random */
+  srand(rtc_counter_get()+get_uid_for_seed());
+#else
   /* set only  uid as seed for random */
   srand(get_uid_for_seed());
 #endif
@@ -135,13 +135,13 @@ void randnum_test( void)
   {
     delay_ms(500);
     printf("%d\r\n",rand());
-  }   
+  }
 }
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */

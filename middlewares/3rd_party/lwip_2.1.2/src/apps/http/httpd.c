@@ -241,7 +241,7 @@ struct http_ssi_state {
 
 struct http_ssi_tag_description {
   const char *lead_in;
-  const char *lead_out; 
+  const char *lead_out;
 };
 
 #endif /* LWIP_HTTPD_SSI */
@@ -2634,9 +2634,9 @@ http_recv(void *arg, struct altcp_pcb *pcb, struct pbuf *p, err_t err)
         ADCVal = ADC_GetConversionValue(ADC1);
         printf("ADCVal = %d\n", ADCVal);
         fADCVal = (float)((float)ADCVal / (float)4096.00) * (float)3.3;
-        
+
         iADCVa = ((ADCVal * 100 ) / 4096 ) * 512 / 100;
-        
+
         fs_open(&file, "/AT32F407ADC.html");
         sprintf(html_tmp, file.data, fADCVal, iADCVa);
         hs->file = html_tmp;
@@ -2653,7 +2653,7 @@ http_recv(void *arg, struct altcp_pcb *pcb, struct pbuf *p, err_t err)
         fs_open(&file, "/AT32F407LED.html");
         hs->file = file.data;
         hs->left = file.len;
-        
+
         http_send(pcb, hs);
 
         /* Tell TCP that we wish be to informed of data that has been
@@ -2665,7 +2665,7 @@ http_recv(void *arg, struct altcp_pcb *pcb, struct pbuf *p, err_t err)
         i = 15;
         while(data[i]!=0x20/* */)
         {
-          i++; 
+          i++;
           if (data[i] == 0x6C /* l */)
           {
             i++;
@@ -2674,31 +2674,31 @@ http_recv(void *arg, struct altcp_pcb *pcb, struct pbuf *p, err_t err)
               i++;
               if (data[i] ==  0x64 /* d*/)
               {
-                i+=2;                 
-  
+                i+=2;
+
                 if(data[i]==0x32 /* 2 */)
                 {
 									AT32_LEDn_ON(LED2);
 									memcpy(LED2_html, Led_Select, strlen(Led_Select));
 									LED2_Status = 1;
                 }
-        
+
                 if(data[i]==0x33 /* 3 */)
                 {
 									AT32_LEDn_ON(LED3);
 									memcpy(LED3_html, Led_Select, strlen(Led_Select));
 									LED3_Status = 1;
                 }
-            
+
                 if(data[i]==0x34 /* 4 */)
                 {
 									AT32_LEDn_ON(LED4);
 									memcpy(LED4_html, Led_Select, strlen(Led_Select));
 									LED4_Status = 1;
                 }
-              }   
+              }
             }
-          } 
+          }
         }
         if ( LED2_Status == 0)
 				{
@@ -2736,22 +2736,22 @@ http_recv(void *arg, struct altcp_pcb *pcb, struct pbuf *p, err_t err)
             ((char *)data + 4)[i] = 0;
           }
         }
-        
+
         i = 0;
         j = 0;
-        
+
         do
         {
           fname[i] = ((char *)data + 4)[j];
           j++;
           i++;
         } while (fname[i - 1] != 0 && i < 40);
-        
+
         pbuf_free(p);
 
-        
+
         fs_open(&file, "/AT32F407.html");
-        
+
         hs->file = file.data;
         hs->left = file.len;
         http_send(pcb, hs);
@@ -2776,7 +2776,7 @@ http_recv(void *arg, struct altcp_pcb *pcb, struct pbuf *p, err_t err)
 
     http_close_conn(pcb, hs);
   }
-  
+
   return ERR_OK;
   #endif
 }

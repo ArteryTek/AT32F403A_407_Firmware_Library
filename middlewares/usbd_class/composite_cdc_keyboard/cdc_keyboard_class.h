@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     cdc_keyboard_class.h
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    usb cdc and keyboard class file
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -23,7 +23,7 @@
   *
   **************************************************************************
   */
-  
+
  /* define to prevent recursive inclusion -------------------------------------*/
 #ifndef __CDC_KEYBOARD_CLASS_H
 #define __CDC_KEYBOARD_CLASS_H
@@ -31,19 +31,19 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
- 
+
 #include "usb_std.h"
 #include "usbd_core.h"
 
 /** @addtogroup AT32F403A_407_middlewares_usbd_class
   * @{
   */
-  
+
 /** @addtogroup USB_cdc_keyboard_class
   * @{
   */
 
-/** @defgroup USB_cdc_keyboard_class_definition 
+/** @defgroup USB_cdc_keyboard_class_definition
   * @{
   */
 
@@ -83,10 +83,10 @@ typedef struct
   uint8_t g_req;
   uint8_t hid_state;
   uint16_t g_len, g_rxlen;
-  __IO uint8_t g_tx_completed; 
+  __IO uint8_t g_tx_completed;
   __IO uint8_t g_rx_completed;
   __IO uint8_t g_keyboard_tx_completed;
-  
+
   linecoding_type linecoding;
 }vcp_keyboard_type;
 
@@ -110,7 +110,7 @@ void usb_vcpkybrd_keyboard_send_char(void *udev, uint8_t ascii_code);
 /**
   * @}
   */
-  
+
 /**
   * @}
   */

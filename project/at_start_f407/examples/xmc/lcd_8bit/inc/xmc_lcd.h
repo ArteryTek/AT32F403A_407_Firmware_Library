@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     xmc_lcd.h
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    xmc_lcd header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -23,7 +23,7 @@
   *
   **************************************************************************
   */
-  
+
 #ifndef __XMC_LCD_H
 #define __XMC_LCD_H
 
@@ -36,7 +36,7 @@ extern "C" {
 /** @addtogroup AT32F407_periph_examples
   * @{
   */
-  
+
 /** @addtogroup 407_XMC_lcd_8bit
   * @{
   */
@@ -52,11 +52,11 @@ extern "C" {
 /**
   * @}
   */
-  
+
 /** @defgroup XMC_lcd_8bit_reset_line
   * @{
   */
-  
+
 /* the lcd reset line */
 #define LCD_RESET_HIGH                   gpio_bits_set(GPIOB,GPIO_PINS_9)
 #define LCD_RESET_LOW                    gpio_bits_reset(GPIOB,GPIO_PINS_9)
@@ -64,7 +64,7 @@ extern "C" {
 /**
   * @}
   */
-  
+
 #define WHITE                            0xFFFF
 #define BLACK                            0x0000
 #define BLUE                             0x001F
@@ -96,15 +96,15 @@ void lcd_display_number(void);
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 #ifdef __cplusplus
 }

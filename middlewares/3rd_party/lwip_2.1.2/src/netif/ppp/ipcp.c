@@ -458,7 +458,7 @@ setipaddr(arg, argv, doit)
 	return 0;
     if (!doit)
 	return 1;
-  
+
     /*
      * If colon first character, then no local addr.
      */
@@ -480,7 +480,7 @@ setipaddr(arg, argv, doit)
 	*colon = ':';
 	prio_local = option_priority;
     }
-  
+
     /*
      * If colon last character, then no remote addr.
      */
@@ -905,7 +905,7 @@ static void ipcp_addci(fsm *f, u_char *ucp, int *lenp) {
 
     ADDCIWINS(CI_MS_WINS2, go->winsaddr[1]);
 #endif /* UNUSED - WINS */
-    
+
     *lenp -= len;
 }
 
@@ -1530,7 +1530,7 @@ static int ipcp_reqci(fsm *f, u_char *inp, int *len, int reject_if_disagree) {
      * Reset all his options.
      */
     BZERO(ho, sizeof(*ho));
-    
+
     /*
      * Process all his options.
      */
@@ -1640,7 +1640,7 @@ static int ipcp_reqci(fsm *f, u_char *inp, int *len, int reject_if_disagree) {
 		wo->req_addr = 0;	/* don't NAK with 0.0.0.0 later */
 		break;
 	    }
-	
+
 	    ho->neg_addr = 1;
 	    ho->hisaddr = ciaddr1;
 	    break;
@@ -1708,7 +1708,7 @@ static int ipcp_reqci(fsm *f, u_char *inp, int *len, int reject_if_disagree) {
 	    ho->vj_protocol = cishort;
 	    if (cilen == CILEN_VJ) {
 		GETCHAR(maxslotindex, p);
-		if (maxslotindex > ao->maxslotindex) { 
+		if (maxslotindex > ao->maxslotindex) {
 		    orc = CONFNAK;
 		    if (!reject_if_disagree){
 			DECPTR(1, p);
@@ -2008,7 +2008,7 @@ static void ipcp_up(fsm *f) {
 	    }
 
 	    /* assign a default route through the interface if required */
-	    if (ipcp_wantoptions[f->unit].default_route) 
+	    if (ipcp_wantoptions[f->unit].default_route)
 		if (sifdefaultroute(pcb, go->ouraddr, ho->hisaddr,
 			wo->replace_default_route))
 		    default_route_set[f->unit] = 1;

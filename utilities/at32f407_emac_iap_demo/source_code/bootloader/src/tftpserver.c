@@ -2,14 +2,14 @@
   ******************************************************************************
   * @file    tftpserver.c
   * @brief   basic tftp server implementation for IAP (only Write Req supported)
-  ******************************************************************************  
+  ******************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -39,7 +39,7 @@ static __IO uint32_t total_count=0;
 
 /* Private function prototypes -----------------------------------------------*/
 
-static void iap_wrq_recv_callback(void *_args, struct udp_pcb *upcb, struct pbuf *pkt_buf, 
+static void iap_wrq_recv_callback(void *_args, struct udp_pcb *upcb, struct pbuf *pkt_buf,
                         ip_addr_t *addr, u16_t port);
 
 static int iap_tftp_process_write(struct udp_pcb *upcb, ip_addr_t *to, int to_port);
@@ -58,8 +58,8 @@ static err_t iap_tftp_send_ack_packet(struct udp_pcb *upcb, ip_addr_t *to, int t
 
 
 /**
-  * @brief  returns the tftp opcode 
-  * @param  buf: pointer on the tftp packet 
+  * @brief  returns the tftp opcode
+  * @param  buf: pointer on the tftp packet
   * @retval none
   */
 static tftp_opcode iap_tftp_decode_op(char *buf)
@@ -69,7 +69,7 @@ static tftp_opcode iap_tftp_decode_op(char *buf)
 
 /**
   * @brief  extracts the block number
-  * @param  buf: pointer on the tftp packet 
+  * @param  buf: pointer on the tftp packet
   * @retval block number
   */
 static u16_t iap_tftp_extract_block(char *buf)
@@ -79,7 +79,7 @@ static u16_t iap_tftp_extract_block(char *buf)
 }
 
 /**
-  * @brief  sets the tftp opcode 
+  * @brief  sets the tftp opcode
   * @param  buffer: pointer on the tftp packet
   * @param  opcode: tftp opcode
   * @retval none
@@ -91,8 +91,8 @@ static void iap_tftp_set_opcode(char *buffer, tftp_opcode opcode)
 }
 
 /**
-  * @brief  sets the tftp block number 
-  * @param  packet: pointer on the tftp packet 
+  * @brief  sets the tftp block number
+  * @param  packet: pointer on the tftp packet
   * @param  block: block number
   * @retval none
   */
@@ -103,12 +103,12 @@ static void iap_tftp_set_block(char* packet, u16_t block)
 }
 
 /**
-  * @brief  sends tftp ack packet  
+  * @brief  sends tftp ack packet
   * @param  upcb: pointer on udp_pcb structure
   * @param  to: pointer on the receive ip address structure
   * @param  to_port: receive port number
   * @param  block: block number
-  * @retval err_t: error code 
+  * @retval err_t: error code
   */
 static err_t iap_tftp_send_ack_packet(struct udp_pcb *upcb, ip_addr_t *to, int to_port, int block)
 {
@@ -176,16 +176,16 @@ static void iap_wrq_recv_callback(void *_args, struct udp_pcb *upcb, struct pbuf
     /* copy packet payload to data_buffer */
     pbuf_copy_partial(pkt_buf, data_buffer, pkt_buf->len - TFTP_DATA_PKT_HDR_LEN,
                       TFTP_DATA_PKT_HDR_LEN);
-    
-    total_count += pkt_buf->len - TFTP_DATA_PKT_HDR_LEN; 
-    
+
+    total_count += pkt_buf->len - TFTP_DATA_PKT_HDR_LEN;
+
     count = (pkt_buf->len - TFTP_DATA_PKT_HDR_LEN)/4;
-    if (((pkt_buf->len - TFTP_DATA_PKT_HDR_LEN)%4)!=0) 
+    if (((pkt_buf->len - TFTP_DATA_PKT_HDR_LEN)%4)!=0)
     count++;
-     
+
     /* write received data in flash */
     flash_if_write(&flash_write_address, data_buffer ,count);
-       
+
     /* update our block number to match the block number just received */
     args->block++;
     /* update total bytes  */
@@ -200,9 +200,9 @@ static void iap_wrq_recv_callback(void *_args, struct udp_pcb *upcb, struct pbuf
     /* update our block number to match the block number just received  */
     args->block++;
   }
-  
+
   /* send the appropriate ack pkt*/
-  iap_tftp_send_ack_packet(upcb, addr, port, args->block);   
+  iap_tftp_send_ack_packet(upcb, addr, port, args->block);
 
   /* if the last write returned less than the maximum tftp data pkt length,
    * then we've received the whole file and so we can quit (this is how tftp
@@ -250,13 +250,13 @@ static int iap_tftp_process_write(struct udp_pcb *upcb, ip_addr_t *to, int to_po
 
   /* set callback for receives on this udp pcb (protocol control block) */
   udp_recv(upcb, (udp_recv_fn)iap_wrq_recv_callback, args);
-  
+
   total_count =0;
 
   /* init flash */
   flash_unlock();
-    
-  flash_write_address = APP_START_SECTOR_ADDR;    
+
+  flash_write_address = APP_START_SECTOR_ADDR;
   /* initiate the write transaction by sending the first ack */
   iap_tftp_send_ack_packet(upcb, to, to_port, args->block);
 
@@ -306,7 +306,7 @@ static void iap_tftp_recv_callback(void *arg, struct udp_pcb *upcb, struct pbuf 
     udp_remove(upcb_tftp_data);
   }
   else
-  {    
+  {
     /* start the tftp write mode*/
     iap_tftp_process_write(upcb_tftp_data, addr, port);
   }
@@ -315,7 +315,7 @@ static void iap_tftp_recv_callback(void *arg, struct udp_pcb *upcb, struct pbuf 
 
 
 /**
-  * @brief  disconnect and close the connection 
+  * @brief  disconnect and close the connection
   * @param  upcb: pointer on udp_pcb structure
   * @param  args: pointer on tftp_connection arguments
   * @retval none
@@ -327,20 +327,20 @@ static void iap_tftp_cleanup_wr(struct udp_pcb *upcb, tftp_connection_args *args
 
   /* Disconnect the udp_pcb */
   udp_disconnect(upcb);
-  
+
   /* close the connection */
   udp_remove(upcb);
-  
+
   /* reset the callback function */
   udp_recv(udppcb, (udp_recv_fn)iap_tftp_recv_callback, NULL);
- 
+
 }
 
 /* Global functions ---------------------------------------------------------*/
 
 /**
-  * @brief  creates and initializes a udp pcb for tftp receive operation  
-  * @param  none  
+  * @brief  creates and initializes a udp pcb for tftp receive operation
+  * @param  none
   * @retval none
   */
 void iap_tftpd_init(void)

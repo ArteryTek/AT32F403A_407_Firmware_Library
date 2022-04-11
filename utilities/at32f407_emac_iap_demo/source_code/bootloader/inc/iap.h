@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     iap.h
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    iap header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -54,7 +54,7 @@
 #define APP_END_ADDR                     0x080FFFFF
 
 /* the previous sector of app starting address is iap upgrade flag */
-#define IAP_UPGRADE_FLAG_ADDR            (APP_START_SECTOR_ADDR - 0x800)    
+#define IAP_UPGRADE_FLAG_ADDR            (APP_START_SECTOR_ADDR - 0x800)
 
 /* when app need upgrade, will set up the flag,
 indicates that an app upgrade will follow, see iap application note for more details */

@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     cdc_keyboard_desc.c
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    usb cdc and keyboard device descriptor
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -30,11 +30,11 @@
 /** @addtogroup AT32F403A_407_middlewares_usbd_class
   * @{
   */
-  
+
 /** @defgroup USB_cdc_keyboard_desc
   * @brief usb device cdc keyboard descriptor
   * @{
-  */  
+  */
 
 /** @defgroup USB_cdc_keyboard_desc_private_functions
   * @{
@@ -119,7 +119,7 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_VCPKYBRD_CONFIG_DESC_SIZE]
                                             the configuration */
   0xC0,                                  /* bmAttributes: self powered */
   0x32,                                  /* MaxPower 100 mA: this current is used for detecting vbus */
-  
+
   0x08,                                  /* bLength */
   0x0B,                                  /* bDescriptorType */
   0x00,                                  /* bFirstInterface */
@@ -128,7 +128,7 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_VCPKYBRD_CONFIG_DESC_SIZE]
   0x02,                                  /* bFunctionSubClass */
   0x01,                                  /* bFunctionProtocol */
   0x00,                                  /* iFunction (Index of string descriptor describing this function) */
-  
+
   USB_DEVICE_IF_DESC_LEN,                /* bLength: interface descriptor size */
   USB_DESCIPTOR_TYPE_INTERFACE,          /* bDescriptorType: interface descriptor type */
   VCPKYBRD_CDC_INTERFACE,                         /* bInterfaceNumber: number of interface */
@@ -138,30 +138,30 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_VCPKYBRD_CONFIG_DESC_SIZE]
   0x02,                                  /* bInterfaceSubClass: subclass code, Abstract Control Model*/
   0x01,                                  /* bInterfaceProtocol: protocol code, AT Command */
   0x00,                                  /* iInterface: index of string descriptor */
-  
+
   0x05,                                  /* bFunctionLength: size of this descriptor in bytes */
   USBD_CDC_CS_INTERFACE,                 /* bDescriptorType: CDC interface descriptor type */
   USBD_CDC_SUBTYPE_HEADER,               /* bDescriptorSubtype: Header function Descriptor 0x00*/
   LBYTE(VCPKYBRD_BCD_NUM),
   HBYTE(VCPKYBRD_BCD_NUM),               /* bcdCDC: USB class definitions for communications */
-  
+
   0x05,                                  /* bFunctionLength: size of this descriptor in bytes */
   USBD_CDC_CS_INTERFACE,                 /* bDescriptorType: CDC interface descriptor type */
   USBD_CDC_SUBTYPE_CMF,                  /* bDescriptorSubtype: Call Management function descriptor subtype 0x01 */
   0x00,                                  /* bmCapabilities: 0x00*/
   0x01,                                  /* bDataInterface: interface number of data class interface optionally used for call management */
-  
+
   0x04,                                  /* bFunctionLength: size of this descriptor in bytes */
   USBD_CDC_CS_INTERFACE,                 /* bDescriptorType: CDC interface descriptor type */
   USBD_CDC_SUBTYPE_ACM,                  /* bDescriptorSubtype: Abstract Control Management functional descriptor subtype 0x02 */
   0x02,                                  /* bmCapabilities: Support Set_Line_Coding and Get_Line_Coding 0x02 */
-  
+
   0x05,                                  /* bFunctionLength: size of this descriptor in bytes */
-  USBD_CDC_CS_INTERFACE,                 /* bDescriptorType: CDC interface descriptor type */ 
+  USBD_CDC_CS_INTERFACE,                 /* bDescriptorType: CDC interface descriptor type */
   USBD_CDC_SUBTYPE_UFD,                  /* bDescriptorSubtype: Union Function Descriptor subtype 0x06 */
   0x00,                                  /* bControlInterface: The interface number of the communications or data class interface 0x00 */
   0x01,                                  /* bSubordinateInterface0: interface number of first subordinate interface in the union */
-  
+
   USB_DEVICE_EPT_LEN,                    /* bLength: size of endpoint descriptor in bytes */
   USB_DESCIPTOR_TYPE_ENDPOINT,           /* bDescriptorType: endpoint descriptor type */
   USBD_VCPKYBRD_CDC_INT_EPT,             /* bEndpointAddress: the address of endpoint on usb device described by this descriptor */
@@ -169,8 +169,8 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_VCPKYBRD_CONFIG_DESC_SIZE]
   LBYTE(USBD_VCPKYBRD_CMD_MAXPACKET_SIZE),
   HBYTE(USBD_VCPKYBRD_CMD_MAXPACKET_SIZE), /* wMaxPacketSize: maximum packe size this endpoint */
   VCPKYBRD_HID_BINTERVAL_TIME,            /* bInterval: interval for polling endpoint for data transfers */
-  
-  
+
+
   USB_DEVICE_IF_DESC_LEN,                /* bLength: interface descriptor size */
   USB_DESCIPTOR_TYPE_INTERFACE,          /* bDescriptorType: interface descriptor type */
   VCPKYBRD_CDC_DATA_INTERFACE,           /* bInterfaceNumber: number of interface */
@@ -180,7 +180,7 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_VCPKYBRD_CONFIG_DESC_SIZE]
   0x00,                                  /* bInterfaceSubClass: Data interface subclass code 0x00*/
   0x00,                                  /* bInterfaceProtocol: data class protocol code 0x00 */
   0x00,                                  /* iInterface: index of string descriptor */
-  
+
   USB_DEVICE_EPT_LEN,                    /* bLength: size of endpoint descriptor in bytes */
   USB_DESCIPTOR_TYPE_ENDPOINT,           /* bDescriptorType: endpoint descriptor type */
   USBD_VCPKYBRD_CDC_BULK_IN_EPT,         /* bEndpointAddress: the address of endpoint on usb device described by this descriptor */
@@ -188,15 +188,15 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_VCPKYBRD_CONFIG_DESC_SIZE]
   LBYTE(USBD_VCPKYBRD_IN_MAXPACKET_SIZE),
   HBYTE(USBD_VCPKYBRD_IN_MAXPACKET_SIZE), /* wMaxPacketSize: maximum packe size this endpoint */
   0x00,                                  /* bInterval: interval for polling endpoint for data transfers */
-  
+
   USB_DEVICE_EPT_LEN,                    /* bLength: size of endpoint descriptor in bytes */
   USB_DESCIPTOR_TYPE_ENDPOINT,           /* bDescriptorType: endpoint descriptor type */
   USBD_VCPKYBRD_CDC_BULK_OUT_EPT,        /* bEndpointAddress: the address of endpoint on usb device described by this descriptor */
   USB_EPT_DESC_BULK,                     /* bmAttributes: endpoint attributes */
-  LBYTE(USBD_VCPKYBRD_OUT_MAXPACKET_SIZE),        
+  LBYTE(USBD_VCPKYBRD_OUT_MAXPACKET_SIZE),
   HBYTE(USBD_VCPKYBRD_OUT_MAXPACKET_SIZE),/* wMaxPacketSize: maximum packe size this endpoint */
   0x00,                                  /* bInterval: interval for polling endpoint for data transfers */
-  
+
   0x08, /* bLength */
   0x0B, /* bDescriptorType */
   0x02, /* bFirstInterface */
@@ -205,7 +205,7 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_VCPKYBRD_CONFIG_DESC_SIZE]
   0x00, /* bFunctionSubClass */
   0x01, /* bFunctionProtocol */
   0x00, /* iFunction (Index of string descriptor describing this function) */
-  
+
   USB_DEVICE_IF_DESC_LEN,                /* bLength: interface descriptor size */
   USB_DESCIPTOR_TYPE_INTERFACE,          /* bDescriptorType: interface descriptor type */
   VCPKYBRD_KEYBOARD_INTERFACE,          /* bInterfaceNumber: number of interface */
@@ -215,7 +215,7 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_VCPKYBRD_CONFIG_DESC_SIZE]
   0x01,                                  /* bInterfaceSubClass: subclass code */
   0x01,                                  /* bInterfaceProtocol: protocol code */
   0x00,                                  /* iInterface: index of string descriptor */
-  
+
   0x09,                                  /* bLength: size of HID descriptor in bytes */
   HID_CLASS_DESC_HID,                    /* bDescriptorType: HID descriptor type */
   LBYTE(VCPKYBRD_BCD_NUM),
@@ -225,7 +225,7 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_VCPKYBRD_CONFIG_DESC_SIZE]
   HID_CLASS_DESC_REPORT,                 /* bDescriptorType: report descriptor type */
   LBYTE(sizeof(g_usbd_vcpkybrd_hid_report)),
   HBYTE(sizeof(g_usbd_vcpkybrd_hid_report)), /* wDescriptorLength: total length of reprot descriptor */
-    
+
   USB_DEVICE_EPT_LEN,                    /* bLength: size of endpoint descriptor in bytes */
   USB_DESCIPTOR_TYPE_ENDPOINT,           /* bDescriptorType: endpoint descriptor type */
   USBD_VCPKYBRD_HID_IN_EPT,              /* bEndpointAddress: the address of endpoint on usb device described by this descriptor */
@@ -241,7 +241,7 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_VCPKYBRD_CONFIG_DESC_SIZE]
 #if defined ( __ICCARM__ ) /* iar compiler */
   #pragma data_alignment=4
 #endif
-ALIGNED_HEAD uint8_t g_vcpkybrd_hid_usb_desc[9] ALIGNED_TAIL = 
+ALIGNED_HEAD uint8_t g_vcpkybrd_hid_usb_desc[9] ALIGNED_TAIL =
 {
   0x09,                                  /* bLength: size of HID descriptor in bytes */
   HID_CLASS_DESC_HID,                    /* bDescriptorType: HID descriptor type */
@@ -260,7 +260,7 @@ ALIGNED_HEAD uint8_t g_vcpkybrd_hid_usb_desc[9] ALIGNED_TAIL =
 #if defined ( __ICCARM__ ) /* iar compiler */
   #pragma data_alignment=4
 #endif
-ALIGNED_HEAD uint8_t g_usbd_vcpkybrd_hid_report[USBD_VCPKYBRD_HID_SIZ_REPORT_DESC] ALIGNED_TAIL = 
+ALIGNED_HEAD uint8_t g_usbd_vcpkybrd_hid_report[USBD_VCPKYBRD_HID_SIZ_REPORT_DESC] ALIGNED_TAIL =
 {
   0x05, 0x01, // USAGE_PAGE (Generic Desktop)
   0x09, 0x06, // USAGE (Keyboard)
@@ -293,7 +293,7 @@ ALIGNED_HEAD uint8_t g_usbd_vcpkybrd_hid_report[USBD_VCPKYBRD_HID_SIZ_REPORT_DES
   0x19, 0x00, // USAGE_MINIMUM (Reserved (no event indicated))
   0x29, 0x65, // USAGE_MAXIMUM (Keyboard Application)
   0x81, 0x00, // INPUT (Data,Ary,Abs)
-  0xc0        // END_COLLECTION 
+  0xc0        // END_COLLECTION
 };
 /**
   * @brief usb string lang id
@@ -356,24 +356,24 @@ static usbd_desc_t vp_desc;
   * @brief  standard usb unicode convert
   * @param  string: source string
   * @param  unicode_buf: unicode buffer
-  * @retval length                        
+  * @retval length
   */
 static uint16_t usbd_unicode_convert(uint8_t *string, uint8_t *unicode_buf)
 {
   uint16_t str_len = 0, id_pos = 2;
   uint8_t *tmp_str = string;
-  
+
   while(*tmp_str != '\0')
   {
     str_len ++;
     unicode_buf[id_pos ++] = *tmp_str ++;
     unicode_buf[id_pos ++] = 0x00;
   }
-  
+
   str_len = str_len * 2 + 2;
   unicode_buf[0] = str_len;
   unicode_buf[1] = USB_DESCIPTOR_TYPE_STRING;
-  
+
   return str_len;
 }
 
@@ -382,12 +382,12 @@ static uint16_t usbd_unicode_convert(uint8_t *string, uint8_t *unicode_buf)
   * @param  value: int value
   * @param  pbus: unicode buffer
   * @param  len: length
-  * @retval none                        
+  * @retval none
   */
 static void usbd_int_to_unicode (uint32_t value , uint8_t *pbuf , uint8_t len)
 {
   uint8_t idx = 0;
-  
+
   for( idx = 0 ; idx < len ; idx ++)
   {
     if( ((value >> 28)) < 0xA )
@@ -396,11 +396,11 @@ static void usbd_int_to_unicode (uint32_t value , uint8_t *pbuf , uint8_t len)
   }
   else
   {
-      pbuf[2 * idx] = (value >> 28) + 'A' - 10; 
+      pbuf[2 * idx] = (value >> 28) + 'A' - 10;
     }
-    
+
     value = value << 4;
-    
+
     pbuf[2 * idx + 1] = 0;
   }
 }
@@ -408,18 +408,18 @@ static void usbd_int_to_unicode (uint32_t value , uint8_t *pbuf , uint8_t len)
 /**
   * @brief  usb get serial number
   * @param  none
-  * @retval none                        
+  * @retval none
   */
 static void get_serial_num(void)
 {
   uint32_t serial0, serial1, serial2;
-  
+
   serial0 = *(uint32_t*)MCU_ID1;
   serial1 = *(uint32_t*)MCU_ID2;
   serial2 = *(uint32_t*)MCU_ID3;
-  
+
   serial0 += serial2;
-  
+
   if (serial0 != 0)
   {
     usbd_int_to_unicode (serial0, &g_string_serial[2] ,8);
@@ -430,7 +430,7 @@ static void get_serial_num(void)
 /**
   * @brief  get device descriptor
   * @param  none
-  * @retval usbd_desc                         
+  * @retval usbd_desc
   */
 static usbd_desc_t *get_device_descriptor(void)
 {
@@ -440,7 +440,7 @@ static usbd_desc_t *get_device_descriptor(void)
 /**
   * @brief  get device qualifier
   * @param  none
-  * @retval usbd_desc                         
+  * @retval usbd_desc
   */
 static usbd_desc_t * get_device_qualifier(void)
 {
@@ -450,7 +450,7 @@ static usbd_desc_t * get_device_qualifier(void)
 /**
   * @brief  get config descriptor
   * @param  none
-  * @retval usbd_desc                         
+  * @retval usbd_desc
   */
 static usbd_desc_t *get_device_configuration(void)
 {
@@ -460,7 +460,7 @@ static usbd_desc_t *get_device_configuration(void)
 /**
   * @brief  get other speed descriptor
   * @param  none
-  * @retval usbd_desc                         
+  * @retval usbd_desc
   */
 static usbd_desc_t *get_device_other_speed(void)
 {
@@ -470,7 +470,7 @@ static usbd_desc_t *get_device_other_speed(void)
 /**
   * @brief  get lang id descriptor
   * @param  none
-  * @retval usbd_desc                         
+  * @retval usbd_desc
   */
 static usbd_desc_t *get_device_lang_id(void)
 {
@@ -481,7 +481,7 @@ static usbd_desc_t *get_device_lang_id(void)
 /**
   * @brief  get manufacturer descriptor
   * @param  none
-  * @retval usbd_desc                         
+  * @retval usbd_desc
   */
 static usbd_desc_t *get_device_manufacturer_string(void)
 {
@@ -493,7 +493,7 @@ static usbd_desc_t *get_device_manufacturer_string(void)
 /**
   * @brief  get product descriptor
   * @param  none
-  * @retval usbd_desc                         
+  * @retval usbd_desc
   */
 static usbd_desc_t *get_device_product_string(void)
 {
@@ -505,7 +505,7 @@ static usbd_desc_t *get_device_product_string(void)
 /**
   * @brief  get serial descriptor
   * @param  none
-  * @retval usbd_desc                         
+  * @retval usbd_desc
   */
 static usbd_desc_t *get_device_serial_string(void)
 {
@@ -516,7 +516,7 @@ static usbd_desc_t *get_device_serial_string(void)
 /**
   * @brief  get interface descriptor
   * @param  none
-  * @retval usbd_desc                         
+  * @retval usbd_desc
   */
 static usbd_desc_t *get_device_interface_string(void)
 {
@@ -528,7 +528,7 @@ static usbd_desc_t *get_device_interface_string(void)
 /**
   * @brief  get device config descriptor
   * @param  none
-  * @retval usbd_desc                         
+  * @retval usbd_desc
   */
 static usbd_desc_t *get_device_config_string(void)
 {
@@ -539,7 +539,7 @@ static usbd_desc_t *get_device_config_string(void)
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}

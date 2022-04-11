@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     mouse_desc.h
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    usb mouse descriptor header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -23,7 +23,7 @@
   *
   **************************************************************************
   */
-  
+
 /* define to prevent recursive inclusion -------------------------------------*/
 #ifndef __MOUSE_DESC_H
 #define __MOUSE_DESC_H
@@ -31,19 +31,19 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
- 
+
 #include "mouse_class.h"
 #include "usbd_core.h"
 
 /** @addtogroup AT32F403A_407_middlewares_usbd_class
   * @{
   */
-  
+
 /** @addtogroup USB_mouse_desc
   * @{
   */
 
-/** @defgroup USB_mouse_desc_definition 
+/** @defgroup USB_mouse_desc_definition
   * @{
   */
 
@@ -56,7 +56,7 @@ extern "C" {
   * @brief usb vendor id and product id define
   */
 #define USBD_MOUSE_VENDOR_ID             0x2E3C
-#define USBD_MOUSE_PRODUCT_ID            0x5710  
+#define USBD_MOUSE_PRODUCT_ID            0x5710
 
 /**
   * @brief usb descriptor size define
@@ -75,7 +75,7 @@ extern "C" {
 #define USBD_MOUSE_DESC_INTERFACE_STRING       "Mouse Interface"
 
 /**
-  * @brief usb hid endpoint interval define 
+  * @brief usb hid endpoint interval define
   */
 #define MOUSE_BINTERVAL_TIME                0x0A
 
@@ -96,7 +96,7 @@ extern usbd_desc_handler mouse_desc_handler;
 /**
   * @}
   */
-  
+
 /**
   * @}
   */

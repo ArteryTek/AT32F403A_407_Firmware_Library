@@ -61,9 +61,9 @@ extern const float32_t firCoeffs32[];
 //#if   defined ( __ICCARM__ )
 //static float32_t firStateF32[BLOCK_SIZE + NUM_TAPS - 1]  @ 0x20017000 ;
 //#elif defined ( __CC_ARM )
-//static float32_t firStateF32[BLOCK_SIZE + NUM_TAPS - 1] __attribute__((at(0x20017000)));  
-//#endif  
-static float32_t firStateF32[BLOCK_SIZE + NUM_TAPS - 1] ;  
+//static float32_t firStateF32[BLOCK_SIZE + NUM_TAPS - 1] __attribute__((at(0x20017000)));
+//#endif
+static float32_t firStateF32[BLOCK_SIZE + NUM_TAPS - 1] ;
 
 /* ----------------------------------------------------------------------
 ** FIR Coefficients buffer generated using fir1() MATLAB function.
@@ -80,7 +80,7 @@ void FIR_lowpass_filter(float32_t * pSrc, float32_t * pDst, uint32_t testlengths
   uint32_t numBlocks = testlengthsamples/BLOCK_SIZE;
   arm_fir_instance_f32 S;
 
-  
+
   /* Call FIR init function to initialize the instance structure. */
   arm_fir_init_f32(&S, NUM_TAPS, (float32_t *)&firCoeffs32[0], &firStateF32[0], blockSize);
   /* ----------------------------------------------------------------------
@@ -90,5 +90,5 @@ void FIR_lowpass_filter(float32_t * pSrc, float32_t * pDst, uint32_t testlengths
   {
     arm_fir_f32(&S, pSrc + (i * blockSize), pDst + (i * blockSize), blockSize);
   }
-	
+
 }

@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     audio_desc.c
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    usb audio device descriptor
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -31,11 +31,11 @@
 /** @addtogroup AT32F403A_407_middlewares_usbd_class
   * @{
   */
-  
+
 /** @defgroup USB_audio_hid_desc
   * @brief usb device audio hid descriptor
   * @{
-  */  
+  */
 
 /** @defgroup USB_audio_hid_desc_private_functions
   * @{
@@ -121,7 +121,7 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_AUHID_CONFIG_DESC_SIZE] AL
                                             the configuration */
   0xC0,                                  /* bmAttributes: self powered */
   0x32,                                  /* MaxPower 100 mA: this current is used for detecting vbus */
-  
+
   USB_DEVICE_IF_DESC_LEN,                /* bLength: interface descriptor size */
   USB_DESCIPTOR_TYPE_INTERFACE,          /* bDescriptorType: interface descriptor type */
   0x00,                                  /* bInterfaceNumber: number of interface */
@@ -131,7 +131,7 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_AUHID_CONFIG_DESC_SIZE] AL
   AUDIO_SUBCLASS_AUDIOCONTROL,           /* bInterfaceSubClass: audio control */
   AUDIO_PROTOCOL_UNDEFINED,              /* bInterfaceProtocol: undefined */
   0x00,                                  /* iInterface: index of string descriptor */
-  
+
   0x08+AUDIO_INTERFACE_NUM,              /* bLength: size of this descriptor, in bytes 8+n */
   AUDIO_CS_INTERFACE,                    /* bDescriptorType: cs interface descriptor type */
   AUDIO_AC_HEADER,                       /* bDescriptorSubtype: Header function Descriptor*/
@@ -166,7 +166,7 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_AUHID_CONFIG_DESC_SIZE] AL
   0x00,                                  /* wChannelConfig */
   0x00,                                  /* iChannelNames: unused */
   0x00,                                  /* iTerminal: unused */
-  
+
   AUDIO_FEATURE_UNIT_SIZE,               /* bLength: descriptor size */
   AUDIO_CS_INTERFACE,                    /* bDescriptorType: configuration */
   AUDIO_AC_FEATURE_UNIT,                 /* bDescriptorSubtype: feature unit type*/
@@ -176,7 +176,7 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_AUHID_CONFIG_DESC_SIZE] AL
   0x01,                                  /* bmaControls0: mute */
   0x02,                                  /* bmaControls1: volume */
   0x00,                                  /* iFeature: unused */
-  
+
   AUDIO_OUTPUT_TERMINAL_SIZE,            /* bLength: descriptor size */
   AUDIO_CS_INTERFACE,                    /* bDescriptorType: configuration */
   AUDIO_AC_OUTPUT_TERMINAL,              /* bDescriptorSubtype: output_terminal type*/
@@ -186,8 +186,8 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_AUHID_CONFIG_DESC_SIZE] AL
   AUDIO_MIC_INPUT_TERMINAL_ID,                                  /* bAssocTerminal: unused */
   AUDIO_MIC_FEATURE_UNIT_ID,             /* bSourceID: from feature unit terminal */
   0x00,                                  /* iTerminal: unused */
-#endif 
-  
+#endif
+
 #if (AUDIO_SUPPORT_SPK == 1)
   /* speaker config */
   AUDIO_INPUT_TERMINAL_SIZE,             /* bLength: descriptor size */
@@ -207,7 +207,7 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_AUHID_CONFIG_DESC_SIZE] AL
   0x00,                                  /* wChannelConfig */
   0x00,                                  /* iChannelNames: unused */
   0x00,                                  /* iTerminal: unused */
-  
+
   AUDIO_FEATURE_UNIT_SIZE,               /* bLength: descriptor size */
   AUDIO_CS_INTERFACE,                    /* bDescriptorType: configuration */
   AUDIO_AC_FEATURE_UNIT,                 /* bDescriptorSubtype: feature unit type*/
@@ -217,7 +217,7 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_AUHID_CONFIG_DESC_SIZE] AL
   0x01,                                  /* bmaControls0: mute*/
   0x02,                                  /* bmaControls1: volume */
   0x00,                                  /* iFeature: unused */
-  
+
   AUDIO_OUTPUT_TERMINAL_SIZE,            /* bLength: descriptor size */
   AUDIO_CS_INTERFACE,                    /* bDescriptorType: configuration */
   AUDIO_AC_OUTPUT_TERMINAL,              /* bDescriptorSubtype: output_terminal type*/
@@ -239,8 +239,8 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_AUHID_CONFIG_DESC_SIZE] AL
   USB_CLASS_CODE_AUDIO,                  /* bInterfaceClass: audio */
   AUDIO_SUBCLASS_AUDIOSTREAMING,         /* bInterfaceSubclass: audio streaming */
   0x00,                                  /* bInterfaceProtocol: unused */
-  0x00,                                  /* iInterface: unused */ 
-  
+  0x00,                                  /* iInterface: unused */
+
   0x09,                                  /* bLength: descriptor size */
   USB_DESCIPTOR_TYPE_INTERFACE,          /* bDescriptorType: interface descriptor type */
   AUDIO_MIC_INTERFACE_NUMBER,            /* bInterfaceNumber: index of this interface */
@@ -249,8 +249,8 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_AUHID_CONFIG_DESC_SIZE] AL
   USB_CLASS_CODE_AUDIO,                  /* bInterfaceClass: audio */
   AUDIO_SUBCLASS_AUDIOSTREAMING,         /* bInterfaceSubclass: audio streaming */
   0x00,                                  /* bInterfaceProtocol: unused */
-  0x00,                                  /* iInterface: unused */ 
-  
+  0x00,                                  /* iInterface: unused */
+
   0x07,                                  /* bLength: configuration descriptor size */
   AUDIO_CS_INTERFACE,                    /* bDescriptorType: interface descriptor type */
   AUDIO_AS_GENERAL,                      /* bDescriptorSubtype: general sub type*/
@@ -258,7 +258,7 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_AUHID_CONFIG_DESC_SIZE] AL
   0x01,                                  /* bDelay: interface delay */
   0x01,                                  /* wFormatTag: pcm format*/
   0x00,                                  /* wFormatTag: pcm format*/
-  
+
   0x08 + AUDIO_MIC_FREQ_SIZE * 3,        /* bLength: descriptor size */
   AUDIO_CS_INTERFACE,                    /* bDescriptorType: interface descriptor type */
   AUDIO_AS_FORMAT_TYPE,                  /* bDescriptorSubtype: format subtype */
@@ -267,10 +267,10 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_AUHID_CONFIG_DESC_SIZE] AL
   AUDIO_MIC_BITW / 8,                    /* bSubFrameSize: per audio subframe */
   AUDIO_MIC_BITW,                        /* bBitResolution: n bits per sample */
   AUDIO_MIC_FREQ_SIZE,                   /* bSamFreqType: n frequency supported */
-#if (AUDIO_SUPPORT_FREQ_16K == 1) 
+#if (AUDIO_SUPPORT_FREQ_16K == 1)
   SAMPLE_FREQ(AT32_AUDIO_FREQ_16K),      /* tSamFreq: 16000hz */
 #endif
-#if (AUDIO_SUPPORT_FREQ_48K == 1) 
+#if (AUDIO_SUPPORT_FREQ_48K == 1)
   SAMPLE_FREQ(AT32_AUDIO_FREQ_48K),      /* tSamFreq: 48000hz */
 #endif
 
@@ -283,7 +283,7 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_AUHID_CONFIG_DESC_SIZE] AL
   AUHID_HID_BINTERVAL_TIME,              /* bInterval: interval for polling endpoint for data transfers */
   0x00,                                  /* bRefresh: unused */
   0x00,                                  /* bSynchAddress: unused */
-  
+
   0x07,                                  /* bLength: size of endpoint descriptor in bytes */
   AUDIO_CS_ENDPOINT,                     /* bDescriptorType: cs endpoint descriptor type */
   0x01,                                  /* bDescriptorSubtype: general subtype */
@@ -304,7 +304,7 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_AUHID_CONFIG_DESC_SIZE] AL
   AUDIO_SUBCLASS_AUDIOSTREAMING,         /* bInterfaceSubclass: audio streaming */
   0x00,                                  /* bInterfaceProtocol: unused */
   0x00,                                  /* iInterface: unused */
-  
+
   0x09,                                  /* bLength: descriptor size */
   USB_DESCIPTOR_TYPE_INTERFACE,          /* bDescriptorType: interface descriptor type */
   AUDIO_SPK_INTERFACE_NUMBER,            /* bInterfaceNumber: index of this interface */
@@ -313,8 +313,8 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_AUHID_CONFIG_DESC_SIZE] AL
   USB_CLASS_CODE_AUDIO,                  /* bInterfaceClass: audio */
   AUDIO_SUBCLASS_AUDIOSTREAMING,         /* bInterfaceSubclass: audio streaming */
   0x00,                                  /* bInterfaceProtocol: unused */
-  0x00,                                  /* iInterface: unused */ 
-  
+  0x00,                                  /* iInterface: unused */
+
   0x07,                                  /* bLength: configuration descriptor size */
   AUDIO_CS_INTERFACE,                    /* bDescriptorType: interface descriptor type */
   AUDIO_AS_GENERAL,                      /* bDescriptorSubtype: general sub type*/
@@ -322,7 +322,7 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_AUHID_CONFIG_DESC_SIZE] AL
   0x01,                                  /* bDelay: interface delay */
   0x01,                                  /* wFormatTag: pcm format*/
   0x00,                                  /* wFormatTag: pcm format*/
-  
+
   0x08 + AUDIO_SPK_FREQ_SIZE * 3,        /* bLength: descriptor size */
   AUDIO_CS_INTERFACE,                    /* bDescriptorType: interface descriptor type */
   AUDIO_AS_FORMAT_TYPE,                  /* bDescriptorSubtype: format subtype */
@@ -331,13 +331,13 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_AUHID_CONFIG_DESC_SIZE] AL
   AUDIO_SPK_BITW / 8,                    /* bSubFrameSize: per audio subframe */
   AUDIO_SPK_BITW,                        /* bBitResolution: n bits per sample */
   AUDIO_SPK_FREQ_SIZE,                   /* bSamFreqType: n frequency supported */
-#if (AUDIO_SUPPORT_FREQ_16K == 1) 
+#if (AUDIO_SUPPORT_FREQ_16K == 1)
   SAMPLE_FREQ(AT32_AUDIO_FREQ_16K),      /* tSamFreq: 16000hz */
 #endif
-#if (AUDIO_SUPPORT_FREQ_48K == 1) 
+#if (AUDIO_SUPPORT_FREQ_48K == 1)
   SAMPLE_FREQ(AT32_AUDIO_FREQ_48K),      /* tSamFreq: 48000hz */
 #endif
-  
+
   0x09,                                  /* bLength: size of endpoint descriptor in bytes */
   USB_DESCIPTOR_TYPE_ENDPOINT,           /* bDescriptorType: endpoint descriptor type */
   USBD_AUHID_AUDIO_SPK_OUT_EPT,          /* bEndpointAddress: the address of endpoint on usb device described by this descriptor */
@@ -359,7 +359,7 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_AUHID_CONFIG_DESC_SIZE] AL
   0x00,                                  /* bLockDelayUnits: unused */
   0x00,                                  /* wLockDelay: unused */
   0x00,                                  /* wLockDelay: unused */
-  
+
 #if (AUDIO_SUPPORT_FEEDBACK == 1)
   0x09,                                  /* bLength: size of endpoint descriptor in bytes */
   USB_DESCIPTOR_TYPE_ENDPOINT,           /* bDescriptorType: endpoint descriptor type */
@@ -370,11 +370,11 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_AUHID_CONFIG_DESC_SIZE] AL
   1,                   					 /* bInterval: interval for polling endpoint for data transfers */
   FEEDBACK_REFRESH_TIME,                 /* bRefresh: this field indicates the rate at which an iso syncronization
                                                       pipe provides new syncronization feedback data. this rate must be a power of
-                                                      2, therefore only the power is reported back and the range of this field is from 
+                                                      2, therefore only the power is reported back and the range of this field is from
                                                       1(2ms) to 9(512ms) */
   0x00,                                   /* bSynchAddress: 0x00*/
 #endif
-  
+
 #endif
 
   USB_DEVICE_IF_DESC_LEN,                /* bLength: interface descriptor size */
@@ -386,7 +386,7 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_AUHID_CONFIG_DESC_SIZE] AL
   0x00,                                  /* bInterfaceSubClass: subclass code */
   0x00,                                  /* bInterfaceProtocol: protocol code */
   0x00,                                  /* iInterface: index of string descriptor */
-  
+
   0x09,                                  /* bLength: size of HID descriptor in bytes */
   HID_CLASS_DESC_HID,                    /* bDescriptorType: HID descriptor type */
   LBYTE(AUHID_HID_BCD_NUM),
@@ -396,7 +396,7 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_AUHID_CONFIG_DESC_SIZE] AL
   HID_CLASS_DESC_REPORT,                 /* bDescriptorType: report descriptor type */
   LBYTE(sizeof(g_usbd_audio_hid_report)),
   HBYTE(sizeof(g_usbd_audio_hid_report)),      /* wDescriptorLength: total length of reprot descriptor */
-    
+
   USB_DEVICE_EPT_LEN,                    /* bLength: size of endpoint descriptor in bytes */
   USB_DESCIPTOR_TYPE_ENDPOINT,           /* bDescriptorType: endpoint descriptor type */
   USBD_AUHID_HID_IN_EPT,                       /* bEndpointAddress: the address of endpoint on usb device described by this descriptor */
@@ -404,12 +404,12 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_AUHID_CONFIG_DESC_SIZE] AL
   LBYTE(USBD_AUHID_IN_MAXPACKET_SIZE),
   HBYTE(USBD_AUHID_IN_MAXPACKET_SIZE),   /* wMaxPacketSize: maximum packe size this endpoint */
   AUHID_HID_BINTERVAL_TIME,              /* bInterval: interval for polling endpoint for data transfers */
-  
+
   USB_DEVICE_EPT_LEN,                    /* bLength: size of endpoint descriptor in bytes */
   USB_DESCIPTOR_TYPE_ENDPOINT,           /* bDescriptorType: endpoint descriptor type */
   USBD_AUHID_HID_OUT_EPT,                      /* bEndpointAddress: the address of endpoint on usb device described by this descriptor */
   USB_EPT_DESC_INTERRUPT,                /* bmAttributes: endpoint attributes */
-  LBYTE(USBD_AUHID_OUT_MAXPACKET_SIZE),        
+  LBYTE(USBD_AUHID_OUT_MAXPACKET_SIZE),
   HBYTE(USBD_AUHID_OUT_MAXPACKET_SIZE),  /* wMaxPacketSize: maximum packe size this endpoint */
   AUHID_HID_BINTERVAL_TIME,              /* bInterval: interval for polling endpoint for data transfers */
 };
@@ -420,94 +420,94 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_AUHID_CONFIG_DESC_SIZE] AL
 #if defined ( __ICCARM__ ) /* iar compiler */
   #pragma data_alignment=4
 #endif
-ALIGNED_HEAD uint8_t g_usbd_audio_hid_report[USBD_AUHID_HID_SIZ_REPORT_DESC] ALIGNED_TAIL = 
+ALIGNED_HEAD uint8_t g_usbd_audio_hid_report[USBD_AUHID_HID_SIZ_REPORT_DESC] ALIGNED_TAIL =
 {
-  0x06, 0xFF, 0x00,                      /* USAGE_PAGE(Vendor Page:0xFF00) */                       
-  0x09, 0x01,                            /* USAGE (Demo Kit)               */    
-  0xa1, 0x01,                            /* COLLECTION (Application)       */            
+  0x06, 0xFF, 0x00,                      /* USAGE_PAGE(Vendor Page:0xFF00) */
+  0x09, 0x01,                            /* USAGE (Demo Kit)               */
+  0xa1, 0x01,                            /* COLLECTION (Application)       */
   /* 7 */
-  
+
   /* Led 2 */
   0x85, HID_REPORT_ID_2,                 /*     REPORT_ID 2                */
   0x09, 0x02,                            /*     USAGE (LED 2)              */
-  0x15, 0x00,                            /*     LOGICAL_MINIMUM (0)        */          
-  0x25, 0x01,                            /*     LOGICAL_MAXIMUM (1)        */           
-  0x75, 0x08,                            /*     REPORT_SIZE (8)            */        
-  0x95, 0x3F,                            /*     REPORT_COUNT (1)           */       
-  0xB1, 0x82,                            /*    FEATURE (Data,Var,Abs,Vol)  */     
+  0x15, 0x00,                            /*     LOGICAL_MINIMUM (0)        */
+  0x25, 0x01,                            /*     LOGICAL_MAXIMUM (1)        */
+  0x75, 0x08,                            /*     REPORT_SIZE (8)            */
+  0x95, 0x3F,                            /*     REPORT_COUNT (1)           */
+  0xB1, 0x82,                            /*    FEATURE (Data,Var,Abs,Vol)  */
 
   0x85, 0x02,                            /*     REPORT_ID (2)              */
   0x09, 0x02,                            /*     USAGE (LED 2)              */
   0x91, 0x82,                            /*     OUTPUT (Data,Var,Abs,Vol)  */
   /* 27 */
-  
-  /* Led 3 */        
+
+  /* Led 3 */
   0x85, HID_REPORT_ID_3,                 /*     REPORT_ID (3)              */
   0x09, 0x03,                            /*     USAGE (LED 3)              */
-  0x15, 0x00,                            /*     LOGICAL_MINIMUM (0)        */          
-  0x25, 0x01,                            /*     LOGICAL_MAXIMUM (1)        */           
-  0x75, 0x08,                            /*     REPORT_SIZE (8)            */        
-  0x95, 0x3F,                            /*     REPORT_COUNT (1)           */       
-  0xB1, 0x82,                            /*     FEATURE (Data,Var,Abs,Vol) */     
+  0x15, 0x00,                            /*     LOGICAL_MINIMUM (0)        */
+  0x25, 0x01,                            /*     LOGICAL_MAXIMUM (1)        */
+  0x75, 0x08,                            /*     REPORT_SIZE (8)            */
+  0x95, 0x3F,                            /*     REPORT_COUNT (1)           */
+  0xB1, 0x82,                            /*     FEATURE (Data,Var,Abs,Vol) */
 
   0x85, 0x03,                            /*     REPORT_ID (3)              */
   0x09, 0x03,                            /*     USAGE (LED 3)              */
   0x91, 0x82,                            /*     OUTPUT (Data,Var,Abs,Vol)  */
   /* 47 */
-  
+
   /* Led 4 */
   0x85, HID_REPORT_ID_4,                 /*     REPORT_ID 4)               */
   0x09, 0x04,                            /*     USAGE (LED 4)              */
-  0x15, 0x00,                            /*     LOGICAL_MINIMUM (0)        */          
-  0x25, 0x01,                            /*     LOGICAL_MAXIMUM (1)        */           
-  0x75, 0x08,                            /*     REPORT_SIZE (8)            */        
-  0x95, 0x3F,                            /*     REPORT_COUNT (1)           */       
-  0xB1, 0x82,                            /*     FEATURE (Data,Var,Abs,Vol) */     
+  0x15, 0x00,                            /*     LOGICAL_MINIMUM (0)        */
+  0x25, 0x01,                            /*     LOGICAL_MAXIMUM (1)        */
+  0x75, 0x08,                            /*     REPORT_SIZE (8)            */
+  0x95, 0x3F,                            /*     REPORT_COUNT (1)           */
+  0xB1, 0x82,                            /*     FEATURE (Data,Var,Abs,Vol) */
 
   0x85, 0x04,                            /*     REPORT_ID (4)              */
   0x09, 0x04,                            /*     USAGE (LED 4)              */
   0x91, 0x82,                            /*     OUTPUT (Data,Var,Abs,Vol)  */
   /* 67 */
-  
-  /* key Push Button */  
+
+  /* key Push Button */
   0x85, HID_REPORT_ID_5,                 /*     REPORT_ID (5)              */
-  0x09, 0x05,                            /*     USAGE (Push Button)        */      
-  0x15, 0x00,                            /*     LOGICAL_MINIMUM (0)        */      
-  0x25, 0x01,                            /*     LOGICAL_MAXIMUM (1)        */      
-  0x75, 0x01,                            /*     REPORT_SIZE (1)            */  
-  0x81, 0x82,                            /*     INPUT (Data,Var,Abs,Vol)   */   
-  
-  0x09, 0x05,                            /*     USAGE (Push Button)        */               
-  0x75, 0x01,                            /*     REPORT_SIZE (1)            */           
-  0xb1, 0x82,                            /*     FEATURE (Data,Var,Abs,Vol) */  
-       
-  0x75, 0x07,                            /*     REPORT_SIZE (7)            */           
-  0x81, 0x83,                            /*     INPUT (Cnst,Var,Abs,Vol)   */                    
-  0x85, 0x05,                            /*     REPORT_ID (5)              */         
-                  
-  0x75, 0x07,                            /*     REPORT_SIZE (7)            */           
-  0xb1, 0x83,                            /*     FEATURE (Cnst,Var,Abs,Vol) */                      
+  0x09, 0x05,                            /*     USAGE (Push Button)        */
+  0x15, 0x00,                            /*     LOGICAL_MINIMUM (0)        */
+  0x25, 0x01,                            /*     LOGICAL_MAXIMUM (1)        */
+  0x75, 0x01,                            /*     REPORT_SIZE (1)            */
+  0x81, 0x82,                            /*     INPUT (Data,Var,Abs,Vol)   */
+
+  0x09, 0x05,                            /*     USAGE (Push Button)        */
+  0x75, 0x01,                            /*     REPORT_SIZE (1)            */
+  0xb1, 0x82,                            /*     FEATURE (Data,Var,Abs,Vol) */
+
+  0x75, 0x07,                            /*     REPORT_SIZE (7)            */
+  0x81, 0x83,                            /*     INPUT (Cnst,Var,Abs,Vol)   */
+  0x85, 0x05,                            /*     REPORT_ID (5)              */
+
+  0x75, 0x07,                            /*     REPORT_SIZE (7)            */
+  0xb1, 0x83,                            /*     FEATURE (Cnst,Var,Abs,Vol) */
   /* 95 */
- 
-  /* Data OUT */  
-  0x85, HID_REPORT_ID_6,                 /*     REPORT_ID (0xF0)           */  
-  0x09, 0x06,                            /*     USAGE                      */ 
-  0x15, 0x00,                            /*     LOGICAL_MINIMUM (0)        */ 
-  0x26, 0x00,0xff,                       /*     LOGICAL_MAXIMUM (255)      */ 
-  0x75, 0x08,                            /*     REPORT_SIZE (8)            */ 
-  0x95, 0x3F,                            /*     REPORT_COUNT (64)          */ 
-  0x91, 0x02,                            /*     OUTPUT(Data,Var,Abs,Vol)   */ 
+
+  /* Data OUT */
+  0x85, HID_REPORT_ID_6,                 /*     REPORT_ID (0xF0)           */
+  0x09, 0x06,                            /*     USAGE                      */
+  0x15, 0x00,                            /*     LOGICAL_MINIMUM (0)        */
+  0x26, 0x00,0xff,                       /*     LOGICAL_MAXIMUM (255)      */
+  0x75, 0x08,                            /*     REPORT_SIZE (8)            */
+  0x95, 0x3F,                            /*     REPORT_COUNT (64)          */
+  0x91, 0x02,                            /*     OUTPUT(Data,Var,Abs,Vol)   */
   /* 110 */
-  
-  /* Data IN */ 
-  0x85, HID_REPORT_ID_6,                 /*     REPORT_ID (0xF0)           */  
-  0x09, 0x07,                            /*     USAGE                      */ 
-  0x15, 0x00,                            /*     LOGICAL_MINIMUM (0)        */ 
-  0x26, 0x00,0xff,                       /*     LOGICAL_MAXIMUM (255)      */ 
-  0x75, 0x08,                            /*     REPORT_SIZE (8)            */ 
-  0x95, 0x3F,                            /*     REPORT_COUNT (64)          */ 
-  0x81, 0x82,                            /*     INPUT(Data,Var,Abs,Vol)    */ 
-                
+
+  /* Data IN */
+  0x85, HID_REPORT_ID_6,                 /*     REPORT_ID (0xF0)           */
+  0x09, 0x07,                            /*     USAGE                      */
+  0x15, 0x00,                            /*     LOGICAL_MINIMUM (0)        */
+  0x26, 0x00,0xff,                       /*     LOGICAL_MAXIMUM (255)      */
+  0x75, 0x08,                            /*     REPORT_SIZE (8)            */
+  0x95, 0x3F,                            /*     REPORT_COUNT (64)          */
+  0x81, 0x82,                            /*     INPUT(Data,Var,Abs,Vol)    */
+
   /* 125 */
   0xc0                                   /*     END_COLLECTION             */
 };
@@ -518,7 +518,7 @@ ALIGNED_HEAD uint8_t g_usbd_audio_hid_report[USBD_AUHID_HID_SIZ_REPORT_DESC] ALI
 #if defined ( __ICCARM__ ) /* iar compiler */
   #pragma data_alignment=4
 #endif
-ALIGNED_HEAD uint8_t g_audio_hid_usb_desc[9] ALIGNED_TAIL = 
+ALIGNED_HEAD uint8_t g_audio_hid_usb_desc[9] ALIGNED_TAIL =
 {
   0x09,                                  /* bLength: size of HID descriptor in bytes */
   HID_CLASS_DESC_HID,                    /* bDescriptorType: HID descriptor type */
@@ -592,24 +592,24 @@ static usbd_desc_t vp_desc;
   * @brief  standard usb unicode convert
   * @param  string: source string
   * @param  unicode_buf: unicode buffer
-  * @retval length                        
+  * @retval length
   */
 static uint16_t usbd_unicode_convert(uint8_t *string, uint8_t *unicode_buf)
 {
   uint16_t str_len = 0, id_pos = 2;
   uint8_t *tmp_str = string;
-  
+
   while(*tmp_str != '\0')
   {
     str_len ++;
     unicode_buf[id_pos ++] = *tmp_str ++;
     unicode_buf[id_pos ++] = 0x00;
   }
-  
+
   str_len = str_len * 2 + 2;
   unicode_buf[0] = str_len;
   unicode_buf[1] = USB_DESCIPTOR_TYPE_STRING;
-  
+
   return str_len;
 }
 
@@ -618,12 +618,12 @@ static uint16_t usbd_unicode_convert(uint8_t *string, uint8_t *unicode_buf)
   * @param  value: int value
   * @param  pbus: unicode buffer
   * @param  len: length
-  * @retval none                        
+  * @retval none
   */
 static void usbd_int_to_unicode (uint32_t value , uint8_t *pbuf , uint8_t len)
 {
   uint8_t idx = 0;
-  
+
   for( idx = 0 ; idx < len ; idx ++)
   {
     if( ((value >> 28)) < 0xA )
@@ -632,11 +632,11 @@ static void usbd_int_to_unicode (uint32_t value , uint8_t *pbuf , uint8_t len)
   }
   else
   {
-      pbuf[2 * idx] = (value >> 28) + 'A' - 10; 
+      pbuf[2 * idx] = (value >> 28) + 'A' - 10;
     }
-    
+
     value = value << 4;
-    
+
     pbuf[2 * idx + 1] = 0;
   }
 }
@@ -644,18 +644,18 @@ static void usbd_int_to_unicode (uint32_t value , uint8_t *pbuf , uint8_t len)
 /**
   * @brief  usb get serial number
   * @param  none
-  * @retval none                        
+  * @retval none
   */
 static void get_serial_num(void)
 {
   uint32_t serial0, serial1, serial2;
-  
+
   serial0 = *(uint32_t*)MCU_ID1;
   serial1 = *(uint32_t*)MCU_ID2;
   serial2 = *(uint32_t*)MCU_ID3;
-  
+
   serial0 += serial2;
-  
+
   if (serial0 != 0)
   {
     usbd_int_to_unicode (serial0, &g_string_serial[2] ,8);
@@ -666,7 +666,7 @@ static void get_serial_num(void)
 /**
   * @brief  get device descriptor
   * @param  none
-  * @retval usbd_desc                         
+  * @retval usbd_desc
   */
 static usbd_desc_t *get_device_descriptor(void)
 {
@@ -676,7 +676,7 @@ static usbd_desc_t *get_device_descriptor(void)
 /**
   * @brief  get device qualifier
   * @param  none
-  * @retval usbd_desc                         
+  * @retval usbd_desc
   */
 static usbd_desc_t * get_device_qualifier(void)
 {
@@ -686,7 +686,7 @@ static usbd_desc_t * get_device_qualifier(void)
 /**
   * @brief  get config descriptor
   * @param  none
-  * @retval usbd_desc                         
+  * @retval usbd_desc
   */
 static usbd_desc_t *get_device_configuration(void)
 {
@@ -696,7 +696,7 @@ static usbd_desc_t *get_device_configuration(void)
 /**
   * @brief  get other speed descriptor
   * @param  none
-  * @retval usbd_desc                         
+  * @retval usbd_desc
   */
 static usbd_desc_t *get_device_other_speed(void)
 {
@@ -706,7 +706,7 @@ static usbd_desc_t *get_device_other_speed(void)
 /**
   * @brief  get lang id descriptor
   * @param  none
-  * @retval usbd_desc                         
+  * @retval usbd_desc
   */
 static usbd_desc_t *get_device_lang_id(void)
 {
@@ -717,7 +717,7 @@ static usbd_desc_t *get_device_lang_id(void)
 /**
   * @brief  get manufacturer descriptor
   * @param  none
-  * @retval usbd_desc                         
+  * @retval usbd_desc
   */
 static usbd_desc_t *get_device_manufacturer_string(void)
 {
@@ -729,7 +729,7 @@ static usbd_desc_t *get_device_manufacturer_string(void)
 /**
   * @brief  get product descriptor
   * @param  none
-  * @retval usbd_desc                         
+  * @retval usbd_desc
   */
 static usbd_desc_t *get_device_product_string(void)
 {
@@ -741,7 +741,7 @@ static usbd_desc_t *get_device_product_string(void)
 /**
   * @brief  get serial descriptor
   * @param  none
-  * @retval usbd_desc                         
+  * @retval usbd_desc
   */
 static usbd_desc_t *get_device_serial_string(void)
 {
@@ -752,7 +752,7 @@ static usbd_desc_t *get_device_serial_string(void)
 /**
   * @brief  get interface descriptor
   * @param  none
-  * @retval usbd_desc                         
+  * @retval usbd_desc
   */
 static usbd_desc_t *get_device_interface_string(void)
 {
@@ -764,7 +764,7 @@ static usbd_desc_t *get_device_interface_string(void)
 /**
   * @brief  get device config descriptor
   * @param  none
-  * @retval usbd_desc                         
+  * @retval usbd_desc
   */
 static usbd_desc_t *get_device_config_string(void)
 {
@@ -775,7 +775,7 @@ static usbd_desc_t *get_device_config_string(void)
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}

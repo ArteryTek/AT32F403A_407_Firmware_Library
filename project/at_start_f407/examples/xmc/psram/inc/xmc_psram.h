@@ -1,17 +1,17 @@
 /**
   ******************************************************************************
   * @file     xmc_psram.h
-  * @version  v2.0.7
-  * @date     2022-02-11
-  * @brief    header file for the psram configuration.    
+  * @version  v2.0.8
+  * @date     2022-04-02
+  * @brief    header file for the psram configuration.
   ******************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -22,7 +22,7 @@
   * FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.
   *
   **************************************************************************
-  */ 
+  */
 
 /* define to prevent recursive inclusion -------------------------------------*/
 #ifndef __XMC_PSRAM_H
@@ -37,7 +37,7 @@ extern "C" {
 /** @addtogroup AT32F407_periph_examples
   * @{
   */
-  
+
 /** @addtogroup 407_XMC_psram
   * @{
   */
@@ -45,18 +45,18 @@ extern "C" {
 /** @defgroup XMC_psram_functions
   * @{
   */
-  
+
 void psram_init(void);
 void psram_writebuffer(uint16_t* pbuffer, uint32_t write_addr, uint32_t num_halfword_to_write);
 void psram_readbuffer(uint16_t* pbuffer, uint32_t read_addr, uint32_t num_halfword_to_read);
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
@@ -65,6 +65,6 @@ void psram_readbuffer(uint16_t* pbuffer, uint32_t read_addr, uint32_t num_halfwo
 #ifdef __cplusplus
 }
 #endif
-  
-#endif 
- 
+
+#endif
+

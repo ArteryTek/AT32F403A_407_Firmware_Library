@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     keyboard_class.h
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    usb hid keyboard header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -23,7 +23,7 @@
   *
   **************************************************************************
   */
-  
+
  /* define to prevent recursive inclusion -------------------------------------*/
 #ifndef __KEYBOARD_CLASS_H
 #define __KEYBOARD_CLASS_H
@@ -31,19 +31,19 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
- 
+
 #include "usb_std.h"
 #include "usbd_core.h"
 
 /** @addtogroup AT32F403A_407_middlewares_usbd_class
   * @{
   */
-  
+
 /** @addtogroup USB_keyboard_class
   * @{
   */
 
-/** @defgroup USB_keyboard_class_endpoint_definition 
+/** @defgroup USB_keyboard_class_endpoint_definition
   * @{
   */
 
@@ -70,12 +70,12 @@ typedef struct
   uint32_t alt_setting;
   uint8_t hid_set_report[64];
   uint8_t keyboard_buf[8];
-  
+
   __IO uint8_t hid_suspend_flag;
   __IO uint8_t g_u8tx_completed;
   uint8_t hid_state;
   uint8_t temp;
-  
+
 }keyboard_type;
 
 /** @defgroup USB_hid_class_exported_functions
@@ -92,7 +92,7 @@ void usb_hid_keyboard_send_char(void *udev, uint8_t ascii_code);
 /**
   * @}
   */
-  
+
 /**
   * @}
   */

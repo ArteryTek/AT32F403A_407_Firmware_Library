@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_conf.h
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    at32f403a_407 config header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -31,7 +31,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
- 
+
 
 /** @addtogroup AT32F407_periph_template
   * @{
@@ -40,7 +40,7 @@ extern "C" {
 /** @addtogroup 407_Library_configuration Library_configuration
   * @{
   */
-  
+
 /**
   * @brief in the following line adjust the value of high speed exernal crystal (hext)
   * used in your application
@@ -171,7 +171,7 @@ extern "C" {
   /**
   * @}
   */
-  
+
 #ifdef __cplusplus
 }
 #endif

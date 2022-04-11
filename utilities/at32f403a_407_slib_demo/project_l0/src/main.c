@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -48,7 +48,7 @@ extern float32_t refOutput[];
 #define TEST_SLIB_PSW                    0x55665566
 #define SLIB_START_ADDR                  0x08001000
 #define SLIB_DATA_ADDR                   0x08002000
-#define SLIB_END_ADDR                    0x08002800 
+#define SLIB_END_ADDR                    0x08002800
 #define FLASH_SECTOR_SIZE                0x800
 #define SECTOR_NUM(dwAddr)               ((dwAddr & (FLASH_START_ADDR - 1)) / FLASH_SECTOR_SIZE)
 #define SECTOR_WORD_CNT                  (FLASH_SECTOR_SIZE >> 2)    /* words per sector */
@@ -74,13 +74,13 @@ void config_flash_interrupt(void);
   * @retval flash status
   */
 void config_flash_interrupt(void)
-{    
-  flash_unlock();  
+{
+  flash_unlock();
   flash_interrupt_enable(FLASH_BANK1_ERR_INT, TRUE);
   flash_lock();
   /* config nvic priority group */
   nvic_priority_group_config(NVIC_PRIORITY_GROUP_4);
- 
+
   nvic_irq_enable(FLASH_IRQn, 0, 0);
 }
 
@@ -93,31 +93,31 @@ void config_flash_interrupt(void)
 flash_status_type slib_enable(void)
 {
   uint32_t *ptr;
-  uint32_t i, j;  
+  uint32_t i, j;
   flash_status_type status = FLASH_OPERATE_DONE;
-  ptr = (uint32_t *)SLIB_START_ADDR; 
+  ptr = (uint32_t *)SLIB_START_ADDR;
   dw_start_sector = SECTOR_NUM(SLIB_START_ADDR);            /* slib start sector */
   dw_data_start_sector = SECTOR_NUM(SLIB_DATA_ADDR);         /* slib data sector */
   dw_end_sector = SECTOR_NUM(SLIB_END_ADDR);                /* slib end sector */
-  flash_unlock();   
+  flash_unlock();
   status = flash_slib_enable(TEST_SLIB_PSW, dw_start_sector, dw_data_start_sector, dw_end_sector);
-  if(status != FLASH_OPERATE_DONE) 
+  if(status != FLASH_OPERATE_DONE)
     return status;
   for(i = 0; i <= (dw_end_sector - dw_start_sector); i++)
-  { 
+  {
     memcpy(temp_buf, ptr, FLASH_SECTOR_SIZE);
     status = flash_sector_erase(SLIB_START_ADDR + i * FLASH_SECTOR_SIZE);
-    if(status != FLASH_OPERATE_DONE) 
-      return status; 
+    if(status != FLASH_OPERATE_DONE)
+      return status;
     for(j = 0; j < (FLASH_SECTOR_SIZE >> 2); j++)
     {
-      status = flash_word_program(SLIB_START_ADDR + i * FLASH_SECTOR_SIZE + (j << 2), temp_buf[j]); 
-      if(status != FLASH_OPERATE_DONE) 
-        return status;   
+      status = flash_word_program(SLIB_START_ADDR + i * FLASH_SECTOR_SIZE + (j << 2), temp_buf[j]);
+      if(status != FLASH_OPERATE_DONE)
+        return status;
     }
-    ptr += SECTOR_WORD_CNT;            
+    ptr += SECTOR_WORD_CNT;
   }
-  return status;  
+  return status;
 }
 #endif
 
@@ -130,13 +130,13 @@ int main(void)
 {
   arm_status status;
   float32_t  *inputf32, *outputf32, snr;
-  
+
   system_clock_config();
   at32_board_init();
-  
+
   /* initialize input and output buffer pointers */
   inputf32 = &testInput_f32_1kHz_15kHz[0];
-  outputf32 = &testOutput[0];    
+  outputf32 = &testOutput[0];
 
  /* configure flash to generate an interrupt when a write protect error occur */
   config_flash_interrupt();
@@ -145,7 +145,7 @@ int main(void)
   while(at32_button_press() == NO_BUTTON)
   {
     at32_led_toggle(LED3);
-    delay_ms(100); 
+    delay_ms(100);
   }
   at32_led_off(LED3);
 
@@ -162,34 +162,34 @@ int main(void)
   {
     status = ARM_MATH_SUCCESS;
 #if defined (USE_SLIB_FUNCTION)
-    /* enable slib protection from sector 2 to sector 5 when fir filter ip-code is tested ok */ 
+    /* enable slib protection from sector 2 to sector 5 when fir filter ip-code is tested ok */
     if(flash_slib_state_get() == RESET)
     {
-      /* if slib has not been enabled, set slib configuration */        
+      /* if slib has not been enabled, set slib configuration */
       if(slib_enable() == FLASH_OPERATE_DONE)
       {
         /* if slib configuration is correctly set, tuen on green led4 */
         at32_led_on(LED4);
-        delay_sec(3); 
-        
+        delay_sec(3);
+
         /* execute system reset to activate slib protection */
         nvic_system_reset();
       }
       else
       {
-        /* turn on red led2 if slib activation failed */ 
+        /* turn on red led2 if slib activation failed */
         at32_led_on(LED2);
         while(1);
-      }      
+      }
     }
 #endif
   }
-  
+
   /* infinite loop */
   while(1)
   {
     if(status == ARM_MATH_TEST_FAILURE)
-    {	
+    {
       /* toggle red led2 if fir function failed */
       at32_led_toggle(LED2);
       delay_ms(500);
@@ -200,16 +200,16 @@ int main(void)
       at32_led_toggle(LED4);
       delay_ms(500);
     }
-  }   
+  }
 }
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 
 

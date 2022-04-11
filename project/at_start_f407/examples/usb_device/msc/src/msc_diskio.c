@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     msc_diskio.c
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    usb mass storage disk function
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -29,7 +29,7 @@
 /** @addtogroup AT32F407_periph_examples
   * @{
   */
-  
+
 /** @addtogroup 407_USB_device_msc
   * @{
   */
@@ -54,7 +54,7 @@ uint8_t scsi_inquiry[MSC_SUPPORT_MAX_LUN][SCSI_INQUIRY_DATA_LENGTH] =
 /**
   * @brief  get disk inquiry
   * @param  lun: logical units number
-  * @retval inquiry string                          
+  * @retval inquiry string
   */
 uint8_t *get_inquiry(uint8_t lun)
 {
@@ -70,7 +70,7 @@ uint8_t *get_inquiry(uint8_t lun)
   * @param  addr: logical address
   * @param  read_buf: pointer to read buffer
   * @param  len: read length
-  * @retval status of usb_sts_type                        
+  * @retval status of usb_sts_type
   */
 usb_sts_type msc_disk_read(uint8_t lun, uint32_t addr, uint8_t *read_buf, uint32_t len)
 {
@@ -97,7 +97,7 @@ usb_sts_type msc_disk_read(uint8_t lun, uint32_t addr, uint8_t *read_buf, uint32
   * @param  addr: logical address
   * @param  buf: pointer to write buffer
   * @param  len: write length
-  * @retval status of usb_sts_type                        
+  * @retval status of usb_sts_type
   */
 usb_sts_type msc_disk_write(uint8_t lun, uint32_t addr, uint8_t *buf, uint32_t len)
 {
@@ -131,13 +131,13 @@ usb_sts_type msc_disk_write(uint8_t lun, uint32_t addr, uint8_t *buf, uint32_t l
   * @param  lun: logical units number
   * @param  blk_nbr: pointer to number of block
   * @param  blk_size: pointer to block size
-  * @retval status of usb_sts_type                        
+  * @retval status of usb_sts_type
   */
 usb_sts_type msc_disk_capacity(uint8_t lun, uint32_t *blk_nbr, uint32_t *blk_size)
 {
   uint32_t flash_s = *((uint32_t *)0x1FFFF7E0);
   msc_flash_size = (flash_s << 10) - (USB_FLASH_ADDR_OFFSET - FLASH_BASE);
-  
+
   if(flash_s < 256)
   {
     sector_size = SECTOR_SIZE_1K;
@@ -146,7 +146,7 @@ usb_sts_type msc_disk_capacity(uint8_t lun, uint32_t *blk_nbr, uint32_t *blk_siz
   {
     sector_size = SECTOR_SIZE_2K;
   }
-  
+
   switch(lun)
   {
     case INTERNAL_FLASH_LUN:
@@ -165,8 +165,8 @@ usb_sts_type msc_disk_capacity(uint8_t lun, uint32_t *blk_nbr, uint32_t *blk_siz
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */

@@ -13,7 +13,7 @@
 
 #include <string.h>
 #include "at32_sdio.h"		/* Example: Header file of existing MMC/SDC contorl module */
- 
+
 /* Definitions of physical drive number for each drive */
 #define DEV_RAM		0	/* Example: Map Ramdisk to physical drive 0 */
 #define DEV_MMC		1	/* Example: Map MMC/SD card to physical drive 1 */
@@ -22,7 +22,7 @@
 __align(4) uint8_t sdio_data_buffer[512]; /* buf for sd_read_disk/sd_write_disk function used. */
 
 sd_error_status_type sd_read_disk(uint8_t *buf, uint32_t sector, uint8_t cnt);
-sd_error_status_type sd_write_disk(const uint8_t *buf, uint32_t sector, uint8_t cnt); 
+sd_error_status_type sd_write_disk(const uint8_t *buf, uint32_t sector, uint8_t cnt);
 
 /**
   * @brief  read sd card sector

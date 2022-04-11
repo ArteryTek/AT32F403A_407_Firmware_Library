@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_crm.c
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    contains all the functions for the crm firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer

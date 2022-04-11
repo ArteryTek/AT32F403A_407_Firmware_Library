@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     printer_desc.h
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    usb printer descriptor header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -23,7 +23,7 @@
   *
   **************************************************************************
   */
-  
+
 /* define to prevent recursive inclusion -------------------------------------*/
 #ifndef __PRINTER_DESC_H
 #define __PRINTER_DESC_H
@@ -31,26 +31,26 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
- 
+
 #include "printer_class.h"
 #include "usbd_core.h"
 
 /** @addtogroup AT32F403A_407_middlewares_usbd_class
   * @{
   */
-  
+
 /** @addtogroup USB_printer_desc
   * @{
   */
 
-/** @defgroup USB_printer_desc_definition 
+/** @defgroup USB_printer_desc_definition
   * @{
   */
 
 #define PRINTER_BCD_NUM                  0x0110
 
 #define USBD_PRINTER_VENDOR_ID           0x2E3C
-#define USBD_PRINTER_PRODUCT_ID          0x57FF 
+#define USBD_PRINTER_PRODUCT_ID          0x57FF
 
 #define USBD_PRINTER_CONFIG_DESC_SIZE    32
 #define USBD_PRINTER_SIZ_STRING_LANGID   4
@@ -81,7 +81,7 @@ extern usbd_desc_handler printer_desc_handler;
 /**
   * @}
   */
-  
+
 /**
   * @}
   */

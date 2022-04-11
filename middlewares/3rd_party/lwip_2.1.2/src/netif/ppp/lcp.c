@@ -529,7 +529,7 @@ static int lcp_extcode(fsm *f, int code, int id, u_char *inp, int len) {
     case PROTREJ:
 	lcp_rprotrej(f, inp, len);
 	break;
-    
+
     case ECHOREQ:
 	if (f->state != PPP_FSM_OPENED)
 	    break;
@@ -537,7 +537,7 @@ static int lcp_extcode(fsm *f, int code, int id, u_char *inp, int len) {
 	PUTLONG(go->magicnumber, magp);
 	fsm_sdata(f, ECHOREP, id, inp, len);
 	break;
-    
+
     case ECHOREP:
 	lcp_received_echo_reply(f, id, inp, len);
 	break;
@@ -553,7 +553,7 @@ static int lcp_extcode(fsm *f, int code, int id, u_char *inp, int len) {
     return 1;
 }
 
-    
+
 /*
  * lcp_rprotrej - Receive an Protocol-Reject.
  *
@@ -2768,7 +2768,7 @@ static void lcp_echo_lowerup(ppp_pcb *pcb) {
     pcb->lcp_echos_pending      = 0;
     pcb->lcp_echo_number        = 0;
     pcb->lcp_echo_timer_running = 0;
-  
+
     /* If a timeout interval is specified then start the timer */
     if (pcb->settings.lcp_echo_interval != 0)
         LcpEchoCheck (f);

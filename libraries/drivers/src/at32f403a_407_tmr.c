@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_tmr.c
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    contains all the functions for the tmr firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -1721,7 +1721,7 @@ void tmr_force_output_set(tmr_type *tmr_x,  tmr_channel_select_type tmr_channel,
   *         - TMR_DMACTRL_ADDRESS
   * @retval none
   */
-void tmr_dma_control_config(tmr_type *tmr_x, tmr_dma_transfer_length_type dma_length, 
+void tmr_dma_control_config(tmr_type *tmr_x, tmr_dma_transfer_length_type dma_length,
                             tmr_dma_address_type dma_base_address)
 {
   tmr_x->dmactrl_bit.dtb = dma_length;

@@ -57,8 +57,8 @@
 //#if   defined ( __ICCARM__ )
 //const float32_t firCoeffs32[NUM_TAPS] @ 0x08002000 ={
 //#elif defined ( __CC_ARM )
-//const float32_t firCoeffs32[NUM_TAPS] __attribute__((at(0x08002000))) = {  
-//#endif  
+//const float32_t firCoeffs32[NUM_TAPS] __attribute__((at(0x08002000))) = {
+//#endif
 const float32_t firCoeffs32[NUM_TAPS] = {
   -0.0018225230f, -0.0015879294f, +0.0000000000f, +0.0036977508f, +0.0080754303f, +0.0085302217f, -0.0000000000f, -0.0173976984f,
   -0.0341458607f, -0.0333591565f, +0.0000000000f, +0.0676308395f, +0.1522061835f, +0.2229246956f, +0.2504960933f, +0.2229246956f,

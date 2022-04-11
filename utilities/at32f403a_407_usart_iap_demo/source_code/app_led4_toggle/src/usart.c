@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     usart.c
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    usart program
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -48,7 +48,7 @@ void uart_init(uint32_t baudrate)
   /* enable the usart and it's io clock */
   crm_periph_clock_enable(CRM_USART1_PERIPH_CLOCK, TRUE);
   crm_periph_clock_enable(CRM_GPIOA_PERIPH_CLOCK, TRUE);
-  
+
   /* set default parameter */
   gpio_default_para_init(&gpio_init_struct);
 
@@ -67,10 +67,10 @@ void uart_init(uint32_t baudrate)
   gpio_init_struct.gpio_pins = GPIO_PINS_10;
   gpio_init_struct.gpio_pull = GPIO_PULL_UP;
   gpio_init(GPIOA, &gpio_init_struct);
-  
+
   /*configure usart nvic interrupt */
   nvic_irq_enable(USART1_IRQn, 0, 0);
-  
+
   /*configure usart param*/
   usart_init(USART1, baudrate, USART_DATA_8BITS, USART_STOP_1_BIT);
   usart_transmitter_enable(USART1, TRUE);
@@ -94,7 +94,7 @@ void USART1_IRQHandler(void)
       iap_flag = IAP_REV_FLAG_5A;
     else if((reval == 0xA5) && (iap_flag == IAP_REV_FLAG_5A))
       iap_flag = IAP_REV_FLAG_DONE;
-    else 
+    else
       iap_flag = IAP_REV_FLAG_NO;
   }
 }
@@ -127,7 +127,7 @@ void back_err(void)
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}

@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -40,11 +40,11 @@ void extend_sram(void);
 /** @addtogroup AT32F407_periph_examples
   * @{
   */
-  
+
 /** @addtogroup 407_SRAM_extend_sram SRAM_extend_sram
   * @{
   */
-  
+
 /**
   * @brief  to extend sram size
   * @param  none
@@ -58,10 +58,10 @@ void extend_sram(void)
     flash_unlock();
     /* erase user system data bytes */
     flash_user_system_data_erase();
-    
+
     /* change sram size */
     flash_user_system_data_program((uint32_t)&USD->eopb0, EXTEND_SRAM);
-    
+
     /* system reset */
     nvic_system_reset();
   }
@@ -76,12 +76,12 @@ int main(void)
 {
   system_clock_config();
   at32_board_init();
-  
+
   /* check eopb0 */
   if(((USD->eopb0) & 0xFF) == EXTEND_SRAM)
   {
-    at32_led_on(LED4); 
-  }    
+    at32_led_on(LED4);
+  }
 
   while(1)
   {
@@ -90,8 +90,8 @@ int main(void)
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */

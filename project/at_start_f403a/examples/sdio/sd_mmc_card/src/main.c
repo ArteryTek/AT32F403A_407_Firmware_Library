@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -41,11 +41,11 @@
 #define BLOCK_SIZE                       (512)
 #define BLOCKS_NUMBER                    (64)
 #define MULTI_BUFFER_SIZE                (BLOCK_SIZE * BLOCKS_NUMBER)
-#define STREAM_BUFFER_SIZE               (4096) 
+#define STREAM_BUFFER_SIZE               (4096)
 
 static uint8_t sblock_tbuffer[BLOCK_SIZE], sblock_rbuffer[BLOCK_SIZE];
 static uint8_t mblock_tbuffer[MULTI_BUFFER_SIZE], mblock_rbuffer[MULTI_BUFFER_SIZE];
-static uint8_t stream_tbuffer[STREAM_BUFFER_SIZE], stream_rbuffer[STREAM_BUFFER_SIZE]; 
+static uint8_t stream_tbuffer[STREAM_BUFFER_SIZE], stream_rbuffer[STREAM_BUFFER_SIZE];
 
 static error_status sd_single_block_test(void);
 static error_status sd_multiple_blocks_test(void);
@@ -158,7 +158,7 @@ static error_status mmc_stream_test(void)
 {
   sd_error_status_type status = SD_OK;
   uint8_t bus_width;
-  
+
   /* only test 1-bit width */
   for(bus_width = 0; bus_width < 1; bus_width++)
   {
@@ -192,7 +192,7 @@ static error_status mmc_stream_test(void)
       return ERROR;
     }
   }
-  
+
   return SUCCESS;
 }
 
@@ -277,7 +277,7 @@ int main(void)
   at32_board_init();
 
   nvic_configuration();
-  
+
   uart_print_init(115200);
   printf("start test..\r\n");
 
@@ -292,7 +292,7 @@ int main(void)
   }
   printf("sdio init ok\r\n");
   show_card_info();
-  
+
   /* sd card single block test */
   if(SUCCESS != sd_single_block_test())
   {
@@ -304,7 +304,7 @@ int main(void)
     }
   }
   printf("sd card single block test ok\r\n");
-  
+
   /* sd card multiple blocks test */
   if(SUCCESS != sd_multiple_blocks_test())
   {
@@ -316,7 +316,7 @@ int main(void)
     }
   }
   printf("sd card multiple blocks test ok\r\n");
-  
+
   /* mmc card stream data transfer test */
   if(sd_card_info.card_type == SDIO_MULTIMEDIA_CARD)
   {
@@ -331,7 +331,7 @@ int main(void)
     }
     printf("mmc card stream data test ok\r\n");
   }
-  
+
   /* all tests pass, led3 and led4 fresh */
   while(1)
   {
@@ -343,8 +343,8 @@ int main(void)
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */

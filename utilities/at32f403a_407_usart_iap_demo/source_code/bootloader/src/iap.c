@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     iap.c
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    iap program
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -66,14 +66,14 @@ void app_load(uint32_t app_addr)
     crm_periph_clock_enable(CRM_TMR3_PERIPH_CLOCK, FALSE);
     crm_periph_clock_enable(CRM_USART1_PERIPH_CLOCK, FALSE);
     crm_periph_clock_enable(CRM_GPIOA_PERIPH_CLOCK, FALSE);
-    
+
     /* disable nvic irq and clear pending */
     nvic_irq_disable(USART1_IRQn);
     nvic_irq_disable(TMR3_GLOBAL_IRQn);
     __NVIC_ClearPendingIRQ(USART1_IRQn);
     __NVIC_ClearPendingIRQ(TMR3_GLOBAL_IRQn);
-   
-    jump_to_app = (iapfun)*(uint32_t*)(app_addr + 4);        /* code second word is reset address */    
+
+    jump_to_app = (iapfun)*(uint32_t*)(app_addr + 4);        /* code second word is reset address */
     __set_MSP(*(uint32_t*)app_addr);                        /* init app stack pointer(code first word is stack address) */
     jump_to_app();                                          /* jump to user app */
   }
@@ -94,7 +94,7 @@ uint8_t data_take(void)
   usart_interrupt_enable(USART1, USART_RDBF_INT, TRUE);
   val = usart_group_struct.buf[usart_group_struct.tail++];
   if(usart_group_struct.tail > (USART_REC_LEN-1))
-    usart_group_struct.tail = 0; 
+    usart_group_struct.tail = 0;
   return val;
 }
 
@@ -106,13 +106,13 @@ uint8_t data_take(void)
 void command_handle(void)
 {
   uint8_t val, checksum;
-  uint16_t index; 
+  uint16_t index;
   /* check whether received usart data */
-  if(usart_group_struct.count > 0)   
+  if(usart_group_struct.count > 0)
     val = data_take();
   else
     return;
-  
+
   if(update_status == UPDATE_PRE)
   {
     if(cmd_ctr_step == CMD_CTR_IDLE)
@@ -194,8 +194,8 @@ void command_handle(void)
         }
         break;
       default:
-        break;  
-    }      
+        break;
+    }
   }
   else if(update_status == UPDATE_DONE)
   {
@@ -249,7 +249,7 @@ void back_err(void)
   cmd_ctr_step = CMD_CTR_IDLE;
   update_status = UPDATE_PRE;
   cmd_addr_cnt = 0;
-  cmd_data_cnt = 0;  
+  cmd_data_cnt = 0;
   time_ira_cnt = 0;
   get_data_from_usart_flag = 0;
 }
@@ -293,7 +293,7 @@ void app_update_handle(void)
       write_addr = (cmd_data_group_struct.cmd_addr[0] << 24) + (cmd_data_group_struct.cmd_addr[1] << 16) + \
                    (cmd_data_group_struct.cmd_addr[2] << 8) + cmd_data_group_struct.cmd_addr[3];
       if((write_addr >= APP_START_ADDR) && (write_addr < FLASH_BASE + 1024 * FLASH_SIZE))
-      {      
+      {
         flash_2kb_write(write_addr, cmd_data_group_struct.cmd_buf);
         cmd_data_step = CMD_DATA_IDLE;
         back_ok();
@@ -349,7 +349,7 @@ void iap_upgrade_app_handle(void)
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}

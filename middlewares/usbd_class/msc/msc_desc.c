@@ -1,17 +1,17 @@
 /**
   **************************************************************************
   * @file     msc_desc.c
-  * @version  v2.0.7
-  * @date     2022-02-11
+  * @version  v2.0.8
+  * @date     2022-04-02
   * @brief    usb msc device descriptor
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -22,7 +22,7 @@
   * FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.
   *
   **************************************************************************
-  */ 
+  */
 #include "stdio.h"
 #include "usb_std.h"
 #include "usbd_sdr.h"
@@ -32,11 +32,11 @@
 /** @addtogroup AT32F403A_407_middlewares_usbd_class
   * @{
   */
-  
+
 /** @defgroup USB_msc_desc
   * @brief usb device msc descriptor
   * @{
-  */  
+  */
 
 /** @defgroup USB_msc_desc_private_functions
   * @{
@@ -121,7 +121,7 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_MSC_CONFIG_DESC_SIZE] ALIG
                                             the configuration */
   0xC0,                                  /* bmAttributes: self powered */
   0x32,                                  /* MaxPower 100 mA: this current is used for detecting vbus */
-  
+
   USB_DEVICE_IF_DESC_LEN,                /* bLength: interface descriptor size */
   USB_DESCIPTOR_TYPE_INTERFACE,          /* bDescriptorType: interface descriptor type */
   0x00,                                  /* bInterfaceNumber: number of interface */
@@ -131,7 +131,7 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_MSC_CONFIG_DESC_SIZE] ALIG
   0x06,                                  /* bInterfaceSubClass: subclass code scsi */
   0x50,                                  /* bInterfaceProtocol: protocol code BBB */
   0x05,                                  /* iInterface: index of string descriptor */
-  
+
   USB_DEVICE_EPT_LEN,                    /* bLength: size of endpoint descriptor in bytes */
   USB_DESCIPTOR_TYPE_ENDPOINT,           /* bDescriptorType: endpoint descriptor type */
   USBD_MSC_BULK_IN_EPT,                  /* bEndpointAddress: the address of endpoint on usb device described by this descriptor */
@@ -139,12 +139,12 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_MSC_CONFIG_DESC_SIZE] ALIG
   LBYTE(USBD_IN_MAXPACKET_SIZE),
   HBYTE(USBD_IN_MAXPACKET_SIZE),         /* wMaxPacketSize: maximum packe size this endpoint */
   0x00,                                  /* bInterval: interval for polling endpoint for data transfers */
-  
+
   USB_DEVICE_EPT_LEN,                    /* bLength: size of endpoint descriptor in bytes */
   USB_DESCIPTOR_TYPE_ENDPOINT,           /* bDescriptorType: endpoint descriptor type */
   USBD_MSC_BULK_OUT_EPT,                 /* bEndpointAddress: the address of endpoint on usb device described by this descriptor */
   USB_EPT_DESC_BULK,                     /* bmAttributes: endpoint attributes */
-  LBYTE(USBD_OUT_MAXPACKET_SIZE),        
+  LBYTE(USBD_OUT_MAXPACKET_SIZE),
   HBYTE(USBD_OUT_MAXPACKET_SIZE),        /* wMaxPacketSize: maximum packe size this endpoint */
   0x00,                                  /* bInterval: interval for polling endpoint for data transfers */
 };
@@ -210,24 +210,24 @@ static usbd_desc_t vp_desc;
   * @brief  standard usb unicode convert
   * @param  string: source string
   * @param  unicode_buf: unicode buffer
-  * @retval length                        
+  * @retval length
   */
 static uint16_t usbd_unicode_convert(uint8_t *string, uint8_t *unicode_buf)
 {
   uint16_t str_len = 0, id_pos = 2;
   uint8_t *tmp_str = string;
-  
+
   while(*tmp_str != '\0')
   {
     str_len ++;
     unicode_buf[id_pos ++] = *tmp_str ++;
     unicode_buf[id_pos ++] = 0x00;
   }
-  
+
   str_len = str_len * 2 + 2;
   unicode_buf[0] = (uint8_t)str_len;
   unicode_buf[1] = USB_DESCIPTOR_TYPE_STRING;
-  
+
   return str_len;
 }
 
@@ -236,12 +236,12 @@ static uint16_t usbd_unicode_convert(uint8_t *string, uint8_t *unicode_buf)
   * @param  value: int value
   * @param  pbus: unicode buffer
   * @param  len: length
-  * @retval none                        
+  * @retval none
   */
 static void usbd_int_to_unicode (uint32_t value , uint8_t *pbuf , uint8_t len)
 {
   uint8_t idx = 0;
-  
+
   for( idx = 0 ; idx < len ; idx ++)
   {
     if( ((value >> 28)) < 0xA )
@@ -250,11 +250,11 @@ static void usbd_int_to_unicode (uint32_t value , uint8_t *pbuf , uint8_t len)
   }
   else
   {
-      pbuf[2 * idx] = (value >> 28) + 'A' - 10; 
+      pbuf[2 * idx] = (value >> 28) + 'A' - 10;
     }
-    
+
     value = value << 4;
-    
+
     pbuf[2 * idx + 1] = 0;
   }
 }
@@ -262,18 +262,18 @@ static void usbd_int_to_unicode (uint32_t value , uint8_t *pbuf , uint8_t len)
 /**
   * @brief  usb get serial number
   * @param  none
-  * @retval none                        
+  * @retval none
   */
 static void get_serial_num(void)
 {
   uint32_t serial0, serial1, serial2;
-  
+
   serial0 = *(uint32_t*)MCU_ID1;
   serial1 = *(uint32_t*)MCU_ID2;
   serial2 = *(uint32_t*)MCU_ID3;
-  
+
   serial0 += serial2;
-  
+
   if (serial0 != 0)
   {
     usbd_int_to_unicode (serial0, &g_string_serial[2] ,8);
@@ -284,7 +284,7 @@ static void get_serial_num(void)
 /**
   * @brief  get device descriptor
   * @param  none
-  * @retval usbd_desc                         
+  * @retval usbd_desc
   */
 static usbd_desc_t *get_device_descriptor(void)
 {
@@ -294,7 +294,7 @@ static usbd_desc_t *get_device_descriptor(void)
 /**
   * @brief  get device qualifier
   * @param  none
-  * @retval usbd_desc                         
+  * @retval usbd_desc
   */
 static usbd_desc_t * get_device_qualifier(void)
 {
@@ -304,7 +304,7 @@ static usbd_desc_t * get_device_qualifier(void)
 /**
   * @brief  get config descriptor
   * @param  none
-  * @retval usbd_desc                         
+  * @retval usbd_desc
   */
 static usbd_desc_t *get_device_configuration(void)
 {
@@ -314,7 +314,7 @@ static usbd_desc_t *get_device_configuration(void)
 /**
   * @brief  get other speed descriptor
   * @param  none
-  * @retval usbd_desc                         
+  * @retval usbd_desc
   */
 static usbd_desc_t *get_device_other_speed(void)
 {
@@ -324,7 +324,7 @@ static usbd_desc_t *get_device_other_speed(void)
 /**
   * @brief  get lang id descriptor
   * @param  none
-  * @retval usbd_desc                         
+  * @retval usbd_desc
   */
 static usbd_desc_t *get_device_lang_id(void)
 {
@@ -335,7 +335,7 @@ static usbd_desc_t *get_device_lang_id(void)
 /**
   * @brief  get manufacturer descriptor
   * @param  none
-  * @retval usbd_desc                         
+  * @retval usbd_desc
   */
 static usbd_desc_t *get_device_manufacturer_string(void)
 {
@@ -347,7 +347,7 @@ static usbd_desc_t *get_device_manufacturer_string(void)
 /**
   * @brief  get product descriptor
   * @param  none
-  * @retval usbd_desc                         
+  * @retval usbd_desc
   */
 static usbd_desc_t *get_device_product_string(void)
 {
@@ -359,7 +359,7 @@ static usbd_desc_t *get_device_product_string(void)
 /**
   * @brief  get serial descriptor
   * @param  none
-  * @retval usbd_desc                         
+  * @retval usbd_desc
   */
 static usbd_desc_t *get_device_serial_string(void)
 {
@@ -370,7 +370,7 @@ static usbd_desc_t *get_device_serial_string(void)
 /**
   * @brief  get interface descriptor
   * @param  none
-  * @retval usbd_desc                         
+  * @retval usbd_desc
   */
 static usbd_desc_t *get_device_interface_string(void)
 {
@@ -382,7 +382,7 @@ static usbd_desc_t *get_device_interface_string(void)
 /**
   * @brief  get device config descriptor
   * @param  none
-  * @retval usbd_desc                         
+  * @retval usbd_desc
   */
 static usbd_desc_t *get_device_config_string(void)
 {
@@ -393,7 +393,7 @@ static usbd_desc_t *get_device_config_string(void)
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}

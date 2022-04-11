@@ -345,7 +345,7 @@ demand_rexmit(proto, newip)
                     checksum = 0;
                 }
 
- 
+
                 if (pkt->data[13] == 17) {
                     pkt_checksum =  *((unsigned short *) (pkt->data+10+iphdr));
 		    if (pkt_checksum) {
