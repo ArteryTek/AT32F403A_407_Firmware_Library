@@ -1120,7 +1120,7 @@
 
 /** DNS do a name checking between the query and the response. */
 #if !defined DNS_DOES_NAME_CHECK || defined __DOXYGEN__
-#define DNS_DOES_NAME_CHECK             1
+#define DNS_DOES_NAME_CHECK             0
 #endif
 
 /** LWIP_DNS_SECURE: controls the security level of the DNS implementation

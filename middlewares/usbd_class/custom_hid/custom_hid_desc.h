@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     custom_hid_desc.h
-  * @version  v2.0.8
-  * @date     2022-04-02
+  * @version  v2.0.9
+  * @date     2022-04-25
   * @brief    usb custom hid descriptor header file
   **************************************************************************
   *                       Copyright notice & Disclaimer

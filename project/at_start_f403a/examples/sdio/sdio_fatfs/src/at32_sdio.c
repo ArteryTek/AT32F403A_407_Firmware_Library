@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32_sdio.c
-  * @version  v2.0.8
-  * @date     2022-04-02
+  * @version  v2.0.9
+  * @date     2022-04-25
   * @brief    this file provides a set of functions needed to manage the
   *           sdio/mmc card memory.
   **************************************************************************
@@ -74,6 +74,7 @@ sd_error_status_type sd_init(void)
   uint16_t clkdiv = 0;
   sd_error_status_type status = SD_OK;
   gpio_init_type gpio_init_struct = {0};
+  uint8_t retry = 0;
 
   /* gpioc and gpiod periph clock enable */
   crm_periph_clock_enable(CRM_GPIOC_PERIPH_CLOCK, TRUE);
@@ -94,12 +95,17 @@ sd_error_status_type sd_init(void)
   gpio_init_struct.gpio_pins = GPIO_PINS_2;
   gpio_init(GPIOD, &gpio_init_struct);
 
-  /* reset sdio */
-  sdio_reset(SDIOx);
-
-  /* power on */
-  status = sd_power_on();
-
+  retry = 10;
+  while(retry--){
+    /* reset sdio */
+    sdio_reset(SDIOx);
+    /* power on */
+    status = sd_power_on();
+    
+    if(status == SD_OK)
+      break;
+  }
+  
   if(status == SD_OK)
   {
     /* sdio card initialize */
@@ -139,8 +145,8 @@ sd_error_status_type sd_init(void)
   {
     if(sd_card_info.card_type == SDIO_STD_CAPACITY_SD_CARD_V1_1 || sd_card_info.card_type == SDIO_STD_CAPACITY_SD_CARD_V2_0)
     {
-      /* set sdio_ck to 4mhz */
-      clkdiv = system_core_clock / 4000000;
+      /* set sdio_ck to 12mhz */
+      clkdiv = system_core_clock / 12000000;
 
       if(clkdiv >= 2)
       {
@@ -149,8 +155,8 @@ sd_error_status_type sd_init(void)
     }
     else
     {
-      /* set sdio_ck to 4mhz */
-      clkdiv = system_core_clock / 4000000;
+      /* set sdio_ck to 48mhz */
+      clkdiv = system_core_clock / 48000000;
 
       if(clkdiv >= 2)
       {
@@ -239,16 +245,6 @@ sd_error_status_type sd_power_on(void)
 
     /* get command status */
     status = command_error();
-
-    if(status == SD_OK)
-    {
-      break;
-    }
-  }
-  /* if any errors occured, return status */
-  if(status != SD_OK)
-  {
-    return status;
   }
 
   /* send cmd8, check card interface feature */
@@ -1044,7 +1040,7 @@ sd_error_status_type sd_blocks_erase(long long addr, uint32_t nblks)
     end_addr = start_addr + (nblks - 1) * 512;
   }
 
-  /* clear DCSM configuration */
+  /* clear dcsm configuration */
   sdio_data_init_struct.block_size = SDIO_DATA_BLOCK_SIZE_1B;
   sdio_data_init_struct.data_length = 0 ;
   sdio_data_init_struct.timeout = SD_DATATIMEOUT ;
@@ -1059,7 +1055,7 @@ sd_error_status_type sd_blocks_erase(long long addr, uint32_t nblks)
   /* check card locked */
   if(response & SD_CARD_LOCKED)
   {
-    return SD_LOCK_UNLOCK_FAILED;
+    return SD_LOCK_UNLOCK_ERROR;
   }
 
   if(card_type == SDIO_MULTIMEDIA_CARD || card_type == SDIO_HIGH_SPEED_MULTIMEDIA_CARD)
@@ -1218,7 +1214,7 @@ sd_error_status_type sd_block_read(uint8_t *buf, long long addr, uint16_t blk_si
   /* check card locked */
   if(response & SD_CARD_LOCKED)
   {
-    return SD_LOCK_UNLOCK_FAILED;
+    return SD_LOCK_UNLOCK_ERROR;
   }
 
   if((blk_size > 0) && (blk_size <= 2048) && ((blk_size & (blk_size - 1)) == 0))
@@ -1302,7 +1298,7 @@ sd_error_status_type sd_mult_blocks_read(uint8_t *buf, long long addr, uint16_t 
   /* check card locked */
   if(response & SD_CARD_LOCKED)
   {
-    return SD_LOCK_UNLOCK_FAILED;
+    return SD_LOCK_UNLOCK_ERROR;
   }
 
   if((blk_size > 0) && (blk_size <= 2048) && ((blk_size & (blk_size - 1)) == 0))
@@ -1391,7 +1387,7 @@ sd_error_status_type sd_block_write(const uint8_t *buf, long long addr, uint16_t
   /* check card locked */
   if(response & SD_CARD_LOCKED)
   {
-    return SD_LOCK_UNLOCK_FAILED;
+    return SD_LOCK_UNLOCK_ERROR;
   }
 
   if(card_type == SDIO_HIGH_CAPACITY_SD_CARD)
@@ -1513,7 +1509,7 @@ sd_error_status_type sd_mult_blocks_write(const uint8_t *buf, long long addr, ui
   /* check card locked */
   if(response & SD_CARD_LOCKED)
   {
-    return SD_LOCK_UNLOCK_FAILED;
+    return SD_LOCK_UNLOCK_ERROR;
   }
 
   if(card_type == SDIO_HIGH_CAPACITY_SD_CARD)
@@ -1655,7 +1651,7 @@ sd_error_status_type mmc_stream_read(uint8_t *buf, long long addr, uint32_t len)
 
   SDIOx->dtctrl = 0x0;
 
-  /* clear DCSM configuration */
+  /* clear dcsm configuration */
   sdio_data_init_struct.block_size = SDIO_DATA_BLOCK_SIZE_1B;
   sdio_data_init_struct.data_length = 0 ;
   sdio_data_init_struct.timeout = SD_DATATIMEOUT ;
@@ -1670,7 +1666,7 @@ sd_error_status_type mmc_stream_read(uint8_t *buf, long long addr, uint32_t len)
   /* check card locked */
   if(response & SD_CARD_LOCKED)
   {
-    return SD_LOCK_UNLOCK_FAILED;
+    return SD_LOCK_UNLOCK_ERROR;
   }
   /* send cmd11, read data */
   sdio_command_init_struct.argument =  addr;
@@ -1724,7 +1720,7 @@ sd_error_status_type mmc_stream_write(uint8_t *buf, long long addr, uint32_t len
   /* check card locked */
   if(response & SD_CARD_LOCKED)
   {
-    return SD_LOCK_UNLOCK_FAILED;
+    return SD_LOCK_UNLOCK_ERROR;
   }
   /* send cmd20, write data */
   sdio_command_init_struct.argument = addr;
@@ -2189,7 +2185,7 @@ sd_error_status_type command_rsp6_error(uint8_t cmd, uint16_t *prca)
 
   response = sdio_response_get(SDIOx, SDIO_RSP1_INDEX);
 
-  if(SD_ALLZERO == (response & (SD_R6_GENERAL_UNKNOWN_ERROR | SD_R6_ILLEGAL_CMD | SD_R6_CMD_CRC_FAILED)))
+  if(SD_ALLZERO == (response & (SD_R6_GENERAL_UNKNOWN_ERROR | SD_R6_ILLEGAL_CMD | SD_R6_CMD_CRC_ERROR)))
   {
     *prca = (uint16_t)(response >> 16);
     return status;
@@ -2205,9 +2201,9 @@ sd_error_status_type command_rsp6_error(uint8_t cmd, uint16_t *prca)
     return SD_ILLEGAL_CMD;
   }
 
-  if(response & SD_R6_CMD_CRC_FAILED)
+  if(response & SD_R6_CMD_CRC_ERROR)
   {
-    return SD_CMD_CRC_FAILED;
+    return SD_CMD_CRC_ERROR;
   }
 
   return status;
@@ -2239,7 +2235,7 @@ sd_error_status_type sd_bus_wide_enable(confirm_state new_state)
   /* check card locked or not */
   if(response & SD_CARD_LOCKED)
   {
-    return SD_LOCK_UNLOCK_FAILED;
+    return SD_LOCK_UNLOCK_ERROR;
   }
 
   if(sd_card_info.sd_scr_reg.sd_bus_width)

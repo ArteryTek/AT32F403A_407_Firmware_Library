@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     cdc_keyboard_class.c
-  * @version  v2.0.8
-  * @date     2022-04-02
+  * @version  v2.0.9
+  * @date     2022-04-25
   * @brief    usb cdc and keyboard class type
   **************************************************************************
   *                       Copyright notice & Disclaimer

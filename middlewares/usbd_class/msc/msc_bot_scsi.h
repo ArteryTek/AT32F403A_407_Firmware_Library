@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     msc_bot_scsi.h
-  * @version  v2.0.8
-  * @date     2022-04-02
+  * @version  v2.0.9
+  * @date     2022-04-25
   * @brief    usb mass storage bulk-only transport and scsi command header file
   **************************************************************************
   *                       Copyright notice & Disclaimer

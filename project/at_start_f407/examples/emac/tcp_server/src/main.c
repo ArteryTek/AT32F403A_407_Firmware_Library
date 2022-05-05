@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.0.8
-  * @date     2022-04-02
+  * @version  v2.0.9
+  * @date     2022-04-25
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -72,12 +72,7 @@ int main(void)
 
   for(;;)
   {
-    at32_led_toggle(LED2);
-    delay_ms(g_speed * DELAY);
-    at32_led_toggle(LED3);
-    delay_ms(g_speed * DELAY);
-    at32_led_toggle(LED4);
-    delay_ms(g_speed * DELAY);
+    lwip_periodic_handle(local_time);
   }
 }
 

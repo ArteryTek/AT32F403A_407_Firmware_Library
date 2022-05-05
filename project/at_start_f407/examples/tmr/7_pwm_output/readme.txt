@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     readme.txt
-  * @version  v2.0.8
-  * @date     2022-04-02
+  * @version  v2.0.9
+  * @date     2022-04-25
   * @brief    readme
   **************************************************************************
   */
@@ -29,4 +29,6 @@
   - tmr1_ch2c --->  pb14
   - tmr1_ch3  --->  pa10
   - tmr1_ch3c --->  pb15
-  - tmr1_ch4  --->  pa11
+  - tmr1_ch4  --->  pa11
+
+  for more detailed information. please refer to the application note document AN0085.

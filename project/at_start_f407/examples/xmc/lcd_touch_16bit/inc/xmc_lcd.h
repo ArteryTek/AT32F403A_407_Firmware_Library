@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     xmc_lcd.h
-  * @version  v2.0.8
-  * @date     2022-04-02
+  * @version  v2.0.9
+  * @date     2022-04-25
   * @brief    xmc_lcd program header
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -62,7 +62,7 @@ typedef struct
   * @{
   */
 
-/* the address of write data & command (xmc_a0) */
+/* the address of write data & command (xmc_a16) */
 #define  XMC_LCD_COMMAND                 0x6001FFFE
 #define  XMC_LCD_DATA                    0x60020000
 

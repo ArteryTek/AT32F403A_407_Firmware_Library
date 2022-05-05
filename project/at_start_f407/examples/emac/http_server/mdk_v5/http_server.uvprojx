@@ -10,7 +10,7 @@
       <TargetName>http_server</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060061::V5.06 update 1 (build 61)::ARMCC</pCCUsed>
+      <pCCUsed>5060750::V5.06 update 6 (build 750)::.\ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -461,6 +461,11 @@
               <FileName>at32f403a_407_pwc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\..\..\libraries\drivers\src\at32f403a_407_pwc.c</FilePath>
+            </File>
+            <File>
+              <FileName>at32f403a_407_tmr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\libraries\drivers\src\at32f403a_407_tmr.c</FilePath>
             </File>
           </Files>
         </Group>

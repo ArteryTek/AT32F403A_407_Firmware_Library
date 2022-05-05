@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     readme.txt 
-  * @version  v2.0.8
-  * @date     2022-04-02
+  * @version  v2.0.9
+  * @date     2022-04-25
   * @brief    readme
   **************************************************************************
   */
@@ -27,5 +27,5 @@
   - xmc_d5    pa3     --->   data[5]
   - xmc_d6    pa4     --->   data[6]
   - xmc_d7    pa5     --->   data[7]
-
+  for more detailed information. please refer to the application note document AN0106.
 

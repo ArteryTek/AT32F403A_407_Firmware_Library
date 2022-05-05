@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     readme.txt
-  * @version  v2.0.8
-  * @date     2022-04-02
+  * @version  v2.0.9
+  * @date     2022-04-25
   * @brief    readme
   **************************************************************************
   */
@@ -36,3 +36,5 @@
   - connect usart2_tx(pa2) to spi2_mosi(pb15)
   - connect usart2_rx(pa3) to spi2_miso(pb14)
   - connect usart2_ck(pa4) to spi2_sck(pb13)
+
+  for more detailed information. please refer to the application note document AN0099.

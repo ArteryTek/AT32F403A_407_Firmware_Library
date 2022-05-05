@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32_sdio.h
-  * @version  v2.0.8
-  * @date     2022-04-02
+  * @version  v2.0.9
+  * @date     2022-04-25
   * @brief    this file contains all the functions prototypes for the sd/mmc
   *           card at32_sdio driver firmware library.
   **************************************************************************
@@ -73,8 +73,8 @@ typedef enum
 typedef enum
 {
   /* sdio specific error defines ------------------------------------------*/
-  SD_CMD_FAIL                            = 1,    /*!< command response received (but crc check failed) */
-  SD_DATA_FAIL                           = 2,    /*!< data bock sent/received (crc check failed) */
+  SD_CMD_FAIL                            = 1,    /*!< command response received (but crc check error) */
+  SD_DATA_FAIL                           = 2,    /*!< data bock sent/received (crc check error) */
   SD_CMD_RSP_TIMEOUT                     = 3,    /*!< command response timeout */
   SD_DATA_TIMEOUT                        = 4,    /*!< data time out */
   SD_TX_UNDERRUN                         = 5,    /*!< transmit fifo under-run */
@@ -86,10 +86,10 @@ typedef enum
   SD_ERASE_SEQ_ERR                       = 11,   /*!< an error in the sequence of erase command occurs. */
   SD_INVALID_ERASE_PARAM                 = 12,   /*!< an invalid selection for erase groups */
   SD_WR_PROTECT_VIOLATION                = 13,   /*!< attempt to program a write protect block */
-  SD_LOCK_UNLOCK_FAILED                  = 14,   /*!< sequence or password error has been detected in unlock command or if there was an attempt to access a locked card */
-  SD_CMD_CRC_FAILED                      = 15,   /*!< crc check of the previous command failed */
+  SD_LOCK_UNLOCK_ERROR                   = 14,   /*!< sequence or password error has been detected in unlock command or if there was an attempt to access a locked card */
+  SD_CMD_CRC_ERROR                       = 15,   /*!< crc check of the previous command error */
   SD_ILLEGAL_CMD                         = 16,   /*!< command is not legal for the card state */
-  SD_CARD_ECC_FAILED                     = 17,   /*!< card internal ecc was applied but failed to correct the data */
+  SD_CARD_ECC_ERROR                      = 17,   /*!< card internal ecc was applied but error to correct the data */
   SD_CARD_CONTROLLER_ERR                 = 18,   /*!< internal card controller error */
   SD_GENERAL_UNKNOWN_ERROR               = 19,   /*!< general or unknown error */
   SD_STREAM_RD_UNDERRUN                  = 20,   /*!< the card could not sustain data transfer in stream read operation. */
@@ -104,7 +104,7 @@ typedef enum
   SD_SWITCH_ERROR                        = 29,   /*!< switch error */
   SD_SDIO_DISABLED                       = 30,   /*!< sdio disabled */
   SD_SDIO_FUNC_BUSY                      = 31,   /*!< function busy */
-  SD_SDIO_FUNC_FAILED                    = 32,   /*!< function failed */
+  SD_SDIO_FUNC_ERROR                     = 32,   /*!< function error */
   SD_SDIO_UNKNOWN_FUNC                   = 33,   /*!< unknown function */
 
   /* standard error defines --------------------------------------------*/
@@ -359,10 +359,10 @@ typedef struct
 #define SD_OCR_ERASE_SEQ_ERR             ((uint32_t)0x10000000)
 #define SD_OCR_INVALID_ERASE_PARAM       ((uint32_t)0x08000000)
 #define SD_OCR_WR_PROTECT_VIOLATION      ((uint32_t)0x04000000)
-#define SD_OCR_LOCK_UNLOCK_FAILED        ((uint32_t)0x01000000)
-#define SD_OCR_CMD_CRC_FAILED            ((uint32_t)0x00800000)
+#define SD_OCR_LOCK_UNLOCK_ERROR        ((uint32_t)0x01000000)
+#define SD_OCR_CMD_CRC_ERROR            ((uint32_t)0x00800000)
 #define SD_OCR_ILLEGAL_CMD               ((uint32_t)0x00400000)
-#define SD_OCR_CARD_ECC_FAILED           ((uint32_t)0x00200000)
+#define SD_OCR_CARD_ECC_ERROR           ((uint32_t)0x00200000)
 #define SD_OCR_CARD_CONTROLLER_ERR       ((uint32_t)0x00100000)
 #define SD_OCR_GENERAL_UNKNOWN_ERROR     ((uint32_t)0x00080000)
 #define SD_OCR_STREAM_RD_UNDERRUN        ((uint32_t)0x00040000)
@@ -387,13 +387,13 @@ typedef struct
   */
 #define SD_R6_GENERAL_UNKNOWN_ERROR      ((uint32_t)0x00002000)
 #define SD_R6_ILLEGAL_CMD                ((uint32_t)0x00004000)
-#define SD_R6_CMD_CRC_FAILED             ((uint32_t)0x00008000)
+#define SD_R6_CMD_CRC_ERROR             ((uint32_t)0x00008000)
 #define SD_VOLTAGE_WINDOW_SD             ((uint32_t)0x80100000)
 #define SD_HIGH_CAPACITY                 ((uint32_t)0x40000000)
 #define SD_STD_CAPACITY                  ((uint32_t)0x00000000)
 #define SD_CHECK_PATTERN                 ((uint32_t)0x000001AA)
 #define SD_VOLTAGE_WINDOW_MMC            ((uint32_t)0x80FF8000)
-#define SD_MAX_VOLT_TRIAL                ((uint32_t)0x0000FFFF)
+#define SD_MAX_VOLT_TRIAL                ((uint32_t)0x000000FF)
 #define SD_ALLZERO                       ((uint32_t)0x00000000)
 #define SD_WIDE_BUS_SUPPORT              ((uint32_t)0x00040000)
 #define SD_SINGLE_BUS_SUPPORT            ((uint32_t)0x00010000)

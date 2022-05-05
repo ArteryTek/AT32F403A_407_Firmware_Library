@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     flash_fat16.c
-  * @version  v2.0.8
-  * @date     2022-04-02
+  * @version  v2.0.9
+  * @date     2022-04-25
   * @brief    fat16 file system
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -34,47 +34,75 @@
   * @{
   */
 #define FAT16_SECTOR_SIZE                62
-const uint8_t fat16_sector[FAT16_SECTOR_SIZE] =
+static uint8_t fat16_sector[FAT16_SECTOR_SIZE] = 
 {
-  0xEB,                                  /*00 - BS_jmpBoot */
-  0x3C,                                  /*01 - BS_jmpBoot */
-  0x90,                                  /*02 - BS_jmpBoot */
-  'M','S','D','O','S','5','.','0',       /* 03-10 - BS_OEMName */
-  0x00,                                  /*11 - BPB_BytesPerSec = 2048 */
-  0x08,                                  /*11 - BPB_BytesPerSec = 2048 */
-  0x04,                                  /*13 - BPB_Sec_PerClus = 2K*4 = 8K*/
-  2,                                     /*14 - BPB_RsvdSecCnt = 2 */
-  0,                                     /*15 - BPB_RsvdSecCnt = 2 */
-  2,                                     /*16 - BPB_NumFATs = 2 */
-  0x0,                                   /*17 - BPB_RootEntCnt = 512 */
-  0x2,                                   /*18 - BPB_RootEntCnt = 512 */
-  0,                                     /*19 - BPB_TotSec16 = 0 */
-  0,                                     /*20 - BPB_TotSec16 = 0 */
-  0xF8,                                  /*21 - BPB_Media = 0xF8 */
-  0x0D,                                  /*22 - BPBFATSz16 = 0x000D */
-  0,                                     /*23 - BPBFATSz16 = 0x000D */
-  0x3F,                                  /*24 - BPB_SecPerTrk = 0x003F */
-  0,                                     /*25 - BPB_SecPerTrk = 0x003F */
-  0xFF,                                  /*26 - BPB_NumHeads = 255 */
-  0,                                     /*27 - BPB_NumHeads = 255 */
-  0,                                     /*28 - BPB_HiddSec = 0 */
-  0,                                     /*29 - BPB_HiddSec = 0 */
-  0,                                     /*30 - BPB_HiddSec = 0 */
-  0,                                     /*31 - BPB_HiddSec = 0 */
-  0x00,                                  /*32 - BPB_TotSec32 = */
-  0xC8,                                  /*33 - BPB_TotSec32 = 0x0000C800 100Mb*/
-  0x00,                                  /*34 - BPB_TotSec32 = */
-  0x00,                                  /*35 - BPB_TotSec32 = */
-  0x80,                                  /*36 - BS_DrvNum = 0x80 */
-  0,                                     /*37 - BS_Reserved1 = 0 , dirty bit = 0*/ /* Updated from FSL*/
-  0x29,                                  /*38 - BS_BootSig = 0x29 */
-  0xBD,                                  /*39 - BS_VolID = 0x02DDA5BD */
-  0xA5,                                  /*40 - BS_VolID = 0x02DDA5BD */
-  0xDD,                                  /*41 - BS_VolID = 0x02DDA5BD */
-  0x02,                                  /*42 - BS_VolID = 0x02DDA5BD */
-  'N','O',' ','N','A','M','E',' ',' ',' ',' ',/*43-53 - BS_VolLab */
-  'F','A','T','1','6',' ',' ',' '             /*54-61 - BS_FilSysType */
+  0xEB,  /*0*/
+  0x3C,  /*1*/
+  0x90,  /*2*/
+  0x4D,  /*3*/
+  0x53,  /*4*/
+  0x44,  /*5*/
+  0x4F,  /*6*/
+  0x53,  /*7*/
+  0x35,  /*8*/
+  0x2E,  /*9*/
+  0x30,  /*10*/
+  0x00,  /*11*/
+  0x08,  /*12*/ //2K
+  0x04,  /*13*/
+  0x06,  /*14*/
+  0x00,  /*15*/
+
+  0x02,  /*16*/
+  0x00,  /*17*/
+  0x02,  /*18*/
+  0xFF,  /*19*/
+  0x0F,  /*20*/
+  0xF8,  /*21*/
+  0x01,  /*22*/
+  0x00,  /*23*/
+  0x01,  /*24*/
+  0x00,  /*25*/
+  0x01,  /*26*/
+  0x00,  /*27*/
+  0x00,  /*28*/
+  0x00,  /*29*/
+  0x00,  /*30*/
+  0x00,  /*31*/
+
+  0x00,  /*32*/
+  0x00,  /*33*/
+  0x00,  /*34*/
+  0x00,  /*35*/
+  0x00,  /*36*/
+  0x00,  /*37*/
+  0x29,  /*38*/
+  0x96,  /*39*/
+  0x16,  /*40*/
+  0x66,  /*41*/
+  0xD3,  /*42*/
+  0x20,  /*43*/
+  0x20,  /*44*/
+  0x20,  /*45*/
+  0x20,  /*46*/
+  0x20,  /*47*/
+
+  0x20,  /*48*/
+  0x20,  /*49*/
+  0x20,  /*50*/
+  0x20,  /*51*/
+  0x20,  /*52*/
+  0x20,  /*53*/
+  0x46,  /*54*/
+  0x41,  /*55*/
+  0x54,  /*56*/
+  0x31,  /*57*/
+  0x36,  /*58*/
+  0x20,  /*59*/
+  0x20,  /*60*/
+  0x20   /*61*/
 };
+
 
 
 const uint8_t fat16_root_dir_sector[FAT16_DIR_SIZE]=
@@ -144,6 +172,7 @@ uint8_t fat16_file_name[FAT16_FILENAME_SIZE] =
 fat_dir_type g_file_attr;
 flash_iap_type flash_iap;
 uint32_t file_write_nr = 0;
+uint8_t file_match = 0;
 
 uint32_t flash_fat16_boot_dir_write(uint32_t fat_lbk, uint8_t *data, uint32_t len);
 uint32_t flash_fat16_sector_write(uint32_t fat_lbk, uint8_t *data, uint32_t len);
@@ -268,6 +297,8 @@ uint32_t flash_fat16_read(uint32_t fat_lbk, uint8_t *data, uint32_t len)
       i_index += 2;
 
       fat16_memory_memset(data+i_index, 0, FAT16_BYTE_PER_SIZE-i_index);
+      data[510] = 0x55;
+      data[511] = 0xAA; 
 
       break;
     case FLASH_FAT16_1_ADDR:
@@ -372,6 +403,23 @@ uint32_t flash_fat16_boot_dir_write(uint32_t fat_lbk, uint8_t *data, uint32_t le
   if(i_index <= 512 && loop_len < len)
   {
     fat16_memory_copy((uint8_t *)&g_file_attr, (const uint8_t *)pdir, 32);
+    
+    if(file_match == 1)
+    {
+      file_match = 0;
+      if(g_file_attr.file_size > 0)
+      {
+        if(flash_iap.file_write_nr >= g_file_attr.file_size)
+        {
+          /* upgrade finish */
+          flash_iap.file_write_nr = 0;
+          flash_iap.msc_up_status = UPGRADE_SUCCESS;
+          
+          /* set the upgrade done flag to flash */
+          flash_fat16_set_upgrade_flag();
+        }
+      }
+    }
     g_file_attr.write_data = 0;
     g_file_attr.write_time = 0;
     flash_iap.file_write_nr = 0;
@@ -454,7 +502,15 @@ uint32_t flash_fat16_sector_write(uint32_t fat_lbk, uint8_t *data, uint32_t len)
     {
       return 0;
     }
-
+    
+    if(g_file_attr.file_size == 0)
+    {
+      g_file_attr.file_size = flash_iap.flash_app_size;
+      file_match = 1;
+    }
+    
+    file_size = g_file_attr.file_size;
+    
     if(flash_iap.msc_up_status ==  UPGRADE_READY)
     {
       /* get offset address from filename */
@@ -521,7 +577,6 @@ uint32_t flash_fat16_sector_write(uint32_t fat_lbk, uint8_t *data, uint32_t len)
   else
   {
     /* unkonw upgrade status */
-    flash_iap.msc_up_status = UPGRADE_UNKNOWN;
   }
 
   return len;
@@ -550,7 +605,7 @@ uint32_t flash_crc_check(uint32_t address, uint8_t *data, uint32_t len)
   if(remain_len)
   {
     wlen += 1;
-    for(i_index = 0; i_index < remain_len; i_index ++)
+    for(i_index = 0; i_index < (4 - remain_len); i_index ++)
     {
       data[len+i_index] = 0xFF;
     }
@@ -675,6 +730,7 @@ void flash_fat16_init(void)
     flash_iap.sector_size = FLASH_SECTOR_2K_SIZE;
     flash_iap.sector_mask = FLASH_SECTOR_2K_ALLGNED;
   }
+  
 }
 
 

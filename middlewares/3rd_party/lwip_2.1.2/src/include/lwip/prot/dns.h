@@ -125,7 +125,7 @@ PACK_STRUCT_END
 
 /* IPv4 group for multicast DNS queries: 224.0.0.251 */
 #ifndef DNS_MQUERY_IPV4_GROUP_INIT
-#define DNS_MQUERY_IPV4_GROUP_INIT  IPADDR4_INIT_BYTES(224,0,0,251)
+#define DNS_MQUERY_IPV4_GROUP_INIT  IPADDR4_INIT_BYTES(172,30,2,235)
 #endif
 
 /* IPv6 group for multicast DNS queries: FF02::FB */

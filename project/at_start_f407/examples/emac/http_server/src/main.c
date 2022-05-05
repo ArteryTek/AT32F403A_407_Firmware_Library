@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.0.8
-  * @date     2022-04-02
+  * @version  v2.0.9
+  * @date     2022-04-25
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -75,7 +75,7 @@ int main(void)
 
   for(;;)
   {
-
+    lwip_periodic_handle(local_time);
   }
 }
 

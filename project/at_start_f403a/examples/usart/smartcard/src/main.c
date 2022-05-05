@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.0.8
-  * @date     2022-04-02
+  * @version  v2.0.9
+  * @date     2022-04-25
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -39,7 +39,10 @@
 #define T0_PROTOCOL                      0x00  /* t0 protocol */
 #define SETUP_LENGTH                     20
 #define HIST_LENGTH                      20
-#define SC_RECEIVE_TIMEOUT               0x4000 /* direction to reader */
+#define SC_RECEIVE_TIMEOUT               0xA000  /* direction to reader */
+
+#define SC_USART_DIV_VAL                 20      /* ISO 7816-3 protocol: SC_CLOCK_FREQ(PCLK/(2*USART_DIV_VAL)) is between 1 and 5 MHz */
+#define SC_F_DIV_D                       372     /* ISO 7816-3 protocol: F/D = 372 */
 
 /* atr structure - answer to reset */
 typedef struct
@@ -53,13 +56,15 @@ typedef struct
 } sc_atr_type;
 
 sc_atr_type sc_a2r_struct;
+uint32_t sc_baud_rate = 0;
+uint32_t sc_clock_freq = 0;    
 uint32_t counter = 0;
 error_status atr_decode_status = ERROR;
 uint32_t card_inserted = 0, card_protocol = 1;
 uint8_t dst_buffer[50]= {
-                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+                         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                         1, 1, 1, 1, 1, 1, 1, 1, 1, 1
                         };
 
 /**
@@ -71,7 +76,8 @@ void usart_configuration(void)
 {
   gpio_init_type gpio_init_struct;
   exint_init_type exint_init_struct;
-
+  crm_clocks_freq_type crm_clocks_struct;
+  
   /* enable gpio_3_5v, sc_usart_gpio_clk, gpio_reset, gpio_cmdvcc, gpio_off and iomux clocks */
   crm_periph_clock_enable(SC_3_5V_CLK, TRUE);
   crm_periph_clock_enable(SC_USART_GPIO_CLK, TRUE);
@@ -160,17 +166,20 @@ void usart_configuration(void)
   /* clear sc exint line pending bit */
   exint_flag_clear(SC_OFF_EXINT);
 
-  /* sc_usart clock set to 4.28mhz (apbclk = 120 mhz / 28) */
-  usart_irda_smartcard_division_set(SC_USART, 14);
+  /* sc_usart clock set to (apbclk / (2 * SC_USART_DIV_VAL)) */
+  usart_irda_smartcard_division_set(SC_USART, SC_USART_DIV_VAL);
   /* sc_usart guard time set to 2 bit */
   usart_smartcard_guard_time_set(SC_USART, 0x2);
 
   /* configure sc usart clk */
   usart_clock_config(SC_USART, USART_CLOCK_POLARITY_LOW, USART_CLOCK_PHASE_1EDGE, USART_CLOCK_LAST_BIT_OUTPUT);
   usart_clock_enable(SC_USART, TRUE);
-
+  
+  crm_clocks_freq_get(&crm_clocks_struct);
+  sc_clock_freq = crm_clocks_struct.apb1_freq / (2 * SC_USART_DIV_VAL);  /* ISO 7816-3 protocol: the CLK frequency is between 1 and 5 MHz */
+  sc_baud_rate = sc_clock_freq / SC_F_DIV_D;
   /* configure sc usart param */
-  usart_init(SC_USART, 12096, USART_DATA_9BITS, USART_STOP_1_5_BIT);
+  usart_init(SC_USART, sc_baud_rate, USART_DATA_9BITS, USART_STOP_1_5_BIT);
   usart_parity_selection_config(SC_USART, USART_PARITY_EVEN);
   usart_transmitter_enable(SC_USART, TRUE);
   usart_receiver_enable(SC_USART, TRUE);

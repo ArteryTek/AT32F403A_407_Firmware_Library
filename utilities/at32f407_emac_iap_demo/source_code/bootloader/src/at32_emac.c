@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32_emac.c
-  * @version  v2.0.8
-  * @date     2022-04-02
+  * @version  v2.0.9
+  * @date     2022-04-25
   * @brief    emac config program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -26,6 +26,7 @@
 
 /* includes ------------------------------------------------------------------*/
 #include "at32f403a_407_board.h"
+#include "lwip/dhcp.h"
 #include "at32_emac.h"
 
 /** @addtogroup UTILITIES_examples
@@ -35,6 +36,8 @@
 /** @addtogroup EMAC_IAP_bootloader
   * @{
   */
+
+emac_control_config_type mac_control_para;
 
 /**
   * @brief  enable emac clock and gpio clock
@@ -54,6 +57,7 @@ error_status emac_system_init(void)
 
   emac_pins_configuration();
   status = emac_layer2_configuration();
+  emac_tmr_init();
 
   return status;
 }
@@ -227,7 +231,6 @@ void emac_pins_configuration(void)
   */
 error_status emac_layer2_configuration(void)
 {
-  emac_control_config_type mac_control_para;
   emac_dma_config_type dma_control_para;
   #ifdef MII_MODE
   gpio_pin_remap_config(MII_RMII_SEL_GMUX, FALSE);
@@ -483,6 +486,126 @@ error_status emac_phy_init(emac_control_config_type *control_para)
 
   emac_control_config(control_para);
   return SUCCESS;
+}
+
+/**
+  * @brief  updates the link states
+  * @param  none
+  * @retval link state 0: disconnect, 1: connection
+  */
+uint16_t link_update(void)
+{
+  uint16_t link_data, link_state;
+  if(emac_phy_register_read(PHY_ADDRESS, PHY_STATUS_REG, &link_data) == ERROR)
+  {
+    return ERROR;
+  }
+  
+  link_state = (link_data & PHY_LINKED_STATUS_BIT)>>2;
+  return link_state;
+}
+
+/**
+  * @brief  this function sets the netif link status.
+  * @param  netif: the network interface
+  * @retval none
+  */  
+void ethernetif_set_link(void const *argument)
+{
+  uint16_t regvalue = 0;
+  struct netif *netif = (struct netif *)argument;
+  
+  /* read phy_bsr*/
+  regvalue = link_update();
+  
+  /* check whether the netif link down and the phy link is up */
+  if(!netif_is_link_up(netif) && (regvalue))
+  {
+    /* network cable is connected */ 
+    netif_set_link_up(netif);        
+  }
+  else if(netif_is_link_up(netif) && (!regvalue))
+  {
+    /* network cable is dis-connected */
+    netif_set_link_down(netif);
+  }
+}
+
+/**
+  * @brief  this function notify user about link status changement.
+  * @param  netif: the network interface
+  * @retval none
+  */
+void ethernetif_notify_conn_changed(struct netif *netif)
+{
+  /* note : this is function could be implemented in user file 
+            when the callback is needed,
+  */
+
+  if (netif_is_link_up(netif)) {
+    netif_set_up(netif);
+
+#if LWIP_DHCP
+    /*  creates a new dhcp client for this interface on the first call.
+    note: you must call dhcp_fine_tmr() and dhcp_coarse_tmr() at
+    the predefined regular intervals after starting the client.
+    you can peek in the netif->dhcp struct for the actual dhcp status.*/
+    dhcp_start(netif);
+#endif
+  }
+  else
+    netif_set_down(netif);
+}
+
+/**
+  * @brief  link callback function, this function is called on change of link status
+  *         to update low level driver configuration.
+  * @param  netif: the network interface
+  * @retval none
+  */
+void ethernetif_update_config(struct netif *netif)
+{
+  if(netif_is_link_up(netif))
+  { 
+    emac_speed_config(mac_control_para.auto_nego, mac_control_para.duplex_mode, mac_control_para.fast_ethernet_speed);
+    
+    delay_ms(300);
+    /* enable mac and dma transmission and reception */
+    emac_start();
+  }
+  else
+  {
+    /* disable mac and dma transmission and reception */
+    emac_stop(); 
+  }
+
+  ethernetif_notify_conn_changed(netif);
+}
+
+/**
+  * @brief  initialize tmr6 for emac
+  * @param  none
+  * @retval none
+  */
+void emac_tmr_init(void)
+{
+  crm_clocks_freq_type crm_clocks_freq_struct = {0};
+  crm_periph_clock_enable(CRM_TMR6_PERIPH_CLOCK, TRUE);
+
+  crm_clocks_freq_get(&crm_clocks_freq_struct);
+  /* tmr1 configuration */
+  /* time base configuration */
+  /* systemclock/24000/100 = 100hz */
+  tmr_base_init(TMR6, 99, (crm_clocks_freq_struct.ahb_freq / 10000) - 1);
+  tmr_cnt_dir_set(TMR6, TMR_COUNT_UP);
+
+  /* overflow interrupt enable */
+  tmr_interrupt_enable(TMR6, TMR_OVF_INT, TRUE);
+
+  /* tmr1 overflow interrupt nvic init */
+  nvic_priority_group_config(NVIC_PRIORITY_GROUP_4);
+  nvic_irq_enable(TMR6_GLOBAL_IRQn, 0, 0);
+  tmr_counter_enable(TMR6, TRUE);
 }
 
 /**

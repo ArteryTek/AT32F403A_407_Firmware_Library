@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     audio_class.c
-  * @version  v2.0.8
-  * @date     2022-04-02
+  * @version  v2.0.9
+  * @date     2022-04-25
   * @brief    usb audio class type
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -830,6 +830,7 @@ static void usb_hid_buf_process(void *udev, uint8_t *report, uint16_t len)
         paudio_hid->g_txhid_buff[i_index] = report[i_index];
       }
       usbd_ept_send(pudev, USBD_AUHID_HID_IN_EPT, paudio_hid->g_txhid_buff, len);
+      break;
     default:
       break;
   }

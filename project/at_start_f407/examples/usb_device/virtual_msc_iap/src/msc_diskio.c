@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     msc_diskio.c
-  * @version  v2.0.8
-  * @date     2022-04-02
+  * @version  v2.0.9
+  * @date     2022-04-25
   * @brief    usb mass storage disk function
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -119,8 +119,8 @@ usb_sts_type msc_disk_capacity(uint8_t lun, uint32_t *blk_nbr, uint32_t *blk_siz
   switch(lun)
   {
     case INTERNAL_FLASH_LUN:
-      *blk_nbr = 100*1024*1024 / flash_iap.sector_size;
-      *blk_size = flash_iap.sector_size;
+      *blk_nbr = 0x0FFF;
+      *blk_size = FLASH_SECTOR_2K_SIZE;
       break;
     case SPI_FLASH_LUN:
       break;

@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.0.8
-  * @date     2022-04-02
+  * @version  v2.0.9
+  * @date     2022-04-25
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -87,9 +87,9 @@ static void can_configuration(void)
   can_base_struct.mmssr_selection = CAN_SENDING_BY_ID;
   can_base_init(CAN1, &can_base_struct);
 
-  /* can baudrate, set baudrate = pclk/(baudrate_div *(3 + bts1_size + bts2_size)) */
+  /* can baudrate, set baudrate = pclk/(baudrate_div *(1 + bts1_size + bts2_size)) */
   can_baudrate_struct.baudrate_div = 10;
-  can_baudrate_struct.rsaw_size = CAN_RSAW_1TQ;
+  can_baudrate_struct.rsaw_size = CAN_RSAW_3TQ;
   can_baudrate_struct.bts1_size = CAN_BTS1_8TQ;
   can_baudrate_struct.bts2_size = CAN_BTS2_3TQ;
   can_baudrate_set(CAN1, &can_baudrate_struct);
@@ -110,6 +110,8 @@ static void can_configuration(void)
   nvic_irq_enable(CAN1_SE_IRQn, 0x00, 0x00);
   nvic_irq_enable(USBFS_L_CAN1_RX0_IRQn, 0x00, 0x00);
   can_interrupt_enable(CAN1, CAN_RF0MIEN_INT, TRUE);
+  
+  /* error interrupt enable */
   can_interrupt_enable(CAN1, CAN_ETRIEN_INT, TRUE);
   can_interrupt_enable(CAN1, CAN_EOIEN_INT, TRUE);
 }
@@ -168,10 +170,11 @@ void CAN1_SE_IRQHandler(void)
   {
     err_index = CAN1->ests & 0x70;
     can_flag_clear(CAN1, CAN_ETR_FLAG);
+    /* error type is stuff error */
     if(err_index == 0x00000010)
     {
-      can_reset(CAN1);
-      can_configuration();
+      /* when stuff error occur: in order to ensure communication normally,
+      user must restart can or send a frame of highest priority message here */
     }
   }
 }

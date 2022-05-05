@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     msc_class.c
-  * @version  v2.0.8
-  * @date     2022-04-02
+  * @version  v2.0.9
+  * @date     2022-04-25
   * @brief    usb msc class type
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -127,7 +127,7 @@ static usb_sts_type class_setup_handler(void *udev, usb_setup_type *setup)
       switch(setup->bRequest)
       {
         case MSC_REQ_GET_MAX_LUN:
-          usbd_ctrl_send(pudev, (uint8_t *)&msc_struct.max_lun, 1);
+          usbd_ctrl_send(pudev, (uint8_t *)&pmsc->max_lun, 1);
           break;
         case MSC_REQ_BO_RESET:
           bot_scsi_reset(udev);

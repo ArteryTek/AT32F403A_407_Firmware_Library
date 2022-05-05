@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     readme.txt
-  * @version  v2.0.8
-  * @date     2022-04-02
+  * @version  v2.0.9
+  * @date     2022-04-25
   * @brief    readme
   **************************************************************************
   */
@@ -15,3 +15,5 @@
   - miso      <--->   pa6
   - mosi      <--->   pa7
   - usart1_tx <--->   pa9
+
+  for more detailed information. please refer to the application note document AN0102.

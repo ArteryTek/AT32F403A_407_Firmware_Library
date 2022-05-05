@@ -97,6 +97,10 @@
 
 #include <string.h>
 
+#ifndef DNS_SERVER_ADDRESS
+#define DNS_SERVER_ADDRESS(ipaddr) (ip4_addr_set_u32(ipaddr, ipaddr_addr("192.168.2.235"))) 
+#endif
+
 /** Fix error, LwIP 2.1.2 need to define LWIP_RAND by users */
 #if LWIP_DNS
 #define LWIP_RAND() ((u32_t)rand())
@@ -316,8 +320,7 @@ const ip_addr_t dns_mquery_v6group = DNS_MQUERY_IPV6_GROUP_INIT;
  * Initialize the resolver: set up the UDP pcb and configure the default server
  * (if DNS_SERVER_ADDRESS is set).
  */
-void
-dns_init(void)
+void dns_init(void)
 {
 #ifdef DNS_SERVER_ADDRESS
   /* initialize default DNS server address */

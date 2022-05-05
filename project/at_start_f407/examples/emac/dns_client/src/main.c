@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.0.8
-  * @date     2022-04-02
+  * @version  v2.0.9
+  * @date     2022-04-25
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -43,7 +43,7 @@
 #define FAST                             1
 #define SLOW                             4
 
-#define DOMAIN_NAME                      "ibm.com.tw"
+#define DOMAIN_NAME                      "www.arterytek.com"
 
 uint8_t g_speed = FAST;
 volatile uint32_t local_time = 0;
@@ -63,6 +63,8 @@ int main(void)
   system_clock_config();
 
   at32_board_init();
+  
+  uart_print_init(115200);
 
   nvic_priority_group_config(NVIC_PRIORITY_GROUP_4);
 
@@ -82,13 +84,6 @@ int main(void)
   for(;;)
   {
     lwip_periodic_handle(local_time);
-
-    at32_led_toggle(LED2);
-    delay_ms(g_speed * DELAY);
-    at32_led_toggle(LED3);
-    delay_ms(g_speed * DELAY);
-    at32_led_toggle(LED4);
-    delay_ms(g_speed * DELAY);
   }
 }
 

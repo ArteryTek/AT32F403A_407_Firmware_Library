@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     readme.txt
-  * @version  v2.0.8
-  * @date     2022-04-02
+  * @version  v2.0.9
+  * @date     2022-04-25
   * @brief    readme
   **************************************************************************
   */
@@ -17,3 +17,5 @@
   - sc usart reset   --->   pa6
   - sc usart cmdvcc  --->   pa7
   - sc usart off     --->   pa8
+
+  for more detailed information. please refer to the application note document AN0099.

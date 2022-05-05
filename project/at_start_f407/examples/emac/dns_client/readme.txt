@@ -1,11 +1,13 @@
 /**
   **************************************************************************
   * @file     readme.txt
-  * @version  v2.0.8
-  * @date     2022-04-02
+  * @version  v2.0.9
+  * @date     2022-04-25
   * @brief    readme
   **************************************************************************
   */
 
   this demo is based on the at-start board, in this demo, shows the dns client
-  operating flow for at32f4xx series. it will parse domain name to ip address.
+  operating flow for at32f4xx series. it will parse domain name to ip address.
+  for more detailed information, please refer to the application note document
+  AN0057.

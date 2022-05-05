@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     readme.txt
-  * @version  v2.0.8
-  * @date     2022-04-02
+  * @version  v2.0.9
+  * @date     2022-04-25
   * @brief    readme
   **************************************************************************
   */
@@ -14,4 +14,6 @@
   ch1 duty_cycle = 50%
   ch2 duty_cycle = 25%
   ch3 duty_cycle = 12.5%
-  ch4 duty_cycle = 6.25%
+  ch4 duty_cycle = 6.25%
+
+  for more detailed information. please refer to the application note document AN0085.

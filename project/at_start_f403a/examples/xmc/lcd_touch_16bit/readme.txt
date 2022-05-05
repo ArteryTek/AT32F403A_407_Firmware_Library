@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     readme.txt
-  * @version  v2.0.8
-  * @date     2022-04-02
+  * @version  v2.0.9
+  * @date     2022-04-25
   * @brief    readme
   **************************************************************************
   */
@@ -42,6 +42,6 @@
   - xmc_d13   pb12    --->   data[13]
   - xmc_d14   pd9     --->   data[14]
   - xmc_d15   pd10    --->   data[15]
-
+  for more detailed information. please refer to the application note document AN0106.
 
 

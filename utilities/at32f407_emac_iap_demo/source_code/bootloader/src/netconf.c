@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     netconf.c
-  * @version  v2.0.8
-  * @date     2022-04-02
+  * @version  v2.0.9
+  * @date     2022-04-25
   * @brief    network connection configuration
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -34,15 +34,19 @@
 #include "ethernetif.h"
 #include "netconf.h"
 #include "stdio.h"
+#include "at32_emac.h"
 
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 #define MAC_ADDR_LENGTH                  (6)
 #define ADDR_LENGTH                      (4)
+#define SYSTEMTICK_PERIOD_MS             10
 /* Private variables ---------------------------------------------------------*/
+extern volatile uint32_t local_time;
 struct netif netif;
 volatile uint32_t tcp_timer = 0;
 volatile uint32_t arp_timer = 0;
+volatile uint32_t link_timer = 0;
 
 static uint8_t mac_address[MAC_ADDR_LENGTH] = {0, 0, 0x44, 0x45, 0x56, 1};;
 #if LWIP_DHCP
@@ -109,16 +113,11 @@ void tcpip_stack_init(void)
   /*  Registers the default network interface.*/
   netif_set_default(&netif);
 
-#if LWIP_DHCP
-  /*  Creates a new DHCP client for this interface on the first call.
-  Note: you must call dhcp_fine_tmr() and dhcp_coarse_tmr() at
-  the predefined regular intervals after starting the client.
-  You can peek in the netif->dhcp struct for the actual DHCP status.*/
-  dhcp_start(&netif);
-#endif
-
   /*  When the netif is fully configured this function must be called.*/
   netif_set_up(&netif);
+  
+  /* Set the link callback function, this function is called on change of link status*/
+  netif_set_link_callback(&netif, ethernetif_update_config);
 }
 
 /**
@@ -133,6 +132,16 @@ void lwip_pkt_handle(void)
   {
     while(1);
   }
+}
+
+/**
+  * @brief  updates the system local time
+  * @param  none
+  * @retval none
+  */
+void time_update(void)
+{
+  local_time += SYSTEMTICK_PERIOD_MS;
 }
 
 /**
@@ -168,6 +177,15 @@ void lwip_periodic_handle(volatile uint32_t localtime)
   {
     dhcp_coarse_timer =  localtime;
     dhcp_coarse_tmr();
+  }
+#endif
+  
+#if (LINK_DETECTION > 0)
+  /* link detection process every 500 ms */
+  if (localtime - link_timer >= 500)
+  {
+    link_timer =  localtime;
+    ethernetif_set_link(&netif);
   }
 #endif
 }

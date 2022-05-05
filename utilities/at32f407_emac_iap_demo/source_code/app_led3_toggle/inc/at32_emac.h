@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32_emac.h
-  * @version  v2.0.8
-  * @date     2022-04-02
+  * @version  v2.0.9
+  * @date     2022-04-25
   * @brief    header file of emac config program.
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -34,6 +34,7 @@
 
 /* includes ------------------------------------------------------------------*/
 #include "at32f403a_407.h"
+#include "netif.h"
 
 /** @addtogroup UTILITIES_examples
   * @{
@@ -55,6 +56,8 @@
 
 #define DM9162
 //#define DP83848
+
+#define LINK_DETECTION                   (1)            /*!< link status detection, 0: no detection, 1: detect with polling */
 
 #if defined (DM9162)
   #define PHY_ADDRESS                      (0x00)       /*!< relative to at32 board */
@@ -106,6 +109,12 @@ void static reset_phy(void);
 error_status emac_phy_register_reset(void);
 error_status emac_speed_config(emac_auto_negotiation_type nego, emac_duplex_type mode, emac_speed_type speed);
 error_status emac_phy_init(emac_control_config_type *control_para);
+
+uint16_t link_update(void);
+void ethernetif_set_link(void const *argument);
+void ethernetif_notify_conn_changed(struct netif *netif);
+void ethernetif_update_config(struct netif *netif);
+void emac_tmr_init(void);
 
 /**
   * @}
