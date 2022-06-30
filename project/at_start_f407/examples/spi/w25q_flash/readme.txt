@@ -1,19 +1,19 @@
 /**
   **************************************************************************
   * @file     readme.txt
-  * @version  v2.0.9
-  * @date     2022-04-25
+  * @version  v2.1.0
+  * @date     2022-06-09
   * @brief    readme
   **************************************************************************
   */
 
-  this demo is based on the at-start board, in this demo, shows how to use
-  spi access the w25q flash chip.
+  this demo is based on the at-start board and AT32-Comm-EV board, in this demo,
+  shows how to use spi access the w25q flash chip.
   the pins use as follow:
-  - cs        <--->   pa4(software cs, pa4 as a general io to control flash cs)
-  - sck       <--->   pa5
-  - miso      <--->   pa6
-  - mosi      <--->   pa7
+  - cs        <--->   pb12(software cs, pb12 as a general io to control flash cs)
+  - sck       <--->   pb13
+  - miso      <--->   pb14
+  - mosi      <--->   pb15
   - usart1_tx <--->   pa9
 
   for more detailed information. please refer to the application note document AN0102.

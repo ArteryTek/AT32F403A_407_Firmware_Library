@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_board.c
-  * @version  v2.0.9
-  * @date     2022-04-25
+  * @version  v2.1.0
+  * @date     2022-06-09
   * @brief    set of firmware functions to manage leds and push-button.
   *           initialize delay function.
   **************************************************************************
@@ -267,7 +267,7 @@ void at32_led_off(led_type led)
 }
 
 /**
-  * @brief  turns selected led tooggle.
+  * @brief  turns selected led toggle.
   * @param  led: specifies the led to be set off.
   *   this parameter can be one of following parameters:
   *     @arg LED2

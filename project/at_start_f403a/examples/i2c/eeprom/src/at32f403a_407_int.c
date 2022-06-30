@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_int.c
-  * @version  v2.0.9
-  * @date     2022-04-25
+  * @version  v2.1.0
+  * @date     2022-06-09
   * @brief    main interrupt service routines.
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -30,10 +30,10 @@
 
 extern i2c_handle_type hi2cx;
 
-#define I2Cx_DMA_TX_IRQHandler           DMA1_Channel6_IRQHandler
-#define I2Cx_DMA_RX_IRQHandler           DMA1_Channel7_IRQHandler
-#define I2Cx_EVT_IRQHandler              I2C1_EVT_IRQHandler
-#define I2Cx_ERR_IRQHandler              I2C1_ERR_IRQHandler
+#define I2Cx_DMA_TX_IRQHandler           DMA1_Channel4_IRQHandler
+#define I2Cx_DMA_RX_IRQHandler           DMA1_Channel5_IRQHandler
+#define I2Cx_EVT_IRQHandler              I2C2_EVT_IRQHandler
+#define I2Cx_ERR_IRQHandler              I2C2_ERR_IRQHandler
 
 /** @addtogroup AT32F403A_periph_examples
   * @{

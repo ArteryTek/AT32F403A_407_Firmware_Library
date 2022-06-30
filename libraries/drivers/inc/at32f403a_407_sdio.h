@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_sdio.h
-  * @version  v2.0.9
-  * @date     2022-04-25
+  * @version  v2.1.0
+  * @date     2022-06-09
   * @brief    at32f403a_407 sdio header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -578,7 +578,7 @@ typedef struct
 
 void sdio_reset(sdio_type *sdio_x);
 void sdio_power_set(sdio_type *sdio_x, sdio_power_state_type power_state);
-flag_status sdio_power_status_get(sdio_type *sdio_x);
+sdio_power_state_type sdio_power_status_get(sdio_type *sdio_x);
 void sdio_clock_config(sdio_type *sdio_x, uint16_t clk_div, sdio_edge_phase_type clk_edg);
 void sdio_bus_width_config(sdio_type *sdio_x, sdio_bus_width_type width);
 void sdio_clock_bypass(sdio_type *sdio_x, confirm_state new_state);

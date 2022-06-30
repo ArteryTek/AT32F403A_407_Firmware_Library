@@ -1,13 +1,13 @@
 /**
   **************************************************************************
   * @file     eeprom/readme.txt 
-  * @version  v2.0.9
-  * @date     2022-04-25
+  * @version  v2.1.0
+  * @date     2022-06-09
   * @brief    readme
   **************************************************************************
   */
 
-  this demo is based on the at-start board, in this demo, use hardware i2c1 
+  this demo is based on the at-start board and AT32-Comm-EV, in this demo, use hardware i2c1 
   write or read data based on the memory device. if the communication is
   successful, led3 will turn on, if the communication fails, led2 will keep flashing.
   
@@ -16,7 +16,7 @@
     2. press the slave button first, then press the master button to start communication.
 
   pin used:
-    1. scl --- pb6
-    2. sda --- pb7
+    1. scl --- pb10
+    2. sda --- pb11
 
 

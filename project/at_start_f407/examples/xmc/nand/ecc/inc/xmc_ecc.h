@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
   * @file     xmc_ecc.h
-  * @version  v2.0.9
-  * @date     2022-04-25
+  * @version  v2.1.0
+  * @date     2022-06-09
   * @brief    header file for the nand ecc configuration.
   ******************************************************************************
   *                       Copyright notice & Disclaimer

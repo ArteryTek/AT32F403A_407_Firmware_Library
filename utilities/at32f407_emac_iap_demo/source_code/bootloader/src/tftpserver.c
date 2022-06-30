@@ -35,7 +35,7 @@
 static uint32_t flash_write_address;
 static struct udp_pcb *udppcb;
 static __IO uint32_t total_count=0;
-
+flag_status tftp_iap_flag = RESET;
 
 /* Private function prototypes -----------------------------------------------*/
 
@@ -213,6 +213,7 @@ static void iap_wrq_recv_callback(void *_args, struct udp_pcb *upcb, struct pbuf
     iap_init();
     iap_tftp_cleanup_wr(upcb, args);
     pbuf_free(pkt_buf);
+    tftp_iap_flag = RESET;
   }
   else
   {
@@ -308,6 +309,7 @@ static void iap_tftp_recv_callback(void *arg, struct udp_pcb *upcb, struct pbuf 
   else
   {
     /* start the tftp write mode*/
+    tftp_iap_flag = SET;
     iap_tftp_process_write(upcb_tftp_data, addr, port);
   }
   pbuf_free(pkt_buf);

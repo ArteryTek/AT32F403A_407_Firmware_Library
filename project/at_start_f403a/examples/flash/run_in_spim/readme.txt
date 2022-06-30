@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     readme.txt
-  * @version  v2.0.9
-  * @date     2022-04-25
+  * @version  v2.1.0
+  * @date     2022-06-09
   * @brief    readme
   **************************************************************************
   */
@@ -12,7 +12,9 @@
   in spim will toggle the three leds.
 
   executing this project£¬step should be follow.
-  step : add the homologous algorithm file of spim in the flash download interface.
+  step : 
+  add the homologous algorithm file of spim in the flash download interface.
+  this demo select spim algorithm file is type2 remap_1 ext.flash
   the pins connection as follow:
   - spim sck ---> pb1
   - spim cs  ---> pa8

@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_def.h
-  * @version  v2.0.9
-  * @date     2022-04-25
+  * @version  v2.1.0
+  * @date     2022-06-09
   * @brief    at32f403a_407 macros header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -61,6 +61,8 @@ extern "C" {
     #define ALIGNED_TAIL
   #endif
 #endif
+
+#define UNUSED(x)                        (void)x /* to avoid gcc/g++ warnings */
 
 #ifdef __cplusplus
 }

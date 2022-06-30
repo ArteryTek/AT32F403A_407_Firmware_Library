@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     flash.h
-  * @version  v2.0.9
-  * @date     2022-04-25
+  * @version  v2.1.0
+  * @date     2022-06-09
   * @brief    flash header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -48,8 +48,8 @@ extern "C" {
   */
 
 void flash_read(uint32_t read_addr, uint16_t *p_buffer, uint16_t num_read);
-void flash_write_nocheck(uint32_t write_addr, uint16_t *p_buffer, uint16_t num_write);
-void flash_write(uint32_t write_addr,uint16_t *p_Buffer, uint16_t num_write);
+error_status flash_write_nocheck(uint32_t write_addr, uint16_t *p_buffer, uint16_t num_write);
+error_status flash_write(uint32_t write_addr,uint16_t *p_Buffer, uint16_t num_write);
 
 /**
   * @}

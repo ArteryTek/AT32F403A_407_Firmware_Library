@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_tmr.c
-  * @version  v2.0.9
-  * @date     2022-04-25
+  * @version  v2.1.0
+  * @date     2022-06-09
   * @brief    contains all the functions for the tmr firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -758,7 +758,8 @@ void tmr_output_channel_switch_set(tmr_type *tmr_x, tmr_channel_select_type tmr_
   * @brief  enable or disable tmr one cycle mode
   * @param  tmr_x: select the tmr peripheral.
   *         this parameter can be one of the following values:
-  *         TMR1, TMR2, TMR3, TMR4, TMR5, TMR6, TMR7, TMR8, TMR9, TMR12
+  *         TMR1, TMR2, TMR3, TMR4, TMR5, TMR6, TMR7, TMR8,
+  *         TMR9, TMR10, TMR11, TMR12, TMR13, TMR14
   * @param  new_state (TRUE or FALSE)
   * @retval none
   */
@@ -1101,15 +1102,15 @@ void tmr_pwm_input_config(tmr_type *tmr_x, tmr_input_config_type *input_struct,
   * @param  tmr_x: select the tmr peripheral.
   *         this parameter can be one of the following values:
   *         TMR1, TMR2, TMR3, TMR4, TMR5, TMR8
-  * @param  ti1_connect
+  * @param  ch1_connect
   *         this parameter can be one of the following values:
   *         - TMR_CHANEL1_CONNECTED_C1IRAW
   *         - TMR_CHANEL1_2_3_CONNECTED_C1IRAW_XOR
   * @retval none
   */
-void tmr_channel1_input_select(tmr_type *tmr_x, tmr_channel1_input_connected_type ti1_connect)
+void tmr_channel1_input_select(tmr_type *tmr_x, tmr_channel1_input_connected_type ch1_connect)
 {
-  tmr_x->ctrl2_bit.c1insel = ti1_connect;
+  tmr_x->ctrl2_bit.c1insel = ch1_connect;
 }
 
 /**
@@ -1207,7 +1208,7 @@ void tmr_sub_mode_select(tmr_type *tmr_x, tmr_sub_mode_select_type sub_mode)
 }
 
 /**
-  * @brief  select tmr channel dma
+  * @brief  select tmr channel dma request source
   * @param  tmr_x: select the tmr peripheral.
   *         this parameter can be one of the following values:
   *         TMR1, TMR2, TMR3, TMR4, TMR5, TMR8, TMR9, TMR12

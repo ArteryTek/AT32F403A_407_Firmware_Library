@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     httpserver.c
-  * @version  v2.0.9
-  * @date     2022-04-25
+  * @version  v2.1.0
+  * @date     2022-06-09
   * @brief    httpserver program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -42,7 +42,8 @@ static char leftbytestab[4];
 static u8 leftbytes = 0;
 static __IO u8 resetpage = 0;
 static uint32_t contentlengthoffset = 0, browserflag = 0;
-static __IO uint32_t totaldata = 0, checklogin = 0;
+static __IO uint32_t checklogin = 0;
+flag_status http_iap_flag = RESET;
 
 struct http_state
 {
@@ -203,9 +204,10 @@ static err_t http_recv(void *arg, struct tcp_pcb *pcb,  struct pbuf *p, err_t er
   int32_t i, len=0;
   uint32_t dataoffset, filenameoffset, contentoffsetfirefox;
   char *data, *ptr, login[LOGIN_SIZE];
-  volatile char filename[13];
+  volatile char filename[19];
   struct fs_file file = {0, 0};
   struct http_state *hs;
+  struct pbuf *ptmp = p;
 
   hs = arg;
 
@@ -314,6 +316,7 @@ static err_t http_recv(void *arg, struct tcp_pcb *pcb,  struct pbuf *p, err_t er
       {
         dataoffset =0;
         contentoffsetfirefox = 0;
+        http_iap_flag = SET;
 
         /* post packet received */
         if (dataflag ==0)
@@ -391,7 +394,7 @@ static err_t http_recv(void *arg, struct tcp_pcb *pcb,  struct pbuf *p, err_t er
           i =0;
           if (filenameoffset)
           {
-            while((*(data+filenameoffset + i) != 0x22 )&&(i<13))
+            while((*(data+filenameoffset + i) != 0x22 )&&(i<40))
             {
               filename[i] = *(data+filenameoffset + i);
               i++;
@@ -418,8 +421,7 @@ static err_t http_recv(void *arg, struct tcp_pcb *pcb,  struct pbuf *p, err_t er
             return ERR_OK;
 
           }
-          totaldata =0 ;
-
+          
           flashwriteaddress = APP_START_SECTOR_ADDR;
         }
          /* dataflag >1 => the packet is data only  */
@@ -432,23 +434,32 @@ static err_t http_recv(void *arg, struct tcp_pcb *pcb,  struct pbuf *p, err_t er
         len-= dataoffset;
 
         /* update total data received counter */
-        totaldata +=len;
+        
         /* check if last data packet */
         if (totalreceived == size)
         {
           /* if last packet need to remove the http boundary tag */
           /* parse packet for "\r\n--" starting from end of data */
           i = 4;
-          while (strncmp ((char*)(data+ p->tot_len -i),http_crnl_2 , 4))
+          while (strncmp ((char*)(data+ p->tot_len -i),http_crnl_2 , 4) && (p->tot_len -i > 0))
           {
             i++;
           }
-          len -= i;
-          totaldata -= i;
+          len -= i;          
 
           /* write data in flash */
-          if (len)
-            iap_http_writedata(ptr,len);
+          len = ptmp->len;
+          len-= dataoffset;
+          while(ptmp != NULL)
+          {
+            if(len)
+            {
+              iap_http_writedata(ptr,len);
+            }
+            ptmp = ptmp->next;
+            len = ptmp->len;
+            ptr = ptmp->payload;
+          }
 
           dataflag=0;
           htmlpage = UPLOADDONEPAGE;
@@ -461,13 +472,24 @@ static err_t http_recv(void *arg, struct tcp_pcb *pcb,  struct pbuf *p, err_t er
           /* tell tcp that we wish be to informed of data that has been
              successfully sent by a call to the http_sent() function. */
           tcp_sent(pcb, http_sent);
+          http_iap_flag = RESET;
         }
         /* not last data packet */
         else
         {
           /* write data in flash */
-          if(len)
-            iap_http_writedata(ptr,len);
+          len = ptmp->len;
+          len-= dataoffset;
+          while(ptmp != NULL)
+          {
+            if(len)
+            {
+              iap_http_writedata(ptr,len);
+            }
+            ptmp = ptmp->next;
+            len = ptmp->len;
+            ptr = ptmp->payload;
+          }
         }
         pbuf_free(p);
       }

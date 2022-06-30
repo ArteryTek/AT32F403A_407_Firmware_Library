@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     netconf.c
-  * @version  v2.0.9
-  * @date     2022-04-25
+  * @version  v2.1.0
+  * @date     2022-06-09
   * @brief    network connection configuration
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -43,6 +43,8 @@
 #define SYSTEMTICK_PERIOD_MS             10
 /* Private variables ---------------------------------------------------------*/
 extern volatile uint32_t local_time;
+extern flag_status http_iap_flag;
+extern flag_status tftp_iap_flag;
 struct netif netif;
 volatile uint32_t tcp_timer = 0;
 volatile uint32_t arp_timer = 0;
@@ -54,7 +56,7 @@ volatile uint32_t dhcp_fine_timer = 0;
 volatile uint32_t dhcp_coarse_timer = 0;
 #else
 static uint8_t local_ip[ADDR_LENGTH]   = {192, 168, 81, 37};
-static uint8_t local_gw[ADDR_LENGTH]   = {192, 168, 81, 187};
+static uint8_t local_gw[ADDR_LENGTH]   = {192, 168, 81, 254};
 static uint8_t local_mask[ADDR_LENGTH] = {255, 255, 255, 0};
 #endif
 
@@ -182,7 +184,7 @@ void lwip_periodic_handle(volatile uint32_t localtime)
   
 #if (LINK_DETECTION > 0)
   /* link detection process every 500 ms */
-  if (localtime - link_timer >= 500)
+  if ((localtime - link_timer >= 500) && (http_iap_flag == RESET) && (tftp_iap_flag == RESET))
   {
     link_timer =  localtime;
     ethernetif_set_link(&netif);

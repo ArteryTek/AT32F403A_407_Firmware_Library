@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_gpio.c
-  * @version  v2.0.9
-  * @date     2022-04-25
+  * @version  v2.1.0
+  * @date     2022-06-09
   * @brief    contains all the functions for the gpio firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer

@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_rtc.c
-  * @version  v2.0.9
-  * @date     2022-04-25
+  * @version  v2.1.0
+  * @date     2022-06-09
   * @brief    contains all the functions for the rtc firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -76,7 +76,7 @@ uint32_t rtc_counter_get(void)
 
 /**
   * @brief  rtc divider set
-  * @param  div_value (0x0000_0000 ~ 0xFFFF_FFFF)
+  * @param  div_value (0x0000_0000 ~ 0x000F_FFFF)
   * @retval none
   */
 void rtc_divider_set(uint32_t div_value)
@@ -181,7 +181,7 @@ flag_status rtc_flag_get(uint16_t flag)
   *         - RTC_TS_FLAG: time second flag.
   *         - RTC_TA_FLAG: time alarm flag.
   *         - RTC_OVF_FLAG: overflow flag.
-  *         - RTC_CFGF_FLAG: rtc configuration finish flag.
+  *         - RTC_UPDF_FLAG: rtc update finish flag.
   * @retval none
   */
 void rtc_flag_clear(uint16_t flag)

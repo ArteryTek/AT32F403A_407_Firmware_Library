@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_usart.c
-  * @version  v2.0.9
-  * @date     2022-04-25
+  * @version  v2.1.0
+  * @date     2022-06-09
   * @brief    contains all the functions for the usart firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -594,6 +594,11 @@ flag_status usart_flag_get(usart_type* usart_x, uint32_t flag)
   *         - USART_BFF_FLAG:
   *         - USART_TDC_FLAG:
   *         - USART_RDBF_FLAG:
+  *         - USART_PERR_FLAG:
+  *         - USART_FERR_FLAG:
+  *         - USART_NERR_FLAG:
+  *         - USART_ROERR_FLAG:
+  *         - USART_IDLEF_FLAG:
   * @note
   *         - USART_PERR_FLAG, USART_FERR_FLAG, USART_NERR_FLAG, USART_ROERR_FLAG and USART_IDLEF_FLAG are cleared by software
   *           sequence: a read operation to usart sts register (usart_flag_get())
@@ -606,7 +611,15 @@ flag_status usart_flag_get(usart_type* usart_x, uint32_t flag)
   */
 void usart_flag_clear(usart_type* usart_x, uint32_t flag)
 {
-  usart_x->sts = ~flag;
+  if(flag & (USART_PERR_FLAG | USART_FERR_FLAG | USART_NERR_FLAG | USART_ROERR_FLAG | USART_IDLEF_FLAG))
+  {
+    UNUSED(usart_x->sts);
+    UNUSED(usart_x->dt);
+  }
+  else
+  {
+    usart_x->sts = ~flag;
+  }
 }
 
 /**

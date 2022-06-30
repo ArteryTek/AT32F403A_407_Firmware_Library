@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
   * @file     xmc_psram.h
-  * @version  v2.0.9
-  * @date     2022-04-25
+  * @version  v2.1.0
+  * @date     2022-06-09
   * @brief    header file for the psram configuration.
   ******************************************************************************
   *                       Copyright notice & Disclaimer

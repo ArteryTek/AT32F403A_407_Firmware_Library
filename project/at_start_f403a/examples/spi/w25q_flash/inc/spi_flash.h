@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     spi_flash.h
-  * @version  v2.0.9
-  * @date     2022-04-25
+  * @version  v2.1.0
+  * @date     2022-06-09
   * @brief    header file of spi_flash
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -43,14 +43,14 @@ extern "C" {
 
 
  /* use dma transfer spi data */
-//#define SPI_TRANS_DMA
+#define SPI_TRANS_DMA
 
 /** @defgroup SPI_flash_cs_pin_definition
   * @{
   */
 
-#define FLASH_CS_HIGH()                  gpio_bits_set(GPIOA, GPIO_PINS_4)
-#define FLASH_CS_LOW()                   gpio_bits_reset(GPIOA, GPIO_PINS_4)
+#define FLASH_CS_HIGH()                  gpio_bits_set(GPIOB, GPIO_PINS_12)
+#define FLASH_CS_LOW()                   gpio_bits_reset(GPIOB, GPIO_PINS_12)
 
 /**
   * @}

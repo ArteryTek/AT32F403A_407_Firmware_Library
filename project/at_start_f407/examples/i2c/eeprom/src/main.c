@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.0.9
-  * @date     2022-04-25
+  * @version  v2.1.0
+  * @date     2022-06-09
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -41,26 +41,26 @@
 #define I2Cx_SPEED                       100000
 #define I2Cx_ADDRESS                     0xA0
 
-#define I2Cx_PORT                        I2C1
-#define I2Cx_CLK                         CRM_I2C1_PERIPH_CLOCK
+#define I2Cx_PORT                        I2C2
+#define I2Cx_CLK                         CRM_I2C2_PERIPH_CLOCK
 
-#define I2Cx_SCL_PIN                     GPIO_PINS_6
+#define I2Cx_SCL_PIN                     GPIO_PINS_10
 #define I2Cx_SCL_GPIO_PORT               GPIOB
 #define I2Cx_SCL_GPIO_CLK                CRM_GPIOB_PERIPH_CLOCK
 
-#define I2Cx_SDA_PIN                     GPIO_PINS_7
+#define I2Cx_SDA_PIN                     GPIO_PINS_11
 #define I2Cx_SDA_GPIO_PORT               GPIOB
 #define I2Cx_SDA_GPIO_CLK                CRM_GPIOB_PERIPH_CLOCK
 
 #define I2Cx_DMA_CLK                     CRM_DMA1_PERIPH_CLOCK
-#define I2Cx_DMA_TX_CHANNEL              DMA1_CHANNEL6
-#define I2Cx_DMA_TX_IRQn                 DMA1_Channel6_IRQn
+#define I2Cx_DMA_TX_CHANNEL              DMA1_CHANNEL4
+#define I2Cx_DMA_TX_IRQn                 DMA1_Channel4_IRQn
 
-#define I2Cx_DMA_RX_CHANNEL              DMA1_CHANNEL7
-#define I2Cx_DMA_RX_IRQn                 DMA1_Channel7_IRQn
+#define I2Cx_DMA_RX_CHANNEL              DMA1_CHANNEL5
+#define I2Cx_DMA_RX_IRQn                 DMA1_Channel5_IRQn
 
-#define I2Cx_EVT_IRQn                    I2C1_EVT_IRQn
-#define I2Cx_ERR_IRQn                    I2C1_ERR_IRQn
+#define I2Cx_EVT_IRQn                    I2C2_EVT_IRQn
+#define I2Cx_ERR_IRQn                    I2C2_ERR_IRQn
 
 #define BUF_SIZE                         8
 

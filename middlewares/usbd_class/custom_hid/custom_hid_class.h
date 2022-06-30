@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     custom_hid_class.h
-  * @version  v2.0.9
-  * @date     2022-04-25
+  * @version  v2.1.0
+  * @date     2022-06-09
   * @brief    usb custom hid header file
   **************************************************************************
   *                       Copyright notice & Disclaimer

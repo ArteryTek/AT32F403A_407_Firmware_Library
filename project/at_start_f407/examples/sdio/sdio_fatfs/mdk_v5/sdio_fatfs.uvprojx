@@ -14,15 +14,15 @@
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
-          <Device>- AT32F407VGT7</Device>
+          <Device>-AT32F407VGT7</Device>
           <Vendor>ArteryTek</Vendor>
-          <PackID>ArteryTek.AT32F403A_407_DFP.2.0.0</PackID>
+          <PackID>ArteryTek.AT32F403A_407_DFP.2.0.2</PackID>
           <Cpu>IRAM(0x20000000,0x38000) IROM(0x08000000,0x100000) CPUTYPE("Cortex-M4") FPU2 CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile></StartupFile>
-          <FlashDriverDll>UL2CM3(-S0 -C0 -P0 -FD20000000 -FC1000 -FN1 -FF0AT32F407_1024 -FS08000000 -FL0100000 -FP0($$Device:- AT32F407VGT7$Flash\AT32F407_1024.FLM))</FlashDriverDll>
+          <FlashDriverDll>UL2CM3(-S0 -C0 -P0 -FD20000000 -FC1000 -FN1 -FF0AT32F407_1024 -FS08000000 -FL0100000 -FP0($$Device:-AT32F407VGT7$Flash\AT32F407_1024.FLM))</FlashDriverDll>
           <DeviceId>0</DeviceId>
-          <RegisterFile>$$Device:-</RegisterFile>
+          <RegisterFile>$$Device:-AT32F407VGT7$Device\Include\at32f403a_407.h</RegisterFile>
           <MemoryEnv></MemoryEnv>
           <Cmp></Cmp>
           <Asm></Asm>
@@ -32,14 +32,14 @@
           <SLE66CMisc></SLE66CMisc>
           <SLE66AMisc></SLE66AMisc>
           <SLE66LinkerMisc></SLE66LinkerMisc>
-          <SFDFile>$$Device:- AT32F407VGT7$SVD\AT32F407xx_v2.svd</SFDFile>
+          <SFDFile>$$Device:-AT32F407VGT7$SVD\AT32F407xx_v2.svd</SFDFile>
           <bCustSvd>0</bCustSvd>
           <UseEnv>0</UseEnv>
           <BinPath></BinPath>
           <IncludePath></IncludePath>
           <LibPath></LibPath>
-          <RegisterFilePath>AT32F407VGT7$Device\Include\at32f403a_407.h\</RegisterFilePath>
-          <DBRegisterFilePath>AT32F407VGT7$Device\Include\at32f403a_407.h\</DBRegisterFilePath>
+          <RegisterFilePath></RegisterFilePath>
+          <DBRegisterFilePath></DBRegisterFilePath>
           <TargetStatus>
             <Error>0</Error>
             <ExitCodeStop>0</ExitCodeStop>
@@ -184,6 +184,7 @@
             <uocXRam>0</uocXRam>
             <RvdsVP>2</RvdsVP>
             <RvdsMve>0</RvdsMve>
+            <RvdsCdeCp>0</RvdsCdeCp>
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
@@ -350,7 +351,7 @@
             <NoWarn>0</NoWarn>
             <uSurpInc>0</uSurpInc>
             <useXO>0</useXO>
-            <uClangAs>0</uClangAs>
+            <ClangAsOpt>4</ClangAsOpt>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define></Define>
@@ -609,5 +610,20 @@
     <components/>
     <files/>
   </RTE>
+
+  <LayerInfo>
+    <Layers>
+      <Layer>
+        <LayName>&lt;Project Info&gt;</LayName>
+        <LayDesc></LayDesc>
+        <LayUrl></LayUrl>
+        <LayKeys></LayKeys>
+        <LayCat></LayCat>
+        <LayLic></LayLic>
+        <LayTarg>0</LayTarg>
+        <LayPrjMark>1</LayPrjMark>
+      </Layer>
+    </Layers>
+  </LayerInfo>
 
 </Project>

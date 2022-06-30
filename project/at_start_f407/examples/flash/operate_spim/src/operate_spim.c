@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     operate_spim.c
-  * @version  v2.0.9
-  * @date     2022-04-25
+  * @version  v2.1.0
+  * @date     2022-06-09
   * @brief    operate spim program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -109,7 +109,8 @@ void sector_read(uint32_t address, uint32_t sector_size, uint8_t *buf)
 void spim_operate(void)
 {
   uint16_t i = 0;
-
+  flash_status_type status = FLASH_OPERATE_DONE;
+ 
   /* configures the spim flash */
   spim_init();
 
@@ -118,9 +119,23 @@ void spim_operate(void)
   {
     write_buffer[i] = i % 256;
   }
-
+  
+  /* wait for operation to be completed */
+  status = flash_operation_wait_for(ERASE_TIMEOUT);
+ 
+  if((status == FLASH_PROGRAM_ERROR) || (status == FLASH_EPP_ERROR))
+    flash_flag_clear(FLASH_PRGMERR_FLAG | FLASH_EPPERR_FLAG);
+  else if(status == FLASH_OPERATE_TIMEOUT)
+  {
+    /* test spim fail */
+    return;
+  }
   /* erase an spim flash sector */
-  flash_sector_erase(SPIM_TEST_ADDR);
+  if(flash_sector_erase(SPIM_TEST_ADDR) != FLASH_OPERATE_DONE)
+  {
+    /* test spim fail */
+    return;
+  }
 
   /* read an spim flash sector */
   memset(read_buffer, 0, SPIM_SECTOR_SIZE);
@@ -140,7 +155,12 @@ void spim_operate(void)
   i = 0;
   while(i < SPIM_SECTOR_SIZE)
   {
-    flash_word_program(SPIM_TEST_ADDR + i, *(uint32_t *)(write_buffer + i));
+    status = flash_word_program(SPIM_TEST_ADDR + i, *(uint32_t *)(write_buffer + i));
+    if(status != FLASH_OPERATE_DONE)
+    {
+      /* test spim fail */
+      return;
+    }
     i = i + 4;
   }
 

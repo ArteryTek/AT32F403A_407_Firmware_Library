@@ -174,7 +174,10 @@ static const unsigned char FSDATA_ALIGN_PRE data__404_html[] FSDATA_ALIGN_POST =
 static const unsigned int dummy_align__index_html = 2;
 #endif
 
-static const unsigned char FSDATA_ALIGN_PRE data_AT32F407_html[] FSDATA_ALIGN_POST = " \
+static const unsigned char FSDATA_ALIGN_PRE data_AT32F407_html[] FSDATA_ALIGN_POST = "\
+HTTP/1.0 200 OK\r\n\
+Content-Length: 9811\r\n\
+Content-Type: text/html\r\n\r\n\
 <html>\
     <head>\
         <title>Technology Corp. Demo Web Page</title>\
@@ -341,7 +344,10 @@ static const unsigned char FSDATA_ALIGN_PRE data_AT32F407_html[] FSDATA_ALIGN_PO
 "
 ;
 
-static const unsigned char FSDATA_ALIGN_PRE data_AT32F407LED_html[] FSDATA_ALIGN_POST = " \
+static const unsigned char FSDATA_ALIGN_PRE data_AT32F407LED_html[] FSDATA_ALIGN_POST = "\
+HTTP/1.0 200 OK\r\n\
+Content-Length: 4575\r\n\
+Content-Type: text/html\r\n\r\n\
 <html>\
 <head>\
     <title>Technology Corp. Demo Web Page</title>\
@@ -391,7 +397,10 @@ static const unsigned char FSDATA_ALIGN_PRE data_AT32F407LED_html[] FSDATA_ALIGN
 "
 ;
 
-static const unsigned char FSDATA_ALIGN_PRE data_AT32F407ADC_html[] FSDATA_ALIGN_POST = " \
+static const unsigned char FSDATA_ALIGN_PRE data_AT32F407ADC_html[] FSDATA_ALIGN_POST = "\
+HTTP/1.0 200 OK\r\n\
+Content-Length: 4614\r\n\
+Content-Type: text/html\r\n\r\n\
 <html>\
 <head>\
     <title>Technology Corp. Demo Web Page</title>\
