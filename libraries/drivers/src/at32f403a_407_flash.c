@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_flash.c
-  * @version  v2.1.0
-  * @date     2022-06-09
+  * @version  v2.1.1
+  * @date     2022-07-22
   * @brief    contains all the functions for the flash firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -781,6 +781,12 @@ flash_status_type flash_byte_program(uint32_t address, uint8_t data)
 flash_status_type flash_user_system_data_program(uint32_t address, uint8_t data)
 {
   flash_status_type status = FLASH_OPERATE_DONE;
+ 
+  if(address == USD_BASE)
+  {
+    if(data != 0xA5)
+      return FLASH_OPERATE_DONE;
+  }
 
   /* unlock the user system data */
   FLASH->usd_unlock = FLASH_UNLOCK_KEY1;

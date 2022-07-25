@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_i2c.c
-  * @version  v2.1.0
-  * @date     2022-06-09
+  * @version  v2.1.1
+  * @date     2022-07-22
   * @brief    contains all the functions for the i2c firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer

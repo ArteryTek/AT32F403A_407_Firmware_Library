@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_can.h
-  * @version  v2.1.0
-  * @date     2022-06-09
+  * @version  v2.1.1
+  * @date     2022-07-22
   * @brief    at32f403a_407 can header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -352,7 +352,7 @@ typedef struct
   */
 typedef struct
 {
-  uint16_t baudrate_div;                  /*!< baudrate division,this parameter can be 0x001~0x400.*/
+  uint16_t baudrate_div;                  /*!< baudrate division,this parameter can be 0x001~0x1000.*/
 
   can_rsaw_type rsaw_size;                /*!< resynchronization adjust width */
 

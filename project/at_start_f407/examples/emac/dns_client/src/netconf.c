@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     netconf.c
-  * @version  v2.1.0
-  * @date     2022-06-09
+  * @version  v2.1.1
+  * @date     2022-07-22
   * @brief    network connection configuration
   **************************************************************************
   *                       Copyright notice & Disclaimer

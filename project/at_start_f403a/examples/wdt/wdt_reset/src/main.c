@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.1.0
-  * @date     2022-06-09
+  * @version  v2.1.1
+  * @date     2022-07-22
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -78,6 +78,9 @@ int main(void)
   */
   wdt_reload_value_set(3000 - 1);
 
+  /* reload wdt counter */
+  wdt_counter_reload();
+  
   /* enable wdt */
   wdt_enable();
 

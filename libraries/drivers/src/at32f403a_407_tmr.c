@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_tmr.c
-  * @version  v2.1.0
-  * @date     2022-06-09
+  * @version  v2.1.1
+  * @date     2022-07-22
   * @brief    contains all the functions for the tmr firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -344,23 +344,26 @@ uint32_t tmr_div_value_get(tmr_type *tmr_x)
 void tmr_output_channel_config(tmr_type *tmr_x, tmr_channel_select_type tmr_channel,
                                tmr_output_config_type *tmr_output_struct)
 {
-  uint16_t channel_index = 0, channel_c_index = 0, channel = 0;
+  uint16_t channel_index = 0, channel_c_index = 0, channel = 0, chx_offset, chcx_offset;
 
+  chx_offset = (8 + tmr_channel);
+  chcx_offset = (9 + tmr_channel);
+  
   /* get channel idle state bit position in ctrl2 register */
-  channel_index = (uint16_t)(tmr_output_struct->oc_idle_state << (8 + tmr_channel));
+  channel_index = (uint16_t)(tmr_output_struct->oc_idle_state << chx_offset);
 
   /* get channel complementary idle state bit position in ctrl2 register */
-  channel_c_index = (uint16_t)(tmr_output_struct->occ_idle_state << (9 + tmr_channel));
+  channel_c_index = (uint16_t)(tmr_output_struct->occ_idle_state << chcx_offset);
 
   if((tmr_x == TMR1) || (tmr_x == TMR8))
   {
     /* set output channel complementary idle state */
-    tmr_x->ctrl2 &= ~channel_c_index;
+    tmr_x->ctrl2 &= ~(1<<chcx_offset);
     tmr_x->ctrl2 |= channel_c_index;
   }
 
   /* set output channel idle state */
-  tmr_x->ctrl2 &= ~channel_index;
+  tmr_x->ctrl2 &= ~(1<<chx_offset);
   tmr_x->ctrl2 |= channel_index;
 
   /* set channel output mode */
@@ -388,22 +391,28 @@ void tmr_output_channel_config(tmr_type *tmr_x, tmr_channel_select_type tmr_chan
       break;
   }
 
+  chx_offset = ((tmr_channel * 2) + 1);
+  chcx_offset = ((tmr_channel * 2) + 3);
+
   /* get channel polarity bit position in cctrl register */
-  channel_index = (uint16_t)(tmr_output_struct->oc_polarity << ((tmr_channel * 2) + 1));
+  channel_index = (uint16_t)(tmr_output_struct->oc_polarity << chx_offset);
 
   /* get channel complementary polarity bit position in cctrl register */
-  channel_c_index = (uint16_t)(tmr_output_struct->occ_polarity << ((tmr_channel * 2) + 3));
+  channel_c_index = (uint16_t)(tmr_output_struct->occ_polarity << chcx_offset);
 
   if((tmr_x == TMR1) || (tmr_x == TMR8))
   {
     /* set output channel complementary polarity */
-    tmr_x->cctrl &= ~channel_c_index;
+    tmr_x->cctrl &= ~(1<<chcx_offset);
     tmr_x->cctrl |= channel_c_index;
   }
 
   /* set output channel polarity */
-  tmr_x->cctrl &= ~channel_index;
+  tmr_x->cctrl &= ~(1<<chx_offset);
   tmr_x->cctrl |= channel_index;
+
+  chx_offset = (tmr_channel * 2);
+  chcx_offset = ((tmr_channel * 2) + 2);
 
   /* get channel enable bit position in cctrl register */
   channel_index = (uint16_t)(tmr_output_struct->oc_output_state << (tmr_channel * 2));
@@ -414,12 +423,12 @@ void tmr_output_channel_config(tmr_type *tmr_x, tmr_channel_select_type tmr_chan
   if((tmr_x == TMR1) || (tmr_x == TMR8))
   {
     /* set output channel complementary enable bit */
-    tmr_x->cctrl &= ~channel_c_index;
+    tmr_x->cctrl &= ~(1<<chcx_offset);
     tmr_x->cctrl |= channel_c_index;
   }
 
   /* set output channel enable bit */
-  tmr_x->cctrl &= ~channel_index;
+  tmr_x->cctrl &= ~(1<<chx_offset);
   tmr_x->cctrl |= channel_index;
 }
 

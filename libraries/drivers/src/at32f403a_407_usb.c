@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_usb.c
-  * @version  v2.1.0
-  * @date     2022-06-09
+  * @version  v2.1.1
+  * @date     2022-07-22
   * @brief    contains the functions for the usb firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer

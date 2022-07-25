@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     mqtt_client.c
-  * @version  v2.1.0
-  * @date     2022-06-09
+  * @version  v2.1.1
+  * @date     2022-07-22
   * @brief    mqtt client config program
   **************************************************************************
   *                       Copyright notice & Disclaimer

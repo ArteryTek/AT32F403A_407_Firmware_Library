@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     msc_diskio.h
-  * @version  v2.1.0
-  * @date     2022-06-09
+  * @version  v2.1.1
+  * @date     2022-07-22
   * @brief    usb mass storage disk interface header file
   **************************************************************************
   *                       Copyright notice & Disclaimer

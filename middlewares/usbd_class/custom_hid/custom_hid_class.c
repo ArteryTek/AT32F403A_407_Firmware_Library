@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     custom_hid_class.c
-  * @version  v2.1.0
-  * @date     2022-06-09
+  * @version  v2.1.1
+  * @date     2022-07-22
   * @brief    usb custom hid class type
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -150,6 +150,9 @@ static usb_sts_type class_setup_handler(void *udev, usb_setup_type *setup)
         case HID_REQ_SET_REPORT:
           pcshid->hid_state = HID_REQ_SET_REPORT;
           usbd_ctrl_recv(pudev, pcshid->hid_set_report, setup->wLength);
+          break;
+        case HID_REQ_GET_REPORT:
+          usbd_ctrl_send(pudev, pcshid->hid_get_report, setup->wLength);
           break;
         default:
           usbd_ctrl_unsupport(pudev);

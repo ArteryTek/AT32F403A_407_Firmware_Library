@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_gpio.c
-  * @version  v2.1.0
-  * @date     2022-06-09
+  * @version  v2.1.1
+  * @date     2022-07-22
   * @brief    contains all the functions for the gpio firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -390,7 +390,7 @@ void gpio_bits_write(gpio_type *gpio_x, uint16_t pins, confirm_state bit_state)
   * @param  port_value: specifies the value to be written to the port output data register.
   * @retval none
   */
-void gpio_port_wirte(gpio_type *gpio_x, uint16_t port_value)
+void gpio_port_write(gpio_type *gpio_x, uint16_t port_value)
 {
   gpio_x->odt = port_value;
 }

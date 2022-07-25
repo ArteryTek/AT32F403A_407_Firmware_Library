@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_exint.c
-  * @version  v2.1.0
-  * @date     2022-06-09
+  * @version  v2.1.1
+  * @date     2022-07-22
   * @brief    contains all the functions for the exint firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -125,7 +125,15 @@ void exint_init(exint_init_type *exint_struct)
   */
 void exint_flag_clear(uint32_t exint_line)
 {
-  EXINT->intsts = exint_line;
+	if((EXINT->swtrg & exint_line) == exint_line)
+	{
+		EXINT->intsts = exint_line;
+		EXINT->intsts = exint_line;
+	}
+	else
+	{
+		EXINT->intsts = exint_line;
+	}
 }
 
 /**
