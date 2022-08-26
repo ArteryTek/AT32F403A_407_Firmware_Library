@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_board.c
-  * @version  v2.1.1
-  * @date     2022-07-22
+  * @version  v2.1.2
+  * @date     2022-08-16
   * @brief    set of firmware functions to manage leds and push-button.
   *           initialize delay function.
   **************************************************************************
@@ -99,6 +99,18 @@ PUTCHAR_PROTOTYPE
   return ch;
 }
 
+#if defined (__GNUC__) && !defined (__clang__)
+int _write(int fd, char *pbuffer, int size)
+{
+  for(int i = 0; i < size; i ++)
+  {
+    __io_putchar(*pbuffer++);
+  }
+
+  return size;
+}
+#endif
+
 /**
   * @brief  initialize uart
   * @param  baudrate: uart baudrate
@@ -107,6 +119,10 @@ PUTCHAR_PROTOTYPE
 void uart_print_init(uint32_t baudrate)
 {
   gpio_init_type gpio_init_struct;
+
+#if defined (__GNUC__) && !defined (__clang__)
+  setvbuf(stdout, NULL, _IONBF, 0);
+#endif
 
   /* enable the uart and gpio clock */
   crm_periph_clock_enable(PRINT_UART_CRM_CLK, TRUE);

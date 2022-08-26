@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_misc.c
-  * @version  v2.1.1
-  * @date     2022-07-22
+  * @version  v2.1.2
+  * @date     2022-08-16
   * @brief    contains all the functions for the misc firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer

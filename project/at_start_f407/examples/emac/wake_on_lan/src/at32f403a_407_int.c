@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_int.c
-  * @version  v2.1.1
-  * @date     2022-07-22
+  * @version  v2.1.2
+  * @date     2022-08-16
   * @brief    main interrupt service routines.
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -149,23 +149,6 @@ void TMR6_GLOBAL_IRQHandler(void)
   }
 }
 
-/**
-  * @brief  this function handles emac handler.
-  * @param  none
-  * @retval none
-  */
-void EMAC_IRQHandler(void)
-{
-  /* handles all the received frames */
-  while(emac_received_packet_size_get() != 0)
-  {
-    lwip_pkt_handle();
-  }
-
-  /* clear the emac dma rx it pending bits */
-  emac_dma_flag_clear(EMAC_DMA_RI_FLAG);
-  emac_dma_flag_clear(EMAC_DMA_NIS_FLAG);
-}
 
 /**
   * @brief  this function handles wakeup frames and magic packets

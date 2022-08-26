@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_board.h
-  * @version  v2.1.1
-  * @date     2022-07-22
+  * @version  v2.1.2
+  * @date     2022-08-16
   * @brief    header file for at-start board. set of firmware functions to
   *           manage leds and push-button. initialize delay function.
   **************************************************************************

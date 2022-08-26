@@ -83,8 +83,8 @@ struct ethernetif
 /* Forward declarations. */
 err_t  ethernetif_input(struct netif *netif);
 
-#define EMAC_RXBUFNB        4
-#define EMAC_TXBUFNB        2
+#define EMAC_RXBUFNB        6
+#define EMAC_TXBUFNB        4
 
 uint8_t MACaddr[6];
 emac_dma_desc_type  DMARxDscrTab[EMAC_RXBUFNB], DMATxDscrTab[EMAC_TXBUFNB];/* Ethernet Rx & Tx DMA Descriptors */
@@ -162,6 +162,12 @@ low_level_init(struct netif *netif)
     {
       emac_dma_rx_desc_interrupt_config(&DMARxDscrTab[i], TRUE);
     }
+#ifdef CHECKSUM_BY_HARDWARE
+    for(i=0; i < EMAC_TXBUFNB; i++)
+    {
+      DMATxDscrTab[i].status |= EMAC_DMATXDESC_CIC_TUI_FULL;
+    }
+#endif
   }
 
   /* Enable MAC and DMA transmission and reception */
@@ -245,7 +251,7 @@ low_level_input(struct netif *netif)
 
 
   /* Set Own bit of the Rx descriptor Status: gives the buffer back to ETHERNET DMA */
-  frame.descriptor->status = EMAC_DMARXDESC_OWN;
+  frame.descriptor->status |= EMAC_DMARXDESC_OWN;
 
   /* When Rx Buffer unavailable flag is set: clear it and resume reception */
   if(emac_dma_flag_get(EMAC_DMA_RBU_FLAG))

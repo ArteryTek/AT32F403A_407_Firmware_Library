@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     keyboard_class.h
-  * @version  v2.1.1
-  * @date     2022-07-22
+  * @version  v2.1.2
+  * @date     2022-08-16
   * @brief    usb hid keyboard header file
   **************************************************************************
   *                       Copyright notice & Disclaimer

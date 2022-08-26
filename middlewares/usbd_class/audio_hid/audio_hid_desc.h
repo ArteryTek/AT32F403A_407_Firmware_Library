@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     audio_desc.h
-  * @version  v2.1.1
-  * @date     2022-07-22
+  * @version  v2.1.2
+  * @date     2022-08-16
   * @brief    usb audio descriptor header file
   **************************************************************************
   *                       Copyright notice & Disclaimer

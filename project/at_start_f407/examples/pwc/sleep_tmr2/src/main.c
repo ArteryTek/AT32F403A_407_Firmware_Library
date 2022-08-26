@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.1.1
-  * @date     2022-07-22
+  * @version  v2.1.2
+  * @date     2022-08-16
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -119,7 +119,7 @@ int main(void)
 
     /* wake up from sleep mode */
     at32_led_on(LED2);
-    for(index = 0; index < 500000; index++);
+    delay_ms(500);
   }
 }
 

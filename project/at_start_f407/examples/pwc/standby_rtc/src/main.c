@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.1.1
-  * @date     2022-07-22
+  * @version  v2.1.2
+  * @date     2022-08-16
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -137,7 +137,7 @@ int main(void)
 
   at32_led_on(LED4);
 
-  for(index = 0; index < 500000; index++);
+  delay_ms(1000);
 
   /* set the wakeup time to 10 seconds */
   rtc_alarm_config(10);

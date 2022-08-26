@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32_emac.h
-  * @version  v2.1.1
-  * @date     2022-07-22
+  * @version  v2.1.2
+  * @date     2022-08-16
   * @brief    header file of emac config program.
   **************************************************************************
   *                       Copyright notice & Disclaimer

@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32_emac.c
-  * @version  v2.1.1
-  * @date     2022-07-22
+  * @version  v2.1.2
+  * @date     2022-08-16
   * @brief    emac config program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -69,7 +69,9 @@ error_status emac_system_init(void)
   */
 void emac_nvic_configuration(void)
 {
-  nvic_irq_enable(EMAC_IRQn, 1, 0);
+  /*
+   nvic_irq_enable(EMAC_IRQn, 1, 0);
+  */
 }
 
 /**
@@ -253,6 +255,11 @@ error_status emac_layer2_configuration(void)
   emac_control_para_init(&mac_control_para);
 
   mac_control_para.auto_nego = EMAC_AUTO_NEGOTIATION_ON;
+#ifdef CHECKSUM_BY_HARDWARE
+  mac_control_para.ipv4_checksum_offload = TRUE;
+#else
+  mac_control_para.ipv4_checksum_offload = FALSE;
+#endif
 
   if(emac_phy_init(&mac_control_para) == ERROR)
   {
@@ -514,16 +521,6 @@ void ethernetif_set_link(void const *argument)
   /* Read PHY_BSR*/
   regvalue = link_update();
   
-  if(regvalue > 0)
-  {
-    at32_led_on(LED4);
-    at32_led_off(LED2);
-  }
-  else
-  {
-    at32_led_on(LED2);
-    at32_led_off(LED4);
-  }
   /* Check whether the netif link down and the PHY link is up */
   if(!netif_is_link_up(netif) && (regvalue))
   {

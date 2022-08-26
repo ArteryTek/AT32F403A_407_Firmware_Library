@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     netconf.c
-  * @version  v2.1.1
-  * @date     2022-07-22
+  * @version  v2.1.2
+  * @date     2022-08-16
   * @brief    network connection configuration
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -31,6 +31,7 @@
 #include "lwip/udp.h"
 #include "netif/etharp.h"
 #include "lwip/dhcp.h"
+#include "lwip/init.h"
 #include "ethernetif.h"
 #include "netconf.h"
 #include "dns.h"
@@ -76,12 +77,8 @@ void tcpip_stack_init(void)
   ip_addr_t netmask;
   ip_addr_t gw;
 
-  /* Initializes the dynamic memory heap defined by MEM_SIZE.*/
-  mem_init();
-
-  /* Initializes the memory pools defined by MEMP_NUM_x.*/
-  memp_init();
-
+  /* Initialize the LwIP stack */
+  lwip_init();
 
 #if LWIP_DHCP  //need DHCP server
   ipaddr.addr = 0;
@@ -139,6 +136,20 @@ void lwip_pkt_handle(void)
 }
 
 /**
+  * @brief  this function is receive handler.
+  * @param  none
+  * @retval none
+  */
+void lwip_rx_loop_handler(void)
+{
+  /* handles all the received frames */
+  while(emac_received_packet_size_get() != 0)
+  {
+    lwip_pkt_handle();
+  }
+}
+
+/**
   * @brief  updates the system local time
   * @param  none
   * @retval none
@@ -157,13 +168,13 @@ void lwip_periodic_handle(volatile uint32_t localtime)
 {
 
   /* TCP periodic process every 250 ms */
-  if (localtime - tcp_timer >= TCP_TMR_INTERVAL)
+  if (localtime - tcp_timer >= TCP_TMR_INTERVAL || localtime < tcp_timer)
   {
     tcp_timer =  localtime;
     tcp_tmr();
   }
   /* ARP periodic process every 5s */
-  if (localtime - arp_timer >= ARP_TMR_INTERVAL)
+  if (localtime - arp_timer >= ARP_TMR_INTERVAL || localtime < arp_timer)
   {
     arp_timer =  localtime;
     etharp_tmr();
@@ -171,13 +182,13 @@ void lwip_periodic_handle(volatile uint32_t localtime)
 
 #if LWIP_DHCP
   /* Fine DHCP periodic process every 500ms */
-  if (localtime - dhcp_fine_timer >= DHCP_FINE_TIMER_MSECS)
+  if (localtime - dhcp_fine_timer >= DHCP_FINE_TIMER_MSECS || localtime < dhcp_fine_timer)
   {
     dhcp_fine_timer =  localtime;
     dhcp_fine_tmr();
   }
   /* DHCP Coarse periodic process every 60s */
-  if (localtime - dhcp_coarse_timer >= DHCP_COARSE_TIMER_MSECS)
+  if (localtime - dhcp_coarse_timer >= DHCP_COARSE_TIMER_MSECS || localtime < dhcp_coarse_timer)
   {
     dhcp_coarse_timer =  localtime;
     dhcp_coarse_tmr();
@@ -186,7 +197,7 @@ void lwip_periodic_handle(volatile uint32_t localtime)
 
 #if LWIP_DNS
 
-  if ((localtime - dns_timer) >= DNS_TMR_INTERVAL)
+  if ((localtime - dns_timer) >= DNS_TMR_INTERVAL || localtime < dns_timer)
   {
     dns_timer =  localtime;
     dns_tmr();
@@ -195,7 +206,7 @@ void lwip_periodic_handle(volatile uint32_t localtime)
   
 #if (LINK_DETECTION > 0)
   /* link detection process every 500 ms */
-  if (localtime - link_timer >= 500)
+  if (localtime - link_timer >= 500 || localtime < link_timer)
   {
     link_timer =  localtime;
     ethernetif_set_link(&netif);
