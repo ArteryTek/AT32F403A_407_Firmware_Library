@@ -1,8 +1,6 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_usart.c
-  * @version  v2.1.2
-  * @date     2022-08-16
   * @brief    contains all the functions for the usart firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -86,11 +84,14 @@ void usart_reset(usart_type* usart_x)
     crm_periph_reset(CRM_UART7_PERIPH_RESET, TRUE);
     crm_periph_reset(CRM_UART7_PERIPH_RESET, FALSE);
   }
+#if defined (AT32F403ARx) || defined (AT32F403AVx) || defined (AT32F407Rx) || \
+    defined (AT32F407Vx)
   else if(usart_x == UART8)
   {
     crm_periph_reset(CRM_UART8_PERIPH_RESET, TRUE);
     crm_periph_reset(CRM_UART8_PERIPH_RESET, FALSE);
   }
+#endif
 }
 
 /**
@@ -116,7 +117,12 @@ void usart_init(usart_type* usart_x, uint32_t baud_rate, usart_data_bit_num_type
   crm_clocks_freq_type clocks_freq;
   uint32_t apb_clock, temp_val;
   crm_clocks_freq_get(&clocks_freq);
-  if((usart_x == USART1) || (usart_x == USART6) ||  (usart_x == UART7) || (usart_x == UART8))
+  if((usart_x == USART1) || (usart_x == USART6) || (usart_x == UART7)
+#if defined (AT32F403ARx) || defined (AT32F403AVx) || defined (AT32F407Rx) || \
+    defined (AT32F407Vx)
+    || (usart_x == UART8)
+#endif
+  )
   {
     apb_clock = clocks_freq.apb2_freq;
   }

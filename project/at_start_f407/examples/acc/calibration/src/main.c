@@ -1,8 +1,6 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.1.2
-  * @date     2022-08-16
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -48,7 +46,9 @@ uint8_t usb_buffer[256];
 //#define   SCLK_FROM_HEXT
 #define   SCLK_FROM_HICK
 
-/* select acc calibration mode */
+/* ACC_CAL : the step is incremented or decremented by one, the hickcal will be incremented or decremented by 40khz */
+/* ACC_TRIM : the step is incremented or decremented by one, the hicktrim will be incremented or decremented by 20khz */
+/* define ACC_TRIM in order to get higher calibration accuracy */
 //#define   ACC_CAL
 #define     ACC_TRIM
 
@@ -183,10 +183,10 @@ void system_clock_config_for_acc(void)
   /* config ahbclk */
   crm_ahb_div_set(CRM_AHB_DIV_1);
 
-  /* config apb2clk */
+  /* config apb2clk, the maximum frequency of APB1/APB2 clock is 120 MHz */
   crm_apb2_div_set(CRM_APB2_DIV_2);
 
-  /* config apb1clk */
+  /* config apb1clk, the maximum frequency of APB1/APB2 clock is 120 MHz  */
   crm_apb1_div_set(CRM_APB1_DIV_2);
 
   /* enable auto step mode */

@@ -1,8 +1,6 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_int.c
-  * @version  v2.1.2
-  * @date     2022-08-16
   * @brief    main interrupt service routines.
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -158,6 +156,26 @@ void I2Cx_DMA_RX_IRQHandler(void)
 void I2Cx_DMA_TX_IRQHandler(void)
 {
   i2c_dma_tx_irq_handler(&hi2cx);
+}
+
+/**
+  * @brief  this function handles i2c event interrupt request.
+  * @param  none
+  * @retval none
+  */
+void I2Cx_EVT_IRQHandler(void)
+{
+  i2c_evt_irq_handler(&hi2cx);
+}
+
+/**
+  * @brief  this function handles i2c error interrupt request.
+  * @param  none
+  * @retval none
+  */
+void I2Cx_ERR_IRQHandler(void)
+{
+  i2c_err_irq_handler(&hi2cx);
 }
 
 /**

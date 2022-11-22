@@ -1,8 +1,6 @@
 /**
   **************************************************************************
   * @file     audio_desc.c
-  * @version  v2.1.2
-  * @date     2022-08-16
   * @brief    usb audio device descriptor
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -155,7 +153,7 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_AUHID_CONFIG_DESC_SIZE] AL
   AUDIO_MIC_INPUT_TERMINAL_ID,           /* bTerminalID: id of this input terminal*/
   LBYTE(AUDIO_INPUT_TERMINAL_MICROPHONE),
   HBYTE(AUDIO_INPUT_TERMINAL_MICROPHONE),/* wTerminalType: terminal is microphone */
-  AUDIO_MIC_OUTPUT_TERMINAL_ID,          /* bAssocTerminal: no association */
+  0x00,                                  /* bAssocTerminal: no association */
   AUDIO_MIC_CHR,                         /* bNrChannels: two channel */
 #if (AUDIO_MIC_CHR == 2)
   0x03,                                  /* wChannelConfig: left front and right front */
@@ -172,9 +170,13 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_AUHID_CONFIG_DESC_SIZE] AL
   AUDIO_AC_FEATURE_UNIT,                 /* bDescriptorSubtype: feature unit type*/
   AUDIO_MIC_FEATURE_UNIT_ID,             /* bUnitID: id of this feature unit */
   AUDIO_MIC_INPUT_TERMINAL_ID,           /* bSourceID: from input terminal */
-  0x01,                                  /* bControlSize: 1 byte */
-  0x01,                                  /* bmaControls0: mute */
-  0x02,                                  /* bmaControls1: volume */
+  0x02,                                  /* bControlSize: 2 byte */
+  0x03,                                  /* bmaControls0: mute & volume*/
+  0x00,
+  0x00,                                  /* bmaControls1 */
+  0x00,
+  0x00,                                  /* bmaControls2 */
+  0x00,
   0x00,                                  /* iFeature: unused */
 
   AUDIO_OUTPUT_TERMINAL_SIZE,            /* bLength: descriptor size */
@@ -183,7 +185,7 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_AUHID_CONFIG_DESC_SIZE] AL
   AUDIO_MIC_OUTPUT_TERMINAL_ID,          /* bTerminalID: id of this output terminal*/
   LBYTE(AUDIO_TERMINAL_TYPE_STREAMING),
   HBYTE(AUDIO_TERMINAL_TYPE_STREAMING),  /* wTerminalType: usb streaming */
-  AUDIO_MIC_INPUT_TERMINAL_ID,                                  /* bAssocTerminal: unused */
+  0x00,                                  /* bAssocTerminal: unused */
   AUDIO_MIC_FEATURE_UNIT_ID,             /* bSourceID: from feature unit terminal */
   0x00,                                  /* iTerminal: unused */
 #endif
@@ -196,7 +198,7 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_AUHID_CONFIG_DESC_SIZE] AL
   AUDIO_SPK_INPUT_TERMINAL_ID,           /* bTerminalID: id of this input terminal*/
   LBYTE(AUDIO_TERMINAL_TYPE_STREAMING),  /* wTerminalType: usb streaming */
   HBYTE(AUDIO_TERMINAL_TYPE_STREAMING),  /* wTerminalType: usb streaming */
-  AUDIO_SPK_OUTPUT_TERMINAL_ID,          /* bAssocTerminal: no association */
+  0x00,                                  /* bAssocTerminal: no association */
   AUDIO_SPK_CHR,                         /* bNrChannels: two channel */
 #if (AUDIO_SPK_CHR == 2)
   0x03,                                  /* wChannelConfig: left front and right front */
@@ -213,9 +215,13 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_AUHID_CONFIG_DESC_SIZE] AL
   AUDIO_AC_FEATURE_UNIT,                 /* bDescriptorSubtype: feature unit type*/
   AUDIO_SPK_FEATURE_UNIT_ID,             /* bUnitID: id of this feature unit */
   AUDIO_SPK_INPUT_TERMINAL_ID,           /* bSourceID: from input terminal */
-  0x01,                                  /* bControlSize: 1 byte */
-  0x01,                                  /* bmaControls0: mute*/
-  0x02,                                  /* bmaControls1: volume */
+  0x02,                                  /* bControlSize: 2 byte */
+  0x03,                                  /* bmaControls0: mute & volume*/
+  0x00,
+  0x00,                                  /* bmaControls1: 0x0000 */
+  0x00,
+  0x00,                                  /* bmaControls2: 0x0000 */
+  0x00,
   0x00,                                  /* iFeature: unused */
 
   AUDIO_OUTPUT_TERMINAL_SIZE,            /* bLength: descriptor size */
@@ -224,7 +230,7 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_AUHID_CONFIG_DESC_SIZE] AL
   AUDIO_SPK_OUTPUT_TERMINAL_ID,          /* bTerminalID: id of this output terminal*/
   LBYTE(AUDIO_OUTPUT_TERMINAL_SPEAKER),  /* wTerminalType: usb speaker */
   HBYTE(AUDIO_OUTPUT_TERMINAL_SPEAKER),  /* wTerminalType: usb speaker */
-  AUDIO_SPK_INPUT_TERMINAL_ID,           /* bAssocTerminal: unused */
+  0x00,                                  /* bAssocTerminal: unused */
   AUDIO_SPK_FEATURE_UNIT_ID,             /* bSourceID: from feature unit terminal */
   0x00,                                  /* iTerminal: unused */
 #endif

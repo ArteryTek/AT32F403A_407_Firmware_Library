@@ -1,8 +1,6 @@
 /**
   **************************************************************************
   * @file     readme.txt
-  * @version  v2.1.2
-  * @date     2022-08-16
   * @brief    readme
   **************************************************************************
   */
@@ -15,4 +13,4 @@
   - connect usart2 tx pin (pa2) to usart3 tx pin (pb10)
   - connect a pull-up resistor to this line (10k).
 
-  for more detailed information. please refer to the application note document AN0099.
+  for more detailed information. please refer to the application note document AN0099.

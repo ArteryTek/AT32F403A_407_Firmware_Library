@@ -1,8 +1,6 @@
 /**
   **************************************************************************
   * @file     readme.txt
-  * @version  v2.1.2
-  * @date     2022-08-16
   * @brief    readme
   **************************************************************************
   */
@@ -29,4 +27,4 @@
   waveforms:
   - tim1 ch1 ---> pa8
 
-  for more detailed information. please refer to the application note document AN0085.
+  for more detailed information. please refer to the application note document AN0085.

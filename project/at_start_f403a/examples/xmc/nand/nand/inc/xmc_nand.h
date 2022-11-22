@@ -1,8 +1,6 @@
 /**
   ******************************************************************************
   * @file     xmc_nand.h
-  * @version  v2.1.2
-  * @date     2022-08-16
   * @brief    header file for the nand configuration.
   ******************************************************************************
   *                       Copyright notice & Disclaimer

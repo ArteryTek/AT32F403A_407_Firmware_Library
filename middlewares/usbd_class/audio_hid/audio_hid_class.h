@@ -1,8 +1,6 @@
 /**
   **************************************************************************
   * @file     audio_class.h
-  * @version  v2.1.2
-  * @date     2022-08-16
   * @brief    usb audio class file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -137,10 +135,10 @@ typedef struct
   uint32_t hid_protocol;
   uint32_t hid_set_idle;
   uint32_t alt_setting;
-  uint8_t hid_state;
   uint8_t hid_set_report[64];
   uint8_t g_rxhid_buff[USBD_AUHID_OUT_MAXPACKET_SIZE];
   uint8_t g_txhid_buff[USBD_AUHID_IN_MAXPACKET_SIZE];
+  uint8_t hid_state;
 }usb_audio_hid_type;
 
 extern usbd_class_handler audio_hid_class_handler;

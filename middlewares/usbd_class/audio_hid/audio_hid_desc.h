@@ -1,8 +1,6 @@
 /**
   **************************************************************************
   * @file     audio_desc.h
-  * @version  v2.1.2
-  * @date     2022-08-16
   * @brief    usb audio descriptor header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -150,7 +148,7 @@ extern "C" {
   * @brief audio interface config
   */
 #define AUDIO_INTERFACE_NUM              (AUDIO_SUPPORT_SPK + AUDIO_SUPPORT_MIC)
-#define AUDIO_INTERFACE_LEN              ((0x08 + AUDIO_INTERFACE_NUM) + AUDIO_INTERFACE_NUM * 0x1E)
+#define AUDIO_INTERFACE_LEN              ((0x08 + AUDIO_INTERFACE_NUM) + AUDIO_INTERFACE_NUM * 0x22)
 #define AUDIO_MIC_INTERFACE              0x01
 #define AUDIO_SPK_INTERFACE              0x02
 
@@ -159,7 +157,7 @@ extern "C" {
   */
 #define AUDIO_INPUT_TERMINAL_SIZE        0x0C
 #define AUDIO_OUTPUT_TERMINAL_SIZE       0x09
-#define AUDIO_FEATURE_UNIT_SIZE          0x09
+#define AUDIO_FEATURE_UNIT_SIZE          0x0D
 
 /**
   * @brief audio terminal id define

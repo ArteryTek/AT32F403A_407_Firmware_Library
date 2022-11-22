@@ -1,8 +1,6 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_int.c
-  * @version  v2.1.2
-  * @date     2022-08-16
   * @brief    main interrupt service routines.
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -150,27 +148,33 @@ void SysTick_Handler(void)
   */
 void USART2_IRQHandler(void)
 {
-  if(usart_flag_get(USART2, USART_RDBF_FLAG) != RESET)
+  if(USART2->ctrl1_bit.rdbfien != RESET)
   {
-    /* read one byte from the receive data register */
-    usart2_rx_buffer[usart2_rx_counter++] = usart_data_receive(USART2);
-
-    if(usart2_rx_counter == usart3_tx_buffer_size)
+    if(usart_flag_get(USART2, USART_RDBF_FLAG) != RESET)
     {
-      /* disable the usart2 receive interrupt */
-      usart_interrupt_enable(USART2, USART_RDBF_INT, FALSE);
+      /* read one byte from the receive data register */
+      usart2_rx_buffer[usart2_rx_counter++] = usart_data_receive(USART2);
+
+      if(usart2_rx_counter == usart3_tx_buffer_size)
+      {
+        /* disable the usart2 receive interrupt */
+        usart_interrupt_enable(USART2, USART_RDBF_INT, FALSE);
+      }
     }
   }
-
-  if(usart_flag_get(USART2, USART_TDBE_FLAG) != RESET)
+  
+  if(USART2->ctrl1_bit.tdbeien != RESET)
   {
-    /* write one byte to the transmit data register */
-    usart_data_transmit(USART2, usart2_tx_buffer[usart2_tx_counter++]);
-
-    if(usart2_tx_counter == usart2_tx_buffer_size)
+    if(usart_flag_get(USART2, USART_TDBE_FLAG) != RESET)
     {
-      /* disable the usart2 transmit interrupt */
-      usart_interrupt_enable(USART2, USART_TDBE_INT, FALSE);
+      /* write one byte to the transmit data register */
+      usart_data_transmit(USART2, usart2_tx_buffer[usart2_tx_counter++]);
+
+      if(usart2_tx_counter == usart2_tx_buffer_size)
+      {
+        /* disable the usart2 transmit interrupt */
+        usart_interrupt_enable(USART2, USART_TDBE_INT, FALSE);
+      }
     }
   }
 }
@@ -182,27 +186,33 @@ void USART2_IRQHandler(void)
   */
 void USART3_IRQHandler(void)
 {
-  if(usart_flag_get(USART3, USART_RDBF_FLAG) != RESET)
+  if(USART3->ctrl1_bit.rdbfien != RESET)
   {
-    /* read one byte from the receive data register */
-    usart3_rx_buffer[usart3_rx_counter++] = usart_data_receive(USART3);
-
-    if(usart3_rx_counter == usart2_tx_buffer_size)
+    if(usart_flag_get(USART3, USART_RDBF_FLAG) != RESET)
     {
-      /* disable the usart3 receive interrupt */
-      usart_interrupt_enable(USART3, USART_RDBF_INT, FALSE);
+      /* read one byte from the receive data register */
+      usart3_rx_buffer[usart3_rx_counter++] = usart_data_receive(USART3);
+
+      if(usart3_rx_counter == usart2_tx_buffer_size)
+      {
+        /* disable the usart3 receive interrupt */
+        usart_interrupt_enable(USART3, USART_RDBF_INT, FALSE);
+      }
     }
   }
-
-  if(usart_flag_get(USART3, USART_TDBE_FLAG) != RESET)
+  
+  if(USART3->ctrl1_bit.tdbeien != RESET)
   {
-    /* write one byte to the transmit data register */
-    usart_data_transmit(USART3, usart3_tx_buffer[usart3_tx_counter++]);
-
-    if(usart3_tx_counter == usart3_tx_buffer_size)
+    if(usart_flag_get(USART3, USART_TDBE_FLAG) != RESET)
     {
-      /* disable the usart3 transmit interrupt */
-      usart_interrupt_enable(USART3, USART_TDBE_INT, FALSE);
+      /* write one byte to the transmit data register */
+      usart_data_transmit(USART3, usart3_tx_buffer[usart3_tx_counter++]);
+
+      if(usart3_tx_counter == usart3_tx_buffer_size)
+      {
+        /* disable the usart3 transmit interrupt */
+        usart_interrupt_enable(USART3, USART_TDBE_INT, FALSE);
+      }
     }
   }
 }

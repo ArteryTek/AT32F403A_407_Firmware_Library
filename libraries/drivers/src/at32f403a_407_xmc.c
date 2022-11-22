@@ -1,8 +1,6 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_xmc.c
-  * @version  v2.1.2
-  * @date     2022-08-16
   * @brief    contains all the functions for the xmc firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -220,7 +218,7 @@ void xmc_nor_sram_enable(xmc_nor_sram_subbank_type xmc_subbank, confirm_state ne
   */
 void xmc_ext_timing_config(xmc_nor_sram_subbank_type xmc_sub_bank, uint16_t w2w_timing, uint16_t r2r_timing)
 {
-  XMC_BANK1->ext_bit[xmc_sub_bank].buslatr2r = r2r_timing<<8;
+  XMC_BANK1->ext_bit[xmc_sub_bank].buslatr2r = r2r_timing;
   XMC_BANK1->ext_bit[xmc_sub_bank].buslatw2w = w2w_timing;
 }
 

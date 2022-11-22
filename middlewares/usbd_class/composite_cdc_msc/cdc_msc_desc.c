@@ -1,8 +1,6 @@
 /**
   **************************************************************************
   * @file     cdc_msc_desc.c
-  * @version  v2.1.2
-  * @date     2022-08-16
   * @brief    usb cdc device descriptor
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -202,8 +200,8 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_CDC_MSC_CONFIG_DESC_SIZE] 
   0x05,                                  /* bFunctionLength: size of this descriptor in bytes */
   USBD_CDC_CS_INTERFACE,                 /* bDescriptorType: CDC interface descriptor type */ 
   USBD_CDC_SUBTYPE_UFD,                  /* bDescriptorSubtype: Union Function Descriptor subtype 0x06 */
-  0x00,                                  /* bControlInterface: The interface number of the communications or data class interface 0x00 */
-  0x01,                                  /* bSubordinateInterface0: interface number of first subordinate interface in the union */
+  0x01,                                  /* bControlInterface: The interface number of the communications or data class interface 0x00 */
+  0x02,                                  /* bSubordinateInterface0: interface number of first subordinate interface in the union */
   
   USB_DEVICE_EPT_LEN,                    /* bLength: size of endpoint descriptor in bytes */
   USB_DESCIPTOR_TYPE_ENDPOINT,           /* bDescriptorType: endpoint descriptor type */

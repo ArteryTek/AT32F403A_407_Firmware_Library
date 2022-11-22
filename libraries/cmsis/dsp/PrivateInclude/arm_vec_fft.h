@@ -1,8 +1,8 @@
 /******************************************************************************
  * @file     arm_vec_fft.h
-  * @version  v2.1.2
-  * @date     2022-08-16
  * @brief    Private header file for CMSIS DSP Library
+ * @version  V1.7.0
+ * @date     07. January 2020
  ******************************************************************************/
 /*
  * Copyright (c) 2010-2020 Arm Limited or its affiliates. All rights reserved.

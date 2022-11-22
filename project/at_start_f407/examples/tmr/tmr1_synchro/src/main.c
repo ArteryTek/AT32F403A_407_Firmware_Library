@@ -1,8 +1,6 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.1.2
-  * @date     2022-08-16
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -133,10 +131,10 @@ int main(void)
   tmr_sub_mode_select(TMR4, TMR_SUB_HANG_MODE);
 
   /* tmr1 time base configuration */
+  tmr_repetition_counter_set(TMR1, 4);
   tmr_base_init(TMR1, 319, 0);
   tmr_cnt_dir_set(TMR1, TMR_COUNT_UP);
   tmr_clock_source_div_set(TMR1, TMR_CLOCK_DIV1);
-  tmr_repetition_counter_set(TMR1, 4);
 
   tmr_output_default_para_init(&tmr_oc_init_structure);
   tmr_oc_init_structure.oc_mode = TMR_OUTPUT_CONTROL_PWM_MODE_B;

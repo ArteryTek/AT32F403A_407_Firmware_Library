@@ -1,8 +1,6 @@
 /**
   **************************************************************************
   * @file     readme.txt
-  * @version  v2.1.2
-  * @date     2022-08-16
   * @brief    readme
   **************************************************************************
   */
@@ -16,4 +14,4 @@
   - adc3_ordinary_valuetab[n][0] --->  adc3_channel_10
   - adc3_ordinary_valuetab[n][1] --->  adc3_channel_11
   - adc3_ordinary_valuetab[n][2] --->  adc3_channel_12
-  for more detailed information. please refer to the application note document AN0112.
+  for more detailed information. please refer to the application note document AN0112.

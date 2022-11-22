@@ -1,8 +1,6 @@
 /**
   **************************************************************************
   * @file     i2c_application.c
-  * @version  v2.1.2
-  * @date     2022-08-16
   * @brief    the driver library of the i2c peripheral
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -891,15 +889,6 @@ i2c_status_type i2c_slave_receive_int(i2c_handle_type* hi2c, uint8_t* pdata, uin
   /* enable ack */
   i2c_ack_enable(hi2c->i2cx, TRUE);
 
-  /* wait for the addr7 flag to be set */
-  if(i2c_wait_flag(hi2c, I2C_ADDR7F_FLAG, I2C_EVENT_CHECK_NONE, timeout) != I2C_OK)
-  {
-    return I2C_ERR_STEP_2;
-  }
-
-  /* clear addr flag */
-  i2c_flag_clear(hi2c->i2cx, I2C_ADDR7F_FLAG);
-
   /* enable interrupt */
   i2c_interrupt_enable(hi2c->i2cx, I2C_EVT_INT | I2C_DATA_INT | I2C_ERR_INT, TRUE);
 
@@ -1017,30 +1006,6 @@ i2c_status_type i2c_slave_transmit_int(i2c_handle_type* hi2c, uint8_t* pdata, ui
   /* enable ack */
   i2c_ack_enable(hi2c->i2cx, TRUE);
 
-  /* wait for the addr7 flag to be set */
-  if(i2c_wait_flag(hi2c, I2C_ADDR7F_FLAG, I2C_EVENT_CHECK_NONE, timeout) != I2C_OK)
-  {
-    return I2C_ERR_STEP_2;
-  }
-
-  /* clear addr flag */
-  i2c_flag_clear(hi2c->i2cx, I2C_ADDR7F_FLAG);
-
-  if(hi2c->i2cx->oaddr1_bit.addr1mode == I2C_ADDRESS_MODE_10BIT)
-  {
-    /* wait for the addr7 flag to be set */
-    if(i2c_wait_flag(hi2c, I2C_ADDR7F_FLAG, I2C_EVENT_CHECK_NONE, timeout) != I2C_OK)
-    {
-      /* disable ack */
-      i2c_ack_enable(hi2c->i2cx, FALSE);
-
-      return I2C_ERR_STEP_3;
-    }
-
-    /* clear addr flag */
-    i2c_flag_clear(hi2c->i2cx, I2C_ADDR7F_FLAG);
-  }
-
   /* enable interrupt */
   i2c_interrupt_enable(hi2c->i2cx, I2C_EVT_INT | I2C_DATA_INT | I2C_ERR_INT, TRUE);
 
@@ -1139,20 +1104,11 @@ i2c_status_type i2c_slave_receive_dma(i2c_handle_type* hi2c, uint8_t* pdata, uin
   /* configure the dma channel */
   i2c_dma_config(hi2c, hi2c->dma_rx_channel, pdata, size);
 
-  /* wait for the addr7 flag to be set */
-  if(i2c_wait_flag(hi2c, I2C_ADDR7F_FLAG, I2C_EVENT_CHECK_NONE, timeout) != I2C_OK)
-  {
-    /* disable ack */
-    i2c_ack_enable(hi2c->i2cx, FALSE);
-
-    return I2C_ERR_STEP_2;
-  }
-
   /* enable dma request */
   i2c_dma_enable(hi2c->i2cx, TRUE);
 
-  /* clear addr flag */
-  i2c_flag_clear(hi2c->i2cx, I2C_ADDR7F_FLAG);
+  /* enable address interrupt */
+  i2c_interrupt_enable(hi2c->i2cx, I2C_EVT_INT, TRUE);
 
   return I2C_OK;
 }
@@ -1272,36 +1228,11 @@ i2c_status_type i2c_slave_transmit_dma(i2c_handle_type* hi2c, uint8_t* pdata, ui
   /* configure the dma channel */
   i2c_dma_config(hi2c, hi2c->dma_tx_channel, pdata, size);
 
-
-  /* wait for the addr7 flag to be set */
-  if(i2c_wait_flag(hi2c, I2C_ADDR7F_FLAG, I2C_EVENT_CHECK_NONE, timeout) != I2C_OK)
-  {
-    /* disable ack */
-    i2c_ack_enable(hi2c->i2cx, FALSE);
-
-    return I2C_ERR_STEP_2;
-  }
-
-  if(hi2c->i2cx->oaddr1_bit.addr1mode == I2C_ADDRESS_MODE_10BIT)
-  {
-    /* clear addr flag */
-    i2c_flag_clear(hi2c->i2cx, I2C_ADDR7F_FLAG);
-
-    /* wait for the addr7 flag to be set */
-    if(i2c_wait_flag(hi2c, I2C_ADDR7F_FLAG, I2C_EVENT_CHECK_NONE, timeout) != I2C_OK)
-    {
-      /* disable ack */
-      i2c_ack_enable(hi2c->i2cx, FALSE);
-
-      return I2C_ERR_STEP_3;
-    }
-  }
-
-  /* clear addr flag */
-  i2c_flag_clear(hi2c->i2cx, I2C_ADDR7F_FLAG);
-
   /* enable dma request */
   i2c_dma_enable(hi2c->i2cx, TRUE);
+
+  /* enable address interrupt */
+  i2c_interrupt_enable(hi2c->i2cx, I2C_EVT_INT, TRUE);
 
   return I2C_OK;
 }
@@ -1311,8 +1242,8 @@ i2c_status_type i2c_slave_transmit_dma(i2c_handle_type* hi2c, uint8_t* pdata, ui
   * @param  hi2c: the handle points to the operation information.
   * @param  mem_address_width: memory address width.
   *         this parameter can be one of the following values:
-  *         - I2C_MEM_ADDR_WIDIH_8:  memory address is 8 bit 
-  *         - I2C_MEM_ADDR_WIDIH_16:  memory address is 16 bit 
+  *         - I2C_MEM_ADDR_WIDIH_8:  memory address is 8 bit
+  *         - I2C_MEM_ADDR_WIDIH_16:  memory address is 16 bit
   * @param  address: memory device address.
   * @param  mem_address: memory address.
   * @param  timeout: maximum waiting time.
@@ -1321,7 +1252,7 @@ i2c_status_type i2c_slave_transmit_dma(i2c_handle_type* hi2c, uint8_t* pdata, ui
 i2c_status_type i2c_memory_address_send(i2c_handle_type* hi2c, i2c_mem_address_width_type mem_address_width, uint16_t mem_address, int32_t timeout)
 {
   i2c_status_type err_code;
-  
+
   if(mem_address_width == I2C_MEM_ADDR_WIDIH_8)
   {
     /* send memory address */
@@ -1330,11 +1261,11 @@ i2c_status_type i2c_memory_address_send(i2c_handle_type* hi2c, i2c_mem_address_w
   else
   {
     /* send memory address */
-    i2c_data_send(hi2c->i2cx, (mem_address >> 8) & 0xFF);  
-    
+    i2c_data_send(hi2c->i2cx, (mem_address >> 8) & 0xFF);
+
     /* wait for the tdbe flag to be set */
     err_code = i2c_wait_flag(hi2c, I2C_TDBE_FLAG, I2C_EVENT_CHECK_ACKFAIL, timeout);
-    
+
     if(err_code != I2C_OK)
     {
       /* generate stop condtion */
@@ -1342,21 +1273,21 @@ i2c_status_type i2c_memory_address_send(i2c_handle_type* hi2c, i2c_mem_address_w
 
       return err_code;
     }
-    
+
     /* send memory address */
-    i2c_data_send(hi2c->i2cx, mem_address & 0xFF);  
+    i2c_data_send(hi2c->i2cx, mem_address & 0xFF);
   }
-  
+
   return I2C_OK;
 }
-  
+
 /**
   * @brief  write data to the memory device through polling mode.
   * @param  hi2c: the handle points to the operation information.
   * @param  mem_address_width: memory address width.
   *         this parameter can be one of the following values:
-  *         - I2C_MEM_ADDR_WIDIH_8:  memory address is 8 bit 
-  *         - I2C_MEM_ADDR_WIDIH_16:  memory address is 16 bit 
+  *         - I2C_MEM_ADDR_WIDIH_8:  memory address is 8 bit
+  *         - I2C_MEM_ADDR_WIDIH_16:  memory address is 16 bit
   * @param  address: memory device address.
   * @param  mem_address: memory address.
   * @param  pdata: data buffer.
@@ -1401,7 +1332,7 @@ i2c_status_type i2c_memory_write(i2c_handle_type* hi2c, i2c_mem_address_width_ty
 
     return I2C_ERR_STEP_3;
   }
-  
+
   /* send memory address */
   if(i2c_memory_address_send(hi2c, mem_address_width, mem_address, timeout) != I2C_OK)
   {
@@ -1444,8 +1375,8 @@ i2c_status_type i2c_memory_write(i2c_handle_type* hi2c, i2c_mem_address_width_ty
   * @param  hi2c: the handle points to the operation information.
   * @param  mem_address_width: memory address width.
   *         this parameter can be one of the following values:
-  *         - I2C_MEM_ADDR_WIDIH_8:  memory address is 8 bit 
-  *         - I2C_MEM_ADDR_WIDIH_16:  memory address is 16 bit 
+  *         - I2C_MEM_ADDR_WIDIH_8:  memory address is 8 bit
+  *         - I2C_MEM_ADDR_WIDIH_16:  memory address is 16 bit
   * @param  address: memory device address.
   * @param  mem_address: memory address.
   * @param  pdata: data buffer.
@@ -1657,8 +1588,8 @@ i2c_status_type i2c_memory_read(i2c_handle_type* hi2c, i2c_mem_address_width_typ
   * @param  hi2c: the handle points to the operation information.
   * @param  mem_address_width: memory address width.
   *         this parameter can be one of the following values:
-  *         - I2C_MEM_ADDR_WIDIH_8:  memory address is 8 bit 
-  *         - I2C_MEM_ADDR_WIDIH_16:  memory address is 16 bit 
+  *         - I2C_MEM_ADDR_WIDIH_8:  memory address is 8 bit
+  *         - I2C_MEM_ADDR_WIDIH_16:  memory address is 16 bit
   * @param  address: memory device address.
   * @param  mem_address: memory address.
   * @param  pdata: data buffer.
@@ -1734,8 +1665,8 @@ i2c_status_type i2c_memory_write_int(i2c_handle_type* hi2c, i2c_mem_address_widt
   * @param  hi2c: the handle points to the operation information.
   * @param  mem_address_width: memory address width.
   *         this parameter can be one of the following values:
-  *         - I2C_MEM_ADDR_WIDIH_8:  memory address is 8 bit 
-  *         - I2C_MEM_ADDR_WIDIH_16:  memory address is 16 bit 
+  *         - I2C_MEM_ADDR_WIDIH_8:  memory address is 8 bit
+  *         - I2C_MEM_ADDR_WIDIH_16:  memory address is 16 bit
   * @param  address: memory device address.
   * @param  mem_address: memory address.
   * @param  pdata: data buffer.
@@ -1851,8 +1782,8 @@ i2c_status_type i2c_memory_read_int(i2c_handle_type* hi2c, i2c_mem_address_width
   * @param  hi2c: the handle points to the operation information.
   * @param  mem_address_width: memory address width.
   *         this parameter can be one of the following values:
-  *         - I2C_MEM_ADDR_WIDIH_8:  memory address is 8 bit 
-  *         - I2C_MEM_ADDR_WIDIH_16:  memory address is 16 bit 
+  *         - I2C_MEM_ADDR_WIDIH_8:  memory address is 8 bit
+  *         - I2C_MEM_ADDR_WIDIH_16:  memory address is 16 bit
   * @param  address: memory device address.
   * @param  mem_address: memory address.
   * @param  pdata: data buffer.
@@ -1934,8 +1865,8 @@ i2c_status_type i2c_memory_write_dma(i2c_handle_type* hi2c, i2c_mem_address_widt
   * @param  hi2c: the handle points to the operation information.
   * @param  mem_address_width: memory address width.
   *         this parameter can be one of the following values:
-  *         - I2C_MEM_ADDR_WIDIH_8:  memory address is 8 bit 
-  *         - I2C_MEM_ADDR_WIDIH_16:  memory address is 16 bit 
+  *         - I2C_MEM_ADDR_WIDIH_8:  memory address is 8 bit
+  *         - I2C_MEM_ADDR_WIDIH_16:  memory address is 16 bit
   * @param  address: memory device address.
   * @param  mem_address: memory address.
   * @param  pdata: data buffer.
@@ -2157,8 +2088,15 @@ void i2c_master_rx_isr_int(i2c_handle_type* hi2c)
   */
 void i2c_slave_tx_isr_int(i2c_handle_type* hi2c)
 {
-  /* transfer data */
-  if(i2c_flag_get(hi2c->i2cx, I2C_TDBE_FLAG) != RESET)
+  /* step 1: receive slave address */
+  if(i2c_flag_get(hi2c->i2cx, I2C_ADDR7F_FLAG) != RESET)
+  {
+    /* clear addr flag */
+    i2c_flag_clear(hi2c->i2cx, I2C_ADDR7F_FLAG);
+  }
+
+  /* step 2: transfer data */
+  else if(i2c_flag_get(hi2c->i2cx, I2C_TDBE_FLAG) != RESET)
   {
     if(hi2c->pcount)
     {
@@ -2191,8 +2129,15 @@ void i2c_slave_tx_isr_int(i2c_handle_type* hi2c)
   */
 void i2c_slave_rx_isr_int(i2c_handle_type* hi2c)
 {
-  /* receive data */
-  if(i2c_flag_get(hi2c->i2cx, I2C_RDBF_FLAG) != RESET)
+  /* step 1: receive slave address */
+  if(i2c_flag_get(hi2c->i2cx, I2C_ADDR7F_FLAG) != RESET)
+  {
+    /* clear addr flag */
+    i2c_flag_clear(hi2c->i2cx, I2C_ADDR7F_FLAG);
+  }
+
+  /* step 2: receive data */
+  else if(i2c_flag_get(hi2c->i2cx, I2C_RDBF_FLAG) != RESET)
   {
     if(hi2c->pcount)
     {
@@ -2203,7 +2148,7 @@ void i2c_slave_rx_isr_int(i2c_handle_type* hi2c)
     }
   }
 
-  /* step 2: received stop conditon */
+  /* step 3: stop conditon is received, transfer ends */
   else if(i2c_flag_get(hi2c->i2cx, I2C_STOPF_FLAG) != RESET)
   {
     /* clear stop flag */
@@ -2214,6 +2159,58 @@ void i2c_slave_rx_isr_int(i2c_handle_type* hi2c)
 
     /* disable interrupt */
     i2c_interrupt_enable(hi2c->i2cx, I2C_EVT_INT | I2C_DATA_INT | I2C_ERR_INT, FALSE);
+  }
+}
+
+/**
+  * @brief  master interrupt processing function in dma mode.
+  * @param  hi2c: the handle points to the operation information.
+  * @retval none.
+  */
+void i2c_master_tx_isr_dma(i2c_handle_type* hi2c)
+{
+  /* tdc interrupt */
+  if(i2c_flag_get(hi2c->i2cx, I2C_TDC_FLAG) != RESET)
+  {
+    /* generate stop condtion */
+    i2c_stop_generate(hi2c->i2cx);
+    
+    /* disable evt interrupt */
+    i2c_interrupt_enable(hi2c->i2cx, I2C_EVT_INT, FALSE);
+    
+    /* transfer complete */
+    hi2c->status = I2C_END;
+  }
+}
+
+/**
+  * @brief  slave interrupt processing function in dma mode.
+  * @param  hi2c: the handle points to the operation information.
+  * @retval none.
+  */
+void i2c_slave_tx_rx_isr_dma(i2c_handle_type* hi2c)
+{
+  /* receive slave address */
+  if(i2c_flag_get(hi2c->i2cx, I2C_ADDR7F_FLAG) != RESET)
+  {
+    /* clear addr flag */
+    i2c_flag_clear(hi2c->i2cx, I2C_ADDR7F_FLAG);
+  }
+
+  /* wait for the stop flag to be set, trasnfer end */
+  if(i2c_flag_get(hi2c->i2cx, I2C_STOPF_FLAG) != RESET)
+  {
+    /* clear stop flag */
+    i2c_flag_clear(hi2c->i2cx, I2C_STOPF_FLAG);
+
+    /* disable evt interrupt */
+    i2c_interrupt_enable(hi2c->i2cx, I2C_EVT_INT, FALSE);    
+    
+    /* disable ack */
+    i2c_ack_enable(hi2c->i2cx, TRUE);
+    
+    /* transfer complete */
+    hi2c->status = I2C_END;
   }
 }
 
@@ -2238,6 +2235,13 @@ void i2c_evt_irq_handler(i2c_handle_type* hi2c)
     case I2C_INT_SLA_RX:
       i2c_slave_rx_isr_int(hi2c);
       break;
+    case I2C_DMA_MA_TX:
+      i2c_master_tx_isr_dma(hi2c);
+      break;
+    case I2C_DMA_SLA_TX:
+    case I2C_DMA_SLA_RX:
+      i2c_slave_tx_rx_isr_dma(hi2c);
+      break;
     default:
       break;
   }
@@ -2259,36 +2263,24 @@ void i2c_dma_tx_irq_handler(i2c_handle_type* hi2c)
     /* clear the transfer complete flag */
     dma_flag_clear(DMA_GET_TC_FLAG(hi2c->dma_tx_channel));
 
+    /* disable dma request */
+    i2c_dma_enable(hi2c->i2cx, FALSE);
+
+    hi2c->pcount = 0;
+    
     switch(hi2c->mode)
     {
       case I2C_DMA_MA_TX:
-        /* wait for the tdc flag to be set */
-        hi2c->status = i2c_wait_flag(hi2c, I2C_TDC_FLAG, I2C_EVENT_CHECK_NONE, hi2c->timeout);
-
-        /* generate stop condtion */
-        i2c_stop_generate(hi2c->i2cx);
+        /* enable tdc interrupt, generate stop condition in tdc interrupt */
+        i2c_interrupt_enable(hi2c->i2cx, I2C_EVT_INT, TRUE);
         break;
       case I2C_DMA_SLA_TX:
-        /* wait for the ackfail flag to be set */
-        hi2c->status = i2c_wait_flag(hi2c, I2C_ACKFAIL_FLAG, I2C_EVENT_CHECK_NONE, hi2c->timeout);
-
-        /* clear ackfail flag */
-        i2c_flag_clear(hi2c->i2cx, I2C_ACKFAIL_FLAG);
-
-        /* disable ack */
-        i2c_ack_enable(hi2c->i2cx, FALSE);
+        /* enable ackfail interrupt, generate stop condition in ackfail interrupt */
+        i2c_interrupt_enable(hi2c->i2cx, I2C_ERR_INT, TRUE);
         break;
       default:
         break;
     }
-
-    hi2c->pcount = 0;
-
-    /* disable dma request */
-    i2c_dma_enable(hi2c->i2cx, FALSE);
-
-    /* transfer complete */
-    hi2c->status = I2C_END;
   }
 }
 
@@ -2308,6 +2300,11 @@ void i2c_dma_rx_irq_handler(i2c_handle_type* hi2c)
     /* clear the transfer complete flag */
     dma_flag_clear(DMA_GET_TC_FLAG(hi2c->dma_rx_channel));
 
+    /* disable dma request */
+    i2c_dma_enable(hi2c->i2cx, FALSE);
+
+    hi2c->pcount = 0;
+    
     switch(hi2c->mode)
     {
       case I2C_DMA_MA_RX:
@@ -2319,25 +2316,17 @@ void i2c_dma_rx_irq_handler(i2c_handle_type* hi2c)
           /* generate stop condtion */
           i2c_stop_generate(hi2c->i2cx);
         }
+        
+        /* transfer complete */
+        hi2c->status = I2C_END;
         break;
       case I2C_DMA_SLA_RX:
-        /* wait for the stop flag to be set */
-        hi2c->status = i2c_wait_flag(hi2c, I2C_STOPF_FLAG, I2C_EVENT_CHECK_NONE, hi2c->timeout);
-
-        /* clear stop flag */
-        i2c_flag_clear(hi2c->i2cx, I2C_STOPF_FLAG);
+        /* enable stop interrupt, wait for the stop flag to be set  */
+        i2c_interrupt_enable(hi2c->i2cx, I2C_EVT_INT, TRUE);
         break;
       default:
         break;
     }
-
-    hi2c->pcount = 0;
-
-    /* disable dma request */
-    i2c_dma_enable(hi2c->i2cx, FALSE);
-
-    /* transfer complete */
-    hi2c->status = I2C_END;
   }
 }
 
@@ -2348,48 +2337,75 @@ void i2c_dma_rx_irq_handler(i2c_handle_type* hi2c)
   */
 void i2c_err_irq_handler(i2c_handle_type* hi2c)
 {
-  hi2c->error_code = I2C_ERR_INTERRUPT;
-
   /* buserr */
   if(i2c_flag_get(hi2c->i2cx, I2C_BUSERR_FLAG) != RESET)
   {
     i2c_flag_clear(hi2c->i2cx, I2C_BUSERR_FLAG);
+
+    hi2c->error_code = I2C_ERR_INTERRUPT;
   }
 
   /* arlost */
   if(i2c_flag_get(hi2c->i2cx, I2C_ARLOST_FLAG) != RESET)
   {
     i2c_flag_clear(hi2c->i2cx, I2C_ARLOST_FLAG);
+
+    hi2c->error_code = I2C_ERR_INTERRUPT;
   }
 
   /* ackfail */
   if(i2c_flag_get(hi2c->i2cx, I2C_ACKFAIL_FLAG) != RESET)
   {
     i2c_flag_clear(hi2c->i2cx, I2C_ACKFAIL_FLAG);
+
+    switch(hi2c->mode)
+    {
+      case I2C_DMA_SLA_TX:
+        /* disable ack */
+        i2c_ack_enable(hi2c->i2cx, FALSE);
+
+        /* disable evt interrupt */
+        i2c_interrupt_enable(hi2c->i2cx, I2C_EVT_INT, FALSE);    
+      
+        /* transfer complete */
+        hi2c->status = I2C_END;
+        break;
+      default:
+        hi2c->error_code = I2C_ERR_INTERRUPT;
+        break;
+    }
   }
 
   /* ouf */
   if(i2c_flag_get(hi2c->i2cx, I2C_OUF_FLAG) != RESET)
   {
     i2c_flag_clear(hi2c->i2cx, I2C_OUF_FLAG);
+
+    hi2c->error_code = I2C_ERR_INTERRUPT;
   }
 
   /* pecerr */
   if(i2c_flag_get(hi2c->i2cx, I2C_PECERR_FLAG) != RESET)
   {
     i2c_flag_clear(hi2c->i2cx, I2C_PECERR_FLAG);
+
+    hi2c->error_code = I2C_ERR_INTERRUPT;
   }
 
   /* tmout */
   if(i2c_flag_get(hi2c->i2cx, I2C_TMOUT_FLAG) != RESET)
   {
     i2c_flag_clear(hi2c->i2cx, I2C_TMOUT_FLAG);
+
+    hi2c->error_code = I2C_ERR_INTERRUPT;
   }
 
   /* alertf */
   if(i2c_flag_get(hi2c->i2cx, I2C_ALERTF_FLAG) != RESET)
   {
     i2c_flag_clear(hi2c->i2cx, I2C_ALERTF_FLAG);
+
+    hi2c->error_code = I2C_ERR_INTERRUPT;
   }
 
   /* disable all interrupts */

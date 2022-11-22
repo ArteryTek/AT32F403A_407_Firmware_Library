@@ -1,8 +1,6 @@
 /**
   **************************************************************************
   * @file     at32f403a_407_usart.h
-  * @version  v2.1.2
-  * @date     2022-08-16
   * @brief    at32f403a_407 usart header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -323,7 +321,10 @@ typedef struct
 #define UART5                            ((usart_type *) UART5_BASE)
 #define USART6                           ((usart_type *) USART6_BASE)
 #define UART7                            ((usart_type *) UART7_BASE)
+#if defined (AT32F403ARx) || defined (AT32F403AVx) || defined (AT32F407Rx) || \
+    defined (AT32F407Vx)
 #define UART8                            ((usart_type *) UART8_BASE)
+#endif
 
 /** @defgroup USART_exported_functions
   * @{

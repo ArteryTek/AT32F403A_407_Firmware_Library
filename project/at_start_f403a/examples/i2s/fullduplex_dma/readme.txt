@@ -1,8 +1,6 @@
 /**
   **************************************************************************
   * @file     readme.txt
-  * @version  v2.1.2
-  * @date     2022-08-16
   * @brief    readme
   **************************************************************************
   */
@@ -16,4 +14,4 @@
   - pb14(miso_ext) rx  <--->     pc11(miso_ext) tx
   - pb15(mosi) tx      <--->     pc12(mosi) rx
 
-  for more detailed information. please refer to the application note document AN0102.
+  for more detailed information. please refer to the application note document AN0102.

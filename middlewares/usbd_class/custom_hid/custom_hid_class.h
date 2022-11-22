@@ -1,8 +1,6 @@
 /**
   **************************************************************************
   * @file     custom_hid_class.h
-  * @version  v2.1.2
-  * @date     2022-08-16
   * @brief    usb custom hid header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -75,9 +73,10 @@ typedef struct
   uint32_t hid_protocol;
   uint32_t hid_set_idle;
   uint32_t alt_setting;
-  uint8_t hid_state;
+  
   uint8_t hid_set_report[64];
   uint8_t hid_get_report[64];
+  uint8_t hid_state;
 }custom_hid_type;
 
 /**

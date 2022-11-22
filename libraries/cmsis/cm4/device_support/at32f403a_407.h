@@ -1,8 +1,6 @@
 /**
   **************************************************************************
   * @file     at32f403a_407.h
-  * @version  v2.1.2
-  * @date     2022-08-16
   * @brief    at32f403a_407 header file
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -78,6 +76,33 @@ extern "C" {
     #define AT32F407xx
 #endif
 
+#if defined (AT32F403AVCT7) || defined (AT32F403AVET7) || defined (AT32F403AVGT7)
+
+    #define AT32F403AVx
+#endif
+
+#if defined (AT32F403ARCT7) || defined (AT32F403ARET7) || defined (AT32F403ARGT7)
+
+    #define AT32F403ARx
+#endif
+
+#if defined (AT32F403ACCT7) || defined (AT32F403ACCU7) || defined (AT32F403ACET7) || \
+    defined (AT32F403ACEU7) || defined (AT32F403ACGT7) || defined (AT32F403ACGU7)
+   
+    #define AT32F403ACx
+#endif
+
+#if defined (AT32F407RCT7)  || defined (AT32F407RET7)  || defined (AT32F407RGT7)
+
+    #define AT32F407Rx
+#endif
+
+#if defined (AT32F407VCT7)  || defined (AT32F407VET7)  || defined (AT32F407VGT7)  || \
+    defined (AT32F407AVCT7) || defined (AT32F407AVGT7)
+
+    #define AT32F407Vx
+#endif
+
 #ifndef USE_STDPERIPH_DRIVER
 /**
   * @brief comment the line below if you will not use the peripherals drivers.
@@ -97,7 +122,7 @@ extern "C" {
   */
 #define __AT32F403A_407_LIBRARY_VERSION_MAJOR    (0x02) /*!< [31:24] major version */
 #define __AT32F403A_407_LIBRARY_VERSION_MIDDLE   (0x01) /*!< [23:16] middle version */
-#define __AT32F403A_407_LIBRARY_VERSION_MINOR    (0x02) /*!< [15:8]  minor version */
+#define __AT32F403A_407_LIBRARY_VERSION_MINOR    (0x03) /*!< [15:8]  minor version */
 #define __AT32F403A_407_LIBRARY_VERSION_RC       (0x00) /*!< [7:0]  release candidate */
 #define __AT32F403A_407_LIBRARY_VERSION          ((__AT32F403A_407_LIBRARY_VERSION_MAJOR << 24)  | \
                                                   (__AT32F403A_407_LIBRARY_VERSION_MIDDLE << 16) | \

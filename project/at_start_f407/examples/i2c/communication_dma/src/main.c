@@ -1,8 +1,6 @@
 /**
   **************************************************************************
   * @file     main.c
-  * @version  v2.1.2
-  * @date     2022-08-16
   * @brief    main program
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -142,6 +140,10 @@ void i2c_lowlevel_init(i2c_handle_type* hi2c)
     /* configure and enable i2c dma channel interrupt */
     nvic_irq_enable(I2Cx_DMA_TX_IRQn, 0, 0);
     nvic_irq_enable(I2Cx_DMA_RX_IRQn, 0, 0);
+
+    /* configure and enable i2c interrupt */
+    nvic_irq_enable(I2Cx_EVT_IRQn, 0, 0);
+    nvic_irq_enable(I2Cx_ERR_IRQn, 0, 0);
 
     /* i2c dma tx and rx channels configuration */
     /* enable the dma clock */

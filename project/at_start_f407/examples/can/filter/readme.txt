@@ -1,8 +1,6 @@
 /**
   **************************************************************************
   * @file     readme.txt 
-  * @version  v2.1.2
-  * @date     2022-08-16
   * @brief    readme
   **************************************************************************
   */
@@ -16,4 +14,4 @@
   - can tx      --->   pb9
   - can rx      --->   pb8
 
-  for more detailed information. please refer to the application note document AN0095.
+  for more detailed information. please refer to the application note document AN0095.

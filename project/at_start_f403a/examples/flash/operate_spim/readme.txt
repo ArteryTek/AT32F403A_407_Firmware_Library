@@ -1,8 +1,6 @@
 /**
   **************************************************************************
   * @file     readme.txt
-  * @version  v2.1.2
-  * @date     2022-08-16
   * @brief    readme
   **************************************************************************
   */
@@ -17,4 +15,4 @@
   - spim io1 ---> pb11
   - spim io2 ---> pb7
   - spim io3 ---> pb6
-  for more detailed information. please refer to the application note document AN0042.
+  for more detailed information. please refer to the application note document AN0042.

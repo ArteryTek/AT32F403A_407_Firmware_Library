@@ -1,8 +1,6 @@
 /**
   **************************************************************************
   * @file     mouse_desc.c
-  * @version  v2.1.2
-  * @date     2022-08-16
   * @brief    usb hid mouse device descriptor
   **************************************************************************
   *                       Copyright notice & Disclaimer

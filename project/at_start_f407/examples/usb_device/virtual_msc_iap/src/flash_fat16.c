@@ -1,8 +1,6 @@
 /**
   **************************************************************************
   * @file     flash_fat16.c
-  * @version  v2.1.2
-  * @date     2022-08-16
   * @brief    fat16 file system
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -490,12 +488,22 @@ uint32_t flash_fat16_sector_write(uint32_t fat_lbk, uint8_t *data, uint32_t len)
   uint32_t file_size = g_file_attr.file_size;
   uint32_t flash_offset = 0;
   uint32_t status;
+  static uint32_t s_bin_sp = 0;
+  static uint32_t s_bin_pc = 0;
+  
+  if(s_bin_sp == 0 && s_bin_pc == 0)
+  {
+    s_bin_sp = *(uint32_t *)data;
+    s_bin_pc = *(uint32_t *)(data+4);
+  }
 
   /* check the suffix is .bin or .BIN*/
   if((fat16_memory_cmp((uint8_t *)&g_file_attr.file_name[8],
      (uint8_t *)FILE_SUFFIX1_NAME, FILE_SUFFIX1_LEN) == 0) ||
      (fat16_memory_cmp((uint8_t *)&g_file_attr.file_name[8],
-     (uint8_t *)FILE_SUFFIX2_NAME, FILE_SUFFIX2_LEN) == 0))
+     (uint8_t *)FILE_SUFFIX2_NAME, FILE_SUFFIX2_LEN) == 0)
+      ||
+      ((s_bin_sp & 0xF0000000) == 0x20000000 && (s_bin_pc & 0xFF000000) == 0x08000000))
   {
     /* check the upgrade status */
     if(flash_iap.msc_up_status == UPGRADE_DONE || flash_iap.msc_up_status == UPGRADE_SUCCESS)
@@ -549,7 +557,8 @@ uint32_t flash_fat16_sector_write(uint32_t fat_lbk, uint8_t *data, uint32_t len)
           /* upgrade finish */
           flash_iap.file_write_nr = 0;
           flash_iap.msc_up_status = UPGRADE_SUCCESS;
-
+          s_bin_sp = 0;
+          s_bin_pc = 0;
           /* set the upgrade done flag to flash */
           flash_fat16_set_upgrade_flag();
         }
