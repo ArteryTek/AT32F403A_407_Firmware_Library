@@ -2,7 +2,7 @@
 <project>
     <fileVersion>3</fileVersion>
     <configuration>
-        <name>403A_Project</name>
+        <name>at_start_f403a</name>
         <toolchain>
             <name>ARM</name>
         </toolchain>
@@ -1188,7 +1188,7 @@
         </settings>
     </configuration>
     <configuration>
-        <name>407_Project</name>
+        <name>at_start_f407</name>
         <toolchain>
             <name>ARM</name>
         </toolchain>

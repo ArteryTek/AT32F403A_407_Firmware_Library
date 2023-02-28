@@ -127,10 +127,7 @@ void tcpip_stack_init(void)
 void lwip_pkt_handle(void)
 {
   /* Read a received packet from the Ethernet buffers and send it to the lwIP for handling */
-  if(ethernetif_input(&netif) != ERR_OK)
-  {
-    while(1);
-  }
+  ethernetif_input(&netif);
 }
 
 /**
@@ -141,10 +138,7 @@ void lwip_pkt_handle(void)
 void lwip_rx_loop_handler(void)
 {
   /* handles all the received frames */
-  while(emac_received_packet_size_get() != 0)
-  {
-    lwip_pkt_handle();
-  }
+  lwip_pkt_handle();
 }
 
 /**

@@ -94,14 +94,19 @@ extern emac_dma_desc_type  *dma_tx_desc_to_set;
 extern emac_dma_desc_type  *dma_rx_desc_to_get;
 
 typedef struct{
-u32 length;
-u32 buffer;
-emac_dma_desc_type *descriptor;
+  u32 length;
+  u32 buffer;
+  emac_dma_desc_type *descriptor;
+  emac_dma_desc_type *rx_fs_desc;
+  emac_dma_desc_type *rx_ls_desc;
+  uint32_t g_seg_count;
 }FrameTypeDef;
 
-FrameTypeDef emac_rxpkt_chainmode(void);
+FrameTypeDef rx_frame;
+
+error_status emac_rxpkt_chainmode(void);
 u32 emac_getcurrenttxbuffer(void);
-error_status emac_txpkt_chainmode(u16 FrameLength);
+error_status emac_txpkt_chainmode(uint32_t FrameLength);
 
 
 /**
@@ -133,6 +138,8 @@ void lwip_set_mac_address(uint8_t* macadd)
 static void
 low_level_init(struct netif *netif)
 {
+  uint32_t index = 0;
+  
   /* set MAC hardware address length */
   netif->hwaddr_len = ETHARP_HWADDR_LEN;
 
@@ -149,7 +156,7 @@ low_level_init(struct netif *netif)
 
   /* device capabilities */
   /* don't set NETIF_FLAG_ETHARP if this device is not an ethernet one */
-  netif->flags = NETIF_FLAG_BROADCAST | NETIF_FLAG_ETHARP | NETIF_FLAG_LINK_UP;
+  netif->flags |= NETIF_FLAG_BROADCAST | NETIF_FLAG_ETHARP | NETIF_FLAG_LINK_UP;
 
   /* Initialize Tx Descriptors list: Chain Mode */
   emac_dma_descriptor_list_address_set(EMAC_DMA_TRANSMIT, DMATxDscrTab, &Tx_Buff[0][0], EMAC_TXBUFNB);
@@ -157,18 +164,19 @@ low_level_init(struct netif *netif)
   emac_dma_descriptor_list_address_set(EMAC_DMA_RECEIVE, DMARxDscrTab, &Rx_Buff[0][0], EMAC_RXBUFNB);
 
   /* Enable Ethernet Rx interrrupt */
-  { int i;
-    for(i=0; i < EMAC_RXBUFNB; i++)
-    {
-      emac_dma_rx_desc_interrupt_config(&DMARxDscrTab[i], TRUE);
-    }
-#ifdef CHECKSUM_BY_HARDWARE
-    for(i=0; i < EMAC_TXBUFNB; i++)
-    {
-      DMATxDscrTab[i].status |= EMAC_DMATXDESC_CIC_TUI_FULL;
-    }
-#endif
+  for(index = 0; index < EMAC_RXBUFNB; index ++)
+  {
+    emac_dma_rx_desc_interrupt_config(&DMARxDscrTab[index], TRUE);
   }
+  
+#ifdef CHECKSUM_BY_HARDWARE
+  for(index = 0; index < EMAC_TXBUFNB; index ++)
+  {
+    DMATxDscrTab[index].status |= EMAC_DMATXDESC_CIC_TUI_FULL;
+  }
+#endif
+  
+  rx_frame.g_seg_count = 0;
 
   /* Enable MAC and DMA transmission and reception */
   emac_start();
@@ -195,21 +203,66 @@ static err_t
 low_level_output(struct netif *netif, struct pbuf *p)
 {
   struct pbuf *q;
-  int l = 0;
-  u8 *buffer =  (u8 *)emac_getcurrenttxbuffer();
-
+  err_t errno;
+  emac_dma_desc_type *dma_tx_desc;
+  uint8_t *buffer;
+  uint32_t length = 0;
+  uint32_t buffer_offset = 0, payload_offset = 0, copy_count = 0;
+ 
+  dma_tx_desc = dma_tx_desc_to_set;
+  buffer =  (uint8_t *)emac_getcurrenttxbuffer();
+  
+  /* copy data to buffer */
   for(q = p; q != NULL; q = q->next)
   {
-    memcpy((u8_t*)&buffer[l], q->payload, q->len);
-    l = l + q->len;
+    if((dma_tx_desc->status & EMAC_DMATXDESC_OWN) != RESET)
+    {
+      errno = ERR_USE;
+      goto out_error;
+    }
+    
+    copy_count = q->len;
+    payload_offset = 0;
+    
+    while((copy_count + buffer_offset) > EMAC_MAX_PACKET_LENGTH)
+    {
+      memcpy(buffer + buffer_offset, (uint8_t *)q->payload + payload_offset, (EMAC_MAX_PACKET_LENGTH - buffer_offset));
+      dma_tx_desc = (emac_dma_desc_type*)dma_tx_desc->buf2nextdescaddr;
+      
+      if((dma_tx_desc->status & EMAC_DMATXDESC_OWN) != RESET)
+      {
+        errno = ERR_USE;
+        goto out_error;
+      }
+      
+      buffer = (uint8_t *)dma_tx_desc->buf1addr;
+      
+      copy_count = copy_count - (EMAC_MAX_PACKET_LENGTH - buffer_offset);
+      payload_offset = payload_offset + (EMAC_MAX_PACKET_LENGTH - buffer_offset);
+      length = length + (EMAC_MAX_PACKET_LENGTH - buffer_offset);
+      buffer_offset = 0;
+    }
+    
+    memcpy(buffer + buffer_offset, (uint8_t *)q->payload + payload_offset, copy_count);
+    buffer_offset = buffer_offset + copy_count;
+    length = length + copy_count;
   }
-
-  if(emac_txpkt_chainmode(l) == ERROR)
+  
+  emac_txpkt_chainmode(length);
+  
+  errno = ERR_OK;
+  
+out_error:
+   /* When Tx Buffer unavailable flag is set: clear it and resume transmission */
+  if(emac_dma_flag_get(EMAC_DMA_TBU_FLAG))
   {
-    return ERR_MEM;
+    /* Clear TBUS ETHERNET DMA flag */
+    emac_dma_flag_clear(EMAC_DMA_TBU_FLAG);
+    /* Resume DMA transmission*/
+    EMAC_DMA->tpd_bit.tpd = 0;
   }
-
-  return ERR_OK;
+  
+  return errno;
 }
 
 /**
@@ -224,35 +277,69 @@ static struct pbuf *
 low_level_input(struct netif *netif)
 {
   struct pbuf *p, *q;
-  u16_t len;
-  int l =0;
-  FrameTypeDef frame;
-  u8 *buffer;
+  uint32_t len = 0;
+  emac_dma_desc_type *dma_rx_desc;
+  uint8_t *buffer;
+  uint32_t buffer_offset, payload_offset = 0, copy_count = 0;
+  uint32_t index = 0;
 
   p = NULL;
-  frame = emac_rxpkt_chainmode();
+  
+  if(emac_rxpkt_chainmode() != SUCCESS)
+  {
+    return NULL;
+  }
+  
   /* Obtain the size of the packet and put it into the "len"
      variable. */
-  len = frame.length;
-
-  buffer = (u8 *)frame.buffer;
-
+  len = rx_frame.length;
+  buffer = (uint8_t *)rx_frame.buffer;
+  
   /* We allocate a pbuf chain of pbufs from the pool. */
-  p = pbuf_alloc(PBUF_RAW, len, PBUF_POOL);
-
-  if (p != NULL)
+  if(len > 0)
   {
+    p = pbuf_alloc(PBUF_RAW, len, PBUF_POOL);
+  }
+  
+  if(p != NULL)
+  {
+    dma_rx_desc = rx_frame.rx_fs_desc;
+    buffer_offset = 0;
+    
     for (q = p; q != NULL; q = q->next)
     {
-      memcpy((u8_t*)q->payload, (u8_t*)&buffer[l], q->len);
-      l = l + q->len;
+      copy_count = q->len;
+      payload_offset = 0;
+      
+      while( (copy_count + buffer_offset) > EMAC_MAX_PACKET_LENGTH )
+      {
+        /* copy data to pbuf */
+        memcpy((uint8_t*)q->payload + payload_offset, buffer + buffer_offset, (EMAC_MAX_PACKET_LENGTH - buffer_offset));
+        
+        /* point to next descriptor */
+        dma_rx_desc = (emac_dma_desc_type *)(dma_rx_desc->buf2nextdescaddr);
+        buffer = (uint8_t *)(dma_rx_desc->buf1addr);
+        
+        copy_count = copy_count - (EMAC_MAX_PACKET_LENGTH - buffer_offset);
+        payload_offset = payload_offset + (EMAC_MAX_PACKET_LENGTH - buffer_offset);
+        buffer_offset = 0;
+      }
+      
+      memcpy((uint8_t*)q->payload + payload_offset, (uint8_t*)buffer + buffer_offset, copy_count);
+      buffer_offset = buffer_offset + copy_count;
     }
+    
   }
-
-
-  /* Set Own bit of the Rx descriptor Status: gives the buffer back to ETHERNET DMA */
-  frame.descriptor->status |= EMAC_DMARXDESC_OWN;
-
+  
+  dma_rx_desc = rx_frame.rx_fs_desc;
+  for(index = 0; index < rx_frame.g_seg_count; index ++)
+  {
+    dma_rx_desc->status |= EMAC_DMARXDESC_OWN;
+    dma_rx_desc = (emac_dma_desc_type*) (dma_rx_desc->buf2nextdescaddr);
+  }
+  
+  rx_frame.g_seg_count = 0;
+  
   /* When Rx Buffer unavailable flag is set: clear it and resume reception */
   if(emac_dma_flag_get(EMAC_DMA_RBU_FLAG))
   {
@@ -261,8 +348,7 @@ low_level_input(struct netif *netif)
     /* Resume DMA reception */
     EMAC_DMA->rpd_bit.rpd = FALSE;
   }
-
-
+  
   return p;
 }
 
@@ -359,55 +445,47 @@ ethernetif_init(struct netif *netif)
 * Description    : Receives a packet.
 * Input          : None
 * Output         : None
-* Return         : frame: farme size and location
+* Return         : ERROR: in case of Tx desc owned by DMA
+*                  SUCCESS: for correct transmission
 *******************************************************************************/
-FrameTypeDef emac_rxpkt_chainmode(void)
+error_status emac_rxpkt_chainmode(void)
 {
-  u32 framelength = 0;
-  FrameTypeDef frame = {0,0};
-
   /* Check if the descriptor is owned by the ETHERNET DMA (when set) or CPU (when reset) */
   if((dma_rx_desc_to_get->status & EMAC_DMARXDESC_OWN) != (u32)RESET)
-  {
-    frame.length = FALSE;
-
-    if(emac_dma_flag_get(EMAC_DMA_RBU_FLAG))
-    {
-      /* Clear RBUS ETHERNET DMA flag */
-      emac_dma_flag_clear(EMAC_DMA_RBU_FLAG);
-      /* Resume DMA reception */
-      EMAC_DMA->rpd_bit.rpd = FALSE;
-    }
-    /* Return error: OWN bit set */
-    return frame;
+  {    
+    /* return error: own bit set */
+    return ERROR;
   }
-
-  if(((dma_rx_desc_to_get->status & EMAC_DMATXDESC_ES) == (u32)RESET) &&
-     ((dma_rx_desc_to_get->status & EMAC_DMARXDESC_LS) != (u32)RESET) &&
-     ((dma_rx_desc_to_get->status & EMAC_DMARXDESC_FS) != (u32)RESET))
+  if((dma_rx_desc_to_get->status & EMAC_DMARXDESC_LS) != (u32)RESET)
   {
-    /* Get the Frame Length of the received packet: substruct 4 bytes of the CRC */
-    framelength = ((dma_rx_desc_to_get->status & EMAC_DMARXDESC_FL) >> EMAC_DMARxDesc_FrameLengthShift) - 4;
-
-    /* Get the addrees of the actual buffer */
-    frame.buffer = dma_rx_desc_to_get->buf1addr;
+    rx_frame.g_seg_count ++;
+    if(rx_frame.g_seg_count == 1)
+    {
+      rx_frame.rx_fs_desc = dma_rx_desc_to_get;
+    }
+    rx_frame.rx_ls_desc = dma_rx_desc_to_get;
+    rx_frame.length = ((dma_rx_desc_to_get->status & EMAC_DMARXDESC_FL) >> EMAC_DMARxDesc_FrameLengthShift) - 4;
+    rx_frame.buffer = rx_frame.rx_fs_desc->buf1addr;
+    
+    /* Selects the next DMA Rx descriptor list for next buffer to read */
+    dma_rx_desc_to_get = (emac_dma_desc_type*) (dma_rx_desc_to_get->buf2nextdescaddr);
+    
+    return SUCCESS;
+  }
+  else if((dma_rx_desc_to_get->status & EMAC_DMARXDESC_FS) != (u32)RESET)
+  {
+    rx_frame.g_seg_count = 1;
+    rx_frame.rx_fs_desc = dma_rx_desc_to_get;
+    rx_frame.rx_ls_desc = NULL;
+    dma_rx_desc_to_get = (emac_dma_desc_type*) (dma_rx_desc_to_get->buf2nextdescaddr);
   }
   else
   {
-    /* Return ERROR */
-    framelength = FALSE;
+    rx_frame.g_seg_count ++;
+    dma_rx_desc_to_get = (emac_dma_desc_type*) (dma_rx_desc_to_get->buf2nextdescaddr);
   }
 
-  frame.length = framelength;
-
-  frame.descriptor = dma_rx_desc_to_get;
-
-  /* Update the ETHERNET DMA global Rx descriptor with next Rx decriptor */
-  /* Chained Mode */
-  /* Selects the next DMA Rx descriptor list for next buffer to read */
-  dma_rx_desc_to_get = (emac_dma_desc_type*) (dma_rx_desc_to_get->buf2nextdescaddr);
-  /* Return Frame */
-  return (frame);
+  return ERROR;
 }
 
 /*******************************************************************************
@@ -418,23 +496,81 @@ FrameTypeDef emac_rxpkt_chainmode(void)
 * Return         : ERROR: in case of Tx desc owned by DMA
 *                  SUCCESS: for correct transmission
 *******************************************************************************/
-error_status emac_txpkt_chainmode(u16 FrameLength)
+error_status emac_txpkt_chainmode(uint32_t FrameLength)
 {
+  uint32_t buf_cnt = 0, index = 0;
+  
   /* Check if the descriptor is owned by the ETHERNET DMA (when set) or CPU (when reset) */
   if((dma_tx_desc_to_set->status & EMAC_DMATXDESC_OWN) != (u32)RESET)
   {
     /* Return ERROR: OWN bit set */
     return ERROR;
   }
-
-  /* Setting the Frame Length: bits[12:0] */
-  dma_tx_desc_to_set->controlsize = (FrameLength & EMAC_DMATXDESC_TBS1);
-
-  /* Setting the last segment and first segment bits (in this case a frame is transmitted in one descriptor) */
-  dma_tx_desc_to_set->status |= EMAC_DMATXDESC_LS | EMAC_DMATXDESC_FS;
-
-  /* Set Own bit of the Tx descriptor Status: gives the buffer back to ETHERNET DMA */
-  dma_tx_desc_to_set->status |= EMAC_DMATXDESC_OWN;
+  
+  if(FrameLength == 0)
+  {
+    return ERROR;
+  }
+  
+  if(FrameLength > EMAC_MAX_PACKET_LENGTH)
+  {
+    buf_cnt = FrameLength / EMAC_MAX_PACKET_LENGTH;
+    if(FrameLength % EMAC_MAX_PACKET_LENGTH)
+    {
+      buf_cnt += 1;
+    }
+  }
+  else
+  {
+    buf_cnt = 1;
+  }
+  
+  if(buf_cnt == 1)
+  {
+    /* Setting the last segment and first segment bits (in this case a frame is transmitted in one descriptor) */
+    dma_tx_desc_to_set->status |= EMAC_DMATXDESC_LS | EMAC_DMATXDESC_FS;
+    
+    /* Setting the Frame Length: bits[12:0] */
+    dma_tx_desc_to_set->controlsize = (FrameLength & EMAC_DMATXDESC_TBS1);
+    
+    /* Set Own bit of the Tx descriptor Status: gives the buffer back to ETHERNET DMA */
+    dma_tx_desc_to_set->status |= EMAC_DMATXDESC_OWN;
+    
+    /* Selects the next DMA Tx descriptor list for next buffer to send */
+    dma_tx_desc_to_set = (emac_dma_desc_type*) (dma_tx_desc_to_set->buf2nextdescaddr);
+  }
+  else
+  {
+    for(index = 0; index < buf_cnt; index ++)
+    {
+      /* clear first and last segments */
+      dma_tx_desc_to_set->status &= ~(EMAC_DMATXDESC_LS | EMAC_DMATXDESC_FS);
+      
+      /* set first segments */
+      if(index == 0)
+      {
+        dma_tx_desc_to_set->status |= EMAC_DMATXDESC_FS;
+      }
+      
+      /* set size */
+      dma_tx_desc_to_set->controlsize = (EMAC_MAX_PACKET_LENGTH & EMAC_DMATXDESC_TBS1);
+      
+      /* set last segments */
+      if(index == (buf_cnt - 1))
+      {
+        dma_tx_desc_to_set->status |= EMAC_DMATXDESC_LS;
+        dma_tx_desc_to_set->controlsize = ((FrameLength - ((buf_cnt-1) * EMAC_MAX_PACKET_LENGTH)) & EMAC_DMATXDESC_TBS1);
+      }
+      
+      /* Set Own bit of the Tx descriptor Status: gives the buffer back to ETHERNET DMA */
+      dma_tx_desc_to_set->status |= EMAC_DMATXDESC_OWN;
+      
+      /* Selects the next DMA Tx descriptor list for next buffer to send */
+      dma_tx_desc_to_set = (emac_dma_desc_type*) (dma_tx_desc_to_set->buf2nextdescaddr);
+      
+    }
+  }
+  
   /* When Tx Buffer unavailable flag is set: clear it and resume transmission */
   if(emac_dma_flag_get(EMAC_DMA_TBU_FLAG))
   {
@@ -443,12 +579,7 @@ error_status emac_txpkt_chainmode(u16 FrameLength)
     /* Resume DMA transmission*/
     EMAC_DMA->tpd_bit.tpd = 0;
   }
-
-  /* Update the ETHERNET DMA global Tx descriptor with next Tx decriptor */
-  /* Chained Mode */
-  /* Selects the next DMA Tx descriptor list for next buffer to send */
-  dma_tx_desc_to_set = (emac_dma_desc_type*) (dma_tx_desc_to_set->buf2nextdescaddr);
-  /* Return SUCCESS */
+  
   return SUCCESS;
 }
 

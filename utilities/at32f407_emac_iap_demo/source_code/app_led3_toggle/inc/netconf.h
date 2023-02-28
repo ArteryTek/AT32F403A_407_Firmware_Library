@@ -36,6 +36,7 @@ void tcpip_stack_init(void);
 void lwip_pkt_handle(void);
 void time_update(void);
 void lwip_periodic_handle(volatile uint32_t localtime);
+void lwip_rx_loop_handler(void);
 
 #ifdef __cplusplus
 }

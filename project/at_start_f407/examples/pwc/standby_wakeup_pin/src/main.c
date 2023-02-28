@@ -74,6 +74,8 @@ int main(void)
   }
 
   at32_led_on(LED4);
+	
+  /*delay to check led status*/
   delay_ms(1000);
 
   /* enable wakeup pin - pa0 */

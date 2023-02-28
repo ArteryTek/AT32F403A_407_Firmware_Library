@@ -55,8 +55,9 @@ extern "C" {
   * @brief in the following line adjust the high speed exernal crystal (hext) startup
   * timeout value
   */
-#define HEXT_STARTUP_TIMEOUT     ((uint16_t)0x3000) /*!< time out for hext start up */
-#define HICK_VALUE               ((uint32_t)8000000) /*!< value of the high speed internal clock in hz */
+#define HEXT_STARTUP_TIMEOUT             ((uint16_t)0x3000)  /*!< time out for hext start up */
+#define HICK_VALUE                       ((uint32_t)8000000) /*!< value of the high speed internal clock in hz */
+#define LEXT_VALUE                       ((uint32_t)32768)   /*!< value of the low speed exernal clock in hz */
 
 /* module define -------------------------------------------------------------*/
 #define CRM_MODULE_ENABLED

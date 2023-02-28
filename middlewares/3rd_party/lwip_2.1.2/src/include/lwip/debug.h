@@ -111,7 +111,6 @@
 /**
  * @}
  */
-#define LWIP_NOASSERT
 
 #ifndef LWIP_NOASSERT
 #define LWIP_ASSERT(message, assertion) do { if (!(assertion)) { \

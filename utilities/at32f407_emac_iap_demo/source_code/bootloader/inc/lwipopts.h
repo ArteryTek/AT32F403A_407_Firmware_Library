@@ -101,4 +101,9 @@
 /* Check lwip_stats.mem.illegal instead of asserting */
 #define LWIP_MEM_ILLEGAL_FREE(msg)       /* to nothing */
 
+/**
+ * LWIP_NOASSERT: Disable LWIP_ASSERT checks:
+ */
+#define LWIP_NOASSERT
+
 #endif /* LWIP_HDR_LWIPOPTS_H */

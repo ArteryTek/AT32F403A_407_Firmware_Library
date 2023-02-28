@@ -134,4 +134,9 @@
   #define CHECKSUM_GEN_ICMP               1
 #endif
 
+/**
+ * LWIP_NOASSERT: Disable LWIP_ASSERT checks:
+ */
+#define LWIP_NOASSERT
+
 #endif /* LWIP_HDR_LWIPOPTS_H */

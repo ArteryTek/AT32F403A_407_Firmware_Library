@@ -56,7 +56,9 @@ int main(void)
   system_clock_config();
 
   at32_board_init();
-
+  
+  uart_print_init(115200);
+  
   delay_init();
 
   /* config nvic priority group */
@@ -103,6 +105,8 @@ int main(void)
 
   while(1)
   {
+    lwip_rx_loop_handler();
+    
     lwip_periodic_handle(local_time);
   }
 }

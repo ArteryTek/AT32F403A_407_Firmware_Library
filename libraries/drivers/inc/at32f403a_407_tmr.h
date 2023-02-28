@@ -236,7 +236,7 @@ typedef enum
 {
   TMR_CC_CHANNEL_MAPPED_DIRECT           = 0x01, /*!< channel is configured as input, mapped direct */
   TMR_CC_CHANNEL_MAPPED_INDIRECT         = 0x02, /*!< channel is configured as input, mapped indirect */
-  TMR_CC_CHANNEL_MAPPED_STI              = 0x03  /*!< channel is configured as input, mapped trc */
+  TMR_CC_CHANNEL_MAPPED_STI              = 0x03  /*!< channel is configured as input, mapped sti */
 } tmr_input_direction_mapped_type;
 
 /**

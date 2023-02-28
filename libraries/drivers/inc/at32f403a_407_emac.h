@@ -97,7 +97,7 @@ extern "C" {
   * @{
   */
 
-#define EMAC_MAX_PACKET_LENGTH           1520 /*!< emac_header + emac_extra + emac_max_payload + emac_crc */
+#define EMAC_MAX_PACKET_LENGTH           1524 /*!< emac_header + emac_extra + emac_max_payload + emac_crc */
 #define EMAC_HEADER                      14   /*!< 6 byte dest addr, 6 byte src addr, 2 byte length/ept_type */
 #define EMAC_CRC                         4    /*!< ethernet crc */
 #define EMAC_EXTRA                       2    /*!< extra bytes in some cases */

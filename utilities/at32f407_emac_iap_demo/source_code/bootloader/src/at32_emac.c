@@ -67,7 +67,7 @@ error_status emac_system_init(void)
   */
 void emac_nvic_configuration(void)
 {
-  nvic_irq_enable(EMAC_IRQn, 1, 0);
+  /* nvic_irq_enable(EMAC_IRQn, 1, 0); */
 }
 
 /**
@@ -474,10 +474,6 @@ error_status emac_phy_init(emac_control_config_type *control_para)
 {
   emac_clock_range_set();
   if(emac_phy_register_reset() == ERROR)
-  {
-    return ERROR;
-  }
-  if(emac_speed_config(control_para->auto_nego, control_para->duplex_mode, control_para->fast_ethernet_speed) == ERROR)
   {
     return ERROR;
   }

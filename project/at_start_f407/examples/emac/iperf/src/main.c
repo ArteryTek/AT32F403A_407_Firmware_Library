@@ -55,6 +55,8 @@ int main(void)
   system_clock_config();
 
   at32_board_init();
+  
+  uart_print_init(115200);
 
   nvic_priority_group_config(NVIC_PRIORITY_GROUP_4);
 

@@ -3,17 +3,4 @@
     <project>
         <path>$WS_DIR$\app_led3_toggle.ewp</path>
     </project>
-    <batchBuild>
-        <batchDefinition>
-            <name>all</name>
-            <member>
-                <project>app_led3_toggle</project>
-                <configuration>at_start_f403a</configuration>
-            </member>
-            <member>
-                <project>app_led3_toggle</project>
-                <configuration>at_start_f407</configuration>
-            </member>
-        </batchDefinition>
-    </batchBuild>
 </workspace>
