@@ -1405,7 +1405,7 @@ flag_status tmr_flag_get(tmr_type *tmr_x, uint32_t tmr_flag)
   */
 void tmr_flag_clear(tmr_type *tmr_x, uint32_t tmr_flag)
 {
-  tmr_x->ists = ~tmr_flag;
+  tmr_x->ists &= ~tmr_flag;
 }
 
 /**
