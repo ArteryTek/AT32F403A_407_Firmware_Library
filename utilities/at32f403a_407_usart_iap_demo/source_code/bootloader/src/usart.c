@@ -29,7 +29,7 @@
   * @{
   */
 
-/** @addtogroup USART_IAP_bootloader
+/** @addtogroup USART_iap_bootloader
   * @{
   */
 

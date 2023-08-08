@@ -28,9 +28,9 @@
 /**
   * @brief  system clock config program
   * @note   the system clock is configured as follow:
-  *         - system clock        = hext / 2 * pll_mult
-  *         - system clock source = pll (hext)
-  *         - hext                = 8000000
+  *         system clock (sclk)   = hext / 2 * pll_mult
+  *         system clock source   = pll (hext)
+  *         - hext                = HEXT_VALUE
   *         - sclk                = 180000000
   *         - ahbdiv              = 1
   *         - ahbclk              = 180000000

@@ -248,8 +248,13 @@ typedef struct
 /**
   * @brief min and max define
   */
+#ifndef MIN
 #define MIN(a, b)  (uint16_t)(((a) < (b)) ? (a) : (b)) /*!< min define*/
+#endif
+
+#ifndef MAX
 #define MAX(a, b)  (uint16_t)(((a) > (b)) ? (a) : (b)) /*!< max define*/
+#endif
 
 /**
   * @brief low byte and high byte define

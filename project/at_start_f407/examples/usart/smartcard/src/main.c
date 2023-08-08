@@ -170,7 +170,6 @@ void usart_configuration(void)
   usart_smartcard_guard_time_set(SC_USART, 0x2);
 
   /* configure sc usart clk */
-  usart_clock_config(SC_USART, USART_CLOCK_POLARITY_LOW, USART_CLOCK_PHASE_1EDGE, USART_CLOCK_LAST_BIT_OUTPUT);
   usart_clock_enable(SC_USART, TRUE);
   
   crm_clocks_freq_get(&crm_clocks_struct);

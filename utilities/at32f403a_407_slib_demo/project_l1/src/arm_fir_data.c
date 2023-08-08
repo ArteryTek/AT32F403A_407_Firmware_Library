@@ -2,12 +2,12 @@
 * Copyright (C) 2010-2012 ARM Limited. All rights reserved.
 *
 * $Date:        17. January 2013
-* $Revision: 	V1.4.0
+* $Revision:   V1.4.0
 *
-* Project: 	    CMSIS DSP Library
-* Title:	     	arm_fir_data.c
+* Project:       CMSIS DSP Library
+* Title:         arm_fir_data.c
 *
-* Description:	 Data file used for example code
+* Description:   Data file used for example code
 *
 * Target Processor: Cortex-M4/Cortex-M3/Cortex-M0
 *

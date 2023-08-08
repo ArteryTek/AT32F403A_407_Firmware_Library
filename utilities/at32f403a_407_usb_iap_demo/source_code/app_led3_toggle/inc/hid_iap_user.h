@@ -36,7 +36,7 @@ extern "C" {
   * @{
   */
 
-/** @addtogroup USB_IAP_app_led3_toggle
+/** @addtogroup USB_iap_app_led3_toggle
   * @{
   */
 
@@ -44,7 +44,7 @@ extern "C" {
   * @{
   */
 
-#define FLASH_APP_ADDRESS                0x08004000
+#define FLASH_APP_ADDRESS                0x08005000
 
 /**
   * @}

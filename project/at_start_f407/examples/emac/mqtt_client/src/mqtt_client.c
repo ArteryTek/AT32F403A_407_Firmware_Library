@@ -63,6 +63,7 @@ __weak void mqtt_conn_sub_proc(mqtt_client_t *client, void *arg)
 __weak void mqtt_error_process_callback(mqtt_client_t *client, void *arg)
 {
   /* user code */
+  mqtt_connect_routine();
 }
 
 /**
@@ -89,11 +90,15 @@ static void at32_mqtt_connection_cb(mqtt_client_t *client, void *arg, mqtt_conne
 
     mqtt_conn_sub_proc(client, arg);
   }
-  else
+  else if (status == MQTT_CONNECT_DISCONNECTED)
   {
     printf("at32_mqtt_connection_cb: Fail connected, status = %s\r\n", lwip_strerr(status));
 
     mqtt_error_process_callback(client, arg);
+  }
+  else
+  {
+    printf("at32_mqtt_connection_cb: Fail connected, status = %s\r\n", lwip_strerr(status));
   }
 }
 
@@ -103,26 +108,6 @@ static void at32_mqtt_connection_cb(mqtt_client_t *client, void *arg, mqtt_conne
   */
 err_t mqtt_client_init(void)
 {
-  err_t ret;
-  struct mqtt_connect_client_info_t mqtt_connect_info =
-  {
-
-    "AT_MQTT_Test",
-    NULL,
-    NULL,
-    60,
-    "at_pub_topic",
-    "Offline_pls_check",
-    0,
-    0
-  };
-
-  ip_addr_t server_ip;
-  /* mqtt server port */
-  uint16_t server_port = MQTT_SERVER_PORT;
-  /* mqtt server ip */
-  ip4_addr_set_u32(&server_ip, ipaddr_addr(MQTT_SERVER_ADDRESS));
-
   printf("at32_mqtt_connect: Enter!\r\n");
 
   if (s__mqtt_client_instance == NULL)
@@ -135,13 +120,8 @@ err_t mqtt_client_init(void)
     printf("at32_mqtt_connect: s__mqtt_client_instance malloc fail @@!!!\r\n");
     return ERR_MEM;
   }
-
-  ret = mqtt_client_connect(s__mqtt_client_instance, &server_ip, server_port, \
-                            at32_mqtt_connection_cb, NULL, &mqtt_connect_info);
-
-  printf("at32_mqtt_connect: connect to mqtt %s\r\n", lwip_strerr(ret));
   
-  return ret;
+  return mqtt_connect_routine();
 }
 
 /**
@@ -318,6 +298,34 @@ static err_t at32_mqtt_subscribe(mqtt_client_t *mqtt_client, char *sub_topic, ui
   return err;
 }
 
+err_t mqtt_connect_routine(void)
+{
+  err_t ret;
+  struct mqtt_connect_client_info_t mqtt_connect_info =
+  {
+
+    "AT_MQTT_Test",
+    NULL,
+    NULL,
+    60,
+    "at_pub_topic",
+    "Offline_pls_check",
+    0,
+    0
+  };
+
+  ip_addr_t server_ip;
+  /* mqtt server port */
+  uint16_t server_port = MQTT_SERVER_PORT;
+  /* mqtt server ip */
+  ip4_addr_set_u32(&server_ip, ipaddr_addr(MQTT_SERVER_ADDRESS));
+  ret = mqtt_client_connect(s__mqtt_client_instance, &server_ip, server_port, \
+                            at32_mqtt_connection_cb, NULL, &mqtt_connect_info);
+
+  printf("at32_mqtt_connect: connect to mqtt %s\r\n", lwip_strerr(ret));
+  
+  return ret;
+}
 /**
   * @}
   */

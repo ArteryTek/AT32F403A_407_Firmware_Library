@@ -34,7 +34,7 @@
   * @{
   */
 
-/** @addtogroup USB_IAP_app_led3_toggle
+/** @addtogroup USB_iap_app_led3_toggle
   * @{
   */
 
@@ -148,10 +148,10 @@ void usb_delay_us(uint32_t us)
   */
 int main(void)
 {
-	system_clock_config();
+  system_clock_config();
 
   /* config vector table offset */
-  nvic_vector_table_set(NVIC_VECTTAB_FLASH, 0x4000);
+  nvic_vector_table_set(NVIC_VECTTAB_FLASH, 0x5000);
 
   /* config nvic priority group */
   nvic_priority_group_config(NVIC_PRIORITY_GROUP_4);

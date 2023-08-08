@@ -258,7 +258,7 @@ uint16_t usart_receive_data(void)
   uint16_t usart_data_len;
   if(hw_usart_read_index == hw_usart_rx_index)
   {
-		usart_data_len = 0;
+    usart_data_len = 0;
   }
   else
   {
@@ -310,7 +310,7 @@ void usb_usart_config( linecoding_type linecoding)
     case 0x0:
       usart_stop_bit = USART_STOP_1_BIT;
       break;
-	/* to be used when transmitting and receiving data in smartcard mode */
+  /* to be used when transmitting and receiving data in smartcard mode */
     case 0x1:
       usart_stop_bit = USART_STOP_1_5_BIT;
       break;
@@ -320,23 +320,7 @@ void usb_usart_config( linecoding_type linecoding)
     default :
       break;
   }
-  /* data bits */
-  switch(linecoding.data)
-  {
-    /* hardware usart not support data bits for 5/6/7 */
-    case 0x5:
-    case 0x6:
-    case 0x7:
-      break;
-    case 0x8:
-      usart_data_bit = USART_DATA_8BITS;
-      break;
-    /* hardware usart not support data bits for 16 */
-    case 0x10:
-      break;
-    default :
-      break;
-  }
+  
   /* parity */
   switch(linecoding.parity)
   {
@@ -355,6 +339,49 @@ void usb_usart_config( linecoding_type linecoding)
       break;
     default :
       break;
+  }
+  
+  if(USART_PARITY_NONE == usart_parity_select)
+  {
+    /* data bits */
+    switch(linecoding.data)
+    {
+      /* hardware usart not support data bits for 5/6/7 */
+      case 0x5:
+      case 0x6:
+      case 0x7:
+        break;
+      case 0x8:
+        usart_data_bit = USART_DATA_8BITS;
+        break;
+      /* hardware usart not support data bits for 16 */
+      case 0x10:
+        break;
+      default :
+        break;
+    }    
+  }
+  else
+  {
+    /* data bits */
+    switch(linecoding.data)
+    {
+      /* hardware usart not support data bits for 5/6 */
+      case 0x5:
+      case 0x6:
+        break;
+      case 0x7:
+        usart_data_bit = USART_DATA_8BITS;
+        break;
+      case 0x8:
+        usart_data_bit = USART_DATA_9BITS;
+        break;
+      /* hardware usart not support data bits for 16 */
+      case 0x10:
+        break;
+      default :
+        break;
+    }    
   }
 
   nvic_irq_enable(USART2_IRQn, 0, 0);

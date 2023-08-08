@@ -52,7 +52,10 @@ static usbd_desc_t *get_device_config_string(void);
 static uint16_t usbd_unicode_convert(uint8_t *string, uint8_t *unicode_buf);
 static void usbd_int_to_unicode (uint32_t value , uint8_t *pbuf , uint8_t len);
 static void get_serial_num(void);
-static uint8_t g_usbd_desc_buffer[256];
+#if defined ( __ICCARM__ ) /* iar compiler */
+  #pragma data_alignment=4
+#endif
+ALIGNED_HEAD static uint8_t g_usbd_desc_buffer[256] ALIGNED_TAIL;
 
 /**
   * @brief  custom hid device descriptor handler structure

@@ -180,7 +180,12 @@ static usb_sts_type class_setup_handler(void *udev, usb_setup_type *setup)
         case USB_STD_REQ_SET_INTERFACE:
           pcdc->alt_setting = setup->wValue;
           break;
+        case USB_STD_REQ_CLEAR_FEATURE:
+          break;
+        case USB_STD_REQ_SET_FEATURE:
+          break;
         default:
+          usbd_ctrl_unsupport(pudev);
           break;
       }
       break;

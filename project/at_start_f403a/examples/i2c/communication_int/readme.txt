@@ -17,4 +17,4 @@
 
   pin used:
     1. scl --- pb6
-    2. sda --- pb7
+    2. sda --- pb7

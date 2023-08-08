@@ -34,7 +34,7 @@
   * @{
   */
 
-/** @addtogroup USB_IAP_bootloader
+/** @addtogroup USB_iap_bootloader
   * @{
   */
 
@@ -149,7 +149,7 @@ void usb_delay_us(uint32_t us)
   */
 int main(void)
 {
-	system_clock_config();
+  system_clock_config();
 
   /* config nvic priority group */
   nvic_priority_group_config(NVIC_PRIORITY_GROUP_4);

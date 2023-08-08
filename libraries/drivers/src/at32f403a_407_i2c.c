@@ -622,14 +622,14 @@ flag_status i2c_flag_get(i2c_type *i2c_x, uint32_t flag)
   * @retval none
   */
 void i2c_flag_clear(i2c_type *i2c_x, uint32_t flag)
-{  
+{
   i2c_x->sts1 = (uint16_t)~(flag & (uint32_t)0x0000DF00);
-  
+
   if(i2c_x->sts1 & I2C_ADDR7F_FLAG)
   {
     UNUSED(i2c_x->sts2);
   }
-  
+
   if(i2c_x->sts1 & I2C_STOPF_FLAG)
   {
     i2c_x->ctrl1_bit.i2cen = TRUE;

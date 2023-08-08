@@ -143,8 +143,8 @@ sd_error_status_type sd_init(void)
   {
     if(sd_card_info.card_type == SDIO_STD_CAPACITY_SD_CARD_V1_1 || sd_card_info.card_type == SDIO_STD_CAPACITY_SD_CARD_V2_0)
     {
-      /* set sdio_ck to 12mhz */
-      clkdiv = system_core_clock / 12000000;
+      /* set sdio_ck to 4mhz */
+      clkdiv = system_core_clock / 4000000;
 
       if(clkdiv >= 2)
       {
@@ -153,8 +153,8 @@ sd_error_status_type sd_init(void)
     }
     else
     {
-      /* set sdio_ck to 48mhz */
-      clkdiv = system_core_clock / 48000000;
+      /* set sdio_ck to 4mhz */
+      clkdiv = system_core_clock / 4000000;
 
       if(clkdiv >= 2)
       {

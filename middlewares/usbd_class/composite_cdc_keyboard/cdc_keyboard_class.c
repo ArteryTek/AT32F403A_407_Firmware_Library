@@ -66,8 +66,8 @@ const static unsigned char _asciimap[128] =
   0x00,// ACK
   0x00,// BEL
   0x2A,// BS Backspace
-  0x2B,// TAB	Tab
-  0x28,// LF	Enter
+  0x2B,// TAB  Tab
+  0x28,// LF  Enter
   0x00,// VT
   0x00,// FF
   0x00,// CR
@@ -185,7 +185,7 @@ const static unsigned char _asciimap[128] =
   0x31|SHIFT,// |
   0x30|SHIFT,// }
   0x35|SHIFT,// ~
-  0	// DEL
+  0  // DEL
 };
 
 linecoding_type linecoding_vcpkybrd =
@@ -356,7 +356,12 @@ static usb_sts_type cdc_class_setup_handler(void *udev, usb_setup_type *setup)
         case USB_STD_REQ_SET_INTERFACE:
           vcpkybrd->alt_setting = setup->wValue;
           break;
+        case USB_STD_REQ_CLEAR_FEATURE:
+          break;
+        case USB_STD_REQ_SET_FEATURE:
+          break;
         default:
+          usbd_ctrl_unsupport(pudev);
           break;
       }
       break;
@@ -431,7 +436,12 @@ static usb_sts_type keyboard_class_setup_handler(void *udev, usb_setup_type *set
         case USB_STD_REQ_SET_INTERFACE:
           vcpkybrd->alt_setting = setup->wValue;
           break;
+        case USB_STD_REQ_CLEAR_FEATURE:
+          break;
+        case USB_STD_REQ_SET_FEATURE:
+          break;
         default:
+          usbd_ctrl_unsupport(pudev);
           break;
       }
       break;

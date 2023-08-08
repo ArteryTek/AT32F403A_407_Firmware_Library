@@ -2,13 +2,13 @@
 * Copyright (C) 2010-2013 ARM Limited. All rights reserved.
 *
 * $Date:        17. January 2013
-* $Revision: 	V1.4.0
+* $Revision:   V1.4.0
 *
-* Project: 	    CMSIS DSP Library
+* Project:       CMSIS DSP Library
 *
-* Title:	    math_helper.h
+* Title:      math_helper.h
 *
-* Description:	Prototypes of all helper functions required.
+* Description:  Prototypes of all helper functions required.
 *
 * Target Processor: Cortex-M4/Cortex-M3
 *

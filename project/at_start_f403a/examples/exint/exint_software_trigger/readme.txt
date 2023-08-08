@@ -10,4 +10,4 @@
   software trigger will be generate in tmr1 overflow interrupt.
   led2 toggle means tmr1 overflow interrupt respond.
   led3 and led4 toggle means exint line 4  interrupt respond.
-  for more detailed information. please refer to the application note document AN0104.
+  for more detailed information. please refer to the application note document AN0104.

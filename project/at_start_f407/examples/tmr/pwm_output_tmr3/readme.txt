@@ -12,4 +12,4 @@
   tmr3 channel3 duty cycle = (tmr3_c3dt/ tmr3_pr)* 100 = 25%
   tmr3 channel4 duty cycle = (tmr3_c4dt/ tmr3_pr)* 100 = 12.5%
 
-  for more detailed information. please refer to the application note document AN0085.
+  for more detailed information. please refer to the application note document AN0085.

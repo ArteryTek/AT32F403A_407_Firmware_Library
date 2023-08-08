@@ -158,11 +158,7 @@ void system_clock_config_for_acc(void)
   /* reset crm */
   crm_reset();
 
-  #ifdef SCLK_FROM_HICK
   crm_clock_source_enable(CRM_CLOCK_SOURCE_HICK, TRUE);
-  #elif defined SCLK_FROM_HEXT
-  crm_clock_source_enable(CRM_CLOCK_SOURCE_HEXT, TRUE);
-  #endif
 
   /* wait till hick is ready */
   while(SET != crm_flag_get(CRM_HICK_STABLE_FLAG))

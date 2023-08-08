@@ -480,8 +480,11 @@ flash_status_type flash_sector_erase(uint32_t sector_address)
 
     /* disable the secers bit */
     FLASH->ctrl3_bit.secers = FALSE;
+
+    /* dummy read */
+    flash_spim_dummy_read();
   }
-  
+
   /* return the erase status */
   return status;
 }
@@ -576,7 +579,7 @@ flash_status_type flash_bank2_erase(void)
 flash_status_type flash_spim_all_erase(void)
 {
   flash_status_type status = FLASH_OPERATE_DONE;
- 
+
   FLASH->ctrl3_bit.chpers = TRUE;
   FLASH->ctrl3_bit.erstr = TRUE;
 
@@ -585,6 +588,9 @@ flash_status_type flash_spim_all_erase(void)
 
   /* disable the chpers bit */
   FLASH->ctrl3_bit.chpers = FALSE;
+
+  /* dummy read */
+  flash_spim_dummy_read();
 
   /* return the erase status */
   return status;
@@ -601,7 +607,7 @@ flash_status_type flash_user_system_data_erase(void)
 {
   flash_status_type status = FLASH_OPERATE_DONE;
   uint16_t fap_val = FAP_RELIEVE_KEY;
- 
+
   /* get the flash access protection status */
   if(flash_fap_status_get() != RESET)
   {
@@ -682,6 +688,9 @@ flash_status_type flash_word_program(uint32_t address, uint32_t data)
 
     /* disable the fprgm bit */
     FLASH->ctrl3_bit.fprgm = FALSE;
+
+    /* dummy read */
+    flash_spim_dummy_read();
   }
 
   /* return the program status */
@@ -728,6 +737,9 @@ flash_status_type flash_halfword_program(uint32_t address, uint16_t data)
 
     /* disable the fprgm bit */
     FLASH->ctrl3_bit.fprgm = FALSE;
+
+    /* dummy read */
+    flash_spim_dummy_read();
   }
 
   /* return the program status */
@@ -779,7 +791,7 @@ flash_status_type flash_byte_program(uint32_t address, uint8_t data)
 flash_status_type flash_user_system_data_program(uint32_t address, uint8_t data)
 {
   flash_status_type status = FLASH_OPERATE_DONE;
- 
+
   if(address == USD_BASE)
   {
     if(data != 0xA5)
@@ -1024,6 +1036,9 @@ void flash_interrupt_enable(uint32_t flash_int, confirm_state new_state)
 void flash_spim_model_select(flash_spim_model_type mode)
 {
   FLASH->select = mode;
+
+  /* dummy read */
+  flash_spim_dummy_read();
 }
 
 /**
@@ -1036,6 +1051,62 @@ void flash_spim_model_select(flash_spim_model_type mode)
 void flash_spim_encryption_range_set(uint32_t decode_address)
 {
   FLASH->da = decode_address;
+}
+
+/**
+  * @brief  operate the flash spim dummy read.
+  * @param  none
+  * @retval none
+  */
+void flash_spim_dummy_read(void)
+{
+  UNUSED(*(__IO uint32_t*)FLASH_SPIM_START_ADDR);
+  UNUSED(*(__IO uint32_t*)(FLASH_SPIM_START_ADDR + 0x1000));
+  UNUSED(*(__IO uint32_t*)(FLASH_SPIM_START_ADDR + 0x2000));
+}
+
+/**
+  * @brief  mass program for flash spim.
+  * @param  address: specifies the start address to be programmed, word or halfword alignment is recommended.
+  * @param  buf: specifies the pointer of data to be programmed.
+  * @param  cnt: specifies the data counter to be programmed.
+  * @retval status: the returned value can be: FLASH_PROGRAM_ERROR,
+  *         FLASH_EPP_ERROR, FLASH_OPERATE_DONE or FLASH_OPERATE_TIMEOUT.
+  */
+flash_status_type flash_spim_mass_program(uint32_t address, uint8_t *buf, uint32_t cnt)
+{
+  flash_status_type status = FLASH_OPERATE_DONE;
+  uint32_t index, temp_offset;
+  if(address >= FLASH_SPIM_START_ADDR)
+  {
+    temp_offset = cnt % 4;
+    if((temp_offset != 0) && (temp_offset != 2))
+      return status;
+
+    FLASH->ctrl3_bit.fprgm = TRUE;
+    for(index = 0; index < cnt / 4; index++)
+    {
+      *(__IO uint32_t*)(address + index * 4) = *(uint32_t*)(buf + index * 4);
+      /* wait for operation to be completed */
+      status = flash_spim_operation_wait_for(SPIM_PROGRAMMING_TIMEOUT);
+      if(status != FLASH_OPERATE_DONE)
+        return status;
+    }
+    if(temp_offset == 2)
+    {
+      *(__IO uint16_t*)(address + index * 4) = *(uint16_t*)(buf + index * 4);
+      /* wait for operation to be completed */
+      status = flash_spim_operation_wait_for(SPIM_PROGRAMMING_TIMEOUT);
+    }
+    /* disable the fprgm bit */
+    FLASH->ctrl3_bit.fprgm = FALSE;
+
+    /* dummy read */
+    flash_spim_dummy_read();
+  }
+
+  /* return the program status */
+  return status;
 }
 
 /**
@@ -1056,7 +1127,7 @@ flash_status_type flash_slib_enable(uint32_t pwd, uint16_t start_sector, uint16_
   if((start_sector>=data_start_sector) || ((data_start_sector > end_sector) && \
      (data_start_sector != 0x7FF)) || (start_sector > end_sector))
     return FLASH_PROGRAM_ERROR;
-  
+
   /* unlock slib cfg register */
   FLASH->slib_unlock = SLIB_UNLOCK_KEY;
   while(FLASH->slib_misc_sts_bit.slib_ulkf==RESET);

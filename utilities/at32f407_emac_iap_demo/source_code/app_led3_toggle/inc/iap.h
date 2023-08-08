@@ -35,7 +35,7 @@
   * @{
   */
 
-/** @addtogroup EMAC_IAP_app_led3_toggle
+/** @addtogroup EMAC_iap_app_led3_toggle
   * @{
   */
 

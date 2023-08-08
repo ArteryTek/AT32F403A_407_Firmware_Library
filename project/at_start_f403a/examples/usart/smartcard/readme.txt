@@ -16,4 +16,4 @@
   - sc usart cmdvcc  --->   pa7
   - sc usart off     --->   pa8
 
-  for more detailed information. please refer to the application note document AN0099.
+  for more detailed information. please refer to the application note document AN0099.

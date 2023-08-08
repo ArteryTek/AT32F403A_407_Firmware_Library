@@ -307,7 +307,7 @@
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\..\..\..\libraries\drivers\src\at32f403a_407_pwc.c</PathWithFileName>
-      <FilenameWithoutPath>at32f403_pwc.c</FilenameWithoutPath>
+      <FilenameWithoutPath>at32f403a_407_pwc.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

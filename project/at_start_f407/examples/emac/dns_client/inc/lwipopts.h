@@ -61,7 +61,7 @@
 /* Minimal changes to opt.h required for tcp unit tests: */
 /* TCP Maximum segment size. */
 
-#define TCP_MSS                          (1500 - 40)	  /* TCP_MSS = (Ethernet MTU - IP header size - TCP header size) */
+#define TCP_MSS                          (1500 - 40)    /* TCP_MSS = (Ethernet MTU - IP header size - TCP header size) */
 /* MEM_ALIGNMENT: should be set to the alignment of the CPU for which
    lwIP is compiled. 4 byte alignment -> define MEM_ALIGNMENT to 4, 2
    byte alignment -> define MEM_ALIGNMENT to 2. */

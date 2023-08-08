@@ -42,11 +42,11 @@
   #pragma data_alignment=4
 #endif
 ALIGNED_HEAD uint8_t page00_inquiry_data[] ALIGNED_TAIL = {
-	0x00,
-	0x00,
-	0x00,
-	0x00,
-	0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
 
 };
 #if defined ( __ICCARM__ ) /* iar compiler */

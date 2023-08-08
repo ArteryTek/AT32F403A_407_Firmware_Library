@@ -36,7 +36,7 @@ extern "C" {
   * @{
   */
 
-/** @addtogroup USB_IAP_bootloader
+/** @addtogroup USB_iap_bootloader
   * @{
   */
 
@@ -44,7 +44,7 @@ extern "C" {
   * @{
   */
 
-#define FLASH_APP_ADDRESS                0x08004000
+#define FLASH_APP_ADDRESS                0x08005000
 
 /**
   * @}
@@ -76,5 +76,3 @@ void jump_to_app(uint32_t address);
 #endif
 
 #endif
-
-

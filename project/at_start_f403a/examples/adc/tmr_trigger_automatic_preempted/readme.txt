@@ -15,4 +15,4 @@
   - adc1_preempt_valuetab[n][0] --->  adc1_channel_7
   - adc1_preempt_valuetab[n][1] --->  adc1_channel_8
   - adc1_preempt_valuetab[n][2] --->  adc1_channel_9
-  for more detailed information. please refer to the application note document AN0112.
+  for more detailed information. please refer to the application note document AN0112.

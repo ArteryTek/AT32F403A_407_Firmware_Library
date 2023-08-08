@@ -197,8 +197,12 @@ static usb_sts_type class_setup_handler(void *udev, usb_setup_type *setup)
           audio_set_interface(udev, setup);
           usbd_ctrl_send_status(pudev);
           break;
-
+        case USB_STD_REQ_CLEAR_FEATURE:
+          break;
+        case USB_STD_REQ_SET_FEATURE:
+          break;
         default:
+          usbd_ctrl_unsupport(pudev);
           break;
       }
       break;

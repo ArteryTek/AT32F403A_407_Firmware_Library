@@ -438,7 +438,7 @@
               <FilePath>..\..\..\..\..\..\libraries\drivers\src\at32f403a_407_wdt.c</FilePath>
             </File>
             <File>
-              <FileName>at32f403_pwc.c</FileName>
+              <FileName>at32f403a_407_pwc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\..\..\libraries\drivers\src\at32f403a_407_pwc.c</FilePath>
             </File>

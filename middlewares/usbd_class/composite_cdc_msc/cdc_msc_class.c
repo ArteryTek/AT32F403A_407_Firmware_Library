@@ -228,7 +228,12 @@ static usb_sts_type cdc_class_setup_handler(void *udev, usb_setup_type *setup)
         case USB_STD_REQ_SET_INTERFACE:
           pcdc->alt_setting = setup->wValue;
           break;
+        case USB_STD_REQ_CLEAR_FEATURE:
+          break;
+        case USB_STD_REQ_SET_FEATURE:
+          break;
         default:
+          usbd_ctrl_unsupport(pudev);
           break;
       }
       break;
@@ -297,7 +302,10 @@ static usb_sts_type msc_class_setup_handler(void *udev, usb_setup_type *setup)
           }
           bot_scsi_clear_feature(udev, setup->wIndex);
           break;
+        case USB_STD_REQ_SET_FEATURE:
+          break;
         default:
+          usbd_ctrl_unsupport(pudev);
           break;
       }
       break;

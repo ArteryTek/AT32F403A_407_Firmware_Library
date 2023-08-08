@@ -35,7 +35,7 @@
   * @{
   */
 
-/** @addtogroup EMAC_IAP_bootloader
+/** @addtogroup EMAC_iap_bootloader
   * @{
   */
 
@@ -47,7 +47,7 @@
 #define USE_IAP_HTTP   /*!< enable iap using http */
 
 /* app starting address */
-#define APP_START_SECTOR_ADDR            0x08010000
+#define APP_START_SECTOR_ADDR            0x08020000
 #define APP_LAST_SECTOR_ADDR             0x080FF800
 #define APP_END_ADDR                     0x080FFFFF
 

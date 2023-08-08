@@ -164,7 +164,10 @@ static usb_sts_type class_setup_handler(void *udev, usb_setup_type *setup)
           }
           bot_scsi_clear_feature(udev, setup->wIndex);
           break;
+        case USB_STD_REQ_SET_FEATURE:
+          break;
         default:
+          usbd_ctrl_unsupport(pudev);
           break;
       }
       break;

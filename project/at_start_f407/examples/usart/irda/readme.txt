@@ -12,4 +12,4 @@
   set-up
   - use usart2 tx pin (pa2) and rx pin (pa3)
 
-  for more detailed information. please refer to the application note document AN0099.
+  for more detailed information. please refer to the application note document AN0099.

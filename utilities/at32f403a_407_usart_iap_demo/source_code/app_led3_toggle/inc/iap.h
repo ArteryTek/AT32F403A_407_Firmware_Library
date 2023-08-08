@@ -35,7 +35,7 @@ extern "C" {
   * @{
   */
 
-/** @addtogroup USART_IAP_app_led3_toggle
+/** @addtogroup USART_iap_app_led3_toggle
   * @{
   */
 

@@ -146,7 +146,7 @@ int main(void)
   tmr_output_channel_config(TMR1, TMR_SELECT_CHANNEL_3, &tmr_output_struct);
   tmr_channel_value_set(TMR1, TMR_SELECT_CHANNEL_3, 511);
 
-  /* automatic output enable, break, dead time and lock configuration */
+  /* automatic output enable, brake, dead time and lock configuration */
   tmr_brkdt_default_para_init(&tmr_brkdt_config_struct);
   tmr_brkdt_config_struct.brk_enable = TRUE;
   tmr_brkdt_config_struct.auto_output_enable = TRUE;

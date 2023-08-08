@@ -47,8 +47,8 @@
     keil mdk-arm uvision v5.18.0.0
 
   @par generating symbol definition file 
-	generating symbol definition file is mandatory for project_l1 and the provided
-  file must be replaced by the newly generated.	to generate symbol definition
+  generating symbol definition file is mandatory for project_l1 and the provided
+  file must be replaced by the newly generated.  to generate symbol definition
   file required for project_l1, click on rebuild all button then symbol definition
   file is created. 
   - for mdk-arm toolchain: fir_filter_symbol.txt symbol definition file is created

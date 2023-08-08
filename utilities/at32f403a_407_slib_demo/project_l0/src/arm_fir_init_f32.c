@@ -33,7 +33,7 @@ void* my_memset(void *s, int c, size_t n);
 /**
   @brief         Initialization function for the floating-point FIR filter.
   @param[in,out] S          points to an instance of the floating-point FIR filter structure
-  @param[in] 	 numTaps    number of filter coefficients in the filter
+  @param[in]    numTaps    number of filter coefficients in the filter
   @param[in]     pCoeffs    points to the filter coefficients buffer
   @param[in]     pState     points to the state buffer
   @param[in]     blockSize  number of samples processed per call
@@ -70,7 +70,7 @@ void arm_fir_init_f32(
   S->pCoeffs = pCoeffs;
 
   /* Clear state buffer. The size is always (blockSize + numTaps - 1) */
-	my_memset(pState, 0, (numTaps + (blockSize - 1u)) * sizeof(float32_t));
+  my_memset(pState, 0, (numTaps + (blockSize - 1u)) * sizeof(float32_t));
 
   /* Assign state pointer */
   S->pState = pState;

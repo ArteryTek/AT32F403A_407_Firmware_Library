@@ -532,7 +532,7 @@ void xmc_norsram_default_para_init(xmc_norsram_init_type* xmc_nor_sram_init_stru
 void xmc_norsram_timing_default_para_init(xmc_norsram_timing_init_type* xmc_rw_timing_struct,
                                           xmc_norsram_timing_init_type* xmc_w_timing_struct);
 void xmc_nor_sram_enable(xmc_nor_sram_subbank_type xmc_subbank, confirm_state new_state);
-void xmc_ext_timing_config(xmc_nor_sram_subbank_type xmc_sub_bank, uint16_t w2w_timing, uint16_t r2r_timing);
+void xmc_ext_timing_config(volatile xmc_nor_sram_subbank_type xmc_sub_bank, uint16_t w2w_timing, uint16_t r2r_timing);
 void xmc_nand_reset(xmc_class_bank_type xmc_bank);
 void xmc_nand_init(xmc_nand_init_type* xmc_nand_init_struct);
 void xmc_nand_timing_config(xmc_nand_timinginit_type* xmc_common_spacetiming_struct,

@@ -37,6 +37,7 @@
   * @{
   */
 
+uint8_t usb_buffer[256];
 usbd_core_type usb_core_dev;
 
 /**
@@ -114,6 +115,8 @@ void usb_clock48m_select(usb_clk48_s clk_s)
   */
 int main(void)
 {
+  uint32_t rx_len = 0;
+  
   /* config nvic priority group */
   nvic_priority_group_config(NVIC_PRIORITY_GROUP_4);
 
@@ -138,6 +141,11 @@ int main(void)
 
   while(1)
   {
+    /* get usb printer receive data */
+    rx_len = usb_printer_get_rxdata(&usb_core_dev, usb_buffer);
+    UNUSED(rx_len);
+
+    /* user code ...*/
   }
 }
 

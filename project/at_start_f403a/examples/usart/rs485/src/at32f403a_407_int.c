@@ -29,7 +29,7 @@
   * @{
   */
 
-/** @addtogroup F407_USART_rs485
+/** @addtogroup 403A_USART_rs485
   * @{
   */
 

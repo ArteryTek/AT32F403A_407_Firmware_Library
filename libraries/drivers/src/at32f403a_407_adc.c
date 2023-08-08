@@ -114,7 +114,7 @@ void adc_combine_mode_select(adc_combine_mode_type combine_mode)
   *         - ADC_LEFT_ALIGNMENT
   * @param  ordinary_channel_length: configure the adc ordinary channel sequence length.
   *         this parameter can be:
-  *         - (0x1~0xf)
+  *         - (0x1~0x10)
   * @retval none
   */
 void adc_base_default_para_init(adc_base_config_type *adc_base_struct)
@@ -140,7 +140,7 @@ void adc_base_default_para_init(adc_base_config_type *adc_base_struct)
   *         - ADC_LEFT_ALIGNMENT
   * @param  ordinary_channel_length: configure the adc ordinary channel sequence length.
   *         this parameter can be:
-  *         - (0x1~0xf)
+  *         - (0x1~0x10)
   * @retval none
   */
 void adc_base_config(adc_type *adc_x, adc_base_config_type *adc_base_struct)
@@ -345,117 +345,42 @@ void adc_voltage_monitor_single_channel_select(adc_type *adc_x, adc_channel_sele
   */
 void adc_ordinary_channel_set(adc_type *adc_x, adc_channel_select_type adc_channel, uint8_t adc_sequence, adc_sampletime_select_type adc_sampletime)
 {
-  switch(adc_channel)
+  uint32_t tmp_reg;
+  if(adc_channel < ADC_CHANNEL_10)
   {
-    case ADC_CHANNEL_0:
-      adc_x->spt2_bit.cspt0 = adc_sampletime;
-      break;
-    case ADC_CHANNEL_1:
-      adc_x->spt2_bit.cspt1 = adc_sampletime;
-      break;
-    case ADC_CHANNEL_2:
-      adc_x->spt2_bit.cspt2 = adc_sampletime;
-      break;
-    case ADC_CHANNEL_3:
-      adc_x->spt2_bit.cspt3 = adc_sampletime;
-      break;
-    case ADC_CHANNEL_4:
-      adc_x->spt2_bit.cspt4 = adc_sampletime;
-      break;
-    case ADC_CHANNEL_5:
-      adc_x->spt2_bit.cspt5 = adc_sampletime;
-      break;
-    case ADC_CHANNEL_6:
-      adc_x->spt2_bit.cspt6 = adc_sampletime;
-      break;
-    case ADC_CHANNEL_7:
-      adc_x->spt2_bit.cspt7 = adc_sampletime;
-      break;
-    case ADC_CHANNEL_8:
-      adc_x->spt2_bit.cspt8 = adc_sampletime;
-      break;
-    case ADC_CHANNEL_9:
-      adc_x->spt2_bit.cspt9 = adc_sampletime;
-      break;
-    case ADC_CHANNEL_10:
-      adc_x->spt1_bit.cspt10 = adc_sampletime;
-      break;
-    case ADC_CHANNEL_11:
-      adc_x->spt1_bit.cspt11 = adc_sampletime;
-      break;
-    case ADC_CHANNEL_12:
-      adc_x->spt1_bit.cspt12 = adc_sampletime;
-      break;
-    case ADC_CHANNEL_13:
-      adc_x->spt1_bit.cspt13 = adc_sampletime;
-      break;
-    case ADC_CHANNEL_14:
-      adc_x->spt1_bit.cspt14 = adc_sampletime;
-      break;
-    case ADC_CHANNEL_15:
-      adc_x->spt1_bit.cspt15 = adc_sampletime;
-      break;
-    case ADC_CHANNEL_16:
-      adc_x->spt1_bit.cspt16 = adc_sampletime;
-      break;
-    case ADC_CHANNEL_17:
-      adc_x->spt1_bit.cspt17 = adc_sampletime;
-      break;
-    default:
-      break;
+    tmp_reg = adc_x->spt2;
+    tmp_reg &= ~(0x07 << 3 * adc_channel);
+    tmp_reg |= adc_sampletime << 3 * adc_channel;
+    adc_x->spt2 = tmp_reg;
   }
-  switch(adc_sequence)
+  else
   {
-    case 1:
-      adc_x->osq3_bit.osn1 = adc_channel;
-      break;
-    case 2:
-      adc_x->osq3_bit.osn2 = adc_channel;
-      break;
-    case 3:
-      adc_x->osq3_bit.osn3 = adc_channel;
-      break;
-    case 4:
-      adc_x->osq3_bit.osn4 = adc_channel;
-      break;
-    case 5:
-      adc_x->osq3_bit.osn5 = adc_channel;
-      break;
-    case 6:
-      adc_x->osq3_bit.osn6 = adc_channel;
-      break;
-    case 7:
-      adc_x->osq2_bit.osn7 = adc_channel;
-      break;
-    case 8:
-      adc_x->osq2_bit.osn8 = adc_channel;
-      break;
-    case 9:
-      adc_x->osq2_bit.osn9 = adc_channel;
-      break;
-    case 10:
-      adc_x->osq2_bit.osn10 = adc_channel;
-      break;
-    case 11:
-      adc_x->osq2_bit.osn11 = adc_channel;
-      break;
-    case 12:
-      adc_x->osq2_bit.osn12 = adc_channel;
-      break;
-    case 13:
-      adc_x->osq1_bit.osn13 = adc_channel;
-      break;
-    case 14:
-      adc_x->osq1_bit.osn14 = adc_channel;
-      break;
-    case 15:
-      adc_x->osq1_bit.osn15 = adc_channel;
-      break;
-    case 16:
-      adc_x->osq1_bit.osn16 = adc_channel;
-      break;
-    default:
-      break;
+    tmp_reg = adc_x->spt1;
+    tmp_reg &= ~(0x07 << 3 * (adc_channel - ADC_CHANNEL_10));
+    tmp_reg |= adc_sampletime << 3 * (adc_channel - ADC_CHANNEL_10);
+    adc_x->spt1 = tmp_reg;
+  }
+
+  if(adc_sequence >= 13)
+  {
+    tmp_reg = adc_x->osq1;
+    tmp_reg &= ~(0x01F << 5 * (adc_sequence - 13));
+    tmp_reg |= adc_channel << 5 * (adc_sequence - 13);
+    adc_x->osq1 = tmp_reg;
+  }
+  else if(adc_sequence >= 7)
+  {
+    tmp_reg = adc_x->osq2;
+    tmp_reg &= ~(0x01F << 5 * (adc_sequence - 7));
+    tmp_reg |= adc_channel << 5 * (adc_sequence - 7);
+    adc_x->osq2 = tmp_reg;
+  }
+  else
+  {
+    tmp_reg = adc_x->osq3;
+    tmp_reg &= ~(0x01F << 5 * (adc_sequence - 1));
+    tmp_reg |= adc_channel << 5 * (adc_sequence - 1);
+    adc_x->osq3 = tmp_reg;
   }
 }
 
@@ -503,66 +428,23 @@ void adc_preempt_channel_length_set(adc_type *adc_x, uint8_t adc_channel_lenght)
   */
 void adc_preempt_channel_set(adc_type *adc_x, adc_channel_select_type adc_channel, uint8_t adc_sequence, adc_sampletime_select_type adc_sampletime)
 {
-  uint16_t sequence_index=0;
-  switch(adc_channel)
+  uint32_t tmp_reg;
+  uint8_t sequence_index;
+  if(adc_channel < ADC_CHANNEL_10)
   {
-    case ADC_CHANNEL_0:
-      adc_x->spt2_bit.cspt0 = adc_sampletime;
-      break;
-    case ADC_CHANNEL_1:
-      adc_x->spt2_bit.cspt1 = adc_sampletime;
-      break;
-    case ADC_CHANNEL_2:
-      adc_x->spt2_bit.cspt2 = adc_sampletime;
-      break;
-    case ADC_CHANNEL_3:
-      adc_x->spt2_bit.cspt3 = adc_sampletime;
-      break;
-    case ADC_CHANNEL_4:
-      adc_x->spt2_bit.cspt4 = adc_sampletime;
-      break;
-    case ADC_CHANNEL_5:
-      adc_x->spt2_bit.cspt5 = adc_sampletime;
-      break;
-    case ADC_CHANNEL_6:
-      adc_x->spt2_bit.cspt6 = adc_sampletime;
-      break;
-    case ADC_CHANNEL_7:
-      adc_x->spt2_bit.cspt7 = adc_sampletime;
-      break;
-    case ADC_CHANNEL_8:
-      adc_x->spt2_bit.cspt8 = adc_sampletime;
-      break;
-    case ADC_CHANNEL_9:
-      adc_x->spt2_bit.cspt9 = adc_sampletime;
-      break;
-    case ADC_CHANNEL_10:
-      adc_x->spt1_bit.cspt10 = adc_sampletime;
-      break;
-    case ADC_CHANNEL_11:
-      adc_x->spt1_bit.cspt11 = adc_sampletime;
-      break;
-    case ADC_CHANNEL_12:
-      adc_x->spt1_bit.cspt12 = adc_sampletime;
-      break;
-    case ADC_CHANNEL_13:
-      adc_x->spt1_bit.cspt13 = adc_sampletime;
-      break;
-    case ADC_CHANNEL_14:
-      adc_x->spt1_bit.cspt14 = adc_sampletime;
-      break;
-    case ADC_CHANNEL_15:
-      adc_x->spt1_bit.cspt15 = adc_sampletime;
-      break;
-    case ADC_CHANNEL_16:
-      adc_x->spt1_bit.cspt16 = adc_sampletime;
-      break;
-    case ADC_CHANNEL_17:
-      adc_x->spt1_bit.cspt17 = adc_sampletime;
-      break;
-    default:
-      break;
+    tmp_reg = adc_x->spt2;
+    tmp_reg &= ~(0x07 << 3 * adc_channel);
+    tmp_reg |= adc_sampletime << 3 * adc_channel;
+    adc_x->spt2 = tmp_reg;
   }
+  else
+  {
+    tmp_reg = adc_x->spt1;
+    tmp_reg &= ~(0x07 << 3 * (adc_channel - ADC_CHANNEL_10));
+    tmp_reg |= adc_sampletime << 3 * (adc_channel - ADC_CHANNEL_10);
+    adc_x->spt1 = tmp_reg;
+  }
+
   sequence_index = adc_sequence + 3 - adc_x->psq_bit.pclen;
   switch(sequence_index)
   {

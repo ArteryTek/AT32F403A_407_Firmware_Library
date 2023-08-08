@@ -34,11 +34,11 @@ extern "C" {
 #include "at32f403a_407_board.h"
 #include "stdio.h"
 
-/** @addtogroup AT32F403A_periph_examples
+/** @addtogroup UTILITIES_examples
   * @{
   */
 
-/** @addtogroup 403A_USB_device_hid_iap
+/** @addtogroup USB_iap_bootloader
   * @{
   */
 
@@ -110,5 +110,3 @@ void usb_delay_us(uint32_t us);
 #endif
 
 #endif
-
-

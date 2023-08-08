@@ -70,10 +70,10 @@ uint8_t *get_inquiry(uint8_t lun)
   * @param  len: read length
   * @retval status of usb_sts_type
   */
-usb_sts_type msc_disk_read(uint8_t lun, uint32_t addr, uint8_t *read_buf, uint32_t len)
+usb_sts_type msc_disk_read(uint8_t lun, uint64_t addr, uint8_t *read_buf, uint32_t len)
 {
   uint32_t i = 0;
-  uint32_t flash_addr = addr + USB_FLASH_ADDR_OFFSET;
+  uint32_t flash_addr = (uint32_t)addr + USB_FLASH_ADDR_OFFSET;
   switch(lun)
   {
     case 0:
@@ -97,9 +97,9 @@ usb_sts_type msc_disk_read(uint8_t lun, uint32_t addr, uint8_t *read_buf, uint32
   * @param  len: write length
   * @retval status of usb_sts_type
   */
-usb_sts_type msc_disk_write(uint8_t lun, uint32_t addr, uint8_t *buf, uint32_t len)
+usb_sts_type msc_disk_write(uint8_t lun, uint64_t addr, uint8_t *buf, uint32_t len)
 {
-  uint32_t flash_addr = addr + USB_FLASH_ADDR_OFFSET;
+  uint32_t flash_addr = (uint32_t)addr + USB_FLASH_ADDR_OFFSET;
   uint32_t i = 0, page_len = 2048, tolen = len;
   uint32_t erase_addr = flash_addr;
   switch(lun)

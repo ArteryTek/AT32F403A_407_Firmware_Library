@@ -213,8 +213,8 @@ extern "C" {
 #define SPI3_GMUX_0010                   IOMUX_MAKE_VALUE(0x28, 24, 4, 0x02) /*!< spi3_cs/i2s3_ws(pa15), spi3_sck/i2s3_ck(pb3),  spi3_miso(pb4),  spi3_mosi/i2s3_sd(pb5),  i2s3_mck(pb10) */
 #define SPI3_GMUX_0011                   IOMUX_MAKE_VALUE(0x28, 24, 4, 0x03) /*!< spi3_cs/i2s3_ws(pa4),  spi3_sck/i2s3_ck(pc10), spi3_miso(pc11), spi3_mosi/i2s3_sd(pc12), i2s3_mck(pb10) */
 #define SPI4_GMUX_0001                   IOMUX_MAKE_VALUE(0x28, 28, 4, 0x01) /*!< spi4_cs/i2s4_ws(pe12), spi4_sck/i2s4_ck(pe11), spi4_miso(pe13), spi4_mosi/i2s4_sd(pe14), i2s4_mck(pc8) */
-#define SPI4_GMUX_0010                   IOMUX_MAKE_VALUE(0x28, 28, 4, 0x02) /*!< spi4_cs/i2s4_ws(pb6),  spi4_sck/i2s4_ck(pb7),  spi4_miso(pb8),  spi4_mosi/i2s4_sd(pb8),  i2s4_mck(pc8) */
-#define SPI4_GMUX_0011                   IOMUX_MAKE_VALUE(0x28, 28, 4, 0x03) /*!< spi4_cs/i2s4_ws(pb6),  spi4_sck/i2s4_ck(pb7),  spi4_miso(pb8),  spi4_mosi/i2s4_sd(pb8),  i2s4_mck(pa10) */
+#define SPI4_GMUX_0010                   IOMUX_MAKE_VALUE(0x28, 28, 4, 0x02) /*!< spi4_cs/i2s4_ws(pb6),  spi4_sck/i2s4_ck(pb7),  spi4_miso(pb8),  spi4_mosi/i2s4_sd(pb9),  i2s4_mck(pc8) */
+#define SPI4_GMUX_0011                   IOMUX_MAKE_VALUE(0x28, 28, 4, 0x03) /*!< spi4_cs/i2s4_ws(pb6),  spi4_sck/i2s4_ck(pb7),  spi4_miso(pb8),  spi4_mosi/i2s4_sd(pb9),  i2s4_mck(pa10) */
 
 /**
   * @}

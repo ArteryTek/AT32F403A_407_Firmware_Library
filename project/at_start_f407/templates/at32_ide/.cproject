@@ -48,12 +48,12 @@
 							</tool>
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.1326634256" name="GNU Arm Cross C Compiler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler">
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.paths.1065372618" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.paths" useByScannerDiscovery="true" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_project_locations}/../../../../libraries/drivers/inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_project_locations}/../../../../libraries/cmsis/cm4/core_support/&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_project_locations}/../../../at32f403a_407_board/&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_project_locations}/../inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_project_locations}/../../../../libraries/cmsis/cm4/device_support/startup/gcc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_project_locations}/../../../../libraries/cmsis/cm4/device_support/&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;../../../../../libraries/drivers/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;../../../../../libraries/cmsis/cm4/core_support/&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;../../../../at32f403a_407_board/&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;../../inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;../../../../../libraries/cmsis/cm4/device_support/startup/gcc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;../../../../../libraries/cmsis/cm4/device_support/&quot;"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs.145425667" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="AT_START_F407_V1"/>

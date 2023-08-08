@@ -52,4 +52,4 @@
      (c) if the ip-code is successfully executed, the green led4 should toggle
          continuously. else the red led2 toggles continuously.
     
-  for details, please refer to the application note document AN0040.
+  for details, please refer to the application note document AN0040.

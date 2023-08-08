@@ -395,9 +395,11 @@ usb_sts_type usbd_interface_request(usbd_core_type *udev)
   usb_setup_type *setup = &udev->setup;
   switch(udev->conn_state)
   {
+    case USB_CONN_STATE_DEFAULT:
+    case USB_CONN_STATE_ADDRESSED:
     case USB_CONN_STATE_CONFIGURED:
-      udev->class_handler->setup_handler(udev, &udev->setup);
-      if(setup->wLength == 0)
+      ret = udev->class_handler->setup_handler(udev, &udev->setup);
+      if(setup->wLength == 0 && ret == USB_OK)
       {
         usbd_ctrl_send_status(udev);
       }
@@ -421,9 +423,10 @@ usb_sts_type usbd_endpoint_request(usbd_core_type *udev)
   uint8_t ept_addr = LBYTE(setup->wIndex);
   usb_ept_info *ept_info;
 
-  if((setup->bmRequestType & USB_REQ_TYPE_RESERVED) == USB_REQ_TYPE_CLASS)
+  if((setup->bmRequestType & USB_REQ_TYPE_RESERVED) != USB_REQ_TYPE_STANDARD)
   {
     udev->class_handler->setup_handler(udev, &udev->setup);
+    return ret;
   }
   switch(setup->bRequest)
   {
@@ -435,6 +438,17 @@ usb_sts_type usbd_endpoint_request(usbd_core_type *udev)
           {
             usbd_set_stall(udev, ept_addr);
           }
+          if((ept_addr & 0x80) != 0)
+          {
+           ept_info = &udev->ept_in[ept_addr & 0x7F];
+          }
+          else
+          {
+            ept_info = &udev->ept_out[ept_addr & 0x7F];
+          }
+          ept_info->status = 0x0000;
+          usbd_ctrl_send(udev, (uint8_t *)(&ept_info->status), 2);
+          
           break;
         case USB_CONN_STATE_CONFIGURED:
         {

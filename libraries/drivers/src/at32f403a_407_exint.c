@@ -123,15 +123,15 @@ void exint_init(exint_init_type *exint_struct)
   */
 void exint_flag_clear(uint32_t exint_line)
 {
-	if((EXINT->swtrg & exint_line) == exint_line)
-	{
-		EXINT->intsts = exint_line;
-		EXINT->intsts = exint_line;
-	}
-	else
-	{
-		EXINT->intsts = exint_line;
-	}
+  if((EXINT->swtrg & exint_line) == exint_line)
+  {
+    EXINT->intsts = exint_line;
+    EXINT->intsts = exint_line;
+  }
+  else
+  {
+    EXINT->intsts = exint_line;
+  }
 }
 
 /**

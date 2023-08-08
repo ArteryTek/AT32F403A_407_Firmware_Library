@@ -35,8 +35,8 @@
 extern struct tcp_pcb *tcp_client_pcb;
 
 /* TCP server and client configuration*/
-#define TCP_LOCAL_PORT     		           (1030)
-#define TCP_SERVER_PORT    		           (1031)
+#define TCP_LOCAL_PORT                    (1030)
+#define TCP_SERVER_PORT                   (1031)
 #define TCP_SERVER_IP                    192,168,81,19
 
 void tcp_client_init(uint16_t local_port,uint16_t remote_port,unsigned char a,unsigned char b,unsigned char c,unsigned char d);

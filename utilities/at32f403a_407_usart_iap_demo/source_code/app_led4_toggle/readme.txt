@@ -8,4 +8,4 @@
   this demo is based on the at-start board, in this demo, shows the app code
   operating flow for at32f4xx series. led4 on the at-start board is twinkling
   when app code is running. for more detailed information. please refer to the
-  application note document AN0001.
+  application note document AN0001.

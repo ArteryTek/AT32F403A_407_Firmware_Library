@@ -197,7 +197,7 @@ typedef struct
   uint32_t blk_nbr[MSC_SUPPORT_MAX_LUN];
   uint32_t blk_size[MSC_SUPPORT_MAX_LUN];
 
-  uint32_t blk_addr;
+  uint64_t blk_addr;
   uint32_t blk_len;
 
   uint32_t data_len;

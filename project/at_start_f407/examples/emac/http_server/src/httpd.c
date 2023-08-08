@@ -2009,11 +2009,11 @@ http_recv(void *arg, struct altcp_pcb *pcb, struct pbuf *p, err_t err)
   char fname[40];
   struct fs_file file = {0, 0};
   struct http_state *hs;
-	char LED2_html[32] = {0};
-	char LED3_html[32] = {0};
-	char LED4_html[32] = {0};
-	char LED2_Status = 0, LED3_Status = 0, LED4_Status = 0;
-	char *Led_Select = "checked=\"checked\"";
+  char LED2_html[32] = {0};
+  char LED3_html[32] = {0};
+  char LED4_html[32] = {0};
+  char LED2_Status = 0, LED3_Status = 0, LED4_Status = 0;
+  char *Led_Select = "checked=\"checked\"";
 
   hs = arg;
 
@@ -2081,45 +2081,45 @@ http_recv(void *arg, struct altcp_pcb *pcb, struct pbuf *p, err_t err)
 
                 if(data[i]==0x32 /* 2 */)
                 {
-									at32_led_on(LED2);
-									memcpy(LED2_html, Led_Select, strlen(Led_Select));
-									LED2_Status = 1;
+                  at32_led_on(LED2);
+                  memcpy(LED2_html, Led_Select, strlen(Led_Select));
+                  LED2_Status = 1;
                 }
 
                 if(data[i]==0x33 /* 3 */)
                 {
-									at32_led_on(LED3);
-									memcpy(LED3_html, Led_Select, strlen(Led_Select));
-									LED3_Status = 1;
+                  at32_led_on(LED3);
+                  memcpy(LED3_html, Led_Select, strlen(Led_Select));
+                  LED3_Status = 1;
                 }
 
                 if(data[i]==0x34 /* 4 */)
                 {
-									at32_led_on(LED4);
-									memcpy(LED4_html, Led_Select, strlen(Led_Select));
-									LED4_Status = 1;
+                  at32_led_on(LED4);
+                  memcpy(LED4_html, Led_Select, strlen(Led_Select));
+                  LED4_Status = 1;
                 }
               }
             }
           }
         }
         if ( LED2_Status == 0)
-				{
-					at32_led_off(LED2);
-				}
-				if ( LED3_Status == 0 )
-				{
-					at32_led_off(LED3);
-				}
-				if ( LED4_Status == 0 )
-				{
-					at32_led_off(LED4);
-				}
+        {
+          at32_led_off(LED2);
+        }
+        if ( LED3_Status == 0 )
+        {
+          at32_led_off(LED3);
+        }
+        if ( LED4_Status == 0 )
+        {
+          at32_led_off(LED4);
+        }
         pbuf_free(p);
 
         fs_open(&file, "/AT32F407LED.html");
         sprintf(html_tmp, file.data, LED2_html, LED3_html, LED4_html);
-				hs->file = html_tmp;
+        hs->file = html_tmp;
         hs->left = strlen(html_tmp);
 
         http_send(pcb, hs);

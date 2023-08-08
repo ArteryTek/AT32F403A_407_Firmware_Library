@@ -15,4 +15,4 @@
   set-up
   - connect usart2 tx pin (pa2) -> usart3 rx pin (pb11)
 
-  for more detailed information. please refer to the application note document AN0099.
+  for more detailed information. please refer to the application note document AN0099.

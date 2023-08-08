@@ -46,7 +46,7 @@ void rtc_config(void)
   exint_init_struct.line_select   = EXINT_LINE_17;
   exint_init_struct.line_enable   = TRUE;
   exint_init_struct.line_mode     = EXINT_LINE_INTERRUPUT;
-  exint_init_struct.line_polarity = EXINT_TRIGGER_BOTH_EDGE;
+  exint_init_struct.line_polarity = EXINT_TRIGGER_RISING_EDGE;
   exint_init(&exint_init_struct);
 
   /* enable the battery-powered domain write operations */
@@ -177,8 +177,8 @@ int main(void)
 
     /* restore systick register configuration */
     SysTick->CTRL |= systick_index;
-	
-		/* wait clock stable */
+  
+    /* wait clock stable */
     delay_us(120);
 
     /* wake up from deep sleep mode, congfig the system clock */

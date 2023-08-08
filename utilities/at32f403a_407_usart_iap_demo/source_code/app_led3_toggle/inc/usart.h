@@ -37,7 +37,7 @@ extern uint8_t iap_flag;
   * @{
   */
 
-/** @addtogroup USART_IAP_app_led3_toggle
+/** @addtogroup USART_iap_app_led3_toggle
   * @{
   */
 

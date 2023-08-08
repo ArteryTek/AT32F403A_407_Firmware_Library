@@ -199,9 +199,9 @@ typedef enum
 typedef enum
 {
   EPT_CONTROL_TYPE                       = 0x00, /*!< usb transfer type control */
-  EPT_BULK_TYPE                          = 0x01, /*!< usb transfer type bulk */
-  EPT_INT_TYPE                           = 0x02, /*!< usb transfer type interrut */
-  EPT_ISO_TYPE                           = 0x03  /*!< usb transfer type iso */
+  EPT_ISO_TYPE                           = 0x01, /*!< usb transfer type iso */
+  EPT_BULK_TYPE                          = 0x02, /*!< usb transfer type bulk */
+  EPT_INT_TYPE                           = 0x03  /*!< usb transfer type interrupt */
 }ept_trans_type;
 
 /**

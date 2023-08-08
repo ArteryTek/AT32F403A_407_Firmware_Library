@@ -26,4 +26,4 @@
   - xmc_noe                 pd4          --->   re#
   - xmc_nwe                 pd5          --->   we#
   - xmc_wait                pd6          --->   r/b#
-  for more detailed information. please refer to the application note document AN0106.
+  for more detailed information. please refer to the application note document AN0106.

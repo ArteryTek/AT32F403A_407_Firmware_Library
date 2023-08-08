@@ -11,4 +11,4 @@
   - adc1_ordinary_valuetab[0] ---> adc1_channel_4
   - adc1_ordinary_valuetab[1] ---> adc1_channel_5
   - adc1_ordinary_valuetab[2] ---> adc1_channel_6
-  for more detailed information. please refer to the application note document AN0112.
+  for more detailed information. please refer to the application note document AN0112.

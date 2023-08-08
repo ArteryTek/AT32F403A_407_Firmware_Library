@@ -30,7 +30,7 @@
   * @{
   */
 
-/** @addtogroup USB_IAP_bootloader
+/** @addtogroup USB_iap_bootloader
   * @{
   */
 
@@ -300,7 +300,7 @@ iap_result_type iap_data_write(uint8_t *pdata, uint32_t len)
   }
   else
   {
-    iap_respond(iap_info.iap_tx, IAP_CMD_ADDR, IAP_NACK);
+    iap_respond(iap_info.iap_tx, IAP_CMD_DATA, IAP_NACK);
   }
   return IAP_SUCCESS;
 }
@@ -472,7 +472,7 @@ void iap_loop(void)
 {
   if(iap_info.state == IAP_STS_JMP)
   {
-  	delay_ms(100);
+    delay_ms(100);
     jump_to_app(iap_info.app_address);
   }
 }

@@ -2,13 +2,13 @@
 * Copyright (C) 2010-2012 ARM Limited. All rights reserved.
 *
 * $Date:        17. January 2013
-* $Revision: 	V1.4.0  b
+* $Revision:   V1.4.0  b
 *
-* Project: 	    CMSIS DSP Library
+* Project:       CMSIS DSP Library
 *
-* Title:	    math_helper.c
+* Title:      math_helper.c
 *
-* Description:	Definition of all helper functions required.
+* Description:  Definition of all helper functions required.
 *
 * Target Processor: Cortex-M4/Cortex-M3
 *
@@ -39,20 +39,20 @@
 * POSSIBILITY OF SUCH DAMAGE.
 * -------------------------------------------------------------------- */
 /* ----------------------------------------------------------------------
-*		Include standard header files
+*    Include standard header files
 * -------------------------------------------------------------------- */
 #include<math.h>
 
 /* ----------------------------------------------------------------------
-*		Include project header files
+*    Include project header files
 * -------------------------------------------------------------------- */
 #include "math_helper.h"
 
 /**
  * @brief  Caluclation of SNR
- * @param[in]  pRef 	Pointer to the reference buffer
- * @param[in]  pTest	Pointer to the test buffer
- * @param[in]  buffSize	total number of samples
+ * @param[in]  pRef   Pointer to the reference buffer
+ * @param[in]  pTest  Pointer to the test buffer
+ * @param[in]  buffSize  total number of samples
  * @return     SNR
  * The function Caluclates signal to noise ratio for the reference output
  * and test output
@@ -68,8 +68,8 @@ float arm_snr_f32(float *pRef, float *pTest, uint32_t buffSize)
 
   for (i = 0; i < buffSize; i++)
   {
- 	  /* Checking for a NAN value in pRef array */
-	   test =   (int *)(&pRef[i]);
+     /* Checking for a NAN value in pRef array */
+     test =   (int *)(&pRef[i]);
     temp =  *test;
 
     if (temp == 0x7FC00000)
@@ -89,7 +89,7 @@ float arm_snr_f32(float *pRef, float *pTest, uint32_t buffSize)
     EnergyError += (pRef[i] - pTest[i]) * (pRef[i] - pTest[i]);
   }
 
-	 /* Checking for a NAN value in EnergyError */
+   /* Checking for a NAN value in EnergyError */
   test =   (int *)(&EnergyError);
   temp =  *test;
 
@@ -221,7 +221,7 @@ uint32_t arm_compare_fixed_q31(q31_t *pIn, q31_t * pOut, uint32_t numSamples)
  */
 
 void arm_provide_guard_bits_q31 (q31_t * input_buf,
-								 uint32_t blockSize,
+                 uint32_t blockSize,
                                  uint32_t guard_bits)
 {
   uint32_t i;
@@ -243,7 +243,7 @@ void arm_provide_guard_bits_q31 (q31_t * input_buf,
  */
 
 void arm_provide_guard_bits_q7 (q7_t * input_buf,
-								uint32_t blockSize,
+                uint32_t blockSize,
                                 uint32_t guard_bits)
 {
   uint32_t i;
@@ -258,7 +258,7 @@ void arm_provide_guard_bits_q7 (q7_t * input_buf,
 
 /**
  * @brief  Caluclates number of guard bits
- * @param[in]  num_adds 	number of additions
+ * @param[in]  num_adds   number of additions
  * @return guard bits
  * The function Caluclates the number of guard bits
  * depending on the numtaps
@@ -291,8 +291,8 @@ uint32_t arm_calc_guard_bits (uint32_t num_adds)
  */
 
 void arm_apply_guard_bits (float32_t *pIn,
-						   uint32_t numSamples,
-						   uint32_t guard_bits)
+               uint32_t numSamples,
+               uint32_t guard_bits)
 {
   uint32_t i;
 
@@ -304,7 +304,7 @@ void arm_apply_guard_bits (float32_t *pIn,
 
 /**
  * @brief  Calculates pow(2, numShifts)
- * @param[in]  numShifts 	number of shifts
+ * @param[in]  numShifts   number of shifts
  * @return pow(2, numShifts)
  */
 uint32_t arm_calc_2pow(uint32_t numShifts)

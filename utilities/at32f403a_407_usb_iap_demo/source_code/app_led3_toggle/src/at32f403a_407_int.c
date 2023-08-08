@@ -29,7 +29,7 @@
   * @{
   */
 
-/** @addtogroup USB_IAP_app_led3_toggle
+/** @addtogroup USB_iap_app_led3_toggle
   * @{
   */
 

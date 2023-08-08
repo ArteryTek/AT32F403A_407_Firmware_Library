@@ -56,7 +56,7 @@ static void mqtt_client_pub_request_cb(void *arg, err_t result);
 err_t at32_mqtt_publish(mqtt_client_t *client, char *pub_topic, char *pub_buf, uint16_t data_len, uint8_t qos, uint8_t retain);
 static void at32_mqtt_request_cb(void *arg, err_t err);
 static err_t at32_mqtt_subscribe(mqtt_client_t *mqtt_client, char *sub_topic, uint8_t qos);
-
+err_t mqtt_connect_routine(void);
 
 /**
   * @}

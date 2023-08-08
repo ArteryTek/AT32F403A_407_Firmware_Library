@@ -38,7 +38,7 @@
   * @{
   */
 
-/** @addtogroup EMAC_IAP_bootloader
+/** @addtogroup EMAC_iap_bootloader
   * @{
   */
 
@@ -90,7 +90,7 @@ int main(void)
   for(useraddr = APP_START_SECTOR_ADDR; useraddr <= APP_LAST_SECTOR_ADDR; useraddr += 2048)
   {
     flash_sector_erase(useraddr);
-	 }
+   }
 #ifdef USE_IAP_HTTP
   /* initialize the http server */
   iap_httpd_init();

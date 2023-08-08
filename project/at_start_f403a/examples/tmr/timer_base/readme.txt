@@ -9,4 +9,4 @@
   the tmr1 peripheral to a base interrupt. when systermclock/24000/10000 =
   1hz will generater overflow interrupt and toggle led3.
 
-  for more detailed information. please refer to the application note document AN0085.
+  for more detailed information. please refer to the application note document AN0085.

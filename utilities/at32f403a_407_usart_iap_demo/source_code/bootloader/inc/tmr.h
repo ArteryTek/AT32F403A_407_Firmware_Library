@@ -38,7 +38,7 @@ extern uint8_t get_data_from_usart_flag;
   * @{
   */
 
-/** @addtogroup USART_IAP_bootloader
+/** @addtogroup USART_iap_bootloader
   * @{
   */
 

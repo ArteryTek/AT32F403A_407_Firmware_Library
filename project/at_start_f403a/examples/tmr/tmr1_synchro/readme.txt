@@ -19,4 +19,4 @@
   (tmr1 frequency)/ ((tmr4 period +1)* (repetition_counter+1)) = 74.96 khz and
   a duty cycle equal to tmr4_ccr1/(tmr4_arr + 1) = 50%
 
-  for more detailed information. please refer to the application note document AN0085.
+  for more detailed information. please refer to the application note document AN0085.

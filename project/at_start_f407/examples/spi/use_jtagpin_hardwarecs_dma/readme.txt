@@ -14,4 +14,4 @@
     pb13(sck)       <--->     pb3(sck)
     pb14(miso)      <--->     pb5(mosi)
 
-  for more detailed information. please refer to the application note document AN0102.
+  for more detailed information. please refer to the application note document AN0102.

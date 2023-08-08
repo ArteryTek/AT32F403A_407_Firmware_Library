@@ -69,12 +69,12 @@ static err_t helloworld_recv(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err
   /* We perform here any necessary processing on the pbuf */
   if (p != NULL)
   {
-	/* We call this function to tell the LwIp that we have processed the data */
-	/* This lets the stack advertise a larger window, so more data can be received*/
-	tcp_recved(pcb, p->tot_len);
+  /* We call this function to tell the LwIp that we have processed the data */
+  /* This lets the stack advertise a larger window, so more data can be received*/
+  tcp_recved(pcb, p->tot_len);
 
     /* Check the name if NULL, no data passed, return withh illegal argument error */
-	if(!name)
+  if(!name)
     {
       pbuf_free(p);
       return ERR_ARG;
@@ -85,10 +85,10 @@ static err_t helloworld_recv(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err
     {
       c = q->payload;
       for(i=0; i<q->len && !done; i++)
-	  {
+    {
         done = ((c[i] == '\r') || (c[i] == '\n'));
         if(name->length < MAX_NAME_SIZE)
-	    {
+      {
           name->bytes[name->length++] = c[i];
         }
       }
@@ -96,17 +96,17 @@ static err_t helloworld_recv(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err
     if(done)
     {
       if(name->bytes[name->length-2] != '\r' || name->bytes[name->length-1] != '\n')
-	  {
+    {
         if((name->bytes[name->length-1] == '\r' || name->bytes[name->length-1] == '\n') && (name->length+1 <= MAX_NAME_SIZE))
-	    {
-	      name->length += 1;
+      {
+        name->length += 1;
         }
-	    else if(name->length+2 <= MAX_NAME_SIZE)
-	    {
+      else if(name->length+2 <= MAX_NAME_SIZE)
+      {
           name->length += 2;
         }
-	    else
-	    {
+      else
+      {
           name->length = MAX_NAME_SIZE;
         }
 
@@ -122,7 +122,7 @@ static err_t helloworld_recv(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err
       tcp_write(pcb, GREETING, strlen(GREETING), 1);
     }
 
-	/* End of processing, we free the pbuf */
+  /* End of processing, we free the pbuf */
     pbuf_free(p);
   }
   else if (err == ERR_OK)

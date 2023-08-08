@@ -8,16 +8,16 @@
 /*-----------------------------------------------------------------------*/
 
 
-#include "ff.h"			/* Obtains integer types */
-#include "diskio.h"		/* Declarations of disk functions */
+#include "ff.h"      /* Obtains integer types */
+#include "diskio.h"    /* Declarations of disk functions */
 
 #include <string.h>
-#include "at32_sdio.h"		/* Example: Header file of existing MMC/SDC contorl module */
+#include "at32_sdio.h"    /* Example: Header file of existing MMC/SDC contorl module */
 
 /* Definitions of physical drive number for each drive */
-#define DEV_RAM		0	/* Example: Map Ramdisk to physical drive 0 */
-#define DEV_MMC		1	/* Example: Map MMC/SD card to physical drive 1 */
-#define DEV_USB		2	/* Example: Map USB MSD to physical drive 2 */
+#define DEV_RAM    0  /* Example: Map Ramdisk to physical drive 0 */
+#define DEV_MMC    1  /* Example: Map MMC/SD card to physical drive 1 */
+#define DEV_USB    2  /* Example: Map USB MSD to physical drive 2 */
 
 __align(4) uint8_t sdio_data_buffer[512]; /* buf for sd_read_disk/sd_write_disk function used. */
 
@@ -108,29 +108,29 @@ sd_error_status_type sd_write_disk(const uint8_t *buf, uint32_t sector, uint8_t 
 /* Get Drive Status                                                      */
 /*-----------------------------------------------------------------------*/
 DSTATUS disk_status (
-	BYTE pdrv		/* Physical drive nmuber to identify the drive */
+  BYTE pdrv    /* Physical drive nmuber to identify the drive */
 )
 {
-	DSTATUS stat;
-	int result;
+  DSTATUS stat;
+  int result;
 
-	switch (pdrv) {
-	case DEV_RAM :
+  switch (pdrv) {
+  case DEV_RAM :
     result = 1;
     stat = (DSTATUS)result;
-		return stat;
+    return stat;
 
-	case DEV_MMC :
+  case DEV_MMC :
     result = 0;
     stat = (DSTATUS)result;
-		return stat;
+    return stat;
 
-	case DEV_USB :
+  case DEV_USB :
     result = 1;
     stat = (DSTATUS)result;
-		return stat;
-	}
-	return STA_NOINIT;
+    return stat;
+  }
+  return STA_NOINIT;
 }
 
 
@@ -139,29 +139,29 @@ DSTATUS disk_status (
 /* Inidialize a Drive                                                    */
 /*-----------------------------------------------------------------------*/
 DSTATUS disk_initialize (
-	BYTE pdrv				/* Physical drive nmuber to identify the drive */
+  BYTE pdrv        /* Physical drive nmuber to identify the drive */
 )
 {
-	DSTATUS stat;
-	int result;
+  DSTATUS stat;
+  int result;
 
-	switch (pdrv) {
-	case DEV_RAM :
+  switch (pdrv) {
+  case DEV_RAM :
     result = 1;
     stat = (DSTATUS)result;
-		return stat;
+    return stat;
 
-	case DEV_MMC :
+  case DEV_MMC :
     result = sd_init();
     stat = (DSTATUS)result;
-		return stat;
+    return stat;
 
-	case DEV_USB :
+  case DEV_USB :
     result = 1;
     stat = (DSTATUS)result;
-		return stat;
-	}
-	return STA_NOINIT;
+    return stat;
+  }
+  return STA_NOINIT;
 }
 
 
@@ -170,33 +170,33 @@ DSTATUS disk_initialize (
 /* Read Sector(s)                                                        */
 /*-----------------------------------------------------------------------*/
 DRESULT disk_read (
-	BYTE pdrv,		/* Physical drive nmuber to identify the drive */
-	BYTE *buff,		/* Data buffer to store read data */
-	LBA_t sector,	/* Start sector in LBA */
-	UINT count		/* Number of sectors to read */
+  BYTE pdrv,    /* Physical drive nmuber to identify the drive */
+  BYTE *buff,    /* Data buffer to store read data */
+  LBA_t sector,  /* Start sector in LBA */
+  UINT count    /* Number of sectors to read */
 )
 {
-	DRESULT res;
-	int result;
+  DRESULT res;
+  int result;
 
-	switch (pdrv) {
-	case DEV_RAM :
+  switch (pdrv) {
+  case DEV_RAM :
     result = 1;
     res = (DRESULT)result;
-		return res;
+    return res;
 
-	case DEV_MMC :
+  case DEV_MMC :
     result = sd_read_disk(buff, sector, count);
     res = (DRESULT)result;
-		return res;
+    return res;
 
-	case DEV_USB :
+  case DEV_USB :
     result = 1;
     res = (DRESULT)result;
-		return res;
-	}
+    return res;
+  }
 
-	return RES_PARERR;
+  return RES_PARERR;
 }
 
 
@@ -207,33 +207,33 @@ DRESULT disk_read (
 #if FF_FS_READONLY == 0
 
 DRESULT disk_write (
-	BYTE pdrv,			/* Physical drive nmuber to identify the drive */
-	const BYTE *buff,	/* Data to be written */
-	LBA_t sector,		/* Start sector in LBA */
-	UINT count			/* Number of sectors to write */
+  BYTE pdrv,      /* Physical drive nmuber to identify the drive */
+  const BYTE *buff,  /* Data to be written */
+  LBA_t sector,    /* Start sector in LBA */
+  UINT count      /* Number of sectors to write */
 )
 {
-	DRESULT res;
-	int result;
+  DRESULT res;
+  int result;
 
-	switch (pdrv) {
-	case DEV_RAM :
+  switch (pdrv) {
+  case DEV_RAM :
     result = 1;
     res = (DRESULT)result;
-		return res;
+    return res;
 
-	case DEV_MMC :
+  case DEV_MMC :
     result = sd_write_disk(buff, sector, count);
     res = (DRESULT)result;
-		return res;
+    return res;
 
-	case DEV_USB :
+  case DEV_USB :
     result = 1;
     res = (DRESULT)result;
-		return res;
-	}
+    return res;
+  }
 
-	return RES_PARERR;
+  return RES_PARERR;
 }
 
 #endif
@@ -243,21 +243,21 @@ DRESULT disk_write (
 /* Miscellaneous Functions                                               */
 /*-----------------------------------------------------------------------*/
 DRESULT disk_ioctl (
-	BYTE pdrv,		/* Physical drive nmuber (0..) */
-	BYTE cmd,		/* Control code */
-	void *buff		/* Buffer to send/receive control data */
+  BYTE pdrv,    /* Physical drive nmuber (0..) */
+  BYTE cmd,    /* Control code */
+  void *buff    /* Buffer to send/receive control data */
 )
 {
-	DRESULT res;
-	int result;
+  DRESULT res;
+  int result;
 
-	switch (pdrv) {
-	case DEV_RAM :
+  switch (pdrv) {
+  case DEV_RAM :
     result = 1;
     res = (DRESULT)result;
-		return res;
+    return res;
 
-	case DEV_MMC :
+  case DEV_MMC :
     switch(cmd){
       case CTRL_SYNC:
         result = RES_OK;
@@ -279,13 +279,13 @@ DRESULT disk_ioctl (
         break;
     }
     res = (DRESULT)result;
-		return res;
+    return res;
 
-	case DEV_USB :
+  case DEV_USB :
     result = 1;
     res = (DRESULT)result;
-		return res;
-	}
+    return res;
+  }
 
-	return RES_PARERR;
+  return RES_PARERR;
 }

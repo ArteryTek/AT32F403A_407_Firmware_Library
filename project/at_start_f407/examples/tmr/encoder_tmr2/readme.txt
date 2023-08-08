@@ -11,4 +11,4 @@
   - pa0    <--->    pa2
   - pa1    <--->    pa3  
 
-  for more detailed information. please refer to the application note document AN0085.
+  for more detailed information. please refer to the application note document AN0085.

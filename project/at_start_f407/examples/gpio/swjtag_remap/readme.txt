@@ -12,4 +12,4 @@
   pb2 is pressed the swj-dp will be disabled. the swj-dp pins are configured
   as output push-pull. the pa13(jtms/swdat), pa14(jtck/swclk), pa15(jtdi),
   pb3(jtdo) and pb4(jtrst) pins are toggled in an infinite loop.
-  for more detailed information. please refer to the application note document AN0110.
+  for more detailed information. please refer to the application note document AN0110.

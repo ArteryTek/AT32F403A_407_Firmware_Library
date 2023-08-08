@@ -54,7 +54,10 @@ static usbd_desc_t *get_device_config_string(void);
 static uint16_t usbd_unicode_convert(uint8_t *string, uint8_t *unicode_buf);
 static void usbd_int_to_unicode (uint32_t value , uint8_t *pbuf , uint8_t len);
 static void get_serial_num(void);
-static uint8_t g_usbd_desc_buffer[256];
+#if defined ( __ICCARM__ ) /* iar compiler */
+  #pragma data_alignment=4
+#endif
+ALIGNED_HEAD static uint8_t g_usbd_desc_buffer[256] ALIGNED_TAIL;
 
 /**
   * @brief device descriptor handler structure
@@ -373,7 +376,7 @@ ALIGNED_HEAD static uint8_t g_usbd_configuration[USBD_AUHID_CONFIG_DESC_SIZE] AL
   0x11,                                  /* bmAttributes: endpoint attributes */
   LBYTE(AUDIO_FEEDBACK_MAXPACKET_SIZE),  /* wMaxPacketSize: maximum packe size this endpoint */
   HBYTE(AUDIO_FEEDBACK_MAXPACKET_SIZE),  /* wMaxPacketSize: maximum packe size this endpoint */
-  1,                   					 /* bInterval: interval for polling endpoint for data transfers */
+  1,                              /* bInterval: interval for polling endpoint for data transfers */
   FEEDBACK_REFRESH_TIME,                 /* bRefresh: this field indicates the rate at which an iso syncronization
                                                       pipe provides new syncronization feedback data. this rate must be a power of
                                                       2, therefore only the power is reported back and the range of this field is from

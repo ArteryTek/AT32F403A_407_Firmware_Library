@@ -14,4 +14,4 @@
   ch3 duty_cycle = 12.5%
   ch4 duty_cycle = 6.25%
 
-  for more detailed information. please refer to the application note document AN0085.
+  for more detailed information. please refer to the application note document AN0085.

@@ -130,7 +130,7 @@ int main(void)
   at32_board_init();
 
   if(flash_fat16_get_upgrade_flag() == IAP_SUCCESS &&
-  	(at32_button_press() == NO_BUTTON))
+    (at32_button_press() == NO_BUTTON))
   {
     jump_to_app(flash_iap.flash_app_addr);
   }
