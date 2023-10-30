@@ -242,6 +242,50 @@ void sdio_interrupt_enable(sdio_type *sdio_x, uint32_t int_opt,  confirm_state n
 }
 
 /**
+  * @brief  get sdio interrupt flag.
+  * @param  sdio_x: to select the sdio peripheral.
+  *         this parameter can be one of the following values:
+  *         SDIO1, SDIO2.
+  * @param  flag
+  *         this parameter can be one of the following values:
+  *         - SDIO_CMDFAIL_FLAG
+  *         - SDIO_DTFAIL_FLAG
+  *         - SDIO_CMDTIMEOUT_FLAG
+  *         - SDIO_DTTIMEOUT_FLAG
+  *         - SDIO_TXERRU_FLAG
+  *         - SDIO_RXERRO_FLAG
+  *         - SDIO_CMDRSPCMPL_FLAG
+  *         - SDIO_CMDCMPL_FLAG
+  *         - SDIO_DTCMPL_FLAG
+  *         - SDIO_SBITERR_FLAG
+  *         - SDIO_DTBLKCMPL_FLAG
+  *         - SDIO_DOCMD_FLAG
+  *         - SDIO_DOTX_FLAG
+  *         - SDIO_DORX_FLAG
+  *         - SDIO_TXBUFH_FLAG
+  *         - SDIO_RXBUFH_FLAG
+  *         - SDIO_TXBUFF_FLAG
+  *         - SDIO_RXBUFF_FLAG
+  *         - SDIO_TXBUFE_FLAG
+  *         - SDIO_RXBUFE_FLAG
+  *         - SDIO_TXBUF_FLAG
+  *         - SDIO_RXBUF_FLAG
+  *         - SDIO_SDIOIF_FLAG
+  * @retval flag_status (SET or RESET)
+  */
+flag_status sdio_interrupt_flag_get(sdio_type *sdio_x, uint32_t flag)
+{
+  flag_status status = RESET;
+
+  if((sdio_x->inten & flag) && (sdio_x->sts & flag))
+  {
+    status = SET;
+  }
+
+  return status;
+}
+
+/**
   * @brief  get sdio flag.
   * @param  sdio_x: to select the sdio peripheral.
   *         this parameter can be one of the following values:

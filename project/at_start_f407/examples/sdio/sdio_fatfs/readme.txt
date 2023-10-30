@@ -8,7 +8,7 @@
   this demo is based on the at-start board, in this demo, sdio1 to manage
   test FatFs R0.14b.
   
-    sdio1                       at32f403a           sd/mmc card
+    sdio1                                           sd/mmc card
   - sdio1_d0                    pc8          --->   dat0
   - sdio1_d1                    pc9          --->   dat1
   - sdio1_d2                    pc10         --->   dat2

@@ -619,6 +619,7 @@ uint16_t adc_ordinary_conversion_data_get(adc_type *adc_x);
 uint32_t adc_combine_ordinary_conversion_data_get(void);
 uint16_t adc_preempt_conversion_data_get(adc_type *adc_x, adc_preempt_channel_type adc_preempt_channel);
 flag_status adc_flag_get(adc_type *adc_x, uint8_t adc_flag);
+flag_status adc_interrupt_flag_get(adc_type *adc_x, uint8_t adc_flag);
 void adc_flag_clear(adc_type *adc_x, uint32_t adc_flag);
 
 /**

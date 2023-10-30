@@ -689,6 +689,7 @@ void usb_remote_wkup_clear(usbd_type *usbx);
 uint16_t usb_buffer_malloc(uint16_t maxpacket);
 void usb_buffer_free(void);
 flag_status usb_flag_get(usbd_type *usbx, uint16_t flag);
+flag_status usb_interrupt_flag_get(usbd_type *usbx, uint16_t flag);
 void usb_flag_clear(usbd_type *usbx, uint16_t flag);
 
 

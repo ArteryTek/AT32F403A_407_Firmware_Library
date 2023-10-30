@@ -10,7 +10,7 @@
   h27u1g8f2ctr(hynix) or k9gag08u0e(samsung).
   usart1 using pa9 to printf the result.
         
-    xmc                     at32f403a/407       nand
+    xmc                                         nand
   - xmc_d0                  pd14         --->   io[0]  
   - xmc_d1                  pd15         --->   io[1]
   - xmc_d2                  pd0          --->   io[2]

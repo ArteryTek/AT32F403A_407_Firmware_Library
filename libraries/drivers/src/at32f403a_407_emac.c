@@ -2260,6 +2260,62 @@ flag_status emac_dma_flag_get(uint32_t dma_flag)
 }
 
 /**
+  * @brief  check whether the specified emac dma interrupt flag is set or not.
+  * @param  dma_flag: specifies the emac dma flag to check.
+  *         this parameter can be one of emac dma flag status:
+  *         - EMAC_DMA_TI_FLAG
+  *         - EMAC_DMA_TPS_FLAG
+  *         - EMAC_DMA_TBU_FLAG
+  *         - EMAC_DMA_TJT_FLAG
+  *         - EMAC_DMA_OVF_FLAG
+  *         - EMAC_DMA_UNF_FLAG
+  *         - EMAC_DMA_RI_FLAG
+  *         - EMAC_DMA_RBU_FLAG
+  *         - EMAC_DMA_RPS_FLAG
+  *         - EMAC_DMA_RWT_FLAG
+  *         - EMAC_DMA_ETI_FLAG
+  *         - EMAC_DMA_FBEI_FLAG
+  *         - EMAC_DMA_ERI_FLAG
+  *         - EMAC_DMA_AIS_FLAG
+  *         - EMAC_DMA_NIS_FLAG
+  * @retval the new state of dma_flag (SET or RESET).
+  */
+flag_status emac_dma_interrupt_flag_get(uint32_t dma_flag)
+{
+  flag_status status = RESET;  
+  switch(dma_flag)
+  {
+    case EMAC_DMA_TI_FLAG:
+    case EMAC_DMA_TBU_FLAG:
+    case EMAC_DMA_RI_FLAG:
+    case EMAC_DMA_ERI_FLAG:
+      if((EMAC_DMA->sts & dma_flag) && 
+        (EMAC_DMA->ie & dma_flag) && 
+        (EMAC_DMA->sts & EMAC_DMA_NIS_FLAG))
+        status = SET;
+      break;
+    case EMAC_DMA_TPS_FLAG:
+    case EMAC_DMA_TJT_FLAG:
+    case EMAC_DMA_OVF_FLAG:
+    case EMAC_DMA_UNF_FLAG:
+    case EMAC_DMA_RBU_FLAG:
+    case EMAC_DMA_RPS_FLAG: 
+    case EMAC_DMA_RWT_FLAG:
+    case EMAC_DMA_ETI_FLAG:
+    case EMAC_DMA_FBEI_FLAG:
+      if((EMAC_DMA->sts & dma_flag) && 
+        (EMAC_DMA->ie & dma_flag) && 
+        (EMAC_DMA->sts & EMAC_DMA_AIS_FLAG))
+        status = SET;
+      break;
+    default:
+      break;
+  }
+  /* return the new state (SET or RESET) */
+  return status;
+}
+
+/**
   * @brief  clear the emac dma flag.
   * @param  dma_flag: specifies the emac dma flags to clear.
   *         this parameter can be any combination of the following values:

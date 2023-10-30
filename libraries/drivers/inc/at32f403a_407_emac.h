@@ -1687,6 +1687,7 @@ void emac_ptp_target_nanosecond_set(uint32_t value);
 confirm_state emac_ptp_timestamp_status_get(emac_ptp_timestamp_status_type status);
 void emac_ptp_pps_frequency_set(emac_ptp_pps_control_type freq);
 flag_status emac_dma_flag_get(uint32_t dma_flag);
+flag_status emac_dma_interrupt_flag_get(uint32_t dma_flag);
 void emac_dma_flag_clear(uint32_t dma_flag);
 
 /**

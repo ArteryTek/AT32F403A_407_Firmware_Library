@@ -796,6 +796,47 @@ flag_status adc_flag_get(adc_type *adc_x, uint8_t adc_flag)
 }
 
 /**
+  * @brief  get interrupt flag of the specified adc peripheral.
+  * @param  adc_x: select the adc peripheral.
+  *         this parameter can be one of the following values:
+  *         ADC1, ADC2, ADC3.
+  * @param  adc_flag: select the adc flag.
+  *         this parameter can be one of the following values:
+  *         - ADC_VMOR_FLAG
+  *         - ADC_CCE_FLAG
+  *         - ADC_PCCE_FLAG
+  * @retval the new state of adc flag status(SET or RESET).
+  */
+flag_status adc_interrupt_flag_get(adc_type *adc_x, uint8_t adc_flag)
+{
+  flag_status status = RESET;
+  switch(adc_flag)
+  {
+    case ADC_VMOR_FLAG:
+      if(adc_x->sts_bit.vmor && adc_x->ctrl1_bit.vmorien)
+      {
+        status = SET;
+      }
+      break;
+    case ADC_CCE_FLAG:
+      if(adc_x->sts_bit.cce && adc_x->ctrl1_bit.cceien)
+      {
+        status = SET;
+      }
+      break;
+    case ADC_PCCE_FLAG:
+      if(adc_x->sts_bit.pcce && adc_x->ctrl1_bit.pcceien)
+      {
+        status = SET;
+      }
+      break;
+    default:
+      break;
+  }
+  return status;
+}
+
+/**
   * @brief  clear flag of the specified adc peripheral.
   * @param  adc_x: select the adc peripheral.
   *         this parameter can be one of the following values:
