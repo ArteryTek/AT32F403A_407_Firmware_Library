@@ -132,14 +132,14 @@ void USBFS_L_CAN1_RX0_IRQHandler(void)
   */
 void ACC_IRQHandler(void)
 {
-  if(acc_flag_get(ACC_CALRDY_FLAG) != RESET)
+  if(acc_interrupt_flag_get(ACC_CALRDY_FLAG) != RESET)
   {
     at32_led_toggle(LED2);
 
     /* clear acc calibration ready flag */
     acc_flag_clear(ACC_CALRDY_FLAG);
   }
-  if(acc_flag_get(ACC_RSLOST_FLAG) != RESET)
+  if(acc_interrupt_flag_get(ACC_RSLOST_FLAG) != RESET)
   {
     at32_led_toggle(LED3);
 

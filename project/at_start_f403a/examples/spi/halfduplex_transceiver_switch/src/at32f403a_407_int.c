@@ -147,28 +147,22 @@ void SysTick_Handler(void)
   */
  void SPI1_IRQHandler(void)
 {
-  if(SPI1->ctrl2_bit.tdbeie != RESET)
+  if(spi_i2s_interrupt_flag_get(SPI1, SPI_I2S_TDBE_FLAG) != RESET)
   {
-    if(spi_i2s_flag_get(SPI1, SPI_I2S_TDBE_FLAG) != RESET)
+    spi_i2s_data_transmit(SPI1, spi1_tx_buffer[tx_index++]);
+    if(tx_index == BUFFERSIZE)
     {
-      spi_i2s_data_transmit(SPI1, spi1_tx_buffer[tx_index++]);
-      if(tx_index == BUFFERSIZE)
-      {
-        spi_i2s_interrupt_enable(SPI1, SPI_I2S_TDBE_INT, FALSE);
-      }
+      spi_i2s_interrupt_enable(SPI1, SPI_I2S_TDBE_INT, FALSE);
     }
   }
-  if(SPI1->ctrl2_bit.rdbfie != RESET)
+  if(spi_i2s_interrupt_flag_get(SPI1, SPI_I2S_RDBF_FLAG) != RESET)
   {
-    if(spi_i2s_flag_get(SPI1, SPI_I2S_RDBF_FLAG) != RESET)
+    spi_enable(SPI1, FALSE);
+    spi1_rx_buffer[rx_index++] = spi_i2s_data_receive(SPI1);
+    spi_enable(SPI1, TRUE);
+    if(rx_index == BUFFERSIZE)
     {
-      spi_enable(SPI1, FALSE);
-      spi1_rx_buffer[rx_index++] = spi_i2s_data_receive(SPI1);
-      spi_enable(SPI1, TRUE);
-      if(rx_index == BUFFERSIZE)
-      {
-        spi_i2s_interrupt_enable(SPI1, SPI_I2S_RDBF_INT, FALSE);
-      }
+      spi_i2s_interrupt_enable(SPI1, SPI_I2S_RDBF_INT, FALSE);
     }
   }
 }
@@ -180,23 +174,17 @@ void SysTick_Handler(void)
   */
  void SPI2_I2S2EXT_IRQHandler(void)
 {
-  if(SPI2->ctrl2_bit.tdbeie != RESET)
+  if(spi_i2s_interrupt_flag_get(SPI2, SPI_I2S_TDBE_FLAG) != RESET)
   {
-    if(spi_i2s_flag_get(SPI2, SPI_I2S_TDBE_FLAG) != RESET)
+    spi_i2s_data_transmit(SPI2, spi2_tx_buffer[tx_index++]);
+    if(tx_index == BUFFERSIZE)
     {
-      spi_i2s_data_transmit(SPI2, spi2_tx_buffer[tx_index++]);
-      if(tx_index == BUFFERSIZE)
-      {
-        spi_i2s_interrupt_enable(SPI2, SPI_I2S_TDBE_INT, FALSE);
-      }
+      spi_i2s_interrupt_enable(SPI2, SPI_I2S_TDBE_INT, FALSE);
     }
   }
-  if(SPI2->ctrl2_bit.rdbfie != RESET)
+  if(spi_i2s_interrupt_flag_get(SPI2, SPI_I2S_RDBF_FLAG) != RESET)
   {
-    if(spi_i2s_flag_get(SPI2, SPI_I2S_RDBF_FLAG) != RESET)
-    {
-      spi2_rx_buffer[rx_index++] = spi_i2s_data_receive(SPI2);
-    }
+    spi2_rx_buffer[rx_index++] = spi_i2s_data_receive(SPI2);
   }
 }
 

@@ -140,7 +140,7 @@ void SysTick_Handler(void)
   */
 void RTCAlarm_IRQHandler(void)
 {
-  if(rtc_flag_get(RTC_TA_FLAG) != RESET)
+  if(rtc_interrupt_flag_get(RTC_TA_FLAG) != RESET)
   {
     /* clear exint line flag */
     exint_flag_clear(EXINT_LINE_17);

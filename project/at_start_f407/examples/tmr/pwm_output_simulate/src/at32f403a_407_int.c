@@ -139,7 +139,7 @@ void SysTick_Handler(void)
 
 void TMR2_GLOBAL_IRQHandler(void)
 {
-  if(tmr_flag_get(TMR2, TMR_C1_FLAG) != RESET)
+  if(tmr_interrupt_flag_get(TMR2, TMR_C1_FLAG) != RESET)
   {
     tmr_flag_clear(TMR2, TMR_C1_FLAG );
 
@@ -148,7 +148,7 @@ void TMR2_GLOBAL_IRQHandler(void)
     capture = tmr_channel_value_get(TMR2, TMR_SELECT_CHANNEL_1);
     tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, capture + ccr1_val);
   }
-  else if(tmr_flag_get(TMR2, TMR_C2_FLAG) != RESET)
+  else if(tmr_interrupt_flag_get(TMR2, TMR_C2_FLAG) != RESET)
   {
     tmr_flag_clear(TMR2, TMR_C2_FLAG);
 
@@ -157,7 +157,7 @@ void TMR2_GLOBAL_IRQHandler(void)
     capture = tmr_channel_value_get(TMR2, TMR_SELECT_CHANNEL_2);
     tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_2, capture + ccr2_val);
   }
-  else if(tmr_flag_get(TMR2, TMR_C3_FLAG) != RESET)
+  else if(tmr_interrupt_flag_get(TMR2, TMR_C3_FLAG) != RESET)
   {
     tmr_flag_clear(TMR2, TMR_C3_FLAG);
 

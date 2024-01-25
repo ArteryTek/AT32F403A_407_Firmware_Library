@@ -100,11 +100,11 @@ sd_error_status_type sd_init(void)
     sdio_reset(SDIOx);
     /* power on */
     status = sd_power_on();
-    
+
     if(status == SD_OK)
       break;
   }
-  
+
   if(status == SD_OK)
   {
     /* sdio card initialize */
@@ -288,7 +288,7 @@ sd_error_status_type sd_power_on(void)
     while((!valid_voltage) && (count < SD_MAX_VOLT_TRIAL))
     {
       delay_ms(10);
-      
+
       /* send cmd55 before acmd41 */
       sdio_command_init_struct.argument = 0x00;
       sdio_command_init_struct.cmd_index = SD_CMD_APP_CMD;
@@ -355,7 +355,7 @@ sd_error_status_type sd_power_on(void)
     while((!valid_voltage) && (count < SD_MAX_VOLT_TRIAL))
     {
       delay_ms(10);
-      
+
       sdio_command_init_struct.argument = SD_VOLTAGE_WINDOW_MMC;
       sdio_command_init_struct.cmd_index = SD_CMD_SEND_OP_COND;
       sdio_command_init_struct.rsp_type = SDIO_RESPONSE_SHORT;
@@ -1786,7 +1786,7 @@ void SDIO2_IRQHandler(void)
   */
 sd_error_status_type sd_irq_service(void)
 {
-  if(sdio_flag_get(SDIOx, SDIO_DTCMPL_FLAG) != RESET)
+  if(sdio_interrupt_flag_get(SDIOx, SDIO_DTCMPL_FLAG) != RESET)
   {
     if(stop_flag == 1)
     {
@@ -1811,7 +1811,7 @@ sd_error_status_type sd_irq_service(void)
     return transfer_error;
   }
 
-  if(sdio_flag_get(SDIOx, SDIO_DTFAIL_FLAG) != RESET)
+  if(sdio_interrupt_flag_get(SDIOx, SDIO_DTFAIL_FLAG) != RESET)
   {
     /* clear flag */
     sdio_flag_clear(SDIOx, SDIO_DTFAIL_FLAG);
@@ -1820,7 +1820,7 @@ sd_error_status_type sd_irq_service(void)
     return transfer_error;
   }
 
-  if(sdio_flag_get(SDIOx, SDIO_DTTIMEOUT_FLAG) != RESET)
+  if(sdio_interrupt_flag_get(SDIOx, SDIO_DTTIMEOUT_FLAG) != RESET)
   {
     /* clear flag */
     sdio_flag_clear(SDIOx, SDIO_DTTIMEOUT_FLAG);
@@ -1829,7 +1829,7 @@ sd_error_status_type sd_irq_service(void)
     return transfer_error;
   }
 
-  if(sdio_flag_get(SDIOx, SDIO_RXERRO_FLAG) != RESET)
+  if(sdio_interrupt_flag_get(SDIOx, SDIO_RXERRO_FLAG) != RESET)
   {
     /* clear flag */
     sdio_flag_clear(SDIOx, SDIO_RXERRO_FLAG);
@@ -1838,7 +1838,7 @@ sd_error_status_type sd_irq_service(void)
     return(SD_RX_OVERRUN);
   }
 
-  if(sdio_flag_get(SDIOx, SDIO_TXERRU_FLAG) != RESET)
+  if(sdio_interrupt_flag_get(SDIOx, SDIO_TXERRU_FLAG) != RESET)
   {
     /* clear flag */
     sdio_flag_clear(SDIOx, SDIO_TXERRU_FLAG);
@@ -1847,7 +1847,7 @@ sd_error_status_type sd_irq_service(void)
     return(SD_TX_UNDERRUN);
   }
 
-  if(sdio_flag_get(SDIOx, SDIO_SBITERR_FLAG) != RESET)
+  if(sdio_interrupt_flag_get(SDIOx, SDIO_SBITERR_FLAG) != RESET)
   {
     /* clear flag */
     sdio_flag_clear(SDIOx, SDIO_SBITERR_FLAG);

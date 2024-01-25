@@ -281,7 +281,7 @@ uint16_t usart_receive_data(void)
   */
 void USART2_IRQHandler(void)
 {
-  if(usart_flag_get(USART2, USART_RDBF_FLAG) != RESET)
+  if(usart_interrupt_flag_get(USART2, USART_RDBF_FLAG) != RESET)
   {
     /* read one byte from the receive data register */
     usart_rx_buffer[hw_usart_rx_index] = usart_data_receive(USART2);
@@ -320,7 +320,7 @@ void usb_usart_config( linecoding_type linecoding)
     default :
       break;
   }
-  
+
   /* parity */
   switch(linecoding.parity)
   {
@@ -340,7 +340,7 @@ void usb_usart_config( linecoding_type linecoding)
     default :
       break;
   }
-  
+
   if(USART_PARITY_NONE == usart_parity_select)
   {
     /* data bits */
@@ -359,7 +359,7 @@ void usb_usart_config( linecoding_type linecoding)
         break;
       default :
         break;
-    }    
+    }
   }
   else
   {
@@ -381,7 +381,7 @@ void usb_usart_config( linecoding_type linecoding)
         break;
       default :
         break;
-    }    
+    }
   }
 
   nvic_irq_enable(USART2_IRQn, 0, 0);

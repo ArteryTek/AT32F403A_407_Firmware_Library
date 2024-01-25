@@ -47,6 +47,15 @@ iap_result_type iap_data_write(uint8_t *pdata, uint32_t len);
 void iap_jump(void);
 void iap_respond(uint8_t *res_buf, uint16_t iap_cmd, uint16_t result);
 
+/* app_load don't optimize */
+#if defined (__CC_ARM)
+  #pragma O0
+#elif defined (__ICCARM__)
+  #pragma optimize=s none
+#elif defined (__GNUC__)
+__attribute__((optimize("O0")))
+#endif
+
 /**
   * @brief  jump to app
   * @param  none

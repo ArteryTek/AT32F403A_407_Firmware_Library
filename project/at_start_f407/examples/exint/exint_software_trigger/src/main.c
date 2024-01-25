@@ -88,7 +88,7 @@ static void tmr1_config(void)
   */
 void TMR1_OVF_TMR10_IRQHandler(void)
 {
-  if(tmr_flag_get(TMR1,TMR_OVF_FLAG) != RESET)
+  if(tmr_interrupt_flag_get(TMR1,TMR_OVF_FLAG) != RESET)
   {
     at32_led_toggle(LED2);
     exint_software_interrupt_event_generate(EXINT_LINE_4);
@@ -103,7 +103,7 @@ void TMR1_OVF_TMR10_IRQHandler(void)
   */
 void EXINT4_IRQHandler(void)
 {
-  if(exint_flag_get(EXINT_LINE_4) != RESET)
+  if(exint_interrupt_flag_get(EXINT_LINE_4) != RESET)
   {
     at32_led_toggle(LED3);
     at32_led_toggle(LED4);

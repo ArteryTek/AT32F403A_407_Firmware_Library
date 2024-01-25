@@ -140,7 +140,7 @@ void SysTick_Handler(void)
   */
 void TAMPER_IRQHandler(void)
 {
-  if(bpr_flag_get(BPR_TAMPER_INTERRUPT_FLAG) != RESET)
+  if(bpr_interrupt_flag_get(BPR_TAMPER_INTERRUPT_FLAG) != RESET)
   {
     /* check if bpr registers are cleared */
     if(bpr_reg_judge() == 0)

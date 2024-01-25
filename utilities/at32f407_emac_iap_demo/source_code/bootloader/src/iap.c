@@ -43,7 +43,10 @@ iapfun jump_to_app;
   #pragma O0
 #elif defined (__ICCARM__)
   #pragma optimize=s none
+#elif defined (__GNUC__)
+__attribute__((optimize("O0")))
 #endif
+
 /**
   * @brief  app load.
   * @param  app_addr

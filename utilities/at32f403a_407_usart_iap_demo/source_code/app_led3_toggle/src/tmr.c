@@ -69,7 +69,7 @@ void tmr_init(void)
   */
 void TMR3_GLOBAL_IRQHandler(void)
 {
-  if(tmr_flag_get(TMR3, TMR_OVF_FLAG) == SET)
+  if(tmr_interrupt_flag_get(TMR3, TMR_OVF_FLAG) == SET)
   {
     tmr_flag_clear(TMR3, TMR_OVF_FLAG);
     at32_led_toggle(LED3);

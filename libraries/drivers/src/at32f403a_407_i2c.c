@@ -641,7 +641,7 @@ flag_status i2c_interrupt_flag_get(i2c_type *i2c_x, uint32_t flag)
       break;
     case I2C_RDBF_FLAG:
     case I2C_TDBE_FLAG:
-      iten = i2c_x->ctrl2_bit.dataien & i2c_x->ctrl2_bit.evtien;
+      iten = i2c_x->ctrl2_bit.dataien && i2c_x->ctrl2_bit.evtien;
       break;
     case I2C_BUSERR_FLAG:
     case I2C_ARLOST_FLAG:

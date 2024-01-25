@@ -188,7 +188,7 @@ typedef enum
 typedef enum
 {
   FLASH_SPIM_MODEL1                      = 0x01, /*!< spim model 1 */
-  FLASH_SPIM_MODEL2                      = 0x02, /*!< spim model 2 */
+  FLASH_SPIM_MODEL2                      = 0x02  /*!< spim model 2 */
 } flash_spim_model_type;
 
 /**

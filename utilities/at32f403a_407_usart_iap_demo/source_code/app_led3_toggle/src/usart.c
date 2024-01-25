@@ -85,7 +85,7 @@ void uart_init(uint32_t baudrate)
 void USART1_IRQHandler(void)
 {
   uint16_t reval;
-  if(usart_flag_get(USART1, USART_RDBF_FLAG) != RESET)
+  if(usart_interrupt_flag_get(USART1, USART_RDBF_FLAG) != RESET)
   {
     reval = usart_data_receive(USART1);
     if((reval == 0x5A) && (iap_flag == IAP_REV_FLAG_NO))

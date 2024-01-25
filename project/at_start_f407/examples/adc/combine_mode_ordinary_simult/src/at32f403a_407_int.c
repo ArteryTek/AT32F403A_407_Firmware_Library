@@ -141,7 +141,7 @@ void SysTick_Handler(void)
   */
 void DMA1_Channel1_IRQHandler(void)
 {
-  if(dma_flag_get(DMA1_FDT1_FLAG) != RESET)
+  if(dma_interrupt_flag_get(DMA1_FDT1_FLAG) != RESET)
   {
     dma_flag_clear(DMA1_FDT1_FLAG);
     dma1_trans_complete_flag = 1;

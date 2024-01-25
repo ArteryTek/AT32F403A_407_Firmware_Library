@@ -148,7 +148,7 @@ void SysTick_Handler(void)
   */
 void RTC_IRQHandler(void)
 {
-  if(rtc_flag_get(RTC_TS_FLAG) != RESET)
+  if(rtc_interrupt_flag_get(RTC_TS_FLAG) != RESET)
   {
     /* toggle led3 */
     at32_led_toggle(LED3);
@@ -169,11 +169,11 @@ void TMR5_GLOBAL_IRQHandler(void)
 {
   uint32_t tmp = 0;
 
-  if(tmr_flag_get(TMR5, TMR_C4_FLAG) == SET)
+  if(tmr_interrupt_flag_get(TMR5, TMR_C4_FLAG) == SET)
   {
     tmpCC4[incrementvar_operationcomplete()] = (uint16_t)(TMR5->c4dt);
 
-    tmr_flag_get(TMR5, TMR_C4_FLAG);
+    tmr_interrupt_flag_get(TMR5, TMR_C4_FLAG);
 
     if(getvar_operationcomplete() >= 2)
     {

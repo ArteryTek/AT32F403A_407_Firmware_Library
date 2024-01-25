@@ -143,7 +143,7 @@ void SysTick_Handler(void)
   */
 void DMA1_Channel1_IRQHandler(void)
 {
-  if(dma_flag_get(DMA1_FDT1_FLAG) != RESET)
+  if(dma_interrupt_flag_get(DMA1_FDT1_FLAG) != RESET)
   {
     dma_flag_clear(DMA1_FDT1_FLAG);
     dma1_trans_complete_flag = 1;
@@ -157,7 +157,7 @@ void DMA1_Channel1_IRQHandler(void)
   */
 void DMA2_Channel4_5_IRQHandler(void)
 {
-  if(dma_flag_get(DMA2_FDT5_FLAG) != RESET)
+  if(dma_interrupt_flag_get(DMA2_FDT5_FLAG) != RESET)
   {
     dma_flag_clear(DMA2_FDT5_FLAG);
     dma2_trans_complete_flag = 1;

@@ -138,7 +138,7 @@ void SysTick_Handler(void)
   */
 void TMR6_GLOBAL_IRQHandler(void)
 {
-  if(tmr_flag_get(TMR6, TMR_OVF_FLAG) != RESET)
+  if(tmr_interrupt_flag_get(TMR6, TMR_OVF_FLAG) != RESET)
   {
     /* Update the local_time by adding SYSTEMTICK_PERIOD_MS each SysTick interrupt */
     time_update();

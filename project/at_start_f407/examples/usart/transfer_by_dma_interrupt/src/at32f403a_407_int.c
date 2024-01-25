@@ -142,7 +142,7 @@ void SysTick_Handler(void)
   */
 void DMA1_Channel1_IRQHandler(void)
 {
-  if(dma_flag_get(DMA1_FDT1_FLAG))
+  if(dma_interrupt_flag_get(DMA1_FDT1_FLAG))
   {
     usart2_tx_dma_status = 1;
     dma_flag_clear(DMA1_FDT1_FLAG);
@@ -157,7 +157,7 @@ void DMA1_Channel1_IRQHandler(void)
   */
 void DMA1_Channel2_IRQHandler(void)
 {
-  if(dma_flag_get(DMA1_FDT2_FLAG))
+  if(dma_interrupt_flag_get(DMA1_FDT2_FLAG))
   {
     usart2_rx_dma_status = 1;
     dma_flag_clear(DMA1_FDT2_FLAG);
@@ -172,7 +172,7 @@ void DMA1_Channel2_IRQHandler(void)
   */
 void DMA1_Channel3_IRQHandler(void)
 {
-  if(dma_flag_get(DMA1_FDT3_FLAG))
+  if(dma_interrupt_flag_get(DMA1_FDT3_FLAG))
   {
     usart3_tx_dma_status = 1;
     dma_flag_clear(DMA1_FDT3_FLAG);
@@ -187,7 +187,7 @@ void DMA1_Channel3_IRQHandler(void)
   */
 void DMA1_Channel4_IRQHandler(void)
 {
-  if(dma_flag_get(DMA1_FDT4_FLAG))
+  if(dma_interrupt_flag_get(DMA1_FDT4_FLAG))
   {
     usart3_rx_dma_status = 1;
     dma_flag_clear(DMA1_FDT4_FLAG);

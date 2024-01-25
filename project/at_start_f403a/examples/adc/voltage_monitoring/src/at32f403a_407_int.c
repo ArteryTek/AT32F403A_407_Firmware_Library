@@ -142,7 +142,7 @@ void SysTick_Handler(void)
   */
 void ADC1_2_IRQHandler(void)
 {
-  if(adc_flag_get(ADC1, ADC_VMOR_FLAG) != RESET)
+  if(adc_interrupt_flag_get(ADC1, ADC_VMOR_FLAG) != RESET)
   {
     at32_led_toggle(LED3);
     adc_flag_clear(ADC1, ADC_VMOR_FLAG);

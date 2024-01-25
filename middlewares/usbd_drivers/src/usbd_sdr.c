@@ -101,6 +101,20 @@ static usb_sts_type usbd_get_descriptor(usbd_core_type *udev)
         case USB_INTERFACE_STRING:
           desc = udev->desc_handler->get_device_interface_string();
           break;
+        case USB_WINUSB_OS_STRING:
+#if (USBD_SUPPORT_WINUSB == 1)
+          if(udev->desc_handler->get_device_winusb_os_string != NULL)
+          {
+            desc = udev->desc_handler->get_device_winusb_os_string();
+          }
+          else
+          {
+            usbd_ctrl_unsupport(udev);
+          }
+#else
+          usbd_ctrl_unsupport(udev);
+#endif
+          break;
         default:
           udev->class_handler->setup_handler(udev, &udev->setup);
           return ret;
@@ -242,6 +256,10 @@ static usb_sts_type usbd_set_feature(usbd_core_type *udev)
     udev->remote_wakup = 1;
     udev->class_handler->setup_handler(udev, &udev->setup);
     usbd_ctrl_send_status(udev);
+  }
+  else
+  {
+    usbd_ctrl_unsupport(udev);
   }
   return ret;
 }

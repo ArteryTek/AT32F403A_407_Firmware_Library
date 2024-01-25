@@ -166,13 +166,18 @@ static usb_sts_type class_setup_handler(void *udev, usb_setup_type *setup)
           {
             len = MIN(USBD_CUSHID_SIZ_REPORT_DESC, setup->wLength);
             buf = (uint8_t *)g_usbd_custom_hid_report;
+            usbd_ctrl_send(pudev, (uint8_t *)buf, len);
           }
           else if(setup->wValue >> 8 == HID_DESCRIPTOR_TYPE)
           {
             len = MIN(9, setup->wLength);
             buf = (uint8_t *)g_custom_hid_usb_desc;
+            usbd_ctrl_send(pudev, (uint8_t *)buf, len);
           }
-          usbd_ctrl_send(pudev, (uint8_t *)buf, len);
+          else
+          {
+            usbd_ctrl_unsupport(pudev);
+          }
           break;
         case USB_STD_REQ_GET_INTERFACE:
           usbd_ctrl_send(pudev, (uint8_t *)&pcshid->alt_setting, 1);

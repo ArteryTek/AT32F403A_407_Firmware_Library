@@ -82,6 +82,11 @@ typedef struct
   usbd_desc_t *(*get_device_serial_string)(void);                    /*!< get device serial callback */
   usbd_desc_t *(*get_device_interface_string)(void);                 /*!< get device interface string callback */
   usbd_desc_t *(*get_device_config_string)(void);                    /*!< get device device config callback */
+#if (USBD_SUPPORT_WINUSB == 1)
+  usbd_desc_t *(*get_device_winusb_os_string)(void);                 /*!< get winusb os string */
+  usbd_desc_t *(*get_device_winusb_os_feature)(void);                /*!< get winusb os feature */
+  usbd_desc_t *(*get_device_winusb_os_property)(void);               /*!< get winusb os property */
+#endif
 }usbd_desc_handler;
 
 /**

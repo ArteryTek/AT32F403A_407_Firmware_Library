@@ -143,7 +143,7 @@ void SysTick_Handler(void)
 void TMR1_BRK_TMR9_IRQHandler(void)
 {
   /* TMR9_CH1 toggling with frequency = 366.2 Hz */
-  if(tmr_flag_get(TMR9, TMR_C1_FLAG) != RESET)
+  if(tmr_interrupt_flag_get(TMR9, TMR_C1_FLAG) != RESET)
   {
     tmr_flag_clear(TMR9, TMR_C1_FLAG );
     capture = tmr_channel_value_get(TMR9, TMR_SELECT_CHANNEL_1);
@@ -151,7 +151,7 @@ void TMR1_BRK_TMR9_IRQHandler(void)
   }
 
   /* TMR9_CH2 toggling with frequency = 732.4 Hz */
-  if(tmr_flag_get(TMR9, TMR_C2_FLAG) != RESET)
+  if(tmr_interrupt_flag_get(TMR9, TMR_C2_FLAG) != RESET)
   {
     tmr_flag_clear(TMR9, TMR_C2_FLAG);
     capture = tmr_channel_value_get(TMR9, TMR_SELECT_CHANNEL_2);

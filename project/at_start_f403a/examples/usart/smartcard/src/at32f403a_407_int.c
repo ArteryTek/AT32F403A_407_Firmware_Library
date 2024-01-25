@@ -164,7 +164,7 @@ void EXINT9_5_IRQHandler(void)
 void SC_USART_IRQHandler(void)
 {
   /* if the sc_usart detects a parity error */
-  if(usart_flag_get(SC_USART, USART_PERR_FLAG) != RESET)
+  if(usart_interrupt_flag_get(SC_USART, USART_PERR_FLAG) != RESET)
   {
     /* enable sc_usart rdbf interrupt (until receiving the corrupted byte) */
     usart_interrupt_enable(SC_USART, USART_RDBF_INT, TRUE);
@@ -172,7 +172,7 @@ void SC_USART_IRQHandler(void)
     usart_data_receive(SC_USART);
   }
 
-  if(usart_flag_get(SC_USART, USART_RDBF_FLAG) != RESET)
+  if(usart_interrupt_flag_get(SC_USART, USART_RDBF_FLAG) != RESET)
   {
     /* disable sc_usart rdbf interrupt */
     usart_interrupt_enable(SC_USART, USART_RDBF_INT, FALSE);

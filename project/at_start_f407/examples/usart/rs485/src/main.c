@@ -5,11 +5,11 @@
   **************************************************************************
   *                       Copyright notice & Disclaimer
   *
-  * The software Board Support Package (BSP) that is made available to 
-  * download from Artery official website is the copyrighted work of Artery. 
-  * Artery authorizes customers to use, copy, and distribute the BSP 
-  * software and its related documentation for the purpose of design and 
-  * development in conjunction with Artery microcontrollers. Use of the 
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
   * software is governed by this copyright notice and the following disclaimer.
   *
   * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
@@ -37,7 +37,7 @@
 #define RS485_BUFFER_SIZE                    128
 
 uint8_t rs485_buffer_rx[RS485_BUFFER_SIZE];
-uint8_t rs485_buffer_rx_cnt = 0;                                       
+uint8_t rs485_buffer_rx_cnt = 0;
 
 /**
   *  @brief  rs485 configiguration.
@@ -61,29 +61,29 @@ static void rs485_config(void)
   gpio_init_struct.gpio_pins = GPIO_PINS_2;
   gpio_init_struct.gpio_pull = GPIO_PULL_NONE;
   gpio_init(GPIOA, &gpio_init_struct);
-  
+
   gpio_init_struct.gpio_pins = GPIO_PINS_3;
   gpio_init_struct.gpio_mode = GPIO_MODE_INPUT;
   gpio_init_struct.gpio_pull = GPIO_PULL_UP;
   gpio_init(GPIOA, &gpio_init_struct);
-  
+
   gpio_init_struct.gpio_pins = GPIO_PINS_1;
   gpio_init_struct.gpio_mode = GPIO_MODE_OUTPUT;
   gpio_init_struct.gpio_out_type  = GPIO_OUTPUT_PUSH_PULL;
   gpio_init(GPIOA, &gpio_init_struct);
-  
+
   gpio_bits_reset(GPIOA, GPIO_PINS_1);
-  
+
   /* configure uart2 param */
   usart_init(USART2, RS485_BAUDRATE, USART_DATA_8BITS, USART_STOP_1_BIT);
-  
+
   usart_flag_clear(USART2, USART_RDBF_FLAG);
   usart_interrupt_enable(USART2, USART_RDBF_INT, TRUE);
-  
+
   usart_receiver_enable(USART2, TRUE);
   usart_transmitter_enable(USART2, TRUE);
   usart_enable(USART2, TRUE);
-  
+
   nvic_irq_enable(USART2_IRQn, 1, 0);
 }
 
@@ -113,13 +113,13 @@ int main(void)
 {
   char str[]="start test..\r\n";
   u8 len = 0;
-  
+
   system_clock_config();
   at32_board_init();
   nvic_priority_group_config(NVIC_PRIORITY_GROUP_4);
-  
+
   rs485_config();
-  
+
   len = sizeof(str);
   rs485_send_data((u8*)str, len);
   while(1)
@@ -131,7 +131,7 @@ int main(void)
       rs485_send_data(rs485_buffer_rx, rs485_buffer_rx_cnt);
       rs485_buffer_rx_cnt = 0;
       usart_interrupt_enable(USART2, USART_RDBF_INT, TRUE);
-    }  
+    }
   }
 }
 
@@ -143,8 +143,8 @@ int main(void)
 void USART2_IRQHandler(void)
 {
   uint16_t tmp;
-  
-  if(usart_flag_get(USART2, USART_RDBF_FLAG) != RESET)
+
+  if(usart_interrupt_flag_get(USART2, USART_RDBF_FLAG) != RESET)
   {
     tmp = usart_data_receive(USART2);
     if(rs485_buffer_rx_cnt < RS485_BUFFER_SIZE)
@@ -156,8 +156,8 @@ void USART2_IRQHandler(void)
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */

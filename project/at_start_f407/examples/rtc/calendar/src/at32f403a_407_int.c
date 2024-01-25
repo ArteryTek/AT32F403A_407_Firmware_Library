@@ -139,7 +139,7 @@ void SysTick_Handler(void)
   */
 void RTC_IRQHandler(void)
 {
-  if(rtc_flag_get(RTC_TA_FLAG) != RESET)
+  if(rtc_interrupt_flag_get(RTC_TA_FLAG) != RESET)
   {
     at32_led_toggle(LED4);
 

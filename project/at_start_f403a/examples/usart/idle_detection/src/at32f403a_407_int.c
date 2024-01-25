@@ -138,7 +138,7 @@ void SysTick_Handler(void)
   */
 void USART2_IRQHandler(void)
 {
-  if(usart_flag_get(USART2, USART_IDLEF_FLAG))
+  if(usart_interrupt_flag_get(USART2, USART_IDLEF_FLAG))
   {
     usart_data_receive(USART2);
     at32_led_on(LED2);

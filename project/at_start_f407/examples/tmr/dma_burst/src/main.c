@@ -111,7 +111,7 @@ int main(void)
   dma_init_struct.memory_base_addr = (uint32_t)src_buffer;
   dma_init_struct.memory_data_width = DMA_MEMORY_DATA_WIDTH_HALFWORD;
   dma_init_struct.memory_inc_enable = TRUE;
-  dma_init_struct.peripheral_base_addr = (uint32_t)0x40012C4C;
+  dma_init_struct.peripheral_base_addr = (uint32_t)&TMR1->dmadt;
   dma_init_struct.peripheral_data_width = DMA_PERIPHERAL_DATA_WIDTH_HALFWORD;
   dma_init_struct.peripheral_inc_enable = FALSE;
   dma_init_struct.priority = DMA_PRIORITY_MEDIUM;

@@ -137,7 +137,7 @@ void SysTick_Handler(void)
   */
 void TMR2_GLOBAL_IRQHandler(void)
 {
-  if(tmr_flag_get(TMR2, TMR_C1_FLAG) != RESET)
+  if(tmr_interrupt_flag_get(TMR2, TMR_C1_FLAG) != RESET)
   {
     /* clear tmr2 channel1 interrupt pending bit */
     tmr_flag_clear(TMR2, TMR_C1_FLAG);
@@ -145,7 +145,7 @@ void TMR2_GLOBAL_IRQHandler(void)
     /* pc.06 turnoff after 1000 ms */
     gpio_bits_reset(GPIOC, GPIO_PINS_6);
   }
-  else if(tmr_flag_get(TMR2, TMR_C2_FLAG) != RESET)
+  else if(tmr_interrupt_flag_get(TMR2, TMR_C2_FLAG) != RESET)
   {
     /* clear tmr2 channel2 interrupt pending bit */
     tmr_flag_clear(TMR2, TMR_C2_FLAG);
@@ -153,7 +153,7 @@ void TMR2_GLOBAL_IRQHandler(void)
     /* pc.07 turnoff after 500 ms */
     gpio_bits_reset(GPIOC, GPIO_PINS_7);
   }
-  else if(tmr_flag_get(TMR2, TMR_C3_FLAG) != RESET)
+  else if(tmr_interrupt_flag_get(TMR2, TMR_C3_FLAG) != RESET)
   {
     /* clear tmr2 channel3 interrupt pending bit */
     tmr_flag_clear(TMR2, TMR_C3_FLAG);

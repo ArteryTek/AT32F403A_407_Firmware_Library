@@ -140,7 +140,7 @@ void SysTick_Handler(void)
   */
 void PVM_IRQHandler(void)
 {
-  if(exint_flag_get(EXINT_LINE_16) != RESET)
+  if(exint_interrupt_flag_get(EXINT_LINE_16) != RESET)
   {
     /* clear exint line flag */
     exint_flag_clear(EXINT_LINE_16);

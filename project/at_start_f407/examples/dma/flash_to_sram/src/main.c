@@ -59,7 +59,7 @@ error_status buffer_compare(const uint32_t* pbuffer, uint32_t* pbuffer1, uint16_
   */
 void DMA1_Channel1_IRQHandler(void)
 {
-  if(dma_flag_get(DMA1_FDT1_FLAG) != RESET)
+  if(dma_interrupt_flag_get(DMA1_FDT1_FLAG) != RESET)
   {
     data_counter_end = 0;
     dma_flag_clear(DMA1_FDT1_FLAG);
@@ -157,4 +157,3 @@ int main(void)
 /**
   * @}
   */
-

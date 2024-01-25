@@ -175,8 +175,10 @@ flag_status exint_flag_get(uint32_t exint_line)
 flag_status exint_interrupt_flag_get(uint32_t exint_line)
 {
   flag_status status = RESET;
-  uint32_t exint_flag =0;
-  exint_flag = EXINT->intsts & exint_line & EXINT->inten;
+  uint32_t exint_flag = 0;
+  exint_flag = EXINT->intsts & exint_line;
+  exint_flag = exint_flag & EXINT->inten;
+
   if((exint_flag != (uint16_t)RESET))
   {
     status = SET;

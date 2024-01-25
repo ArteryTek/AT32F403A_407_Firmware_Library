@@ -145,7 +145,7 @@ void SysTick_Handler(void)
 void TMR3_GLOBAL_IRQHandler(void)
 {
   /* TMR3_CH1 toggling with frequency = 183.1 Hz */
-  if(tmr_flag_get(TMR3, TMR_C1_FLAG) != RESET)
+  if(tmr_interrupt_flag_get(TMR3, TMR_C1_FLAG) != RESET)
   {
     tmr_flag_clear(TMR3, TMR_C1_FLAG );
     capture = tmr_channel_value_get(TMR3, TMR_SELECT_CHANNEL_1);
@@ -153,7 +153,7 @@ void TMR3_GLOBAL_IRQHandler(void)
   }
 
   /* TMR3_CH2 toggling with frequency = 366.2 Hz */
-  if(tmr_flag_get(TMR3, TMR_C2_FLAG) != RESET)
+  if(tmr_interrupt_flag_get(TMR3, TMR_C2_FLAG) != RESET)
   {
     tmr_flag_clear(TMR3, TMR_C2_FLAG);
     capture = tmr_channel_value_get(TMR3, TMR_SELECT_CHANNEL_2);
@@ -161,7 +161,7 @@ void TMR3_GLOBAL_IRQHandler(void)
   }
 
   /* TMR3_CH3 toggling with frequency = 732.4 Hz */
-  if(tmr_flag_get(TMR3, TMR_C3_FLAG) != RESET)
+  if(tmr_interrupt_flag_get(TMR3, TMR_C3_FLAG) != RESET)
   {
     tmr_flag_clear(TMR3, TMR_C3_FLAG);
     capture = tmr_channel_value_get(TMR3, TMR_SELECT_CHANNEL_3);
@@ -169,7 +169,7 @@ void TMR3_GLOBAL_IRQHandler(void)
   }
 
   /* TMR3_CH4 toggling with frequency = 1464.8 Hz */
-  if(tmr_flag_get(TMR3, TMR_C4_FLAG) != RESET)
+  if(tmr_interrupt_flag_get(TMR3, TMR_C4_FLAG) != RESET)
   {
     tmr_flag_clear(TMR3, TMR_C4_FLAG);
     capture = tmr_channel_value_get(TMR3, TMR_SELECT_CHANNEL_4);

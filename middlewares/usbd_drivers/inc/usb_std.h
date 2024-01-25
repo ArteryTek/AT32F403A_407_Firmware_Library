@@ -105,6 +105,7 @@ extern "C" {
 #define  USB_SERIAL_STRING               3 /*!< usb standard string type serial */
 #define  USB_CONFIG_STRING               4 /*!< usb standard string type config */
 #define  USB_INTERFACE_STRING            5 /*!< usb standard string type interface */
+#define  USB_WINUSB_OS_STRING            0xEE /*!< usb microsoft os string */
 
 /**
   * @brief usb configuration attributes
@@ -118,6 +119,12 @@ extern "C" {
 #define USB_FEATURE_EPT_HALT             0 /*!< usb standard feature selectors endpoint halt */
 #define USB_FEATURE_REMOTE_WAKEUP        1 /*!< usb standard feature selectors remote wakeup */
 #define USB_FEATURE_TEST_MODE            2 /*!< usb standard feature selectors test mode */
+
+/**
+  * @brief usb winusb feature id
+  */
+#define USB_WINUSB_COMPAT_ID            0x04 /*!< usb winusb compat id os descriptor */
+#define USB_WINUSB_PROPERTIES_ID         0x05 /*!< usb winusb properties id os descriptor */
 
 /**
   * @brief usb device connect state
