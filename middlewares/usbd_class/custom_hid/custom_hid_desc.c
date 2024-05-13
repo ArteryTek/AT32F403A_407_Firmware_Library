@@ -237,7 +237,7 @@ ALIGNED_HEAD uint8_t g_usbd_custom_hid_report[USBD_CUSHID_SIZ_REPORT_DESC] ALIGN
   0x85, HID_REPORT_ID_6,                 /*     REPORT_ID (0xF0)           */
   0x09, 0x06,                            /*     USAGE                      */
   0x15, 0x00,                            /*     LOGICAL_MINIMUM (0)        */
-  0x26, 0x00,0xff,                       /*     LOGICAL_MAXIMUM (255)      */
+  0x26, 0xFF,0x00,                       /*     LOGICAL_MAXIMUM (255)      */
   0x75, 0x08,                            /*     REPORT_SIZE (8)            */
   0x95, 0x3F,                            /*     REPORT_COUNT (64)          */
   0x91, 0x02,                            /*     OUTPUT(Data,Var,Abs,Vol)   */
@@ -247,7 +247,7 @@ ALIGNED_HEAD uint8_t g_usbd_custom_hid_report[USBD_CUSHID_SIZ_REPORT_DESC] ALIGN
   0x85, HID_REPORT_ID_6,                 /*     REPORT_ID (0xF0)           */
   0x09, 0x07,                            /*     USAGE                      */
   0x15, 0x00,                            /*     LOGICAL_MINIMUM (0)        */
-  0x26, 0x00,0xff,                       /*     LOGICAL_MAXIMUM (255)      */
+  0x26, 0xFF,0x00,                       /*     LOGICAL_MAXIMUM (255)      */
   0x75, 0x08,                            /*     REPORT_SIZE (8)            */
   0x95, 0x3F,                            /*     REPORT_COUNT (64)          */
   0x81, 0x82,                            /*     INPUT(Data,Var,Abs,Vol)    */

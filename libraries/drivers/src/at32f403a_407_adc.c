@@ -737,10 +737,10 @@ uint32_t adc_combine_ordinary_conversion_data_get(void)
   *         ADC1, ADC2, ADC3.
   * @param  adc_preempt_channel: select the preempt channel.
   *         this parameter can be one of the following values:
-  *         - ADC_PREEMPTED_CHANNEL_1
-  *         - ADC_PREEMPTED_CHANNEL_2
-  *         - ADC_PREEMPTED_CHANNEL_3
-  *         - ADC_PREEMPTED_CHANNEL_4
+  *         - ADC_PREEMPT_CHANNEL_1
+  *         - ADC_PREEMPT_CHANNEL_2
+  *         - ADC_PREEMPT_CHANNEL_3
+  *         - ADC_PREEMPT_CHANNEL_4
   * @retval the conversion data for selection preempt channel.
   */
 uint16_t adc_preempt_conversion_data_get(adc_type *adc_x, adc_preempt_channel_type adc_preempt_channel)

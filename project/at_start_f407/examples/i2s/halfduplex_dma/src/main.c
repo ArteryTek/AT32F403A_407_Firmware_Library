@@ -88,7 +88,7 @@ static void i2s_config(void)
   dma_init_struct.memory_base_addr = (uint32_t)i2s3_buffer_tx;
   dma_init_struct.memory_data_width = DMA_MEMORY_DATA_WIDTH_HALFWORD;
   dma_init_struct.memory_inc_enable = TRUE;
-  dma_init_struct.peripheral_base_addr = (uint32_t)0x40003C0C;
+  dma_init_struct.peripheral_base_addr = (uint32_t)&(SPI3->dt);
   dma_init_struct.peripheral_data_width = DMA_PERIPHERAL_DATA_WIDTH_HALFWORD;
   dma_init_struct.peripheral_inc_enable = FALSE;
   dma_init_struct.priority = DMA_PRIORITY_HIGH;
@@ -97,7 +97,7 @@ static void i2s_config(void)
 
   dma_init_struct.direction = DMA_DIR_PERIPHERAL_TO_MEMORY;
   dma_init_struct.memory_base_addr = (uint32_t)i2s2_buffer_rx;
-  dma_init_struct.peripheral_base_addr = (uint32_t)0x4000380C;
+  dma_init_struct.peripheral_base_addr = (uint32_t)&(SPI2->dt);
   dma_init(DMA1_CHANNEL4, &dma_init_struct);
 
   crm_periph_clock_enable(CRM_SPI3_PERIPH_CLOCK, TRUE);

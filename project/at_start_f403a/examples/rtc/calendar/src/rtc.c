@@ -329,7 +329,6 @@ void rtc_time_get(void)
         }
         else
         {
-          temp1++;
           break;
         }
       }
