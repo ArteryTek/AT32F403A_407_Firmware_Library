@@ -95,12 +95,7 @@ uint32_t    student_num;
   */
 int32_t main()
 {
-  system_clock_config();
-
-  uart_print_init(115200);
-
 #ifndef  USE_STATIC_INIT
-
   arm_matrix_instance_f32 srcA;
   arm_matrix_instance_f32 srcB;
   arm_matrix_instance_f32 dstC;
@@ -109,15 +104,15 @@ int32_t main()
   arm_mat_init_f32(&srcA, numStudents, numSubjects, (float32_t *)testMarks_f32);
   arm_mat_init_f32(&srcB, numSubjects, 1, (float32_t *)testUnity_f32);
   arm_mat_init_f32(&dstC, numStudents, 1, testOutput);
-
 #else
-
   /* Static Initializations of Input and output matrix sizes and array */
   arm_matrix_instance_f32 srcA = {NUMSTUDENTS, NUMSUBJECTS, (float32_t *)testMarks_f32};
   arm_matrix_instance_f32 srcB = {NUMSUBJECTS, 1, (float32_t *)testUnity_f32};
   arm_matrix_instance_f32 dstC = {NUMSTUDENTS, 1, testOutput};
-
 #endif
+  system_clock_config();
+
+  uart_print_init(115200);
 
   /* Call the Matrix multiplication process function */
   arm_mat_mult_f32(&srcA, &srcB, &dstC);

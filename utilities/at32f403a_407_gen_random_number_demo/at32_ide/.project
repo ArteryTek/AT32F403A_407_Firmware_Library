@@ -27,72 +27,72 @@
 		<link>
 			<name>bsp/at32f403a_407_board.c</name>
 			<type>1</type>
-			<location>D:/worksrc/BSPs_PACKs/AT32F403A_407_Firmware_Library_V2.x.x/project/at32f403a_407_board/at32f403a_407_board.c</location>
+			<locationURI>PARENT-3-PROJECT_LOC/project/at32f403a_407_board/at32f403a_407_board.c</locationURI>
 		</link>
 		<link>
 			<name>cmsis/startup_at32f403a_407.s</name>
 			<type>1</type>
-			<location>D:/worksrc/BSPs_PACKs/AT32F403A_407_Firmware_Library_V2.x.x/libraries/cmsis/cm4/device_support/startup/gcc/startup_at32f403a_407.s</location>
+			<locationURI>PARENT-3-PROJECT_LOC/libraries/cmsis/cm4/device_support/startup/gcc/startup_at32f403a_407.s</locationURI>
 		</link>
 		<link>
 			<name>cmsis/system_at32f403a_407.c</name>
 			<type>1</type>
-			<location>D:/worksrc/BSPs_PACKs/AT32F403A_407_Firmware_Library_V2.x.x/libraries/cmsis/cm4/device_support/system_at32f403a_407.c</location>
+			<locationURI>PARENT-3-PROJECT_LOC/libraries/cmsis/cm4/device_support/system_at32f403a_407.c</locationURI>
 		</link>
 		<link>
 			<name>firmware/at32f403a_407_bpr.c</name>
 			<type>1</type>
-			<location>D:/worksrc/BSPs_PACKs/AT32F403A_407_Firmware_Library_V2.x.x/libraries/drivers/src/at32f403a_407_bpr.c</location>
+			<locationURI>PARENT-3-PROJECT_LOC/libraries/drivers/src/at32f403a_407_bpr.c</locationURI>
 		</link>
 		<link>
 			<name>firmware/at32f403a_407_crm.c</name>
 			<type>1</type>
-			<location>D:/worksrc/BSPs_PACKs/AT32F403A_407_Firmware_Library_V2.x.x/libraries/drivers/src/at32f403a_407_crm.c</location>
+			<locationURI>PARENT-3-PROJECT_LOC/libraries/drivers/src/at32f403a_407_crm.c</locationURI>
 		</link>
 		<link>
 			<name>firmware/at32f403a_407_gpio.c</name>
 			<type>1</type>
-			<location>D:/worksrc/BSPs_PACKs/AT32F403A_407_Firmware_Library_V2.x.x/libraries/drivers/src/at32f403a_407_gpio.c</location>
+			<locationURI>PARENT-3-PROJECT_LOC/libraries/drivers/src/at32f403a_407_gpio.c</locationURI>
 		</link>
 		<link>
 			<name>firmware/at32f403a_407_misc.c</name>
 			<type>1</type>
-			<location>D:/worksrc/BSPs_PACKs/AT32F403A_407_Firmware_Library_V2.x.x/libraries/drivers/src/at32f403a_407_misc.c</location>
+			<locationURI>PARENT-3-PROJECT_LOC/libraries/drivers/src/at32f403a_407_misc.c</locationURI>
 		</link>
 		<link>
 			<name>firmware/at32f403a_407_pwc.c</name>
 			<type>1</type>
-			<location>D:/worksrc/BSPs_PACKs/AT32F403A_407_Firmware_Library_V2.x.x/libraries/drivers/src/at32f403a_407_pwc.c</location>
+			<locationURI>PARENT-3-PROJECT_LOC/libraries/drivers/src/at32f403a_407_pwc.c</locationURI>
 		</link>
 		<link>
 			<name>firmware/at32f403a_407_rtc.c</name>
 			<type>1</type>
-			<location>D:/worksrc/BSPs_PACKs/AT32F403A_407_Firmware_Library_V2.x.x/libraries/drivers/src/at32f403a_407_rtc.c</location>
+			<locationURI>PARENT-3-PROJECT_LOC/libraries/drivers/src/at32f403a_407_rtc.c</locationURI>
 		</link>
 		<link>
 			<name>firmware/at32f403a_407_usart.c</name>
 			<type>1</type>
-			<location>D:/worksrc/BSPs_PACKs/AT32F403A_407_Firmware_Library_V2.x.x/libraries/drivers/src/at32f403a_407_usart.c</location>
+			<locationURI>PARENT-3-PROJECT_LOC/libraries/drivers/src/at32f403a_407_usart.c</locationURI>
 		</link>
 		<link>
 			<name>user/at32f403a_407_clock.c</name>
 			<type>1</type>
-			<location>D:/worksrc/BSPs_PACKs/AT32F403A_407_Firmware_Library_V2.x.x/utilities/at32f403a_407_gen_random_number_demo/src/at32f403a_407_clock.c</location>
+			<locationURI>PARENT-1-PROJECT_LOC/src/at32f403a_407_clock.c</locationURI>
 		</link>
 		<link>
 			<name>user/at32f403a_407_int.c</name>
 			<type>1</type>
-			<location>D:/worksrc/BSPs_PACKs/AT32F403A_407_Firmware_Library_V2.x.x/utilities/at32f403a_407_gen_random_number_demo/src/at32f403a_407_int.c</location>
+			<locationURI>PARENT-1-PROJECT_LOC/src/at32f403a_407_int.c</locationURI>
 		</link>
 		<link>
 			<name>user/main.c</name>
 			<type>1</type>
-			<location>D:/worksrc/BSPs_PACKs/AT32F403A_407_Firmware_Library_V2.x.x/utilities/at32f403a_407_gen_random_number_demo/src/main.c</location>
+			<locationURI>PARENT-1-PROJECT_LOC/src/main.c</locationURI>
 		</link>
 		<link>
 			<name>user/random.c</name>
 			<type>1</type>
-			<location>D:/worksrc/BSPs_PACKs/AT32F403A_407_Firmware_Library_V2.x.x/utilities/at32f403a_407_gen_random_number_demo/src/random.c</location>
+			<locationURI>PARENT-1-PROJECT_LOC/src/random.c</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>

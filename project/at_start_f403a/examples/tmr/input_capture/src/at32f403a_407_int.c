@@ -128,8 +128,6 @@ void PendSV_Handler(void)
   */
 void SysTick_Handler(void)
 {
-  /* trigger TMR1 hall event */
-  tmr_event_sw_trigger(TMR1, TMR_HALL_SWTRIG);
 }
 
 /**

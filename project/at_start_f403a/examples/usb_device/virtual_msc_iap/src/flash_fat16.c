@@ -32,6 +32,8 @@
   * @{
   */
 #define FAT16_SECTOR_SIZE                62
+#define FAT16_CLUSTER_SIZE               (4 * 0x800)
+#define FAT16_FIRST_CLUSTER              (8 * 0x800)
 static uint8_t fat16_sector[FAT16_SECTOR_SIZE] = 
 {
   0xEB,  /*0*/
@@ -490,6 +492,7 @@ uint32_t flash_fat16_sector_write(uint32_t fat_lbk, uint8_t *data, uint32_t len)
   uint32_t status;
   static uint32_t s_bin_sp = 0;
   static uint32_t s_bin_pc = 0;
+  static uint32_t file_offset_lbk = 0;
   
   if(s_bin_sp == 0 && s_bin_pc == 0)
   {
@@ -514,8 +517,8 @@ uint32_t flash_fat16_sector_write(uint32_t fat_lbk, uint8_t *data, uint32_t len)
     if(g_file_attr.file_size == 0)
     {
       g_file_attr.file_size = flash_iap.flash_app_size;
-      file_match = 1;
     }
+    file_match = 1;
     
     file_size = g_file_attr.file_size;
     
@@ -533,6 +536,15 @@ uint32_t flash_fat16_sector_write(uint32_t fat_lbk, uint8_t *data, uint32_t len)
       {
         flash_iap.write_addr = flash_offset + flash_iap.flash_base_addr;
       }
+      if( FAT16_FIRST_CLUSTER + (g_file_attr.clus_low * FAT16_CLUSTER_SIZE) == fat_lbk)
+      {
+        file_offset_lbk = FAT16_FIRST_CLUSTER + (g_file_attr.clus_low * FAT16_CLUSTER_SIZE);
+      }
+      else
+      {
+        file_offset_lbk = fat_lbk;
+      }
+      
       /* clear upgrade flag */
       flash_fat16_clear_upgrade_flag();
 
@@ -541,18 +553,21 @@ uint32_t flash_fat16_sector_write(uint32_t fat_lbk, uint8_t *data, uint32_t len)
 
     if(flash_iap.flash_app_size >= g_file_attr.file_size)
     {
-      if((flash_iap.file_write_nr + len) >= file_size)
+      if(fat_lbk >= file_offset_lbk)
       {
-        len = file_size - flash_iap.file_write_nr;
+        /* write data to flash and check crc */
+        status = flash_write_data(flash_iap.write_addr + fat_lbk - file_offset_lbk, data, len);      
+        flash_iap.file_write_nr += len;
       }
-      /* write data to flash and check crc */
-      status = flash_write_data(flash_iap.write_addr + flash_iap.file_write_nr, data, len);
-
-      flash_iap.file_write_nr += len;
+      else
+      {
+        /* lbk address is invalid */
+        status = 1;
+      }
 
       if(status == 0)
       {
-        if(flash_iap.file_write_nr >= file_size)
+        if(flash_iap.file_write_nr >= file_size * 2)
         {
           /* upgrade finish */
           flash_iap.file_write_nr = 0;

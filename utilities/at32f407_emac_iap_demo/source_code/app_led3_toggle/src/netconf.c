@@ -33,6 +33,7 @@
 #include "netconf.h"
 #include "stdio.h"
 #include "at32_emac.h"
+#include "timeouts.h"
 
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
@@ -55,6 +56,7 @@ static uint8_t local_ip[ADDR_LENGTH]   = {192, 168, 81, 37};
 static uint8_t local_gw[ADDR_LENGTH]   = {192, 168, 81, 187};
 static uint8_t local_mask[ADDR_LENGTH] = {255, 255, 255, 0};
 #endif
+extern u32_t lwip_sys_now;
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
@@ -148,6 +150,7 @@ void lwip_rx_loop_handler(void)
 void time_update(void)
 {
   local_time += SYSTEMTICK_PERIOD_MS;
+  lwip_sys_now += SYSTEMTICK_PERIOD_MS;
 }
 
 /**
@@ -157,38 +160,12 @@ void time_update(void)
   */
 void lwip_periodic_handle(volatile uint32_t localtime)
 {
-
-  /* TCP periodic process every 250 ms */
-  if (localtime - tcp_timer >= TCP_TMR_INTERVAL)
-  {
-    tcp_timer =  localtime;
-    tcp_tmr();
-  }
-  /* ARP periodic process every 5s */
-  if (localtime - arp_timer >= ARP_TMR_INTERVAL)
-  {
-    arp_timer =  localtime;
-    etharp_tmr();
-  }
-
-#if LWIP_DHCP
-  /* Fine DHCP periodic process every 500ms */
-  if (localtime - dhcp_fine_timer >= DHCP_FINE_TIMER_MSECS)
-  {
-    dhcp_fine_timer =  localtime;
-    dhcp_fine_tmr();
-  }
-  /* DHCP Coarse periodic process every 60s */
-  if (localtime - dhcp_coarse_timer >= DHCP_COARSE_TIMER_MSECS)
-  {
-    dhcp_coarse_timer =  localtime;
-    dhcp_coarse_tmr();
-  }
-#endif
+  /* lwip timeout */
+  sys_check_timeouts();
   
 #if (LINK_DETECTION > 0)
   /* link detection process every 500 ms */
-  if (localtime - link_timer >= 500)
+  if (localtime - link_timer >= 500 || localtime < link_timer)
   {
     link_timer =  localtime;
     ethernetif_set_link(&netif);

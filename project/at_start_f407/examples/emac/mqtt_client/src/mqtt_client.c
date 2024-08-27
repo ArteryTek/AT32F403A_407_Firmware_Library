@@ -47,7 +47,7 @@ mqtt_client_t *s__mqtt_client_instance;
   * @param  arg: mqtt connection parameter point
   * @retval none
   */
-__weak void mqtt_conn_sub_proc(mqtt_client_t *client, void *arg)
+__WEAK void mqtt_conn_sub_proc(mqtt_client_t *client, void *arg)
 {
   /* topic name */
   char test_sub_topic[] = "at_sub_topic";
@@ -60,7 +60,7 @@ __weak void mqtt_conn_sub_proc(mqtt_client_t *client, void *arg)
   * @param  arg: mqtt connection parameter point
   * @retval none
   */
-__weak void mqtt_error_process_callback(mqtt_client_t *client, void *arg)
+__WEAK void mqtt_error_process_callback(mqtt_client_t *client, void *arg)
 {
   /* user code */
   mqtt_connect_routine();

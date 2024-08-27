@@ -48,12 +48,16 @@ void iap_jump(void);
 void iap_respond(uint8_t *res_buf, uint16_t iap_cmd, uint16_t result);
 
 /* app_load don't optimize */
-#if defined (__CC_ARM)
+#if defined (__ARMCC_VERSION)
+ #if (__ARMCC_VERSION >= 6010050)
+  __attribute__((optnone))
+ #else
   #pragma O0
+ #endif
 #elif defined (__ICCARM__)
   #pragma optimize=s none
 #elif defined (__GNUC__)
-__attribute__((optimize("O0")))
+  __attribute__((optimize("O0")))
 #endif
 
 /**

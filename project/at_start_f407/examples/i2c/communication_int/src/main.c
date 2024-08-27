@@ -119,7 +119,7 @@ void i2c_lowlevel_init(i2c_handle_type* hi2c)
 
     /* gpio configuration */
     gpio_initstructure.gpio_out_type       = GPIO_OUTPUT_OPEN_DRAIN;
-    gpio_initstructure.gpio_pull           = GPIO_PULL_UP;
+    gpio_initstructure.gpio_pull           = GPIO_PULL_NONE;
     gpio_initstructure.gpio_mode           = GPIO_MODE_MUX;
     gpio_initstructure.gpio_drive_strength = GPIO_DRIVE_STRENGTH_MODERATE;
 

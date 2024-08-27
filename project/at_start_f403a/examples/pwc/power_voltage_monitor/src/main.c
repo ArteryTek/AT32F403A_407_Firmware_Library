@@ -46,7 +46,7 @@ void pvm_exint_config(void)
   /* config the exint line of the power voltage monitor */
   exint_init_struct.line_select = EXINT_LINE_16;
   exint_init_struct.line_enable = TRUE;
-  exint_init_struct.line_mode = EXINT_LINE_INTERRUPUT;
+  exint_init_struct.line_mode = EXINT_LINE_INTERRUPT;
   exint_init_struct.line_polarity = EXINT_TRIGGER_BOTH_EDGE;
   exint_init(&exint_init_struct);
 }

@@ -155,7 +155,7 @@ void usart_configuration(void)
   gpio_exint_line_config(SC_OFF_PORTSOURCE, SC_OFF_PINSOURCE);
 
   exint_default_para_init(&exint_init_struct);
-  exint_init_struct.line_mode = EXINT_LINE_INTERRUPUT;
+  exint_init_struct.line_mode = EXINT_LINE_INTERRUPT;
   exint_init_struct.line_polarity = EXINT_TRIGGER_RISING_EDGE;
   exint_init_struct.line_select = SC_OFF_EXINT;
   exint_init_struct.line_enable = TRUE;

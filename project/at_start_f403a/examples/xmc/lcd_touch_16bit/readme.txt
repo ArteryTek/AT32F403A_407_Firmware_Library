@@ -16,9 +16,9 @@
   - spi3_sck  pb3     --->   spi_sck
   - spi3_miso pb4     --->   spi_miso
   - spi3_mosi pb5     --->   spi_mosi
-  - gpio      pb8     --->   lcd_cs
-  - gpio      pd3     --->   lcd_reset
-  - gpio      pd5     --->   lcd_pen
+  - gpio      pb8     --->   touch_cs
+  - gpio      pd3     --->   touch_reset
+  - gpio      pd5     --->   touch_pen
   - gpio      pb0     --->   lcd_bl
   - xmc_a16   pd11    --->   lcd_rs
   - xmc_ne1   pd7     --->   lcd_cs

@@ -172,6 +172,10 @@ void lcd_init(void)
   delay_ms(10);
   LCD_RESET_HIGH;
   delay_ms(120);
+  
+  /* read lcd id */
+  lcd_read_id();
+  
   lcd_wr_command(0x36);
   lcd_wr_data(0x00);
   lcd_wr_command(0x3a);
@@ -264,6 +268,23 @@ void lcd_wr_command(uint8_t command)
 void lcd_wr_data(uint8_t data)
 {
   *(__IO uint8_t *) XMC_LCD_DATA = data;
+}
+
+/**
+  * @brief  this function is read lcd id.
+  * @param  none.
+  * @retval the lcd id.
+  */
+uint16_t lcd_read_id(void)
+{
+  uint16_t id = 0;
+  
+  /* read id */
+  *(__IO uint8_t *) XMC_LCD_COMMAND = 0xDA;
+  id = *(__IO uint8_t *) XMC_LCD_DATA;
+  id = (id<<8) | (*(__IO uint8_t *) XMC_LCD_DATA);
+  
+  return id;
 }
 
 /**

@@ -44,12 +44,16 @@ static uint32_t cmd_data_cnt = 0;
 iapfun jump_to_app;
 
 /* app_load don't optimize */
-#if defined (__CC_ARM)
+#if defined (__ARMCC_VERSION)
+ #if (__ARMCC_VERSION >= 6010050)
+  __attribute__((optnone))
+ #else
   #pragma O0
+ #endif
 #elif defined (__ICCARM__)
   #pragma optimize=s none
 #elif defined (__GNUC__)
-__attribute__((optimize("O0")))
+  __attribute__((optimize("O0")))
 #endif
 
 /**

@@ -102,7 +102,7 @@ void emac_wake_on_lan_init(void)
 
   exint_init_structure.line_select = EXINT_LINE_19;
   exint_init_structure.line_enable = TRUE;
-  exint_init_structure.line_mode = EXINT_LINE_INTERRUPUT;
+  exint_init_structure.line_mode = EXINT_LINE_INTERRUPT;
   exint_init_structure.line_polarity = EXINT_TRIGGER_BOTH_EDGE;
   exint_init(&exint_init_structure);
 

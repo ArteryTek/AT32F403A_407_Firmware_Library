@@ -19,7 +19,10 @@
 #define DEV_MMC    1  /* Example: Map MMC/SD card to physical drive 1 */
 #define DEV_USB    2  /* Example: Map USB MSD to physical drive 2 */
 
-__align(4) uint8_t sdio_data_buffer[512]; /* buf for sd_read_disk/sd_write_disk function used. */
+#if defined ( __ICCARM__ ) /* iar compiler */
+  #pragma data_alignment=4
+#endif
+ALIGNED_HEAD uint8_t sdio_data_buffer[512] ALIGNED_TAIL;  /* buf for sd_read_disk/sd_write_disk function used. */
 
 sd_error_status_type sd_read_disk(uint8_t *buf, uint32_t sector, uint8_t cnt);
 sd_error_status_type sd_write_disk(const uint8_t *buf, uint32_t sector, uint8_t cnt);

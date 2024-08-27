@@ -35,8 +35,8 @@
 
 
 #define ADC_VREF                         (3.3)
-#define ADC_TEMP_BASE                    (1.26)
-#define ADC_TEMP_SLOPE                   (-0.00423)
+#define ADC_TEMP_BASE                    (1.28)
+#define ADC_TEMP_SLOPE                   (-0.00426)
 
 __IO uint16_t adc1_ordinary_value = 0;
 
