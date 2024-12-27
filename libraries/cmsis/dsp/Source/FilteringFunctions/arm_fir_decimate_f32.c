@@ -3,13 +3,13 @@
  * Title:        arm_fir_decimate_f32.c
  * Description:  FIR decimation for floating-point sequences
  *
- * $Date:        18. March 2019
- * $Revision:    V1.6.0
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M cores
+ * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -26,7 +26,7 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/filtering_functions.h"
 
 /**
   @ingroup groupFilters
@@ -399,7 +399,7 @@ void arm_fir_decimate_f32(
   float32x4_t c0v;
   float32x2_t temp;
   float32x4_t sum0v;
-
+ 
   /* S->pState buffer contains previous frame (numTaps - 1) samples */
   /* pStateCurnt points to the location where the new input data should be written */
   pStateCurnt = S->pState + (numTaps - 1U);
@@ -437,7 +437,7 @@ void arm_fir_decimate_f32(
     /* Process 4 taps at a time. */
     tapCnt = numTaps >> 2;
 
-    /* Loop over the number of taps.
+    /* Loop over the number of taps. 
      ** Repeat until we've computed numTaps-4 coefficients. */
 
     while (tapCnt > 0U)
@@ -456,7 +456,7 @@ void arm_fir_decimate_f32(
       px1 += 4;
       px2 += 4;
       px3 += 4;
-
+     
       acc0v = vmlaq_f32(acc0v, x0v, c0v);
       acc1v = vmlaq_f32(acc1v, x1v, c0v);
       acc2v = vmlaq_f32(acc2v, x2v, c0v);
@@ -548,7 +548,7 @@ void arm_fir_decimate_f32(
       px += 4;
 
       sum0v = vmlaq_f32(sum0v, x0v, c0v);
-
+      
       /* Decrement the loop counter */
       tapCnt--;
     }

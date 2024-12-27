@@ -3,13 +3,13 @@
  * Title:        arm_negate_q15.c
  * Description:  Negates Q15 vectors
  *
- * $Date:        18. March 2019
- * $Revision:    V1.6.0
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M cores
+ * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -26,7 +26,7 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/basic_math_functions.h"
 
 /**
   @ingroup groupMath
@@ -50,7 +50,7 @@
                    The function uses saturating arithmetic.
                    The Q15 value -1 (0x8000) is saturated to the maximum allowable positive value 0x7FFF.
  */
-#if defined(ARM_MATH_MVEI)
+#if defined(ARM_MATH_MVEI) && !defined(ARM_MATH_AUTOVECTORIZE)
 
 #include "arm_helium_utils.h"
 
@@ -118,10 +118,10 @@ void arm_negate_q15(
 
 #if defined (ARM_MATH_DSP)
     /* Negate and store result in destination buffer (2 samples at a time). */
-    in1 = read_q15x2_ia ((q15_t **) &pSrc);
+    in1 = read_q15x2_ia (&pSrc);
     write_q15x2_ia (&pDst, __QSUB16(0, in1));
 
-    in1 = read_q15x2_ia ((q15_t **) &pSrc);
+    in1 = read_q15x2_ia (&pSrc);
     write_q15x2_ia (&pDst, __QSUB16(0, in1));
 #else
     in = *pSrc++;

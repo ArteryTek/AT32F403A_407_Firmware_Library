@@ -3,13 +3,13 @@
  * Title:        arm_cmplx_mult_real_q31.c
  * Description:  Q31 complex by real multiplication
  *
- * $Date:        18. March 2019
- * $Revision:    V1.6.0
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M cores
+ * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -26,7 +26,7 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/complex_math_functions.h"
 
 /**
   @ingroup groupCmplxMath
@@ -50,7 +50,7 @@
                    Results outside of the allowable Q31 range[0x80000000 0x7FFFFFFF] are saturated.
  */
 
-#if defined(ARM_MATH_MVEI)
+#if defined(ARM_MATH_MVEI) && !defined(ARM_MATH_AUTOVECTORIZE)
 void arm_cmplx_mult_real_q31(
   const q31_t * pSrcCmplx,
   const q31_t * pSrcReal,
@@ -58,7 +58,7 @@ void arm_cmplx_mult_real_q31(
         uint32_t numSamples)
 {
 
-    const static uint32_t stride_cmplx_x_real_32[4] = {
+    static const uint32_t stride_cmplx_x_real_32[4] = {
         0, 0, 1, 1
     };
     q31x4_t rVec;
@@ -76,7 +76,7 @@ void arm_cmplx_mult_real_q31(
 
     /* Compute 4 complex outputs at a time */
     blkCnt = blockSizeC >> 2;
-    while (blkCnt > 0U)
+    while (blkCnt > 0U) 
     {
         cmplxVec = vld1q(pSrcCmplx);
         rVec = vldrwq_gather_shifted_offset_s32(pSrcReal, strideVec);
@@ -89,17 +89,17 @@ void arm_cmplx_mult_real_q31(
         blkCnt --;
     }
 
-    blkCnt = (blockSizeC & 3) >> 1;
+    blkCnt = (blockSizeC & 3) >> 1; 
     while (blkCnt > 0U)
     {
       /* C[2 * i    ] = A[2 * i    ] * B[i]. */
       /* C[2 * i + 1] = A[2 * i + 1] * B[i]. */
-
+  
       in = *pSrcReal++;
       /* store saturated result in 1.31 format to destination buffer */
       *pCmplxDst++ = (__SSAT((q31_t) (((q63_t) *pSrcCmplx++ * in) >> 32), 31) << 1);
       *pCmplxDst++ = (__SSAT((q31_t) (((q63_t) *pSrcCmplx++ * in) >> 32), 31) << 1);
-
+  
       /* Decrement loop counter */
       blkCnt--;
     }

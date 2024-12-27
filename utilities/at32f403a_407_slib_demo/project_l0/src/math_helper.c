@@ -2,13 +2,13 @@
 * Copyright (C) 2010-2012 ARM Limited. All rights reserved.
 *
 * $Date:        17. January 2013
-* $Revision:   V1.4.0  b
+* $Revision: 	V1.4.0  b
 *
-* Project:       CMSIS DSP Library
+* Project: 	    CMSIS DSP Library
 *
-* Title:      math_helper.c
+* Title:	    math_helper.c
 *
-* Description:  Definition of all helper functions required.
+* Description:	Definition of all helper functions required.
 *
 * Target Processor: Cortex-M4/Cortex-M3
 *
@@ -38,21 +38,22 @@
 * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 * POSSIBILITY OF SUCH DAMAGE.
 * -------------------------------------------------------------------- */
+
 /* ----------------------------------------------------------------------
-*    Include standard header files
+*		Include standard header files
 * -------------------------------------------------------------------- */
 #include<math.h>
 
 /* ----------------------------------------------------------------------
-*    Include project header files
+*		Include project header files
 * -------------------------------------------------------------------- */
 #include "math_helper.h"
 
 /**
  * @brief  Caluclation of SNR
- * @param[in]  pRef   Pointer to the reference buffer
- * @param[in]  pTest  Pointer to the test buffer
- * @param[in]  buffSize  total number of samples
+ * @param[in]  pRef 	Pointer to the reference buffer
+ * @param[in]  pTest	Pointer to the test buffer
+ * @param[in]  buffSize	total number of samples
  * @return     SNR
  * The function Caluclates signal to noise ratio for the reference output
  * and test output
@@ -67,36 +68,36 @@ float arm_snr_f32(float *pRef, float *pTest, uint32_t buffSize)
   int *test;
 
   for (i = 0; i < buffSize; i++)
-  {
-     /* Checking for a NAN value in pRef array */
-     test =   (int *)(&pRef[i]);
+    {
+ 	  /* Checking for a NAN value in pRef array */
+	  test =   (int *)(&pRef[i]);
+      temp =  *test;
+
+	  if (temp == 0x7FC00000)
+	  {
+	  		return(0);
+	  }
+
+	  /* Checking for a NAN value in pTest array */
+	  test =   (int *)(&pTest[i]);
+      temp =  *test;
+
+	  if (temp == 0x7FC00000)
+	  {
+	  		return(0);
+	  }
+      EnergySignal += pRef[i] * pRef[i];
+      EnergyError += (pRef[i] - pTest[i]) * (pRef[i] - pTest[i]);
+    }
+
+	/* Checking for a NAN value in EnergyError */
+	test =   (int *)(&EnergyError);
     temp =  *test;
 
     if (temp == 0x7FC00000)
     {
-      return(0);
+  		return(0);
     }
-
-    /* Checking for a NAN value in pTest array */
-    test =   (int *)(&pTest[i]);
-    temp =  *test;
-
-    if (temp == 0x7FC00000)
-    {
-      return(0);
-    }
-    EnergySignal += pRef[i] * pRef[i];
-    EnergyError += (pRef[i] - pTest[i]) * (pRef[i] - pTest[i]);
-  }
-
-   /* Checking for a NAN value in EnergyError */
-  test =   (int *)(&EnergyError);
-  temp =  *test;
-
-  if (temp == 0x7FC00000)
-  {
-    return(0);
-  }
 
 
   SNR = 10 * log10 (EnergySignal / EnergyError);
@@ -122,9 +123,9 @@ void arm_provide_guard_bits_q15 (q15_t * input_buf, uint32_t blockSize,
   uint32_t i;
 
   for (i = 0; i < blockSize; i++)
-  {
-    input_buf[i] = input_buf[i] >> guard_bits;
-  }
+    {
+      input_buf[i] = input_buf[i] >> guard_bits;
+    }
 }
 
 /**
@@ -141,17 +142,17 @@ void arm_float_to_q12_20(float *pIn, q31_t * pOut, uint32_t numSamples)
   uint32_t i;
 
   for (i = 0; i < numSamples; i++)
-  {
-    /* 1048576.0f corresponds to pow(2, 20) */
-    pOut[i] = (q31_t) (pIn[i] * 1048576.0f);
-
-    pOut[i] += pIn[i] > 0 ? 0.5 : -0.5;
-
-    if (pIn[i] == (float) 1.0)
     {
-      pOut[i] = 0x000FFFFF;
+	  /* 1048576.0f corresponds to pow(2, 20) */
+      pOut[i] = (q31_t) (pIn[i] * 1048576.0f);
+
+      pOut[i] += pIn[i] > 0 ? 0.5 : -0.5;
+
+      if (pIn[i] == (float) 1.0)
+        {
+          pOut[i] = 0x000FFFFF;
+        }
     }
-  }
 }
 
 /**
@@ -170,13 +171,13 @@ uint32_t arm_compare_fixed_q15(q15_t *pIn, q15_t *pOut, uint32_t numSamples)
 
   for (i = 0; i < numSamples; i++)
   {
-    diff = pIn[i] - pOut[i];
-    diffCrnt = (diff > 0) ? diff : -diff;
+  	diff = pIn[i] - pOut[i];
+  	diffCrnt = (diff > 0) ? diff : -diff;
 
-    if (diffCrnt > maxDiff)
-    {
-      maxDiff = diffCrnt;
-    }
+	if (diffCrnt > maxDiff)
+	{
+		maxDiff = diffCrnt;
+	}
   }
 
   return(maxDiff);
@@ -198,13 +199,13 @@ uint32_t arm_compare_fixed_q31(q31_t *pIn, q31_t * pOut, uint32_t numSamples)
 
   for (i = 0; i < numSamples; i++)
   {
-    diff = pIn[i] - pOut[i];
-    diffCrnt = (diff > 0) ? diff : -diff;
+  	diff = pIn[i] - pOut[i];
+  	diffCrnt = (diff > 0) ? diff : -diff;
 
-    if (diffCrnt > maxDiff)
-    {
-      maxDiff = diffCrnt;
-    }
+	if (diffCrnt > maxDiff)
+	{
+		maxDiff = diffCrnt;
+	}
   }
 
   return(maxDiff);
@@ -221,15 +222,15 @@ uint32_t arm_compare_fixed_q31(q31_t *pIn, q31_t * pOut, uint32_t numSamples)
  */
 
 void arm_provide_guard_bits_q31 (q31_t * input_buf,
-                 uint32_t blockSize,
+								 uint32_t blockSize,
                                  uint32_t guard_bits)
 {
   uint32_t i;
 
   for (i = 0; i < blockSize; i++)
-  {
-    input_buf[i] = input_buf[i] >> guard_bits;
-  }
+    {
+      input_buf[i] = input_buf[i] >> guard_bits;
+    }
 }
 
 /**
@@ -243,22 +244,22 @@ void arm_provide_guard_bits_q31 (q31_t * input_buf,
  */
 
 void arm_provide_guard_bits_q7 (q7_t * input_buf,
-                uint32_t blockSize,
+								uint32_t blockSize,
                                 uint32_t guard_bits)
 {
   uint32_t i;
 
   for (i = 0; i < blockSize; i++)
-  {
-    input_buf[i] = input_buf[i] >> guard_bits;
-  }
+    {
+      input_buf[i] = input_buf[i] >> guard_bits;
+    }
 }
 
 
 
 /**
  * @brief  Caluclates number of guard bits
- * @param[in]  num_adds   number of additions
+ * @param[in]  num_adds 	number of additions
  * @return guard bits
  * The function Caluclates the number of guard bits
  * depending on the numtaps
@@ -269,15 +270,15 @@ uint32_t arm_calc_guard_bits (uint32_t num_adds)
   uint32_t i = 1, j = 0;
 
   if (num_adds == 1)
-  {
-    return (0);
-  }
+    {
+      return (0);
+    }
 
   while (i < num_adds)
-  {
-    i = i * 2;
-    j++;
-  }
+    {
+      i = i * 2;
+      j++;
+    }
 
   return (j);
 }
@@ -291,20 +292,20 @@ uint32_t arm_calc_guard_bits (uint32_t num_adds)
  */
 
 void arm_apply_guard_bits (float32_t *pIn,
-               uint32_t numSamples,
-               uint32_t guard_bits)
+						   uint32_t numSamples,
+						   uint32_t guard_bits)
 {
   uint32_t i;
 
   for (i = 0; i < numSamples; i++)
-  {
-    pIn[i] = pIn[i] * arm_calc_2pow(guard_bits);
-  }
+    {
+      pIn[i] = pIn[i] * arm_calc_2pow(guard_bits);
+    }
 }
 
 /**
  * @brief  Calculates pow(2, numShifts)
- * @param[in]  numShifts   number of shifts
+ * @param[in]  numShifts 	number of shifts
  * @return pow(2, numShifts)
  */
 uint32_t arm_calc_2pow(uint32_t numShifts)
@@ -313,9 +314,9 @@ uint32_t arm_calc_2pow(uint32_t numShifts)
   uint32_t i, val = 1;
 
   for (i = 0; i < numShifts; i++)
-  {
-    val = val * 2;
-  }
+    {
+      val = val * 2;
+    }
 
   return(val);
 }
@@ -336,18 +337,18 @@ void arm_float_to_q14 (float *pIn, q15_t *pOut, uint32_t numSamples)
   uint32_t i;
 
   for (i = 0; i < numSamples; i++)
-  {
-    /* 16384.0f corresponds to pow(2, 14) */
-    pOut[i] = (q15_t) (pIn[i] * 16384.0f);
-
-    pOut[i] += pIn[i] > 0 ? 0.5 : -0.5;
-
-    if (pIn[i] == (float) 2.0)
     {
-      pOut[i] = 0x7FFF;
-    }
+	  /* 16384.0f corresponds to pow(2, 14) */
+      pOut[i] = (q15_t) (pIn[i] * 16384.0f);
 
-  }
+      pOut[i] += pIn[i] > 0 ? 0.5 : -0.5;
+
+      if (pIn[i] == (float) 2.0)
+        {
+          pOut[i] = 0x7FFF;
+        }
+
+    }
 
 }
 
@@ -366,17 +367,17 @@ void arm_float_to_q30 (float *pIn, q31_t * pOut, uint32_t numSamples)
   uint32_t i;
 
   for (i = 0; i < numSamples; i++)
-  {
-    /* 1073741824.0f corresponds to pow(2, 30) */
-    pOut[i] = (q31_t) (pIn[i] * 1073741824.0f);
-
-    pOut[i] += pIn[i] > 0 ? 0.5 : -0.5;
-
-    if (pIn[i] == (float) 2.0)
     {
-      pOut[i] = 0x7FFFFFFF;
+	  /* 1073741824.0f corresponds to pow(2, 30) */
+      pOut[i] = (q31_t) (pIn[i] * 1073741824.0f);
+
+      pOut[i] += pIn[i] > 0 ? 0.5 : -0.5;
+
+      if (pIn[i] == (float) 2.0)
+        {
+          pOut[i] = 0x7FFFFFFF;
+        }
     }
-  }
 }
 
 /**
@@ -393,17 +394,17 @@ void arm_float_to_q29 (float *pIn, q31_t *pOut, uint32_t numSamples)
   uint32_t i;
 
   for (i = 0; i < numSamples; i++)
-  {
-    /* 1073741824.0f corresponds to pow(2, 30) */
-    pOut[i] = (q31_t) (pIn[i] * 536870912.0f);
-
-    pOut[i] += pIn[i] > 0 ? 0.5 : -0.5;
-
-    if (pIn[i] == (float) 4.0)
     {
-      pOut[i] = 0x7FFFFFFF;
+	  /* 1073741824.0f corresponds to pow(2, 30) */
+      pOut[i] = (q31_t) (pIn[i] * 536870912.0f);
+
+      pOut[i] += pIn[i] > 0 ? 0.5 : -0.5;
+
+      if (pIn[i] == (float) 4.0)
+        {
+          pOut[i] = 0x7FFFFFFF;
+        }
     }
-  }
 }
 
 
@@ -421,19 +422,27 @@ void arm_float_to_q28 (float *pIn, q31_t *pOut, uint32_t numSamples)
   uint32_t i;
 
   for (i = 0; i < numSamples; i++)
-  {
-    /* 268435456.0f corresponds to pow(2, 28) */
-    pOut[i] = (q31_t) (pIn[i] * 268435456.0f);
-
-    pOut[i] += pIn[i] > 0 ? 0.5 : -0.5;
-
-    if (pIn[i] == (float) 8.0)
     {
-      pOut[i] = 0x7FFFFFFF;
+	/* 268435456.0f corresponds to pow(2, 28) */
+      pOut[i] = (q31_t) (pIn[i] * 268435456.0f);
+
+      pOut[i] += pIn[i] > 0 ? 0.5 : -0.5;
+
+      if (pIn[i] == (float) 8.0)
+        {
+          pOut[i] = 0x7FFFFFFF;
+        }
     }
-  }
 }
 
+
+/*
+
+Conflicting with the new clip functions in CMSIS-DSP and not used
+in the examples.
+
+*/
+#if 0
 /**
  * @brief  Clip the float values to +/- 1
  * @param[in,out]  pIn           input buffer
@@ -447,19 +456,19 @@ void arm_clip_f32 (float *pIn, uint32_t numSamples)
   uint32_t i;
 
   for (i = 0; i < numSamples; i++)
-  {
-    if (pIn[i] > 1.0f)
     {
-      pIn[i] = 1.0;
-    }
-    else if ( pIn[i] < -1.0f)
-    {
-      pIn[i] = -1.0;
-    }
+      if (pIn[i] > 1.0f)
+	  {
+	    pIn[i] = 1.0;
+	  }
+	  else if ( pIn[i] < -1.0f)
+	  {
+	    pIn[i] = -1.0;
+	  }
 
-  }
+    }
 }
 
-
+#endif
 
 

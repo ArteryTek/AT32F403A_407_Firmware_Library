@@ -3,13 +3,13 @@
  * Title:        arm_cmplx_mult_real_q15.c
  * Description:  Q15 complex by real multiplication
  *
- * $Date:        18. March 2019
- * $Revision:    V1.6.0
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M cores
+ * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -26,7 +26,7 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/complex_math_functions.h"
 
 /**
   @ingroup groupCmplxMath
@@ -49,7 +49,7 @@
                    The function uses saturating arithmetic.
                    Results outside of the allowable Q15 range [0x8000 0x7FFF] are saturated.
  */
-#if defined(ARM_MATH_MVEI)
+#if defined(ARM_MATH_MVEI) && !defined(ARM_MATH_AUTOVECTORIZE)
 
 void arm_cmplx_mult_real_q15(
   const q15_t * pSrcCmplx,
@@ -57,7 +57,7 @@ void arm_cmplx_mult_real_q15(
         q15_t * pCmplxDst,
         uint32_t numSamples)
 {
-  const static uint16_t stride_cmplx_x_real_16[8] = {
+  static const uint16_t stride_cmplx_x_real_16[8] = {
       0, 0, 1, 1, 2, 2, 3, 3
       };
   q15x8_t rVec;
@@ -66,7 +66,7 @@ void arm_cmplx_mult_real_q15(
   uint16x8_t strideVec;
   uint32_t blockSizeC = numSamples * CMPLX_DIM;   /* loop counters */
   uint32_t blkCnt;
-  q15_t in;
+  q15_t in;  
 
   /*
   * stride vector for pairs of real generation
@@ -75,7 +75,7 @@ void arm_cmplx_mult_real_q15(
 
   blkCnt = blockSizeC >> 3;
 
-  while (blkCnt > 0U)
+  while (blkCnt > 0U) 
   {
     cmplxVec = vld1q(pSrcCmplx);
     rVec = vldrhq_gather_shifted_offset_s16(pSrcReal, strideVec);
@@ -133,10 +133,10 @@ void arm_cmplx_mult_real_q15(
 
 #if defined (ARM_MATH_DSP)
     /* read 2 complex numbers both real and imaginary from complex input buffer */
-    inA1 = read_q15x2_ia ((q15_t **) &pSrcCmplx);
-    inA2 = read_q15x2_ia ((q15_t **) &pSrcCmplx);
+    inA1 = read_q15x2_ia (&pSrcCmplx);
+    inA2 = read_q15x2_ia (&pSrcCmplx);
     /* read 2 real values at a time from real input buffer */
-    inB1 = read_q15x2_ia ((q15_t **) &pSrcReal);
+    inB1 = read_q15x2_ia (&pSrcReal);
 
     /* multiply complex number with real numbers */
 #ifndef ARM_MATH_BIG_ENDIAN
@@ -161,9 +161,9 @@ void arm_cmplx_mult_real_q15(
     write_q15x2_ia (&pCmplxDst, __PKHBT(out1, out2, 16));
     write_q15x2_ia (&pCmplxDst, __PKHBT(out3, out4, 16));
 
-    inA1 = read_q15x2_ia ((q15_t **) &pSrcCmplx);
-    inA2 = read_q15x2_ia ((q15_t **) &pSrcCmplx);
-    inB1 = read_q15x2_ia ((q15_t **) &pSrcReal);
+    inA1 = read_q15x2_ia (&pSrcCmplx);
+    inA2 = read_q15x2_ia (&pSrcCmplx);
+    inB1 = read_q15x2_ia (&pSrcReal);
 
 #ifndef ARM_MATH_BIG_ENDIAN
     mul1 = (q31_t) ((q15_t) (inA1)       * (q15_t) (inB1));

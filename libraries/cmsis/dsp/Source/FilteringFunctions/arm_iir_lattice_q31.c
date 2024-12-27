@@ -3,13 +3,13 @@
  * Title:        arm_iir_lattice_q31.c
  * Description:  Q31 IIR Lattice filter processing function
  *
- * $Date:        18. March 2019
- * $Revision:    V1.6.0
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M cores
+ * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -26,7 +26,7 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/filtering_functions.h"
 
 /**
   @ingroup groupFilters
@@ -58,7 +58,7 @@ void arm_iir_lattice_q31(
   const q31_t * pSrc,
         q31_t * pDst,
         uint32_t blockSize)
-{
+{       
         q31_t *pState = S->pState;                       /* State pointer */
         q31_t *pStateCur;                                /* State current pointer */
         q31_t fcurr, fnext = 0, gcurr = 0, gnext;        /* Temporary variables for lattice stages */

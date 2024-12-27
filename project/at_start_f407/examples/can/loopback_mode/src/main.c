@@ -65,13 +65,23 @@ static void can_gpio_config(void)
 /**
   *  @brief  can configiguration.
   *  @param  none
-  *  @retval none
+  *  @retval the result of can_configuration
+  *          this parameter can be one of the following values:
+  *          SUCCESS or ERROR
   */
-static void can_configuration(void)
+error_status can_configuration(void)
 {
   can_base_type can_base_struct;
   can_baudrate_type can_baudrate_struct;
   can_filter_init_type can_filter_init_struct;
+  
+  /* as specified in CAN protocol, the maximum allowable oscillator tolerance is 1.58%. 
+     The HICK accuracy does not meet the clock requirements in CAN protocol. to guarantee normal 
+     communication, it is recommended to use HEXT as the system clock source. */
+  if(crm_flag_get(CRM_HEXT_STABLE_FLAG) != SET)
+  {
+    return ERROR;
+  }
 
   crm_periph_clock_enable(CRM_CAN1_PERIPH_CLOCK, TRUE);
   /* can base init */
@@ -90,7 +100,10 @@ static void can_configuration(void)
   can_baudrate_struct.rsaw_size = CAN_RSAW_3TQ;
   can_baudrate_struct.bts1_size = CAN_BTS1_8TQ;
   can_baudrate_struct.bts2_size = CAN_BTS2_3TQ;
-  can_baudrate_set(CAN1, &can_baudrate_struct);
+  if(can_baudrate_set(CAN1, &can_baudrate_struct) != SUCCESS)
+  {
+    return ERROR;
+  }
 
   /* can filter init */
   can_filter_init_struct.filter_activate_enable = TRUE;
@@ -112,6 +125,8 @@ static void can_configuration(void)
   /* error interrupt enable */
   can_interrupt_enable(CAN1, CAN_ETRIEN_INT, TRUE);
   can_interrupt_enable(CAN1, CAN_EOIEN_INT, TRUE);
+  
+  return SUCCESS;
 }
 
 /**
@@ -188,7 +203,13 @@ int main(void)
   at32_board_init();
   nvic_priority_group_config(NVIC_PRIORITY_GROUP_4);
   can_gpio_config();
-  can_configuration();
+  if(can_configuration() == ERROR)
+  {
+    /* CAN clock initialization error */
+    while(1)
+    {
+    }
+  }
   while(1)
   {
     can_transmit_data();

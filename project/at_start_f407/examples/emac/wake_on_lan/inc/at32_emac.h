@@ -43,7 +43,7 @@
   */
 
 #define RX_REMAP                         (1)
-#define CRYSTAL_ON_PHY                   (0)
+#define CRYSTAL_ON_PHY                   (1)
 
 //#define MII_MODE
 #define RMII_MODE

@@ -3,13 +3,13 @@
  * Title:        arm_q7_to_q15.c
  * Description:  Converts the elements of the Q7 vector to Q15 vector
  *
- * $Date:        18. March 2019
- * $Revision:    V1.6.0
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M cores
+ * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -26,7 +26,7 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/support_functions.h"
 
 /**
   @ingroup groupSupport
@@ -51,7 +51,7 @@
   </pre>
  */
 
-#if defined(ARM_MATH_MVEI)
+#if defined(ARM_MATH_MVEI) && !defined(ARM_MATH_AUTOVECTORIZE)
 void arm_q7_to_q15(
   const q7_t * pSrc,
         q15_t * pDst,
@@ -70,10 +70,10 @@ void arm_q7_to_q15(
         /* C = (q15_t) A << 8 */
         /* convert from q7 to q15 and then store the results in the destination buffer */
         /* load q7 + 32-bit widening */
-        vecDst = vldrbq_s16(pSrcVec);
+        vecDst = vldrbq_s16(pSrcVec);    
         pSrcVec += 8;
         vecDst = vecDst << 8;
-        vstrhq(pDst, vecDst);
+        vstrhq(pDst, vecDst);   
         pDst += 8;
         /*
          * Decrement the blockSize loop counter
@@ -121,7 +121,7 @@ void arm_q7_to_q15(
     /* Convert from q7 to q15 and store result in destination buffer */
 #if defined (ARM_MATH_DSP)
 
-    in = read_q7x4_ia ((q7_t **) &pIn);
+    in = read_q7x4_ia (&pIn);
 
     /* rotatate in by 8 and extend two q7_t values to q15_t values */
     in1 = __SXTB16(__ROR(in, 8));

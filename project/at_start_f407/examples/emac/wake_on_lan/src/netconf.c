@@ -53,8 +53,8 @@ static uint8_t mac_address[MAC_ADDR_LENGTH] = {0, 0, 0x44, 0x45, 0x56, 1};;
 volatile uint32_t dhcp_fine_timer = 0;
 volatile uint32_t dhcp_coarse_timer = 0;
 #else
-static uint8_t local_ip[ADDR_LENGTH]   = {192, 168, 81, 37};
-static uint8_t local_gw[ADDR_LENGTH]   = {192, 168, 81, 187};
+static uint8_t local_ip[ADDR_LENGTH]   = {172, 31, 96, 101};
+static uint8_t local_gw[ADDR_LENGTH]   = {172, 31, 96, 254};
 static uint8_t local_mask[ADDR_LENGTH] = {255, 255, 255, 0};
 #endif
 extern u32_t lwip_sys_now;

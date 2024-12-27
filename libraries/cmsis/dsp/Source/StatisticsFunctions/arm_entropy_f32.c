@@ -3,11 +3,13 @@
  * Title:        arm_logsumexp_f32.c
  * Description:  LogSumExp
  *
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -24,13 +26,13 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/statistics_functions.h"
 #include <limits.h>
 #include <math.h>
 
 
 /**
- * @addtogroup groupStats
+ * @addtogroup Entropy
  * @{
  */
 
@@ -83,9 +85,9 @@ float32_t arm_entropy_f32(const float32_t * pSrcA,uint32_t blockSize)
     {
        p = *pSrcA++;
        accum += p * logf(p);
-
+       
        blkCnt--;
-
+    
     }
 
     return (-accum);
@@ -105,7 +107,7 @@ float32_t arm_entropy_f32(const float32_t * pSrcA,uint32_t blockSize)
     float32x4_t accumV;
     float32x2_t accumV2;
     float32x4_t tmpV, tmpV2;
-
+ 
     pIn = pSrcA;
 
     accum = 0.0f;
@@ -119,23 +121,23 @@ float32_t arm_entropy_f32(const float32_t * pSrcA,uint32_t blockSize)
 
       tmpV2 = vlogq_f32(tmpV);
       accumV = vmlaq_f32(accumV, tmpV, tmpV2);
-
+       
       blkCnt--;
-
+    
     }
 
     accumV2 = vpadd_f32(vget_low_f32(accumV),vget_high_f32(accumV));
     accum = vget_lane_f32(accumV2, 0) + vget_lane_f32(accumV2, 1);
-
+    
 
     blkCnt = blockSize & 3;
     while(blkCnt > 0)
     {
        p = *pIn++;
        accum += p * logf(p);
-
+       
        blkCnt--;
-
+    
     }
 
     return(-accum);
@@ -147,7 +149,7 @@ float32_t arm_entropy_f32(const float32_t * pSrcA,uint32_t blockSize)
     const float32_t *pIn;
     uint32_t blkCnt;
     float32_t accum, p;
-
+ 
     pIn = pSrcA;
     blkCnt = blockSize;
 
@@ -157,9 +159,9 @@ float32_t arm_entropy_f32(const float32_t * pSrcA,uint32_t blockSize)
     {
        p = *pIn++;
        accum += p * logf(p);
-
+       
        blkCnt--;
-
+    
     }
 
     return(-accum);
@@ -168,5 +170,5 @@ float32_t arm_entropy_f32(const float32_t * pSrcA,uint32_t blockSize)
 #endif /* defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE) */
 
 /**
- * @} end of groupStats group
+ * @} end of Entropy group
  */

@@ -3,13 +3,13 @@
  * Title:        arm_cmplx_mult_real_f32.c
  * Description:  Floating-point complex by real multiplication
  *
- * $Date:        18. March 2019
- * $Revision:    V1.6.0
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M cores
+ * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -26,7 +26,7 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/complex_math_functions.h"
 
 /**
   @ingroup groupCmplxMath
@@ -77,7 +77,7 @@ void arm_cmplx_mult_real_f32(
         float32_t * pCmplxDst,
         uint32_t numSamples)
 {
-    const static uint32_t stride_cmplx_x_real_32[4] = { 0, 0, 1, 1 };
+    static const uint32_t stride_cmplx_x_real_32[4] = { 0, 0, 1, 1 };
 
     uint32_t blockSizeC = numSamples * CMPLX_DIM;   /* loop counters */
     uint32_t blkCnt;
@@ -85,7 +85,7 @@ void arm_cmplx_mult_real_f32(
     f32x4_t cmplxVec;
     f32x4_t dstVec;
     uint32x4_t strideVec;
-    float32_t in;
+    float32_t in;  
 
 
     /* stride vector for pairs of real generation */
@@ -93,7 +93,7 @@ void arm_cmplx_mult_real_f32(
 
     /* Compute 4 complex outputs at a time */
     blkCnt = blockSizeC >> 2;
-    while (blkCnt > 0U)
+    while (blkCnt > 0U) 
     {
         cmplxVec = vld1q(pSrcCmplx);
         rVec = vldrwq_gather_shifted_offset_f32(pSrcReal, strideVec);
@@ -106,17 +106,17 @@ void arm_cmplx_mult_real_f32(
         blkCnt--;
     }
 
-    blkCnt = (blockSizeC & 3) >> 1;
+    blkCnt = (blockSizeC & 3) >> 1; 
     while (blkCnt > 0U)
     {
       /* C[2 * i    ] = A[2 * i    ] * B[i]. */
       /* C[2 * i + 1] = A[2 * i + 1] * B[i]. */
-
+  
       in = *pSrcReal++;
       /* store result in destination buffer. */
       *pCmplxDst++ = *pSrcCmplx++ * in;
       *pCmplxDst++ = *pSrcCmplx++ * in;
-
+  
       /* Decrement loop counter */
       blkCnt--;
     }

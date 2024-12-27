@@ -3,13 +3,13 @@
  * Title:        arm_lms_norm_f32.c
  * Description:  Processing function for the floating-point NLMS filter
  *
- * $Date:        18. March 2019
- * $Revision:    V1.6.0
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M cores
+ * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -26,7 +26,7 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/filtering_functions.h"
 
 /**
   @ingroup groupFilters
@@ -226,7 +226,7 @@ void arm_lms_norm_f32(
       bV = vld1q_f32(pb);
       sumV = vmlaq_f32(sumV, xV, bV);
 
-      px += 4;
+      px += 4; 
       pb += 4;
 
       /* Decrement the loop counter */
@@ -277,7 +277,7 @@ void arm_lms_norm_f32(
       px += 4;
       bV = vmlaq_n_f32(bV,xV,w);
 
-      vst1q_f32(pb,bV);
+      vst1q_f32(pb,bV); 
       pb += 4;
 
 
@@ -324,7 +324,7 @@ void arm_lms_norm_f32(
   while (tapCnt > 0U)
   {
     tempV = vld1q_f32(pState);
-    vst1q_f32(pStateCurnt,tempV);
+    vst1q_f32(pStateCurnt,tempV); 
     pState += 4;
     pStateCurnt += 4;
 

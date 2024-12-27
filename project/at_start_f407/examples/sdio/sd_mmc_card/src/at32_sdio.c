@@ -39,6 +39,7 @@ sdio_data_struct_type sdio_data_init_struct;
 
 static sd_memory_card_type card_type = SDIO_STD_CAPACITY_SD_CARD_V1_1; /* sd card type */
 static uint32_t csd_table[4], cid_table[4], rca = 0; /* csd, sid, rca */
+static uint32_t ext_csd_table[128];
 static sd_data_transfer_mode_type device_mode = SD_TRANSFER_POLLING_MODE; /* working mode */
 static uint8_t stop_flag = 0; /* transmit stop flag */
 volatile sd_error_status_type transfer_error = SD_OK; /* transmit error flag */
@@ -58,6 +59,7 @@ sd_error_status_type mmc_switch(uint8_t set, uint8_t index, uint8_t value);
 sd_error_status_type sd_switch(uint32_t mode, uint32_t group, uint8_t value, uint8_t *rsp);
 sd_error_status_type check_card_programming(uint8_t *p_status);
 sd_error_status_type speed_change(uint8_t speed);
+sd_error_status_type get_ext_csd(void);
 sd_error_status_type scr_find(void);
 uint8_t convert_from_bytes_to_power_of_two(uint16_t number_of_bytes);
 
@@ -119,6 +121,7 @@ sd_error_status_type sd_init(void)
   if((SDIO_MULTIMEDIA_CARD == card_type) && (sd_card_info.sd_csd_reg.spec_version >= 4))
   {
     card_type = SDIO_HIGH_SPEED_MULTIMEDIA_CARD;
+    sd_card_info.card_type = (uint8_t)card_type;
   }
 
   if(status == SD_OK)
@@ -126,7 +129,27 @@ sd_error_status_type sd_init(void)
     /* select card */
     status = sd_deselect_select((uint32_t)(sd_card_info.rca << 16));
   }
-
+  
+  if(status == SD_OK)
+  {
+    if(SDIO_HIGH_SPEED_MULTIMEDIA_CARD == card_type)
+    {
+      if(sd_card_info.sd_csd_reg.device_size == 0xFFF)
+      {
+        uint32_t  sec_count; 
+        /* get ext_csd function for support emmc card. */
+        status = get_ext_csd();
+        if(status == SD_OK)
+        {
+          card_type = SDIO_HIGH_CAPACITY_MMC_CARD;
+          sd_card_info.card_type = (uint8_t)card_type;
+          sec_count = ext_csd_table[212/4];
+          sd_card_info.card_capacity = (uint64_t)sec_count*512;
+        }
+      }
+    }
+  }
+  
   if(status == SD_OK && ((SDIO_STD_CAPACITY_SD_CARD_V1_1 == card_type) || (SDIO_STD_CAPACITY_SD_CARD_V2_0 == card_type) || \
     (SDIO_SECURE_DIGITAL_IO_COMBO_CARD == card_type) || (SDIO_HIGH_CAPACITY_SD_CARD == card_type)))
   {
@@ -166,6 +189,12 @@ sd_error_status_type sd_init(void)
 
     /* set transfer mode */
     status = sd_device_mode_set(SD_TRANSFER_DMA_MODE);
+  }
+
+  if(status == SD_OK)
+  {
+    /* Set data width */
+    status = sd_wide_bus_operation_config(SDIO_BUS_WIDTH_D4);
   }
 
   return status;
@@ -221,7 +250,8 @@ sd_error_status_type sd_power_on(void)
   sdio_power_set(SDIOx, SDIO_POWER_ON);
   /* enable to output sdio_ck */
   sdio_clock_enable(SDIOx, TRUE);
-
+  delay_ms(10);
+  
   for(retry = 0; retry < 5; retry++)
   {
     /* send cmd0, get in idle stage */
@@ -735,7 +765,7 @@ sd_error_status_type sd_wide_bus_operation_config(sdio_bus_width_type mode)
 {
   sd_error_status_type status = SD_OK;
 
-  if((card_type == SDIO_MULTIMEDIA_CARD) || (card_type == SDIO_HIGH_SPEED_MULTIMEDIA_CARD))
+  if(card_type == SDIO_MULTIMEDIA_CARD || card_type == SDIO_HIGH_SPEED_MULTIMEDIA_CARD || card_type == SDIO_HIGH_CAPACITY_MMC_CARD)
   {
     status = mmc_switch(EXT_CSD_CMD_SET_NORMAL, EXT_CSD_BUS_WIDTH, (uint8_t)mode);
   }
@@ -801,7 +831,7 @@ sd_error_status_type sd_deselect_select(uint32_t addr)
   sdio_command_init_struct.argument =  addr;
   sdio_command_init_struct.cmd_index = SD_CMD_SEL_DESEL_CARD;
   sdio_command_init_struct.rsp_type = SDIO_RESPONSE_SHORT;
-  sdio_command_init_struct.wait_type = SDIO_WAIT_FOR_INT;
+  sdio_command_init_struct.wait_type = SDIO_WAIT_FOR_NO;
 
   /* sdio command config */
   sdio_command_config(SDIOx, &sdio_command_init_struct);
@@ -844,10 +874,10 @@ sd_error_status_type sdio_command_data_send(sdio_command_struct_type *sdio_cmd_i
   {
     if(sdio_data_init_t->transfer_direction == SDIO_DATA_TRANSFER_TO_CONTROLLER)
     {
-      sd_dma_config(buf, length, DMA_DIR_PERIPHERAL_TO_MEMORY);
-      SDIOx->inten |= SDIO_INTR_STS_READ_MASK;
       transfer_error = SD_OK;
       transfer_end = 0;
+      sd_dma_config(buf, length, DMA_DIR_PERIPHERAL_TO_MEMORY);
+      SDIOx->inten |= SDIO_INTR_STS_READ_MASK;
       sdio_dma_enable(SDIOx, TRUE);
     }
   }
@@ -980,10 +1010,10 @@ sd_error_status_type sdio_command_data_send(sdio_command_struct_type *sdio_cmd_i
   {
     if(sdio_data_init_t->transfer_direction == SDIO_DATA_TRANSFER_TO_CARD)
     {
-      sd_dma_config(buf, length, DMA_DIR_MEMORY_TO_PERIPHERAL);
-      SDIOx->inten |= SDIO_INTR_STS_WRITE_MASK;
       transfer_error = SD_OK;
       transfer_end = 0;
+      sd_dma_config(buf, length, DMA_DIR_MEMORY_TO_PERIPHERAL);
+      SDIOx->inten |= SDIO_INTR_STS_WRITE_MASK;
       sdio_dma_enable(SDIOx, TRUE);
     }
 
@@ -1054,7 +1084,7 @@ sd_error_status_type sd_blocks_erase(long long addr, uint32_t nblks)
     return SD_LOCK_UNLOCK_ERROR;
   }
 
-  if(card_type == SDIO_MULTIMEDIA_CARD || card_type == SDIO_HIGH_SPEED_MULTIMEDIA_CARD)
+  if(card_type == SDIO_MULTIMEDIA_CARD || card_type == SDIO_HIGH_SPEED_MULTIMEDIA_CARD || card_type == SDIO_HIGH_CAPACITY_MMC_CARD)
   {
     /* send cmd35, set erase group start */
     sdio_command_init_struct.argument =  start_addr;
@@ -1189,7 +1219,7 @@ sd_error_status_type sd_block_read(uint8_t *buf, long long addr, uint16_t blk_si
 
   SDIOx->dtctrl = 0x0;
 
-  if(card_type == SDIO_HIGH_CAPACITY_SD_CARD)
+  if((card_type == SDIO_HIGH_CAPACITY_SD_CARD) || (card_type == SDIO_HIGH_CAPACITY_MMC_CARD))
   {
     blk_size = 512;
     addr >>= 9;
@@ -1273,7 +1303,7 @@ sd_error_status_type sd_mult_blocks_read(uint8_t *buf, long long addr, uint16_t 
 
   SDIOx->dtctrl = 0x0;
 
-  if(card_type == SDIO_HIGH_CAPACITY_SD_CARD)
+  if((card_type == SDIO_HIGH_CAPACITY_SD_CARD) || (card_type == SDIO_HIGH_CAPACITY_MMC_CARD))
   {
     blk_size = 512;
     addr >>= 9;
@@ -1386,7 +1416,7 @@ sd_error_status_type sd_block_write(const uint8_t *buf, long long addr, uint16_t
     return SD_LOCK_UNLOCK_ERROR;
   }
 
-  if(card_type == SDIO_HIGH_CAPACITY_SD_CARD)
+  if((card_type == SDIO_HIGH_CAPACITY_SD_CARD) || (card_type == SDIO_HIGH_CAPACITY_MMC_CARD))
   {
     blk_size = 512;
     addr >>= 9;
@@ -1508,7 +1538,7 @@ sd_error_status_type sd_mult_blocks_write(const uint8_t *buf, long long addr, ui
     return SD_LOCK_UNLOCK_ERROR;
   }
 
-  if(card_type == SDIO_HIGH_CAPACITY_SD_CARD)
+  if((card_type == SDIO_HIGH_CAPACITY_SD_CARD) || (card_type == SDIO_HIGH_CAPACITY_MMC_CARD))
   {
     blk_size = 512;
     addr >>= 9;
@@ -1649,7 +1679,7 @@ sd_error_status_type mmc_stream_read(uint8_t *buf, long long addr, uint32_t len)
 
   /* clear dcsm configuration */
   sdio_data_init_struct.block_size = SDIO_DATA_BLOCK_SIZE_1B;
-  sdio_data_init_struct.data_length = 0 ;
+  sdio_data_init_struct.data_length = 0;
   sdio_data_init_struct.timeout = SD_DATATIMEOUT ;
   sdio_data_init_struct.transfer_direction = SDIO_DATA_TRANSFER_TO_CARD;
   sdio_data_init_struct.transfer_mode = SDIO_DATA_STREAM_TRANSFER;
@@ -1670,7 +1700,7 @@ sd_error_status_type mmc_stream_read(uint8_t *buf, long long addr, uint32_t len)
   sdio_command_init_struct.rsp_type = SDIO_RESPONSE_SHORT;
   sdio_command_init_struct.wait_type = SDIO_WAIT_FOR_NO;
 
-  sdio_data_init_struct.block_size = (sdio_block_size_type)(5 << 4);
+  sdio_data_init_struct.block_size = SDIO_DATA_BLOCK_SIZE_1B;
   sdio_data_init_struct.data_length = len;
   sdio_data_init_struct.timeout = SD_DATATIMEOUT ;
   sdio_data_init_struct.transfer_direction = SDIO_DATA_TRANSFER_TO_CONTROLLER;
@@ -1725,7 +1755,7 @@ sd_error_status_type mmc_stream_write(uint8_t *buf, long long addr, uint32_t len
   sdio_command_init_struct.wait_type = SDIO_WAIT_FOR_NO;
 
 
-  sdio_data_init_struct.block_size = (sdio_block_size_type)(15 << 4);
+  sdio_data_init_struct.block_size = SDIO_DATA_BLOCK_SIZE_1B;
   sdio_data_init_struct.data_length = len;
   sdio_data_init_struct.timeout = SD_DATATIMEOUT ;
   sdio_data_init_struct.transfer_direction = SDIO_DATA_TRANSFER_TO_CARD;
@@ -2492,6 +2522,77 @@ sd_card_state_type sd_state_get(void)
 }
 
 /**
+  * @brief  find the sd card ext csd register value.
+  * @retval sd_error_status_type: sd card error code.
+  */
+sd_error_status_type get_ext_csd(void)
+{
+  uint32_t index = 0, sts_reg = 0;
+  sd_error_status_type status = SD_OK;
+  uint32_t *tmp_ext_csd = ext_csd_table;
+
+  sdio_data_init_struct.block_size = SDIO_DATA_BLOCK_SIZE_512B;
+  sdio_data_init_struct.data_length = 512;
+  sdio_data_init_struct.timeout = SD_DATATIMEOUT;
+  sdio_data_init_struct.transfer_direction = SDIO_DATA_TRANSFER_TO_CONTROLLER;
+  sdio_data_init_struct.transfer_mode = SDIO_DATA_BLOCK_TRANSFER;
+
+  sdio_data_config(SDIOx, &sdio_data_init_struct);
+  sdio_data_state_machine_enable(SDIOx, TRUE);
+
+  /* send cmd8 */
+  sdio_command_init_struct.argument = 0x0;
+  sdio_command_init_struct.cmd_index = SD_CMD_HS_SEND_EXT_CSD;
+  sdio_command_init_struct.rsp_type = SDIO_RESPONSE_SHORT;
+  sdio_command_init_struct.wait_type = SDIO_WAIT_FOR_NO;
+  /* sdio command config */
+  sdio_command_config(SDIOx, &sdio_command_init_struct);
+  /* enable ccsm */
+  sdio_command_state_machine_enable(SDIOx, TRUE);
+  status = command_rsp1_error(SD_CMD_HS_SEND_EXT_CSD);
+  if(status != SD_OK)
+  {
+    return status;
+  }
+
+  sts_reg = SDIOx->sts;
+  
+  while(!(sts_reg & (SDIO_RXERRO_FLAG | SDIO_DTFAIL_FLAG | SDIO_DTTIMEOUT_FLAG | SDIO_DTBLKCMPL_FLAG | SDIO_SBITERR_FLAG)))
+  {
+    if(sdio_flag_get(SDIOx, SDIO_RXBUF_FLAG) != RESET)
+    {
+      *(tmp_ext_csd + index) = sdio_data_read(SDIOx);
+      index++;
+    }
+    sts_reg = SDIOx->sts;
+  }
+  if(sdio_flag_get(SDIOx, SDIO_DTTIMEOUT_FLAG) != RESET)
+  {
+    sdio_flag_clear(SDIOx, SDIO_DTTIMEOUT_FLAG);
+    return SD_DATA_TIMEOUT;
+  }
+  else if(sdio_flag_get(SDIOx, SDIO_DTFAIL_FLAG) != RESET)
+  {
+    sdio_flag_clear(SDIOx, SDIO_DTFAIL_FLAG);
+    return SD_DATA_FAIL;
+  }
+  else if(sdio_flag_get(SDIOx, SDIO_RXERRO_FLAG) != RESET)
+  {
+    sdio_flag_clear(SDIOx, SDIO_RXERRO_FLAG);
+    return SD_RX_OVERRUN;
+  }
+  else if(sdio_flag_get(SDIOx, SDIO_SBITERR_FLAG) != RESET)
+  {
+    sdio_flag_clear(SDIOx, SDIO_SBITERR_FLAG);
+    return SD_START_BIT_ERR;
+  }
+
+  sdio_flag_clear(SDIOx, SDIO_STATIC_FLAGS);
+  
+  return status;
+}
+
+/**
   * @brief  find the sd card scr register value.
   * @retval sd_error_status_type: sd card error code.
   */
@@ -2655,7 +2756,7 @@ sd_error_status_type speed_change(uint8_t speed)
       return SD_ERROR;
     }
   }
-  else if(card_type == SDIO_HIGH_SPEED_MULTIMEDIA_CARD)
+  else if(card_type == SDIO_HIGH_SPEED_MULTIMEDIA_CARD || card_type == SDIO_HIGH_CAPACITY_MMC_CARD)
   {
     status = mmc_switch(EXT_CSD_CMD_SET_NORMAL, EXT_CSD_BUS_WIDTH, (uint8_t)speed);
 

@@ -334,7 +334,7 @@ static usb_sts_type usbd_set_configuration(usbd_core_type *udev)
           udev->class_handler->clear_handler(udev);
           usbd_ctrl_send_status(udev);
         }
-        else if(config_value == udev->dev_config)
+        else if(config_value != udev->dev_config)
         {
           udev->class_handler->clear_handler(udev);
           udev->dev_config = config_value;

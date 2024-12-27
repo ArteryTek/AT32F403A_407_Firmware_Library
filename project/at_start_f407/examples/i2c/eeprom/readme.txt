@@ -5,8 +5,8 @@
   **************************************************************************
   */
 
-  this demo is based on the at-start board and AT32-Comm-EV, in this demo, use hardware i2c1 
-  write or read data based on the memory device. if the communication is
+  this demo is based on the at-start board and AT32-Comm-EV, in this demo, use hardware i2c2 
+  write or read data based on the eeprom device. if the communication is
   successful, led3 will turn on, if the communication fails, led2 will keep flashing.
   
   attention:

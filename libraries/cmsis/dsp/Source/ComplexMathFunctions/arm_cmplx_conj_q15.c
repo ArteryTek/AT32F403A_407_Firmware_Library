@@ -3,13 +3,13 @@
  * Title:        arm_cmplx_conj_q15.c
  * Description:  Q15 complex conjugate
  *
- * $Date:        18. March 2019
- * $Revision:    V1.6.0
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M cores
+ * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -26,7 +26,7 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/complex_math_functions.h"
 
 /**
   @ingroup groupCmplxMath
@@ -50,7 +50,7 @@
  */
 
 
-#if defined(ARM_MATH_MVEI)
+#if defined(ARM_MATH_MVEI) && !defined(ARM_MATH_AUTOVECTORIZE)
 void arm_cmplx_conj_q15(
   const q15_t * pSrc,
         q15_t * pDst,
@@ -58,7 +58,7 @@ void arm_cmplx_conj_q15(
 {
     uint32_t blockSize = numSamples * CMPLX_DIM;   /* loop counters */
     uint32_t blkCnt;
-    q31_t in1;
+    q31_t in1; 
 
     q15x8x2_t vecSrc;
     q15x8_t zero;
@@ -80,19 +80,19 @@ void arm_cmplx_conj_q15(
         pDst += 16;
         blkCnt --;
     }
-
+    
      /* Tail */
     blkCnt = (blockSize & 0xF) >> 1;
 
     while (blkCnt > 0U)
     {
       /* C[0] + jC[1] = A[0]+ j(-1)A[1] */
-
+  
       /* Calculate Complex Conjugate and store result in destination buffer. */
       *pDst++ =  *pSrc++;
       in1 = *pSrc++;
       *pDst++ = __SSAT(-in1, 16);
-
+  
       /* Decrement loop counter */
       blkCnt--;
     }
@@ -122,11 +122,11 @@ void arm_cmplx_conj_q15(
 
     /* Calculate Complex Conjugate and store result in destination buffer. */
 
-    #if defined (ARM_MATH_DSP)
-    in1 = read_q15x2_ia ((q15_t **) &pSrc);
-    in2 = read_q15x2_ia ((q15_t **) &pSrc);
-    in3 = read_q15x2_ia ((q15_t **) &pSrc);
-    in4 = read_q15x2_ia ((q15_t **) &pSrc);
+#if defined (ARM_MATH_DSP)
+    in1 = read_q15x2_ia (&pSrc);
+    in2 = read_q15x2_ia (&pSrc);
+    in3 = read_q15x2_ia (&pSrc);
+    in4 = read_q15x2_ia (&pSrc);
 
 #ifndef ARM_MATH_BIG_ENDIAN
     in1 = __QASX(0, in1);

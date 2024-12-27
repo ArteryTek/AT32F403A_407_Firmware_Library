@@ -46,6 +46,7 @@ void iap_finish(void);
 iap_result_type iap_data_write(uint8_t *pdata, uint32_t len);
 void iap_jump(void);
 void iap_respond(uint8_t *res_buf, uint16_t iap_cmd, uint16_t result);
+uint32_t stkptr, jumpaddr;
 
 /* app_load don't optimize */
 #if defined (__ARMCC_VERSION)
@@ -67,7 +68,6 @@ void iap_respond(uint8_t *res_buf, uint16_t iap_cmd, uint16_t result);
   */
 void jump_to_app(uint32_t address)
 {
-  uint32_t stkptr, jumpaddr;
   stkptr = *(uint32_t *)address;
   jumpaddr = *(uint32_t *)(address + sizeof(uint32_t));
 

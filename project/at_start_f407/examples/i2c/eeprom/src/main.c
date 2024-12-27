@@ -24,7 +24,7 @@
 
 #include "at32f403a_407_board.h"
 #include "at32f403a_407_clock.h"
-#include "i2c_application.h"
+#include "eeprom.h"
 
 /** @addtogroup AT32F407_periph_examples
   * @{
@@ -60,11 +60,11 @@
 #define I2Cx_EVT_IRQn                    I2C2_EVT_IRQn
 #define I2Cx_ERR_IRQn                    I2C2_ERR_IRQn
 
-#define BUF_SIZE                         8
+#define BUF_SIZE                         12
 
-uint8_t tx_buf1[BUF_SIZE] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
-uint8_t tx_buf2[BUF_SIZE] = {0x10, 0x20, 0x30, 0x40, 0x50, 0x60, 0x70, 0x80};
-uint8_t tx_buf3[BUF_SIZE] = {0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88};
+uint8_t tx_buf1[BUF_SIZE] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C};
+uint8_t tx_buf2[BUF_SIZE] = {0x10, 0x20, 0x30, 0x40, 0x50, 0x60, 0x70, 0x80, 0x90, 0xA0, 0xB0, 0xC0};
+uint8_t tx_buf3[BUF_SIZE] = {0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88, 0x99, 0xAA, 0xBB, 0xCC};
 uint8_t rx_buf1[BUF_SIZE] = {0};
 uint8_t rx_buf2[BUF_SIZE] = {0};
 uint8_t rx_buf3[BUF_SIZE] = {0};
@@ -205,72 +205,55 @@ int main(void)
     {
     }
 
-    /* write data to memory device */
-    if((i2c_status = i2c_memory_write(&hi2cx, I2C_MEM_ADDR_WIDIH_8, I2Cx_ADDRESS, 0x00, tx_buf1, BUF_SIZE, I2C_TIMEOUT)) != I2C_OK)
+    /* write data to eeprom device */
+    if((i2c_status = eeprom_write_buffer(&hi2cx, EE_MODE_POLL, I2C_MEM_ADDR_WIDIH_8, I2Cx_ADDRESS, 0x00, tx_buf1, BUF_SIZE, I2C_TIMEOUT)) != I2C_OK)
+    {
+      error_handler(i2c_status);
+    }
+
+    delay_ms(1);
+
+    /* read data from eeprom device */
+    if((i2c_status = eeprom_read_buffer(&hi2cx, EE_MODE_POLL, I2C_MEM_ADDR_WIDIH_8, I2Cx_ADDRESS, 0x00, rx_buf1, BUF_SIZE, I2C_TIMEOUT)) != I2C_OK)
     {
       error_handler(i2c_status);
     }
 
     delay_ms(5);
-
-    /* read data from memory device */
-    if((i2c_status = i2c_memory_read(&hi2cx, I2C_MEM_ADDR_WIDIH_8, I2Cx_ADDRESS, 0x00, rx_buf1, BUF_SIZE, I2C_TIMEOUT)) != I2C_OK)
+    
+    
+    /* write data to eeprom device */
+    if((i2c_status = eeprom_write_buffer(&hi2cx, EE_MODE_INT, I2C_MEM_ADDR_WIDIH_8, I2Cx_ADDRESS, 0x00, tx_buf2, BUF_SIZE, I2C_TIMEOUT)) != I2C_OK)
     {
       error_handler(i2c_status);
     }
 
-    /* write data to memory device */
-    if((i2c_status = i2c_memory_write_int(&hi2cx, I2C_MEM_ADDR_WIDIH_8, I2Cx_ADDRESS, 0x00, tx_buf2, BUF_SIZE, I2C_TIMEOUT)) != I2C_OK)
-    {
-      error_handler(i2c_status);
-    }
+    delay_ms(1);
 
-    /* wait for the communication to end */
-    if(i2c_wait_end(&hi2cx, I2C_TIMEOUT) != I2C_OK)
-    {
-      error_handler(i2c_status);
-    }
-
-    delay_ms(5);
-
-    /* read data from memory device */
-    if((i2c_status = i2c_memory_read_int(&hi2cx, I2C_MEM_ADDR_WIDIH_8, I2Cx_ADDRESS, 0x00, rx_buf2, BUF_SIZE, I2C_TIMEOUT)) != I2C_OK)
-    {
-      error_handler(i2c_status);
-    }
-
-    /* wait for the communication to end */
-    if(i2c_wait_end(&hi2cx, I2C_TIMEOUT) != I2C_OK)
-    {
-      error_handler(i2c_status);
-    }
-
-    /* write data to memory device */
-    if((i2c_status = i2c_memory_write_dma(&hi2cx, I2C_MEM_ADDR_WIDIH_8, I2Cx_ADDRESS, 0x00, tx_buf3, BUF_SIZE, I2C_TIMEOUT)) != I2C_OK)
-    {
-      error_handler(i2c_status);
-    }
-
-    /* wait for the communication to end */
-    if(i2c_wait_end(&hi2cx, I2C_TIMEOUT) != I2C_OK)
+    /* read data from eeprom device */
+    if((i2c_status = eeprom_read_buffer(&hi2cx, EE_MODE_INT, I2C_MEM_ADDR_WIDIH_8, I2Cx_ADDRESS, 0x00, rx_buf2, BUF_SIZE, I2C_TIMEOUT)) != I2C_OK)
     {
       error_handler(i2c_status);
     }
 
     delay_ms(5);
-
-    /* read data from memory device */
-    if((i2c_status = i2c_memory_read_dma(&hi2cx, I2C_MEM_ADDR_WIDIH_8, I2Cx_ADDRESS, 0x00, rx_buf3, BUF_SIZE, I2C_TIMEOUT)) != I2C_OK)
+    
+    
+    /* write data to eeprom device */
+    if((i2c_status = eeprom_write_buffer(&hi2cx, EE_MODE_DMA, I2C_MEM_ADDR_WIDIH_8, I2Cx_ADDRESS, 0x00, tx_buf3, BUF_SIZE, I2C_TIMEOUT)) != I2C_OK)
     {
       error_handler(i2c_status);
     }
 
-    /* wait for the communication to end */
-    if(i2c_wait_end(&hi2cx, I2C_TIMEOUT) != I2C_OK)
+    delay_ms(1);
+
+    /* read data from eeprom device */
+    if((i2c_status = eeprom_read_buffer(&hi2cx, EE_MODE_DMA, I2C_MEM_ADDR_WIDIH_8, I2Cx_ADDRESS, 0x00, rx_buf3, BUF_SIZE, I2C_TIMEOUT)) != I2C_OK)
     {
       error_handler(i2c_status);
     }
 
+    
     if((buffer_compare(tx_buf1, rx_buf1, BUF_SIZE) == 0) &&
        (buffer_compare(tx_buf2, rx_buf2, BUF_SIZE) == 0) &&
        (buffer_compare(tx_buf3, rx_buf3, BUF_SIZE) == 0))
@@ -281,7 +264,6 @@ int main(void)
     {
       error_handler(i2c_status);
     }
-
   }
 }
 

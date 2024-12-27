@@ -3,13 +3,13 @@
  * Title:        arm_cmplx_conj_f32.c
  * Description:  Floating-point complex conjugate
  *
- * $Date:        18. March 2019
- * $Revision:    V1.6.0
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M cores
+ * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -26,7 +26,7 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/complex_math_functions.h"
 
 /**
   @ingroup groupCmplxMath
@@ -108,11 +108,11 @@ void arm_cmplx_conj_f32(
     while (blkCnt > 0U)
     {
       /* C[0] + jC[1] = A[0]+ j(-1)A[1] */
-
+  
       /* Calculate Complex Conjugate and store result in destination buffer. */
       *pDst++ =  *pSrc++;
       *pDst++ = -*pSrc++;
-
+  
       /* Decrement loop counter */
       blkCnt--;
     }
@@ -147,7 +147,7 @@ void arm_cmplx_conj_f32(
      /* Increment pointers */
      pSrc += 8;
      pDst += 8;
-
+        
      /* Decrement the loop counter */
      blkCnt--;
    }

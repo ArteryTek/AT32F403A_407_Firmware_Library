@@ -3,13 +3,13 @@
  * Title:        arm_dct4_init_q31.c
  * Description:  Initialization function of DCT-4 & IDCT4 Q31
  *
- * $Date:        18. March 2019
- * $Revision:    V1.6.0
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M cores
+ * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -26,7 +26,7 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/transform_functions.h"
 #include "arm_common_tables.h"
 
 /**
@@ -98,14 +98,14 @@ arm_status arm_dct4_init_q31(
     S->pTwiddle = WeightsQ31_2048;
     S->pCosFactor = cos_factorsQ31_2048;
     break;
-  #endif
+  #endif 
 
   #if !defined(ARM_DSP_CONFIG_TABLES) || defined(ARM_ALL_FFT_TABLES) || defined(ARM_TABLE_DCT4_Q31_512)
   case 512U:
     S->pTwiddle = WeightsQ31_512;
     S->pCosFactor = cos_factorsQ31_512;
     break;
-  #endif
+  #endif 
 
   #if !defined(ARM_DSP_CONFIG_TABLES) || defined(ARM_ALL_FFT_TABLES) || defined(ARM_TABLE_DCT4_Q31_128)
   case 128U:

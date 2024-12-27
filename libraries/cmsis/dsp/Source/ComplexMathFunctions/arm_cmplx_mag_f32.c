@@ -3,13 +3,13 @@
  * Title:        arm_cmplx_mag_f32.c
  * Description:  Floating-point complex magnitude
  *
- * $Date:        18. March 2019
- * $Revision:    V1.6.0
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M cores
+ * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -26,7 +26,7 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/complex_math_functions.h"
 
 /**
   @ingroup groupCmplxMath
@@ -96,7 +96,7 @@ void arm_cmplx_mag_f32(
         q31x4_t newtonStartVec;
         f32x4_t sumHalf, invSqrt;
 
-        vecSrc = vld2q(pSrc);
+        vecSrc = vld2q(pSrc);  
         pSrc += 8;
         sum = vmulq(vecSrc.val[0], vecSrc.val[0]);
         sum = vfmaq(sum, vecSrc.val[1], vecSrc.val[1]);
@@ -126,7 +126,7 @@ void arm_cmplx_mag_f32(
          * sqrt(x) = x * invSqrt(x)
          */
         sum = vmulq(sum, invSqrt);
-        vst1q(pDst, sum);
+        vst1q(pDst, sum); 
         pDst += 4;
         /*
          * Decrement the blockSize loop counter
@@ -140,13 +140,13 @@ void arm_cmplx_mag_f32(
     while (blkCnt > 0U)
     {
       /* C[0] = sqrt(A[0] * A[0] + A[1] * A[1]) */
-
+  
       real = *pSrc++;
       imag = *pSrc++;
-
+  
       /* store result in destination buffer. */
       arm_sqrt_f32((real * real) + (imag * imag), pDst++);
-
+  
       /* Decrement loop counter */
       blkCnt--;
     }

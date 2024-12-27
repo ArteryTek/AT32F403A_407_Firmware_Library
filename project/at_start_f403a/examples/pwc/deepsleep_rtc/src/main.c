@@ -178,8 +178,8 @@ int main(void)
     /* restore systick register configuration */
     SysTick->CTRL |= systick_index;
   
-    /* wait clock stable */
-    delay_us(120);
+    /* wait 3 LICK cycles to ensure clock stable */
+    delay_us(5);
 
     /* wake up from deep sleep mode, congfig the system clock */
     system_clock_recover();

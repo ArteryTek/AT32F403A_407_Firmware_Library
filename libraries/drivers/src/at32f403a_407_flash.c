@@ -392,6 +392,7 @@ void flash_spim_unlock(void)
 {
   FLASH->unlock3 = FLASH_UNLOCK_KEY1;
   FLASH->unlock3 = FLASH_UNLOCK_KEY2;
+  UNUSED(*(__IO uint32_t*)USD_BASE);  
 }
 
 /**

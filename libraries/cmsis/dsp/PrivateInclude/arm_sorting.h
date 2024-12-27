@@ -39,9 +39,9 @@ extern "C"
    * @param[in]  blockSize  number of samples to process.
    */
   void arm_bubble_sort_f32(
-    const arm_sort_instance_f32 * S,
-          float32_t * pSrc,
-          float32_t * pDst,
+    const arm_sort_instance_f32 * S, 
+          float32_t * pSrc, 
+          float32_t * pDst, 
     uint32_t blockSize);
 
    /**
@@ -51,9 +51,9 @@ extern "C"
    * @param[in]  blockSize  number of samples to process.
    */
   void arm_heap_sort_f32(
-    const arm_sort_instance_f32 * S,
-          float32_t * pSrc,
-          float32_t * pDst,
+    const arm_sort_instance_f32 * S, 
+          float32_t * pSrc, 
+          float32_t * pDst, 
     uint32_t blockSize);
 
   /**
@@ -63,9 +63,9 @@ extern "C"
    * @param[in]  blockSize  number of samples to process.
    */
   void arm_insertion_sort_f32(
-    const arm_sort_instance_f32 * S,
-          float32_t *pSrc,
-          float32_t* pDst,
+    const arm_sort_instance_f32 * S, 
+          float32_t *pSrc, 
+          float32_t* pDst, 
     uint32_t blockSize);
 
   /**
@@ -75,9 +75,9 @@ extern "C"
    * @param[in]  blockSize  number of samples to process.
    */
   void arm_quick_sort_f32(
-    const arm_sort_instance_f32 * S,
-          float32_t * pSrc,
-          float32_t * pDst,
+    const arm_sort_instance_f32 * S, 
+          float32_t * pSrc, 
+          float32_t * pDst, 
     uint32_t blockSize);
 
   /**
@@ -87,11 +87,11 @@ extern "C"
    * @param[in]  blockSize  number of samples to process.
    */
   void arm_selection_sort_f32(
-    const arm_sort_instance_f32 * S,
-          float32_t * pSrc,
-          float32_t * pDst,
+    const arm_sort_instance_f32 * S, 
+          float32_t * pSrc, 
+          float32_t * pDst, 
     uint32_t blockSize);
-
+ 
   /**
    * @param[in]  S          points to an instance of the sorting structure.
    * @param[in]  pSrc       points to the block of input data.
@@ -140,7 +140,7 @@ do {                                       \
 	a.val[1] = vcombine_f32(a_2, b_2); \
 	b.val[0] = vcombine_f32(a_1, b_1); \
 	b.val[1] = vcombine_f32(a_3, b_3); \
-} while (0)
+} while (0) 
 
 #define vtrn128_32q(a, b)                               \
 do {                                                    \
@@ -157,7 +157,7 @@ do {                                    \
 	a.val[1] = vtrn32_tmp_2.val[0]; \
 	b.val[0] = vtrn32_tmp_1.val[1]; \
 	b.val[1] = vtrn32_tmp_2.val[1]; \
-} while (0)
+} while (0) 
 
 #define vminmaxq(a, b)                    \
 	do {                              \
@@ -189,7 +189,7 @@ do {                                    \
 	do {                 \
 	a = vld1q_f32(p);    \
 	a = vrev128q_f32(a); \
-} while (0)
+} while (0) 
 
 #endif /* ARM_MATH_NEON */
 

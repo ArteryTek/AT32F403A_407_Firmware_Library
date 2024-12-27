@@ -3,13 +3,13 @@
  * Title:        arm_heap_sort_f32.c
  * Description:  Floating point heap sort
  *
- * $Date:        2019
- * $Revision:    V1.6.0
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -26,7 +26,7 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/support_functions.h"
 #include "arm_sorting.h"
 
 
@@ -34,24 +34,24 @@
 static void arm_heapify(float32_t * pSrc, uint32_t n, uint32_t i, uint8_t dir)
 {
     /* Put all the elements of pSrc in heap order */
-    uint32_t k = i; // Initialize largest/smallest as root
-    uint32_t l = 2*i + 1; // left = 2*i + 1
-    uint32_t r = 2*i + 2; // right = 2*i + 2
+    uint32_t k = i; // Initialize largest/smallest as root 
+    uint32_t l = 2*i + 1; // left = 2*i + 1 
+    uint32_t r = 2*i + 2; // right = 2*i + 2 
     float32_t temp;
 
     if (l < n && dir==(pSrc[l] > pSrc[k]) )
-        k = l;
+        k = l; 
 
     if (r < n && dir==(pSrc[r] > pSrc[k]) )
-        k = r;
+        k = r; 
 
-    if (k != i)
-    {
+    if (k != i) 
+    { 
 	temp = pSrc[i];
 	pSrc[i]=pSrc[k];
 	pSrc[k]=temp;
 
-        arm_heapify(pSrc, n, k, dir);
+        arm_heapify(pSrc, n, k, dir); 
     }
 }
 
@@ -73,18 +73,18 @@ static void arm_heapify(float32_t * pSrc, uint32_t n, uint32_t i, uint8_t dir)
    *
    * @par        Algorithm
    *               The heap sort algorithm is a comparison algorithm that
-   *               divides the input array into a sorted and an unsorted region,
-   *               and shrinks the unsorted region by extracting the largest
-   *               element and moving it to the sorted region. A heap data
+   *               divides the input array into a sorted and an unsorted region, 
+   *               and shrinks the unsorted region by extracting the largest 
+   *               element and moving it to the sorted region. A heap data 
    *               structure is used to find the maximum.
    *
    * @par          It's an in-place algorithm. In order to obtain an out-of-place
    *               function, a memcpy of the source vector is performed.
    */
 void arm_heap_sort_f32(
-  const arm_sort_instance_f32 * S,
-        float32_t * pSrc,
-        float32_t * pDst,
+  const arm_sort_instance_f32 * S, 
+        float32_t * pSrc, 
+        float32_t * pDst, 
         uint32_t blockSize)
 {
     float32_t * pA;
@@ -92,7 +92,7 @@ void arm_heap_sort_f32(
     float32_t temp;
 
     if(pSrc != pDst) // out-of-place
-    {
+    {   
         memcpy(pDst, pSrc, blockSize*sizeof(float32_t) );
         pA = pDst;
     }
@@ -100,8 +100,8 @@ void arm_heap_sort_f32(
         pA = pSrc;
 
     // Build the heap array so that the largest value is the root
-    for (i = blockSize/2 - 1; i >= 0; i--)
-        arm_heapify(pA, blockSize, i, S->dir);
+    for (i = blockSize/2 - 1; i >= 0; i--) 
+        arm_heapify(pA, blockSize, i, S->dir); 
 
     for (i = blockSize - 1; i >= 0; i--)
     {

@@ -4,11 +4,13 @@
  * Title:        arm_canberra_distance_f32.c
  * Description:  Canberra distance between two vectors
  *
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M cores
+ * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -25,13 +27,13 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/distance_functions.h"
 #include <limits.h>
 #include <math.h>
 
 
 /**
-  @addtogroup FloatDist
+  @addtogroup Canberra
   @{
  */
 
@@ -74,7 +76,7 @@ float32_t arm_canberra_distance_f32(const float32_t *pA,const float32_t *pB, uin
         b = vabsq(b);
         a = vaddq(a, b);
 
-        /*
+        /* 
          * May divide by zero when a and b have both the same lane at zero.
          */
         a = vrecip_medprec_f32(a);
@@ -105,7 +107,7 @@ float32_t arm_canberra_distance_f32(const float32_t *pA,const float32_t *pB, uin
         b = vabsq(b);
         a = vaddq(a, b);
 
-        /*
+        /* 
          * May divide by zero when a and b have both the same lane at zero.
          */
         a = vrecip_medprec_f32(a);
@@ -153,11 +155,11 @@ float32_t arm_canberra_distance_f32(const float32_t *pA,const float32_t *pB, uin
         a = vaddq_f32(a,b);
         isZeroV = vceqq_f32(a,zeroV);
 
-        /*
+        /* 
          * May divide by zero when a and b have both the same lane at zero.
          */
         a = vinvq_f32(a);
-
+        
         /*
          * Force result of a division by 0 to 0. It the behavior of the
          * sklearn canberra function.
@@ -216,5 +218,5 @@ float32_t arm_canberra_distance_f32(const float32_t *pA,const float32_t *pB, uin
 
 
 /**
- * @} end of FloatDist group
+ * @} end of Canberra group
  */

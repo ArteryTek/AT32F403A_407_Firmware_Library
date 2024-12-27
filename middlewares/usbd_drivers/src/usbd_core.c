@@ -238,13 +238,17 @@ void usbd_clear_stall(usbd_core_type *udev, uint8_t ept_addr)
   {
     /* in endpoint */
     ept_info = &udev->ept_in[ept_addr & 0x7F];
-    USB_SET_TXSTS(ept_info->eptn, USB_TX_VALID);
+    USB_CLEAR_TXDTS(ept_info->eptn);
+    if(USB->ept_bit[ept_info->eptn].txsts == USB_TX_STALL)
+      USB_SET_TXSTS(ept_info->eptn, USB_TX_NAK);
   }
   else
   {
     /* out endpoint */
     ept_info = &udev->ept_out[ept_addr & 0x7F];
-    USB_SET_RXSTS(ept_info->eptn, USB_RX_VALID);
+    USB_CLEAR_RXDTS(ept_info->eptn);
+    if(USB->ept_bit[ept_info->eptn].rxsts == USB_RX_STALL)
+      USB_SET_RXSTS(ept_info->eptn, USB_RX_VALID);
   }
   ept_info->stall = 0;
 }

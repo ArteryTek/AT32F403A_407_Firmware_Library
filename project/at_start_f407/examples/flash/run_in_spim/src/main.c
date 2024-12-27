@@ -66,6 +66,9 @@ void spim_init(void)
   /* in this example, use on-board en25qh128a as spim flash */
   flash_spim_model_select(FLASH_SPIM_MODEL2);
 
+  /* for model 1 flash, a delay needs to be added */
+  delay_ms(20);
+
   /* unlock the spim flash program erase controller */
   while(flash_flag_get(FLASH_SPIM_OBF_FLAG));
   flash_spim_unlock();

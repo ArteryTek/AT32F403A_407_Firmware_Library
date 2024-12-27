@@ -664,7 +664,7 @@
         <TargetCommonOption>
           <Device>-AT32F407VGT7</Device>
           <Vendor>ArteryTek</Vendor>
-          <PackID>ArteryTek.AT32F403A_407_DFP.2.0.0</PackID>
+          <PackID>ArteryTek.AT32F403A_407_DFP.2.1.4</PackID>
           <Cpu></Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile></StartupFile>

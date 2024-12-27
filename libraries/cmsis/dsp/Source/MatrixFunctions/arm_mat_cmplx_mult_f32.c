@@ -3,13 +3,13 @@
  * Title:        arm_mat_cmplx_mult_f32.c
  * Description:  Floating-point matrix multiplication
  *
- * $Date:        18. March 2019
- * $Revision:    V1.6.0
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M cores
+ * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -26,7 +26,7 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/matrix_functions.h"
 
 /**
   @ingroup groupMatrix
@@ -532,7 +532,7 @@ arm_status arm_mat_cmplx_mult_f32(
     uint16_t  numRowsA = pSrcA->numRows;    /* number of rows of input matrix A    */
     uint16_t  numColsB = pSrcB->numCols;    /* number of columns of input matrix B */
     uint16_t  numColsA = pSrcA->numCols;    /* number of columns of input matrix A */
-    uint16_t  col, i = 0U, row = numRowsA, colCnt;  /* loop counters */
+    uint16_t  col, i = 0U, row = numRowsA;  /* loop counters */
     arm_status status;          /* status of matrix multiplication */
     uint32x4_t vecOffs, vecColBOffs;
     uint32_t  blkCnt, rowCnt;           /* loop counters */
@@ -611,7 +611,6 @@ arm_status arm_mat_cmplx_mult_f32(
             /*
              * Matrix A columns number of MAC operations are to be performed
              */
-            colCnt = numColsA;
 
             float32_t const *pSrcA0Vec, *pSrcA1Vec, *pSrcA2Vec, *pSrcA3Vec;
             float32_t const *pInA0 = pInA;
@@ -661,7 +660,7 @@ arm_status arm_mat_cmplx_mult_f32(
 
                 blkCnt--;
             }
-
+            
 
             /*
              * tail
@@ -752,7 +751,6 @@ arm_status arm_mat_cmplx_mult_f32(
             /*
              * Matrix A columns number of MAC operations are to be performed
              */
-            colCnt = numColsA;
 
             float32_t const *pSrcA0Vec;
             float32_t const *pInA0 = pInA;
@@ -761,7 +759,7 @@ arm_status arm_mat_cmplx_mult_f32(
             acc0 = vdupq_n_f32(0.0f);
 
             pSrcA0Vec = (float32_t const *) pInA0;
-
+           
             vecOffs = vecColBOffs;
 
             /*
@@ -778,11 +776,11 @@ arm_status arm_mat_cmplx_mult_f32(
                  */
                 vecOffs = vecOffs + (uint32_t) (numColsB * 2 * CMPLX_DIM);
 
-                vecA = vld1q(pSrcA0Vec);
+                vecA = vld1q(pSrcA0Vec);  
                 pSrcA0Vec += 4;
                 acc0 = vcmlaq(acc0, vecA, vecB);
                 acc0 = vcmlaq_rot90(acc0, vecA, vecB);
-
+                
 
                 blkCnt--;
             }
@@ -798,7 +796,7 @@ arm_status arm_mat_cmplx_mult_f32(
                 f32x4_t vecB, vecA;
 
                 vecB = vldrwq_gather_shifted_offset_z(pInB, vecOffs, p0);
-
+               
                 vecA = vld1q(pSrcA0Vec);
                 acc0 = vcmlaq(acc0, vecA, vecB);
                 acc0 = vcmlaq_rot90(acc0, vecA, vecB);
@@ -807,7 +805,7 @@ arm_status arm_mat_cmplx_mult_f32(
 
             px[0] = acc0[0] + acc0[2];
             px[1] = acc0[1] + acc0[3];
-
+           
             px += CMPLX_DIM;
             /*
              * Decrement the column loop counter
@@ -826,7 +824,7 @@ arm_status arm_mat_cmplx_mult_f32(
         rowCnt--;
     }
 
-
+    
       /* Set status as ARM_MATH_SUCCESS */
     status = ARM_MATH_SUCCESS;
   }
@@ -859,13 +857,13 @@ arm_status arm_mat_cmplx_mult_f32(
   float32x4x2_t a0V, a1V;
   float32x4_t accR0,accI0, accR1,accI1,tempR, tempI;
   float32x2_t accum = vdup_n_f32(0);
-  float32_t *pIn1B = pSrcA->pData;
+  float32_t *pIn1B = pSrcA->pData;    
 
   uint16_t col, i = 0U, j, rowCnt, row = numRowsA, colCnt;      /* loop counters */
   arm_status status;                             /* status of matrix multiplication */
-  float32_t sumReal1B, sumImag1B;
-  float32_t sumReal2B, sumImag2B;
-  float32_t *pxB;
+  float32_t sumReal1B, sumImag1B; 
+  float32_t sumReal2B, sumImag2B; 
+  float32_t *pxB;  
 
 #ifdef ARM_MATH_MATRIX_CHECK
 
@@ -1038,7 +1036,7 @@ arm_status arm_mat_cmplx_mult_f32(
 
         /* Decrement the column loop counter */
         col--;
-      }
+      } 
 
       /* Update the pointer pInA to point to the  starting address of the next 2 row */
       i = i + 2*numColsB;
@@ -1161,7 +1159,7 @@ arm_status arm_mat_cmplx_mult_f32(
         /* Decrement the column loop counter */
         col--;
 
-      }
+      } 
 
       /* Update the pointer pInA to point to the  starting address of the next row */
       i = i + numColsB;

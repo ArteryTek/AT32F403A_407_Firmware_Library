@@ -3,13 +3,13 @@
  * Title:        arm_min_q7.c
  * Description:  Minimum value of a Q7 vector
  *
- * $Date:        18. March 2019
- * $Revision:    V1.6.0
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M cores
+ * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -26,7 +26,7 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/statistics_functions.h"
 
 /**
   @ingroup groupStats
@@ -46,7 +46,7 @@
   @param[out]    pIndex     index of minimum value returned here
   @return        none
  */
-#if defined(ARM_MATH_MVEI)
+#if defined(ARM_MATH_MVEI) && !defined(ARM_MATH_AUTOVECTORIZE)
 
 #include "arm_helium_utils.h"
 
@@ -72,7 +72,7 @@ static void arm_small_blk_min_q7(
     blkCnt = blockSize >> 4;
     while (blkCnt > 0U)
     {
-        vecSrc = vldrbq_s8(pSrc);
+        vecSrc = vldrbq_s8(pSrc);  
         pSrc += 16;
         /*
          * Get current min per lane and current index per lane
@@ -88,7 +88,7 @@ static void arm_small_blk_min_q7(
          */
         blkCnt--;
     }
-
+    
     /*
      * Get min value across the vector
      */
@@ -108,7 +108,7 @@ static void arm_small_blk_min_q7(
     {
       /* Initialize minVal to the next consecutive values one by one */
       temp = *pSrc++;
-
+  
       /* compare for the minimum value */
       if (minValue > temp)
       {
@@ -116,7 +116,7 @@ static void arm_small_blk_min_q7(
         minValue = temp;
         idx = blockSize - blkCnt;
       }
-
+  
       /* Decrement loop counter */
       blkCnt--;
     }

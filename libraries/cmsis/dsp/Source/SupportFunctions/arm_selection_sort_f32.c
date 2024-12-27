@@ -3,13 +3,13 @@
  * Title:        arm_selection_sort_f32.c
  * Description:  Floating point selection sort
  *
- * $Date:        2019
- * $Revision:    V1.6.0
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -26,7 +26,6 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
 #include "arm_sorting.h"
 
 /**
@@ -47,7 +46,7 @@
    *
    * @par        Algorithm
    *               The Selection sort algorithm is a comparison algorithm that
-   *               divides the input array into a sorted and an unsorted sublist
+   *               divides the input array into a sorted and an unsorted sublist 
    *               (initially the sorted sublist is empty and the unsorted sublist
    *               is the input array), looks for the smallest (or biggest)
    *               element in the unsorted sublist, swapping it with the leftmost
@@ -58,9 +57,9 @@
    */
 
 void arm_selection_sort_f32(
-  const arm_sort_instance_f32 * S,
-        float32_t * pSrc,
-        float32_t * pDst,
+  const arm_sort_instance_f32 * S, 
+        float32_t * pSrc, 
+        float32_t * pDst, 
         uint32_t blockSize)
 {
     uint32_t i, j, k;
@@ -92,8 +91,8 @@ void arm_selection_sort_f32(
                 k = j;
             }
         }
-
-        if (k != i)
+    
+        if (k != i) 
         {
             /* Swap the minimum/maximum with the leftmost element */
             temp=pA[i];

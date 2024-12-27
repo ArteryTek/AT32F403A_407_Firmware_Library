@@ -39,14 +39,23 @@
 #define BLOCK_SIZE                       (512)
 #define BLOCKS_NUMBER                    (64)
 #define MULTI_BUFFER_SIZE                (BLOCK_SIZE * BLOCKS_NUMBER)
-#define STREAM_BUFFER_SIZE               (4096)
+#define STREAM_BUFFER_SIZE               (2048)
 
 static uint8_t sblock_tbuffer[BLOCK_SIZE], sblock_rbuffer[BLOCK_SIZE];
 static uint8_t mblock_tbuffer[MULTI_BUFFER_SIZE], mblock_rbuffer[MULTI_BUFFER_SIZE];
 static uint8_t stream_tbuffer[STREAM_BUFFER_SIZE], stream_rbuffer[STREAM_BUFFER_SIZE];
 
-static error_status sd_single_block_test(void);
-static error_status sd_multiple_blocks_test(void);
+/**
+  * test result
+  */
+typedef enum
+{
+  TEST_FAIL                              = 0,
+  TEST_SUCCESS,
+} test_result_type;
+
+static test_result_type sd_single_block_test(void);
+static test_result_type sd_multiple_blocks_test(void);
 uint8_t buffer_compare(uint8_t* pbuffer1, uint8_t* pbuffer2, uint16_t buffer_length);
 static void sd_test_error(void);
 static void nvic_configuration(void);
@@ -54,10 +63,10 @@ static void nvic_configuration(void);
 /**
   * @brief  sd card single block read/write test.
   * @param  none
-  * @retval ERROR: fail.
-  *         SUCCESS: success.
+  * @retval TEST_FAIL: fail.
+  *         TEST_SUCCESS: success.
   */
-static error_status sd_single_block_test(void)
+static test_result_type sd_single_block_test(void)
 {
   sd_error_status_type status = SD_OK;
   uint8_t bus_width;
@@ -72,39 +81,39 @@ static error_status sd_single_block_test(void)
     status = sd_wide_bus_operation_config((sdio_bus_width_type)bus_width);
     if(status != SD_OK)
     {
-      return ERROR;
+      return TEST_FAIL;
     }
 
     /* write block of 512 bytes on address 0 */
     status = sd_block_write(sblock_tbuffer, 0x00, BLOCK_SIZE);
     if(status != SD_OK)
     {
-      return ERROR;
+      return TEST_FAIL;
     }
 
     /* read block of 512 bytes from address 0 */
     status = sd_block_read(sblock_rbuffer, 0x00, BLOCK_SIZE);
     if(status != SD_OK)
     {
-      return ERROR;
+      return TEST_FAIL;
     }
 
     if(!buffer_compare(sblock_tbuffer, sblock_rbuffer, BLOCK_SIZE))
     {
-      return ERROR;
+      return TEST_FAIL;
     }
   }
 
-  return SUCCESS;
+  return TEST_SUCCESS;
 }
 
 /**
   * @brief  sd card multiple blocks read/write test.
   * @param  none
-  * @retval ERROR: fail.
-  *         SUCCESS: success.
+  * @retval TEST_FAIL: fail.
+  *         TEST_SUCCESS: success.
   */
-static error_status sd_multiple_blocks_test(void)
+static test_result_type sd_multiple_blocks_test(void)
 {
   sd_error_status_type status = SD_OK;
   uint8_t bus_width;
@@ -119,40 +128,40 @@ static error_status sd_multiple_blocks_test(void)
     status = sd_wide_bus_operation_config((sdio_bus_width_type)bus_width);
     if(status != SD_OK)
     {
-      return ERROR;
+      return TEST_FAIL;
     }
 
     /* write multiple block of many bytes on address 0 */
     status = sd_mult_blocks_write(mblock_tbuffer, 0x00, BLOCK_SIZE, BLOCKS_NUMBER);
     if(status != SD_OK)
     {
-      return ERROR;
+      return TEST_FAIL;
     }
 
     /* read block of many bytes from address 0 */
     status = sd_mult_blocks_read(mblock_rbuffer, 0x00, BLOCK_SIZE, BLOCKS_NUMBER);
     if(status != SD_OK)
     {
-      return ERROR;
+      return TEST_FAIL;
     }
 
     /* check the correctness of written data */
     if(!buffer_compare(mblock_tbuffer, mblock_rbuffer, MULTI_BUFFER_SIZE))
     {
-      return ERROR;
+      return TEST_FAIL;
     }
   }
 
-  return SUCCESS;
+  return TEST_SUCCESS;
 }
 
 /**
   * @brief  mmc card data stream read/write test.
   * @param  none
-  * @retval ERROR:    fail.
-  *         SUCCESS: success.
+  * @retval TEST_FAIL:    fail.
+  *         TEST_SUCCESS: success.
   */
-static error_status mmc_stream_test(void)
+static test_result_type mmc_stream_test(void)
 {
   sd_error_status_type status = SD_OK;
   uint8_t bus_width;
@@ -167,31 +176,31 @@ static error_status mmc_stream_test(void)
     status = sd_wide_bus_operation_config((sdio_bus_width_type)bus_width);
     if(status != SD_OK)
     {
-      return ERROR;
+      return TEST_FAIL;
     }
 
     /* write stream of many bytes on address 0 */
     status = mmc_stream_write(stream_tbuffer, 0x00, STREAM_BUFFER_SIZE);
     if (status != SD_OK)
     {
-      return ERROR;
+      return TEST_FAIL;
     }
 
     /* read stream of many bytes from address 0 */
     status = mmc_stream_read(stream_rbuffer, 0x00, STREAM_BUFFER_SIZE);
     if (status != SD_OK)
     {
-      return ERROR;
+      return TEST_FAIL;
     }
 
     /* check the correctness of written data */
     if(!buffer_compare(stream_tbuffer, stream_rbuffer, STREAM_BUFFER_SIZE))
     {
-      return ERROR;
+      return TEST_FAIL;
     }
   }
 
-  return SUCCESS;
+  return TEST_SUCCESS;
 }
 
 /**
@@ -216,7 +225,7 @@ uint8_t buffer_compare(uint8_t* pbuffer1, uint8_t* pbuffer2, uint16_t buffer_len
 }
 
 /**
-  * @brief  LED2 on off every 300ms for sd test failed.
+  * @brief  LED2 on off every 300ms for sd test error.
   * @param  none
   * @retval none
   */
@@ -236,7 +245,7 @@ static void sd_test_error(void)
 static void nvic_configuration(void)
 {
   nvic_priority_group_config(NVIC_PRIORITY_GROUP_4);
-  nvic_irq_enable(SDIO1_IRQn, 0, 0);
+  nvic_irq_enable(SDIO1_IRQn, 1, 0);
 }
 
 /**
@@ -249,10 +258,12 @@ void show_card_info(void)
   printf("---------------------\r\n");
   switch(sd_card_info.card_type)
   {
-  case SDIO_STD_CAPACITY_SD_CARD_V1_1: printf("card type: SDSC V1.1\r\n");break;
-  case SDIO_STD_CAPACITY_SD_CARD_V2_0: printf("card type: SDSC V2.0\r\n");break;
-  case SDIO_HIGH_CAPACITY_SD_CARD:     printf("card type: SDHC V2.0\r\n");break;
-  case SDIO_MULTIMEDIA_CARD:           printf("card type: MMC Card\r\n");break;
+  case SDIO_STD_CAPACITY_SD_CARD_V1_1:  printf("card type: SDSC V1.1\r\n");break;
+  case SDIO_STD_CAPACITY_SD_CARD_V2_0:  printf("card type: SDSC V2.0\r\n");break;
+  case SDIO_HIGH_CAPACITY_SD_CARD:      printf("card type: SDHC V2.0\r\n");break;
+  case SDIO_MULTIMEDIA_CARD:            printf("card type: MMC \r\n");break;
+  case SDIO_HIGH_SPEED_MULTIMEDIA_CARD: printf("card type: MMC V4.2\r\n");break;
+  case SDIO_HIGH_CAPACITY_MMC_CARD:     printf("card type: eMMC \r\n");break;
   }
   printf("card manufacturer_id: %d\r\n", sd_card_info.sd_cid_reg.manufacturer_id);
   printf("card rca: 0x%X\r\n", sd_card_info.rca);
@@ -292,7 +303,7 @@ int main(void)
   show_card_info();
 
   /* sd card single block test */
-  if(SUCCESS != sd_single_block_test())
+  if(TEST_SUCCESS != sd_single_block_test())
   {
     printf("sd card single block test fail\r\n");
     /* single block test fail, led2 fresh */
@@ -304,7 +315,7 @@ int main(void)
   printf("sd card single block test ok\r\n");
 
   /* sd card multiple blocks test */
-  if(SUCCESS != sd_multiple_blocks_test())
+  if(TEST_SUCCESS != sd_multiple_blocks_test())
   {
     printf("sd card multiple blocks test fail\r\n");
     /* multiple blocks test fail, led2 fresh */
@@ -316,9 +327,9 @@ int main(void)
   printf("sd card multiple blocks test ok\r\n");
 
   /* mmc card stream data transfer test */
-  if(sd_card_info.card_type == SDIO_MULTIMEDIA_CARD)
+  if((sd_card_info.card_type == SDIO_MULTIMEDIA_CARD)||(sd_card_info.card_type == SDIO_HIGH_SPEED_MULTIMEDIA_CARD))
   {
-    if(SUCCESS != mmc_stream_test())
+    if(TEST_SUCCESS != mmc_stream_test())
     {
       printf("mmc card stream data test fail\r\n");
       /* mmc card stream data test fail, led2 fresh */

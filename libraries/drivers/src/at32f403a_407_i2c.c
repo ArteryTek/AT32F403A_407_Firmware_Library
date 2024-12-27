@@ -659,11 +659,11 @@ flag_status i2c_interrupt_flag_get(i2c_type *i2c_x, uint32_t flag)
     case I2C_ALERTF_FLAG:
       iten = i2c_x->ctrl2_bit.errien;
       break;
-    
+
     default:
       break;
   }
-  
+
   reg = flag >> 28;
 
   flag &= (uint32_t)0x00FFFFFF;

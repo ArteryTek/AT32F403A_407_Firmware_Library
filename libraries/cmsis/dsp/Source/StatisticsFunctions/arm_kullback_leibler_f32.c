@@ -3,11 +3,13 @@
  * Title:        arm_logsumexp_f32.c
  * Description:  LogSumExp
  *
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -24,13 +26,13 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/statistics_functions.h"
 #include <limits.h>
 #include <math.h>
 
 
 /**
- * @addtogroup groupStats
+ * @addtogroup Kullback-Leibler
  * @{
  */
 
@@ -59,8 +61,8 @@ float32_t arm_kullback_leibler_f32(const float32_t * pSrcA,const float32_t * pSr
 {
     uint32_t blkCnt;
     float32_t accum, pA,pB;
-
-
+ 
+    
     blkCnt = blockSize;
 
     accum = 0.0f;
@@ -93,9 +95,9 @@ float32_t arm_kullback_leibler_f32(const float32_t * pSrcA,const float32_t * pSr
        pA = *pSrcA++;
        pB = *pSrcB++;
        accum += pA * logf(pB / pA);
-
+       
        blkCnt--;
-
+    
     }
 
     return(-accum);
@@ -115,7 +117,7 @@ float32_t arm_kullback_leibler_f32(const float32_t * pSrcA,const float32_t * pSr
     float32x4_t accumV;
     float32x2_t accumV2;
     float32x4_t tmpVA, tmpVB,tmpV;
-
+ 
     pInA = pSrcA;
     pInB = pSrcB;
 
@@ -136,9 +138,9 @@ float32_t arm_kullback_leibler_f32(const float32_t * pSrcA,const float32_t * pSr
       tmpVB = vlogq_f32(tmpVB);
 
       accumV = vmlaq_f32(accumV, tmpVA, tmpVB);
-
+       
       blkCnt--;
-
+    
     }
 
     accumV2 = vpadd_f32(vget_low_f32(accumV),vget_high_f32(accumV));
@@ -150,9 +152,9 @@ float32_t arm_kullback_leibler_f32(const float32_t * pSrcA,const float32_t * pSr
        pA = *pInA++;
        pB = *pInB++;
        accum += pA * logf(pB/pA);
-
+       
        blkCnt--;
-
+    
     }
 
     return(-accum);
@@ -164,7 +166,7 @@ float32_t arm_kullback_leibler_f32(const float32_t * pSrcA,const float32_t * pSr
     const float32_t *pInA, *pInB;
     uint32_t blkCnt;
     float32_t accum, pA,pB;
-
+ 
     pInA = pSrcA;
     pInB = pSrcB;
     blkCnt = blockSize;
@@ -176,9 +178,9 @@ float32_t arm_kullback_leibler_f32(const float32_t * pSrcA,const float32_t * pSr
        pA = *pInA++;
        pB = *pInB++;
        accum += pA * logf(pB / pA);
-
+       
        blkCnt--;
-
+    
     }
 
     return(-accum);
@@ -187,5 +189,5 @@ float32_t arm_kullback_leibler_f32(const float32_t * pSrcA,const float32_t * pSr
 #endif /* defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE) */
 
 /**
- * @} end of groupStats group
+ * @} end of Kullback-Leibler group
  */

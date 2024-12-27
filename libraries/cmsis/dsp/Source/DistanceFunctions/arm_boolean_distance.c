@@ -4,11 +4,13 @@
  * Title:        arm_svm_linear_init_f32.c
  * Description:  SVM Linear Instance Initialization
  *
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M cores
+ * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -25,7 +27,7 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/distance_functions.h"
 #include <limits.h>
 #include <math.h>
 
@@ -40,7 +42,7 @@
 
 
 #define TT
-#define TF
+#define TF 
 #define FT
 #define EXT _TT_TF_FT
 #include "arm_boolean_distance_template.h"
@@ -48,9 +50,9 @@
 #undef TT
 #undef FF
 #undef TF
-#undef FT
+#undef FT 
 #undef EXT
-#define TF
+#define TF 
 #define FT
 #define EXT _TF_FT
 #include "arm_boolean_distance_template.h"
@@ -58,11 +60,11 @@
 #undef TT
 #undef FF
 #undef TF
-#undef FT
+#undef FT 
 #undef EXT
 #define TT
 #define FF
-#define TF
+#define TF 
 #define FT
 #define EXT _TT_FF_TF_FT
 #include "arm_boolean_distance_template.h"
@@ -70,7 +72,7 @@
 #undef TT
 #undef FF
 #undef TF
-#undef FT
+#undef FT 
 #undef EXT
 #define TT
 #define EXT _TT

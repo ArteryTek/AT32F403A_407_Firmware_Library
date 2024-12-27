@@ -3,13 +3,13 @@
  * Title:        arm_offset_f32.c
  * Description:  Floating-point vector offset
  *
- * $Date:        18. March 2019
- * $Revision:    V1.6.0
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M cores
+ * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -26,7 +26,7 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/basic_math_functions.h"
 
 /**
   @ingroup groupMath
@@ -80,7 +80,7 @@ void arm_offset_f32(
     while (blkCnt > 0U)
     {
         /* C = A + offset */
-
+ 
         /* Add offset and then store the results in the destination buffer. */
         vec1 = vld1q(pSrc);
         res = vaddq(vec1,offset);
@@ -89,7 +89,7 @@ void arm_offset_f32(
         /* Increment pointers */
         pSrc += 4;
         pDst += 4;
-
+        
         /* Decrement the loop counter */
         blkCnt--;
     }
@@ -126,7 +126,7 @@ void arm_offset_f32(
     while (blkCnt > 0U)
     {
         /* C = A + offset */
-
+ 
         /* Add offset and then store the results in the destination buffer. */
         vec1 = vld1q_f32(pSrc);
         res = vaddq_f32(vec1,vdupq_n_f32(offset));
@@ -135,7 +135,7 @@ void arm_offset_f32(
         /* Increment pointers */
         pSrc += 4;
         pDst += 4;
-
+        
         /* Decrement the loop counter */
         blkCnt--;
     }

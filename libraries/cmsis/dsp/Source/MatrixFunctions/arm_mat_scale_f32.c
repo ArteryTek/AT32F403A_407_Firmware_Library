@@ -3,13 +3,13 @@
  * Title:        arm_mat_scale_f32.c
  * Description:  Multiplies a floating-point matrix by a scalar
  *
- * $Date:        18. March 2019
- * $Revision:    V1.6.0
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M cores
+ * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -26,7 +26,7 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/matrix_functions.h"
 
 /**
   @ingroup groupMatrix
@@ -100,12 +100,12 @@ arm_status arm_mat_scale_f32(
          * C(m,n) = A(m,n) * scale
          * Scaling and results are stored in the destination buffer.
          */
-        vecIn = vld1q(pInVec);
+        vecIn = vld1q(pInVec); 
         pInVec += 4;
 
         vecOut = vecIn * scale;
 
-        vst1q(pOut, vecOut);
+        vst1q(pOut, vecOut); 
         pOut += 4;
         /*
          * Decrement the blockSize loop counter
@@ -119,7 +119,7 @@ arm_status arm_mat_scale_f32(
     if (blkCnt > 0U)
     {
         mve_pred16_t p0 = vctp32q(blkCnt);
-        vecIn = vld1q(pInVec);
+        vecIn = vld1q(pInVec); 
         vecOut = vecIn * scale;
 
         vstrwq_p(pOut, vecOut, p0);

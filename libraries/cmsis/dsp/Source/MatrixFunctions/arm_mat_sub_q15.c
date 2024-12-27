@@ -3,13 +3,13 @@
  * Title:        arm_mat_sub_q15.c
  * Description:  Q15 Matrix subtraction
  *
- * $Date:        18. March 2019
- * $Revision:    V1.6.0
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M cores
+ * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -26,7 +26,7 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/matrix_functions.h"
 
 /**
   @ingroup groupMatrix
@@ -50,7 +50,7 @@
                    The function uses saturating arithmetic.
                    Results outside of the allowable Q15 range [0x8000 0x7FFF] are saturated.
  */
-#if defined(ARM_MATH_MVEI)
+#if defined(ARM_MATH_MVEI) && !defined(ARM_MATH_AUTOVECTORIZE)
 
 arm_status arm_mat_sub_q15(
   const arm_matrix_instance_q15 * pSrcA,
@@ -167,8 +167,8 @@ arm_status arm_mat_sub_q15(
 
       /* Subtract, Saturate and store result in destination buffer. */
 #if defined (ARM_MATH_DSP)
-      write_q15x2_ia (&pOut, __QSUB16(read_q15x2_ia ((q15_t **) &pInA), read_q15x2_ia ((q15_t **) &pInB)));
-      write_q15x2_ia (&pOut, __QSUB16(read_q15x2_ia ((q15_t **) &pInA), read_q15x2_ia ((q15_t **) &pInB)));
+      write_q15x2_ia (&pOut, __QSUB16(read_q15x2_ia (&pInA), read_q15x2_ia (&pInB)));
+      write_q15x2_ia (&pOut, __QSUB16(read_q15x2_ia (&pInA), read_q15x2_ia (&pInB)));
 #else
       *pOut++ = (q15_t) __SSAT(((q31_t) * pInA++ - *pInB++), 16);
       *pOut++ = (q15_t) __SSAT(((q31_t) * pInA++ - *pInB++), 16);

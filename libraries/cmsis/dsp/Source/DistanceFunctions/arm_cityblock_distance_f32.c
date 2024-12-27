@@ -4,11 +4,13 @@
  * Title:        arm_cityblock_distance_f32.c
  * Description:  Cityblock (Manhattan) distance between two vectors
  *
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M cores
+ * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -25,12 +27,12 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/distance_functions.h"
 #include <limits.h>
 #include <math.h>
 
 /**
-  @addtogroup FloatDist
+  @addtogroup Manhattan
   @{
  */
 
@@ -105,10 +107,10 @@ float32_t arm_cityblock_distance_f32(const float32_t *pA,const float32_t *pB, ui
    {
         a = vld1q_f32(pA);
         b = vld1q_f32(pB);
-
+ 
         tempV = vabdq_f32(a,b);
         accumV = vaddq_f32(accumV, tempV);
-
+ 
         pA += 4;
         pB += 4;
         blkCnt --;
@@ -116,7 +118,7 @@ float32_t arm_cityblock_distance_f32(const float32_t *pA,const float32_t *pB, ui
    accumV2 = vpadd_f32(vget_low_f32(accumV),vget_high_f32(accumV));
    accumV2 = vpadd_f32(accumV2,accumV2);
    accum = vget_lane_f32(accumV2,0);
-
+   
 
    blkCnt = blockSize & 3;
    while(blkCnt > 0)
@@ -124,7 +126,7 @@ float32_t arm_cityblock_distance_f32(const float32_t *pA,const float32_t *pB, ui
       tmpA = *pA++;
       tmpB = *pB++;
       accum += fabsf(tmpA - tmpB);
-
+      
       blkCnt --;
    }
    return(accum);
@@ -141,15 +143,15 @@ float32_t arm_cityblock_distance_f32(const float32_t *pA,const float32_t *pB, ui
       tmpA = *pA++;
       tmpB = *pB++;
       accum  += fabsf(tmpA - tmpB);
-
+      
       blockSize --;
    }
-
+  
    return(accum);
 }
 #endif
 #endif
 
 /**
- * @} end of FloatDist group
+ * @} end of Manhattan group
  */

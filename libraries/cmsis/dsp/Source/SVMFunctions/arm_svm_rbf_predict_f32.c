@@ -3,11 +3,13 @@
  * Title:        arm_svm_rbf_predict_f32.c
  * Description:  SVM Radial Basis Function Classifier
  *
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -24,13 +26,13 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/svm_functions.h"
 #include <limits.h>
 #include <math.h>
 
 
 /**
- * @addtogroup groupSVM
+ * @addtogroup rbfsvm
  * @{
  */
 
@@ -325,9 +327,9 @@ void arm_svm_rbf_predict_f32(
     int32_t * pResult)
 {
     float32_t sum = S->intercept;
-
+   
     float32_t dot;
-    float32x4_t dotV;
+    float32x4_t dotV; 
 
     float32x4_t accuma,accumb,accumc,accumd,accum;
     float32x2_t accum2;
@@ -336,8 +338,8 @@ void arm_svm_rbf_predict_f32(
 
     float32x4_t vec2,vec2a,vec2b,vec2c,vec2d;
 
-    uint32_t blkCnt;
-    uint32_t vectorBlkCnt;
+    uint32_t blkCnt;   
+    uint32_t vectorBlkCnt;   
 
     const float32_t *pIn = in;
 
@@ -368,7 +370,7 @@ void arm_svm_rbf_predict_f32(
         blkCnt = S->vectorDimension >> 2;
         while (blkCnt > 0U)
         {
-
+        
             vec1 = vld1q_f32(pIn);
             vec2a = vld1q_f32(pSupporta);
             vec2b = vld1q_f32(pSupportb);
@@ -427,7 +429,7 @@ void arm_svm_rbf_predict_f32(
         }
 
         vec1 = vld1q_f32(pDualCoefs);
-        pDualCoefs += 4;
+        pDualCoefs += 4; 
 
         // To vectorize later
         dotV = vmulq_n_f32(dotV, -S->gamma);
@@ -457,7 +459,7 @@ void arm_svm_rbf_predict_f32(
         blkCnt = S->vectorDimension >> 2;
         while (blkCnt > 0U)
         {
-
+        
             vec1 = vld1q_f32(pIn);
             vec2 = vld1q_f32(pSupport);
             pIn += 4;
@@ -517,5 +519,5 @@ void arm_svm_rbf_predict_f32(
 #endif /* defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE) */
 
 /**
- * @} end of groupSVM group
+ * @} end of rbfsvm group
  */

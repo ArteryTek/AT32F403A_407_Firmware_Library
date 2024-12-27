@@ -147,7 +147,6 @@ void TMR6_GLOBAL_IRQHandler(void)
   }
 }
 
-
 /**
   * @brief  this function handles wakeup frames and magic packets
   * @param  none
@@ -157,18 +156,17 @@ void EMAC_WKUP_IRQHandler(void)
 {
   volatile uint32_t reg_val;
 
-  emac_power_down_set(FALSE);
+  if(exint_interrupt_flag_get(EXINT_LINE_19) != RESET)
+  {
+    exint_flag_clear(EXINT_LINE_19);
+  }
+  
   reg_val = EMAC->pmtctrlsts;
 
   emac_trasmitter_enable(TRUE);
   emac_dma_operations_set(EMAC_DMA_OPS_START_STOP_TRANSMIT, TRUE);
   emac_dma_operations_set(EMAC_DMA_OPS_START_STOP_RECEIVE, TRUE);
-
-  EMAC_DMA->sts = 0x10000000;
-  exint_flag_clear(EXINT_LINE_19);
-  system_clock_config();
 }
-
 /**
   * @}
   */

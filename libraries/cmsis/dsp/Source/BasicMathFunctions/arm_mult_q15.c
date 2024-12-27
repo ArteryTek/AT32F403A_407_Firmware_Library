@@ -3,13 +3,13 @@
  * Title:        arm_mult_q15.c
  * Description:  Q15 vector multiplication
  *
- * $Date:        18. March 2019
- * $Revision:    V1.6.0
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M cores
+ * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -26,7 +26,7 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/basic_math_functions.h"
 
 /**
   @ingroup groupMath
@@ -49,7 +49,7 @@
                    The function uses saturating arithmetic.
                    Results outside of the allowable Q15 range [0x8000 0x7FFF] are saturated.
  */
-#if defined(ARM_MATH_MVEI)
+#if defined(ARM_MATH_MVEI) && !defined(ARM_MATH_AUTOVECTORIZE)
 
 #include "arm_helium_utils.h"
 
@@ -123,13 +123,13 @@ void arm_mult_q15(
 
 #if defined (ARM_MATH_DSP)
     /* read 2 samples at a time from sourceA */
-    inA1 = read_q15x2_ia ((q15_t **) &pSrcA);
+    inA1 = read_q15x2_ia (&pSrcA);
     /* read 2 samples at a time from sourceB */
-    inB1 = read_q15x2_ia ((q15_t **) &pSrcB);
+    inB1 = read_q15x2_ia (&pSrcB);
     /* read 2 samples at a time from sourceA */
-    inA2 = read_q15x2_ia ((q15_t **) &pSrcA);
+    inA2 = read_q15x2_ia (&pSrcA);
     /* read 2 samples at a time from sourceB */
-    inB2 = read_q15x2_ia ((q15_t **) &pSrcB);
+    inB2 = read_q15x2_ia (&pSrcB);
 
     /* multiply mul = sourceA * sourceB */
     mul1 = (q31_t) ((q15_t) (inA1 >> 16) * (q15_t) (inB1 >> 16));

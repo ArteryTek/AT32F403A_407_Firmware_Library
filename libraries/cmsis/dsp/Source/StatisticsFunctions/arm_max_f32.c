@@ -3,13 +3,13 @@
  * Title:        arm_max_f32.c
  * Description:  Maximum value of a floating-point vector
  *
- * $Date:        18. March 2019
- * $Revision:    V1.6.0
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -26,7 +26,7 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/statistics_functions.h"
 #if (defined(ARM_MATH_NEON) || defined(ARM_MATH_MVEF)) && !defined(ARM_MATH_AUTOVECTORIZE)
 #include <limits.h>
 #endif
@@ -64,7 +64,7 @@ void arm_max_f32(
   float32_t * pResult,
   uint32_t * pIndex)
 {
-    uint32_t blkCnt;
+    uint32_t blkCnt; 
     f32x4_t vecSrc;
     f32x4_t curExtremValVec = vdupq_n_f32(F32_MIN);
     float32_t maxValue = F32_MIN;
@@ -185,7 +185,7 @@ void arm_max_f32(
       {
         /* Initialize maxVal to the next consecutive values one by one */
         maxVal1 = *pSrc++;
-
+    
         /* compare for the maximum value */
         if (out < maxVal1)
         {
@@ -193,7 +193,7 @@ void arm_max_f32(
           out = maxVal1;
           outIndex = blockSize - blkCnt;
         }
-
+    
         /* Decrement the loop counter */
         blkCnt--;
       }
@@ -202,44 +202,44 @@ void arm_max_f32(
   {
       outV = vld1q_f32(pSrc);
       pSrc += 4;
-
+ 
       /* Compute 4 outputs at a time */
       blkCnt = (blockSize - 4 ) >> 2U;
-
+    
       while (blkCnt > 0U)
       {
         srcV = vld1q_f32(pSrc);
         pSrc += 4;
-
+    
         idxV = vcgtq_f32(srcV, outV);
         outV = vbslq_f32(idxV, srcV, outV );
         countV = vbslq_u32(idxV, index,countV );
-
+    
         index = vaddq_u32(index,delta);
-
+    
         /* Decrement the loop counter */
         blkCnt--;
       }
-
+    
       outV2 = vpmax_f32(vget_low_f32(outV),vget_high_f32(outV));
       outV2 = vpmax_f32(outV2,outV2);
       out = vget_lane_f32(outV2, 0);
-
+    
       idxV = vceqq_f32(outV, vdupq_n_f32(out));
       countV = vbslq_u32(idxV, countV,maxIdx);
-
+      
       countV2 = vpmin_u32(vget_low_u32(countV),vget_high_u32(countV));
       countV2 = vpmin_u32(countV2,countV2);
-      outIndex = vget_lane_u32(countV2,0);
-
+      outIndex = vget_lane_u32(countV2,0); 
+    
       /* if (blockSize - 1U) is not multiple of 4 */
       blkCnt = (blockSize - 4 ) % 4U;
-
+    
       while (blkCnt > 0U)
       {
         /* Initialize maxVal to the next consecutive values one by one */
         maxVal1 = *pSrc++;
-
+    
         /* compare for the maximum value */
         if (out < maxVal1)
         {
@@ -247,12 +247,12 @@ void arm_max_f32(
           out = maxVal1;
           outIndex = blockSize - blkCnt ;
         }
-
+    
         /* Decrement the loop counter */
         blkCnt--;
       }
-
-
+    
+      
   }
 
   /* Store the maximum value and it's index into destination pointers */

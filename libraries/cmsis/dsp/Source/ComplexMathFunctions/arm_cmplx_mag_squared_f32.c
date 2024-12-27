@@ -3,13 +3,13 @@
  * Title:        arm_cmplx_mag_squared_f32.c
  * Description:  Floating-point complex magnitude squared
  *
- * $Date:        18. March 2019
- * $Revision:    V1.6.0
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M cores
+ * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -26,7 +26,7 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/complex_math_functions.h"
 
 /**
   @ingroup groupCmplxMath
@@ -93,7 +93,7 @@ void arm_cmplx_mag_squared_f32(
 
         pSrc += 8;
         pDst += 4;
-
+        
         /*
          * Decrement the blockSize loop counter
          */
@@ -105,13 +105,13 @@ void arm_cmplx_mag_squared_f32(
     while (blkCnt > 0U)
     {
       /* C[0] = (A[0] * A[0] + A[1] * A[1]) */
-
+  
       real = *pSrc++;
       imag = *pSrc++;
-
+  
       /* store result in destination buffer. */
       *pDst++ = (real * real) + (imag * imag);
-
+  
       /* Decrement loop counter */
       blkCnt--;
     }

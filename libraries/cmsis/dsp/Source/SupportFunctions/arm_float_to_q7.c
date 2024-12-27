@@ -3,13 +3,13 @@
  * Title:        arm_float_to_q7.c
  * Description:  Converts the elements of the floating-point vector to Q7 vector
  *
- * $Date:        18. March 2019
- * $Revision:    V1.6.0
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M cores
+ * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -26,7 +26,7 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/support_functions.h"
 
 /**
   @ingroup groupSupport
@@ -181,7 +181,7 @@ void arm_float_to_q7(
     inV = vaddq_f32(inV, r);
     cvt2 = vqmovn_s32(vcvtq_n_s32_f32(inV,7));
     pIn += 4;
-
+    
     outV = vqmovn_s16(vcombine_s16(cvt1,cvt2));
     vst1_s8(pDst, outV);
     pDst += 8;

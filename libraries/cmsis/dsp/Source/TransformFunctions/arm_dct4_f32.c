@@ -3,13 +3,13 @@
  * Title:        arm_dct4_f32.c
  * Description:  Processing function of DCT4 & IDCT4 F32
  *
- * $Date:        18. March 2019
- * $Revision:    V1.6.0
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M cores
+ * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -26,7 +26,7 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/transform_functions.h"
 
 /**
   @ingroup groupTransforms
@@ -42,22 +42,22 @@
   spectrum and is very widely used in signal and image coding applications.
   The family of DCTs (DCT type- 1,2,3,4) is the outcome of different combinations of homogeneous boundary conditions.
   DCT has an excellent energy-packing capability, hence has many applications and in data compression in particular.
-
+  
   DCT is essentially the Discrete Fourier Transform(DFT) of an even-extended real signal.
   Reordering of the input data makes the computation of DCT just a problem of
   computing the DFT of a real signal with a few additional operations.
   This approach provides regular, simple, and very efficient DCT algorithms for practical hardware and software implementations.
-
+  
   DCT type-II can be implemented using Fast fourier transform (FFT) internally, as the transform is applied on real values, Real FFT can be used.
   DCT4 is implemented using DCT2 as their implementations are similar except with some added pre-processing and post-processing.
   DCT2 implementation can be described in the following steps:
   - Re-ordering input
   - Calculating Real FFT
   - Multiplication of weights and Real FFT output and getting real part from the product.
-
+  
   This process is explained by the block diagram below:
   \image html DCT4.gif "Discrete Cosine Transform - type-IV"
-
+ 
   @par           Algorithm
                    The N-point type-IV DCT is defined as a real, linear transformation by the formula:
                    \image html DCT4Equation.gif
@@ -71,7 +71,7 @@
                    The symmetry of the transform matrix indicates that the fast algorithms for the forward
                    and inverse transform computation are identical.
                    Note that the implementation of Inverse DCT4 and DCT4 is same, hence same process function can be used for both.
-
+ 
   @par           Lengths supported by the transform:
                    As DCT4 internally uses Real FFT, it supports all the lengths 128, 512, 2048 and 8192.
                    The library provides separate functions for Q15, Q31, and floating-point data types.
@@ -80,7 +80,7 @@
                    The instances for Real FFT and FFT, cosine values table and twiddle factor table are stored in an instance data structure.
                    A separate instance structure must be defined for each transform.
                    There are separate instance structure declarations for each of the 3 supported data types.
-
+                 
   @par           Initialization Functions
                    There is also an associated initialization function for each data type.
                    The initialization function performs the following operations:
@@ -104,7 +104,7 @@
                    \c pCfft points to the complex FFT instance;
                    The CFFT and RFFT structures also needs to be initialized, refer to arm_cfft_radix4_f32()
                    and arm_rfft_f32() respectively for details regarding static initialization.
-
+ 
   @par           Fixed-Point Behavior
                    Care must be taken when using the fixed-point versions of the DCT4 transform functions.
                    In particular, the overflow and saturation behavior of the accumulator used in each function must be considered.

@@ -3,13 +3,13 @@
  * Title:        arm_biquad_cascade_df1_init_f32.c
  * Description:  Floating-point Biquad cascade DirectFormI(DF1) filter initialization function
  *
- * $Date:        18. March 2019
- * $Revision:    V1.6.0
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M cores
+ * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -26,7 +26,7 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/filtering_functions.h"
 
 /**
   @ingroup groupFilters
@@ -65,7 +65,7 @@
                    The 4 state variables for stage 1 are first, then the 4 state variables for stage 2, and so on.
                    The state array has a total length of <code>4*numStages</code> values.
                    The state variables are updated after each block of data is processed; the coefficients are untouched.
-
+ 
   @par             For MVE code, an additional buffer of modified coefficients is required.
                    Its size is numStages and each element of this buffer has type arm_biquad_mod_coef_f32.
                    So, its total size is 32*numStages float32_t elements.
@@ -125,8 +125,8 @@ static void generateCoefsFastBiquadF32(float32_t b0, float32_t b1, float32_t b2,
 void arm_biquad_cascade_df1_mve_init_f32(
       arm_biquad_casd_df1_inst_f32 * S,
       uint8_t numStages,
-      const float32_t * pCoeffs,
-      arm_biquad_mod_coef_f32 * pCoeffsMod,
+      const float32_t * pCoeffs, 
+      arm_biquad_mod_coef_f32 * pCoeffsMod, 
       float32_t * pState)
 {
     arm_biquad_cascade_df1_init_f32(S, numStages, (float32_t *)pCoeffsMod, pState);
@@ -139,7 +139,7 @@ void arm_biquad_cascade_df1_mve_init_f32(
         pCoeffsMod++;
     }
 }
-#endif
+#endif 
 
 /**
   @} end of BiquadCascadeDF1 group

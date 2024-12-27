@@ -1,15 +1,15 @@
 /* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
- * Title:        arm_rfft_f32.c
+ * Title:        arm_rfft_fast_f32.c
  * Description:  RFFT & RIFFT Floating point process function
  *
- * $Date:        18. March 2019
- * $Revision:    V1.6.0
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M cores
+ * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -26,7 +26,7 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/transform_functions.h"
 
 #if defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE)
 void stage_rfft_f32(
@@ -34,7 +34,7 @@ void stage_rfft_f32(
         float32_t * p,
         float32_t * pOut)
 {
-        uint32_t  k;                                /* Loop Counter */
+        int32_t  k;                                /* Loop Counter */
         float32_t twR, twI;                         /* RFFT Twiddle coefficients */
   const float32_t * pCoeff = S->pTwiddleRFFT;       /* Points to RFFT Twiddle factors */
         float32_t *pA = p;                          /* increasing pointer */
@@ -138,9 +138,9 @@ void stage_rfft_f32(
       vst2q_f32(pOut, res);
       pOut += 8;
 
-
+    
       blockCnt--;
-   }
+   } 
 
    blockCnt = k & 3;
    while (blockCnt > 0)
@@ -193,7 +193,7 @@ void merge_rfft_f32(
         float32_t * p,
         float32_t * pOut)
 {
-        uint32_t  k;                                /* Loop Counter */
+        int32_t  k;                                /* Loop Counter */
         float32_t twR, twI;                         /* RFFT Twiddle coefficients */
   const float32_t *pCoeff = S->pTwiddleRFFT;        /* Points to RFFT Twiddle factors */
         float32_t *pA = p;                          /* increasing pointer */
@@ -209,7 +209,7 @@ void merge_rfft_f32(
         vecStridesBkwd = -vecStridesFwd;
 
         int blockCnt;
-
+        
 
    k = (S->Sint).fftLen - 1;
 
@@ -269,7 +269,7 @@ void merge_rfft_f32(
       vst2q_f32(pOut, res);
       pOut += 8;
 
-
+    
       blockCnt--;
    }
 
@@ -312,7 +312,7 @@ void stage_rfft_f32(
         float32_t * p,
         float32_t * pOut)
 {
-        uint32_t  k;                                /* Loop Counter */
+        int32_t  k;                                /* Loop Counter */
         float32_t twR, twI;                         /* RFFT Twiddle coefficients */
   const float32_t * pCoeff = S->pTwiddleRFFT;       /* Points to RFFT Twiddle factors */
         float32_t *pA = p;                          /* increasing pointer */
@@ -392,7 +392,7 @@ void stage_rfft_f32(
       pA += 2;
       pB -= 2;
       k--;
-   } while (k > 0U);
+   } while (k > 0);
 }
 
 /* Prepares data for inverse cfft */
@@ -401,7 +401,7 @@ void merge_rfft_f32(
         float32_t * p,
         float32_t * pOut)
 {
-        uint32_t  k;                                /* Loop Counter */
+        int32_t  k;                                /* Loop Counter */
         float32_t twR, twI;                         /* RFFT Twiddle coefficients */
   const float32_t *pCoeff = S->pTwiddleRFFT;        /* Points to RFFT Twiddle factors */
         float32_t *pA = p;                          /* increasing pointer */
@@ -422,7 +422,7 @@ void merge_rfft_f32(
    pB  =  p + 2*k ;
    pA +=  2	   ;
 
-   while (k > 0U)
+   while (k > 0)
    {
       /* G is half of the frequency complex spectrum */
       //for k = 2:N
@@ -463,7 +463,7 @@ void merge_rfft_f32(
 
 /**
   @defgroup RealFFT Real FFT Functions
-
+ 
   @par
                    The CMSIS DSP library includes specialized algorithms for computing the
                    FFT of real data sequences.  The FFT is defined over complex data but
@@ -471,7 +471,7 @@ void merge_rfft_f32(
                    of the symmetry properties of the FFT and have a speed advantage over complex
                    algorithms of the same length.
   @par
-                   The Fast RFFT algorith relays on the mixed radix CFFT that save processor usage.
+                   The Fast RFFT algorithm relays on the mixed radix CFFT that save processor usage.
   @par
                    The real length N forward FFT of a sequence is computed using the steps shown below.
   @par
@@ -496,8 +496,8 @@ void merge_rfft_f32(
                    The older functions \ref arm_rfft_f32() and \ref arm_rfft_init_f32() have been deprecated
                    but are still documented.
   @par
-                   The FFT of a real N-point sequence has even symmetry in the frequency domain.
-                   The second half of the data equals the conjugate of the first half flipped in frequency.
+                   The FFT of a real N-point sequence has even symmetry in the frequency domain. 
+                   The second half of the data equals the conjugate of the first half flipped in frequency. 
                    Looking at the data, we see that we can uniquely represent the FFT using only N/2 complex numbers.
                    These are packed into the output array in alternating real and imaginary components:
   @par
@@ -550,7 +550,7 @@ void merge_rfft_f32(
                    <code>pTwiddleAReal</code>points to the A array of twiddle coefficients;
                    <code>pTwiddleBReal</code>points to the B array of twiddle coefficients;
                    <code>pCfft</code> points to the CFFT Instance structure. The CFFT structure
-                   must also be initialized.
+                   must also be initialized.  
 @par
                    Note that with MVE versions you can't initialize instance structures directly and **must
                    use the initialization function**.

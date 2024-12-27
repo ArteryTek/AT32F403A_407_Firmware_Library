@@ -3,13 +3,13 @@
  * Title:        arm_mat_sub_f32.c
  * Description:  Floating-point matrix subtraction
  *
- * $Date:        18. March 2019
- * $Revision:    V1.6.0
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M cores
+ * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -26,7 +26,7 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/matrix_functions.h"
 
 /**
   @ingroup groupMatrix
@@ -98,12 +98,12 @@ arm_status arm_mat_sub_f32(
     {
         /* C(m,n) = A(m,n) + B(m,n) */
         /* sub and then store the results in the destination buffer. */
-        vecA = vld1q(pSrcAVec);
+        vecA = vld1q(pSrcAVec); 
         pSrcAVec += 4;
-        vecB = vld1q(pSrcBVec);
+        vecB = vld1q(pSrcBVec); 
         pSrcBVec += 4;
         vecDst = vsubq(vecA, vecB);
-        vst1q(pDataDst, vecDst);
+        vst1q(pDataDst, vecDst);  
         pDataDst += 4;
         /*
          * Decrement the blockSize loop counter
@@ -118,8 +118,8 @@ arm_status arm_mat_sub_f32(
     if (blkCnt > 0U)
     {
         mve_pred16_t p0 = vctp32q(blkCnt);
-        vecA = vld1q(pSrcAVec);
-        vecB = vld1q(pSrcBVec);
+        vecA = vld1q(pSrcAVec); 
+        vecB = vld1q(pSrcBVec); 
         vecDst = vsubq_m(vecDst, vecA, vecB, p0);
         vstrwq_p(pDataDst, vecDst, p0);
     }

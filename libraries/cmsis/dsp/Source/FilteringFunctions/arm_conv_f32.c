@@ -3,13 +3,13 @@
  * Title:        arm_conv_f32.c
  * Description:  Convolution of floating-point sequences
  *
- * $Date:        18. March 2019
- * $Revision:    V1.6.0
+ * $Date:        23 April 2021
+ * $Revision:    V1.9.0
  *
- * Target Processor: Cortex-M cores
+ * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
 /*
- * Copyright (C) 2010-2019 ARM Limited or its affiliates. All rights reserved.
+ * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -26,7 +26,7 @@
  * limitations under the License.
  */
 
-#include "arm_math.h"
+#include "dsp/filtering_functions.h"
 
 /**
   @ingroup groupFilters
@@ -373,7 +373,7 @@ void arm_conv_f32(
 
       /* Increment pointers */
       px += 4;
-      py -= 4;
+      py -= 4; 
 
       /* Decrement the loop counter */
       k--;
@@ -467,7 +467,7 @@ void arm_conv_f32(
    * srcBLen should be greater than or equal to 4 */
   if (srcBLen >= 4U)
   {
-
+   
 #if defined(ARM_MATH_NEON)
       float32x4_t c;
       float32x4_t x1v;
@@ -475,7 +475,7 @@ void arm_conv_f32(
       float32x4_t x;
       float32x4_t res = vdupq_n_f32(0) ;
 #endif /* #if defined(ARM_MATH_NEON) */
-
+   
 #if defined (ARM_MATH_LOOPUNROLL) || defined(ARM_MATH_NEON)
 
     /* Loop unrolling: Compute 4 outputs at a time */
@@ -518,14 +518,14 @@ void arm_conv_f32(
 
 	res = vmlaq_n_f32(res,x,c[0]);
 
-        py -= 4;
+        py -= 4; 
 
         x1v = x2v ;
         x2v = vld1q_f32(px+4);
 
       } while (--k);
-
-
+      
+      
       /* If the srcBLen is not a multiple of 4, compute any remaining MACs here.
        ** No loop unrolling is used. */
       k = srcBLen & 0x3;
@@ -723,7 +723,7 @@ void arm_conv_f32(
       }
 
       accum = vpadd_f32(vget_low_f32(res), vget_high_f32(res));
-      sum += accum[0] + accum[1];
+      sum += accum[0] + accum[1]; 
 
       /* If the srcBLen is not a multiple of 4, compute any remaining MACs here.
        ** No loop unrolling is used. */
@@ -872,7 +872,7 @@ void arm_conv_f32(
     }
 
     accum = vpadd_f32(vget_low_f32(res), vget_high_f32(res));
-    sum += accum[0] + accum[1];
+    sum += accum[0] + accum[1]; 
 
 #else
     while (k > 0U)
