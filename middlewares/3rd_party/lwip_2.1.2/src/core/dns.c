@@ -98,7 +98,7 @@
 #include <string.h>
 
 #ifndef DNS_SERVER_ADDRESS
-#define DNS_SERVER_ADDRESS(ipaddr) (ip4_addr_set_u32(ipaddr, ipaddr_addr("192.168.2.235"))) 
+#define DNS_SERVER_ADDRESS(ipaddr) (ip4_addr_set_u32(ipaddr, ipaddr_addr("114.114.114.114"))) 
 #endif
 
 /** Fix error, LwIP 2.1.2 need to define LWIP_RAND by users */

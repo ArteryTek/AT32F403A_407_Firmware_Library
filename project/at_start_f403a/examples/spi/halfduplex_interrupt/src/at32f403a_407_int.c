@@ -24,12 +24,6 @@
 
 /* includes ------------------------------------------------------------------*/
 #include "at32f403a_407_int.h"
-#include "at32f403a_407_board.h"
-
-extern uint8_t spi1_tx_buffer[];
-extern uint8_t spi2_rx_buffer[];
-extern uint32_t tx_index;
-extern uint32_t rx_index;
 
 /** @addtogroup AT32F403A_periph_examples
   * @{
@@ -136,36 +130,6 @@ void PendSV_Handler(void)
   */
 void SysTick_Handler(void)
 {
-}
-
-/**
-  * @brief  This function handles the spi1 interrupt request.
-  * @param  None
-  * @retval None
-  */
- void SPI1_IRQHandler(void)
-{
-  if(spi_i2s_interrupt_flag_get(SPI1, SPI_I2S_TDBE_FLAG) != RESET)
-  {
-    spi_i2s_data_transmit(SPI1, spi1_tx_buffer[tx_index++]);
-    if(tx_index == BUFFERSIZE)
-    {
-      spi_i2s_interrupt_enable(SPI1, SPI_I2S_TDBE_INT, FALSE);
-    }
-  }
-}
-
-/**
-  * @brief  This function handles the spi2 interrupt request.
-  * @param  None
-  * @retval None
-  */
- void SPI2_I2S2EXT_IRQHandler(void)
-{
-  if(spi_i2s_interrupt_flag_get(SPI2, SPI_I2S_RDBF_FLAG) != RESET)
-  {
-    spi2_rx_buffer[rx_index++] = spi_i2s_data_receive(SPI2);
-  }
 }
 
 /**

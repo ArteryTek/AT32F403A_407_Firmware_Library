@@ -342,6 +342,37 @@ void gpio_bits_reset(gpio_type *gpio_x, uint16_t pins)
 }
 
 /**
+  * @brief  toggle the selected data port bits.
+  * @param  gpio_x: to select the gpio peripheral.
+  *         this parameter can be one of the following values:
+  *         GPIOA, GPIOB, GPIOC, GPIOD, GPIOE.
+  * @param  pins: gpio pin number
+  *         parameter can be any combination of gpio_pin_x, gpio_pin_x as following values:
+  *         - GPIO_PINS_0
+  *         - GPIO_PINS_1
+  *         - GPIO_PINS_2
+  *         - GPIO_PINS_3
+  *         - GPIO_PINS_4
+  *         - GPIO_PINS_5
+  *         - GPIO_PINS_6
+  *         - GPIO_PINS_7
+  *         - GPIO_PINS_8
+  *         - GPIO_PINS_9
+  *         - GPIO_PINS_10
+  *         - GPIO_PINS_11
+  *         - GPIO_PINS_12
+  *         - GPIO_PINS_13
+  *         - GPIO_PINS_14
+  *         - GPIO_PINS_15
+  *         - GPIO_PINS_ALL
+  * @retval none
+  */
+void gpio_bits_toggle(gpio_type *gpio_x, uint16_t pins)
+{
+  gpio_x->odt ^= pins;
+}
+
+/**
   * @brief  set or clear the selected data port bit.
   * @param  gpio_x: to select the gpio peripheral.
   *         this parameter can be one of the following values:
