@@ -3,7 +3,8 @@
   * @file     at32f403a_407_usb.c
   * @brief    contains the functions for the usb firmware library
   **************************************************************************
-  *                       Copyright notice & Disclaimer
+  *
+  * Copyright (c) 2025, Artery Technology, All rights reserved.
   *
   * The software Board Support Package (BSP) that is made available to
   * download from Artery official website is the copyrighted work of Artery.
@@ -202,9 +203,17 @@ void usb_ept_open(usbd_type *usbx, usb_ept_info *ept_info)
 
         /* set endpoint reception status: disable */
         USB_SET_RXSTS(ept_info->eptn, USB_RX_DISABLE);
-
-        /* set endpoint transmision status: nak */
-        USB_SET_TXSTS(ept_info->eptn, USB_TX_NAK);
+        
+        if(ept_info->trans_type == EPT_ISO_TYPE)
+        {
+          /* set endpoint transmision status: disable */
+          USB_SET_TXSTS(ept_info->eptn, USB_TX_DISABLE);
+        }
+        else
+        {
+          /* set endpoint transmision status: nak */
+          USB_SET_TXSTS(ept_info->eptn, USB_TX_NAK);
+        }
       }
   }
   else

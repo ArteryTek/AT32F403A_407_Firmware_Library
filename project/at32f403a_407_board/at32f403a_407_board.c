@@ -4,7 +4,8 @@
   * @brief    set of firmware functions to manage leds and push-button.
   *           initialize delay function.
   **************************************************************************
-  *                       Copyright notice & Disclaimer
+  *
+  * Copyright (c) 2025, Artery Technology, All rights reserved.
   *
   * The software Board Support Package (BSP) that is made available to
   * download from Artery official website is the copyrighted work of Artery.
@@ -51,12 +52,12 @@ static __IO uint32_t fac_ms;
   __asm (".global __use_no_semihosting\n\t");
   void _sys_exit(int x)
   {
-    x = x;
+    UNUSED(x);
   }
   /* __use_no_semihosting was requested, but _ttywrch was */
   void _ttywrch(int ch)
   {
-    ch = ch;
+    UNUSED(ch);
   }
   FILE __stdout;
 #else
@@ -69,12 +70,12 @@ static __IO uint32_t fac_ms;
   FILE __stdout;
   void _sys_exit(int x)
   {
-    x = x;
+    UNUSED(x);
   }
   /* __use_no_semihosting was requested, but _ttywrch was */
   void _ttywrch(int ch)
   {
-    ch = ch;
+    UNUSED(ch);
   }
  #endif
 #endif
@@ -92,6 +93,9 @@ static __IO uint32_t fac_ms;
   */
 PUTCHAR_PROTOTYPE
 {
+#if !defined (__GNUC__) || defined (__clang__)
+  UNUSED(f);
+#endif
   while(usart_flag_get(PRINT_UART, USART_TDBE_FLAG) == RESET);
   usart_data_transmit(PRINT_UART, (uint16_t)ch);
   while(usart_flag_get(PRINT_UART, USART_TDC_FLAG) == RESET);
@@ -106,6 +110,7 @@ int _write(int fd, char *pbuffer, int size)
 int __write(int fd, char *pbuffer, int size)
 #endif
 {
+  UNUSED(fd);
   for(int i = 0; i < size; i ++)
   {
     while(usart_flag_get(PRINT_UART, USART_TDBE_FLAG) == RESET);

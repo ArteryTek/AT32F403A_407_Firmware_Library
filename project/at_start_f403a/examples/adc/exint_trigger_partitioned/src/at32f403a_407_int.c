@@ -3,7 +3,8 @@
   * @file     at32f403a_407_int.c
   * @brief    main interrupt service routines.
   **************************************************************************
-  *                       Copyright notice & Disclaimer
+  *
+  * Copyright (c) 2025, Artery Technology, All rights reserved.
   *
   * The software Board Support Package (BSP) that is made available to
   * download from Artery official website is the copyrighted work of Artery.
@@ -24,11 +25,6 @@
 
 /* includes ------------------------------------------------------------------*/
 #include "at32f403a_407_int.h"
-#include "at32f403a_407_board.h"
-
-extern __IO uint16_t adc1_preempt_valuetab[3][3];
-extern __IO uint16_t dma_trans_complete_flag;
-extern __IO uint16_t preempt_trigger_count;
 
 /** @addtogroup AT32F403A_periph_examples
   * @{
@@ -134,41 +130,6 @@ void PendSV_Handler(void)
 void SysTick_Handler(void)
 {
 }
-
-/**
-  * @brief  this function handles dma1_channel1 handler.
-  * @param  none
-  * @retval none
-  */
-void DMA1_Channel1_IRQHandler(void)
-{
-  if(dma_interrupt_flag_get(DMA1_FDT1_FLAG) != RESET)
-  {
-    dma_flag_clear(DMA1_FDT1_FLAG);
-    dma_trans_complete_flag = 1;
-  }
-}
-
-/**
-  * @brief  this function handles adc1_2 handler.
-  * @param  none
-  * @retval none
-  */
-void ADC1_2_IRQHandler(void)
-{
-  if(adc_interrupt_flag_get(ADC1, ADC_PCCE_FLAG) != RESET)
-  {
-    adc_flag_clear(ADC1, ADC_PCCE_FLAG);
-    if(preempt_trigger_count < 3)
-    {
-      adc1_preempt_valuetab[preempt_trigger_count][0] = adc_preempt_conversion_data_get(ADC1, ADC_PREEMPT_CHANNEL_1);
-      adc1_preempt_valuetab[preempt_trigger_count][1] = adc_preempt_conversion_data_get(ADC1, ADC_PREEMPT_CHANNEL_2);
-      adc1_preempt_valuetab[preempt_trigger_count][2] = adc_preempt_conversion_data_get(ADC1, ADC_PREEMPT_CHANNEL_3);
-      preempt_trigger_count++;
-    }
-  }
-}
-
 
 /**
   * @}

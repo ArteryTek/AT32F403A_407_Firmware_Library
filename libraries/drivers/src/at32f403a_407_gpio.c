@@ -3,7 +3,8 @@
   * @file     at32f403a_407_gpio.c
   * @brief    contains all the functions for the gpio firmware library
   **************************************************************************
-  *                       Copyright notice & Disclaimer
+  *
+  * Copyright (c) 2025, Artery Technology, All rights reserved.
   *
   * The software Board Support Package (BSP) that is made available to
   * download from Artery official website is the copyrighted work of Artery.
@@ -369,7 +370,9 @@ void gpio_bits_reset(gpio_type *gpio_x, uint16_t pins)
   */
 void gpio_bits_toggle(gpio_type *gpio_x, uint16_t pins)
 {
-  gpio_x->odt ^= pins;
+  uint32_t odt = gpio_x->odt;
+
+  gpio_x->scr = ((odt & pins) << 16) | (~odt & pins);
 }
 
 /**

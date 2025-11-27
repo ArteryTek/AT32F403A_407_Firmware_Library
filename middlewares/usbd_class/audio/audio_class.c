@@ -3,7 +3,8 @@
   * @file     audio_class.c
   * @brief    usb audio class type
   **************************************************************************
-  *                       Copyright notice & Disclaimer
+  *
+  * Copyright (c) 2025, Artery Technology, All rights reserved.
   *
   * The software Board Support Package (BSP) that is made available to
   * download from Artery official website is the copyrighted work of Artery.
@@ -417,32 +418,75 @@ static void audio_req_get_cur(void *udev, usb_setup_type *setup)
 {
   usbd_core_type *pudev = (usbd_core_type *)udev;
   usb_audio_type *paudio = (usb_audio_type *)pudev->class_handler->pdata;
-  if(HBYTE(setup->wIndex) == AUDIO_SPK_FEATURE_UNIT_ID)
+  
+  switch(setup->bmRequestType & AUDIO_REQ_CONTROL_MASK)
   {
-    if(HBYTE(setup->wValue) == AUDIO_MUTE_CONTROL)
-    {
-      paudio->g_audio_cur[0] = paudio->spk_mute;
-      usbd_ctrl_send(pudev, paudio->g_audio_cur, setup->wLength);
-    }
-    else
-    {
-      *((uint16_t *)paudio->g_audio_cur) = paudio->spk_volume;
-      usbd_ctrl_send(pudev, paudio->g_audio_cur, setup->wLength);
-    }
-  }
-  else
-  {
-    if(HBYTE(setup->wValue) == AUDIO_MUTE_CONTROL)
-    {
-      paudio->g_audio_cur[0] = paudio->mic_mute;
-      usbd_ctrl_send(pudev, paudio->g_audio_cur, setup->wLength);
-    }
-    else
-    {
-      *((uint16_t *)paudio->g_audio_cur) = paudio->mic_volume;
-      usbd_ctrl_send(pudev, paudio->g_audio_cur, setup->wLength);
-    }
-
+    case AUDIO_REQ_CONTROL_INTERFACE:
+      if(HBYTE(setup->wIndex) == AUDIO_SPK_FEATURE_UNIT_ID)
+      {
+        if(HBYTE(setup->wValue) == AUDIO_MUTE_CONTROL)
+        {
+          paudio->g_audio_cur[0] = paudio->spk_mute;
+          usbd_ctrl_send(pudev, paudio->g_audio_cur, setup->wLength);
+        }
+        else if(HBYTE(setup->wValue) == AUDIO_VOLUME_CONTROL)
+        {
+          *((uint16_t *)paudio->g_audio_cur) = paudio->spk_volume;
+          usbd_ctrl_send(pudev, paudio->g_audio_cur, setup->wLength);
+        }
+        else
+        {
+          usbd_ctrl_unsupport(pudev);
+        }
+      }
+      else if(HBYTE(setup->wIndex) == AUDIO_MIC_FEATURE_UNIT_ID)
+      {
+        if(HBYTE(setup->wValue) == AUDIO_MUTE_CONTROL)
+        {
+          paudio->g_audio_cur[0] = paudio->mic_mute;
+          usbd_ctrl_send(pudev, paudio->g_audio_cur, setup->wLength);
+        }
+        else if(HBYTE(setup->wValue) == AUDIO_VOLUME_CONTROL)
+        {
+          *((uint16_t *)paudio->g_audio_cur) = paudio->mic_volume;
+          usbd_ctrl_send(pudev, paudio->g_audio_cur, setup->wLength);
+        }
+        else
+        {
+          usbd_ctrl_unsupport(pudev);
+        }
+      }
+      else
+      {
+        usbd_ctrl_unsupport(pudev);
+      }
+    break;
+    case AUDIO_REQ_CONTROL_ENDPOINT:
+      if(HBYTE(setup->wValue) == AUDIO_SAMPLING_FREQ_CONTROL)
+      {
+        if(setup->wIndex == USBD_AUDIO_MIC_IN_EPT)
+        {
+          *((uint32_t *)paudio->g_audio_cur) = paudio->mic_freq;
+          usbd_ctrl_send(pudev, paudio->g_audio_cur, setup->wLength);
+        }
+        else if(setup->wIndex == USBD_AUDIO_SPK_OUT_EPT)
+        {
+          *((uint32_t *)paudio->g_audio_cur) = paudio->spk_freq;
+          usbd_ctrl_send(pudev, paudio->g_audio_cur, setup->wLength);
+        }
+        else
+        {
+          usbd_ctrl_unsupport(pudev);
+        }
+      }
+      else
+      {
+        usbd_ctrl_unsupport(pudev);
+      }
+      break;
+    default:
+      usbd_ctrl_unsupport(pudev);
+      break;
   }
 }
 
@@ -471,18 +515,34 @@ static void audio_req_set_cur(void *udev, usb_setup_type *setup)
         {
           paudio->request_no = AUDIO_MUTE_CONTROL;
         }
-        else
+        else if(HBYTE(setup->wValue) == AUDIO_VOLUME_CONTROL)
         {
           paudio->request_no = AUDIO_VOLUME_CONTROL;
         }
+        else
+        {
+          usbd_ctrl_unsupport(pudev);
+        }
         break;
       case AUDIO_REQ_CONTROL_ENDPOINT:
-        paudio->enpd = setup->wIndex;
-        paudio->request_no = AUDIO_FREQ_SET_CONTROL;
+        if(HBYTE(setup->wValue) == AUDIO_SAMPLING_FREQ_CONTROL)
+        {
+          paudio->enpd = setup->wIndex;
+          paudio->request_no = AUDIO_FREQ_SET_CONTROL;
+        }
+        else
+        {
+          usbd_ctrl_unsupport(pudev);
+        }
         break;
       default:
+        usbd_ctrl_unsupport(pudev);
         break;
     }
+  }
+  else
+  {
+    usbd_ctrl_unsupport(pudev);
   }
 }
 
@@ -496,15 +556,31 @@ static void audio_req_get_min(void *udev, usb_setup_type *setup)
 {
   usbd_core_type *pudev = (usbd_core_type *)udev;
   usb_audio_type *paudio = (usb_audio_type *)pudev->class_handler->pdata;
-  if(HBYTE(setup->wIndex) == AUDIO_SPK_FEATURE_UNIT_ID)
+  
+  switch(setup->bmRequestType & AUDIO_REQ_CONTROL_MASK)
   {
-    *((uint16_t *)paudio->g_audio_cur) = paudio->spk_volume_limits[0];
-    usbd_ctrl_send(pudev, paudio->g_audio_cur, setup->wLength);
-  }
-  else
-  {
-    *((uint16_t *)paudio->g_audio_cur) = paudio->mic_volume_limits[0];
-    usbd_ctrl_send(pudev, paudio->g_audio_cur, setup->wLength);
+    case AUDIO_REQ_CONTROL_INTERFACE:
+      if(HBYTE(setup->wIndex) == AUDIO_SPK_FEATURE_UNIT_ID)
+      {
+        *((uint16_t *)paudio->g_audio_cur) = paudio->spk_volume_limits[0];
+        usbd_ctrl_send(pudev, paudio->g_audio_cur, setup->wLength);
+      }
+      else if(HBYTE(setup->wIndex) == AUDIO_MIC_FEATURE_UNIT_ID)
+      {
+        *((uint16_t *)paudio->g_audio_cur) = paudio->mic_volume_limits[0];
+        usbd_ctrl_send(pudev, paudio->g_audio_cur, setup->wLength);
+      }
+      else
+      {
+        usbd_ctrl_unsupport(pudev);
+      }
+      break;
+    case AUDIO_REQ_CONTROL_ENDPOINT:
+      usbd_ctrl_unsupport(pudev);
+      break;
+    default:
+      usbd_ctrl_unsupport(pudev);
+      break;
   }
 }
 
@@ -518,15 +594,31 @@ static void audio_req_get_max(void *udev, usb_setup_type *setup)
 {
   usbd_core_type *pudev = (usbd_core_type *)udev;
   usb_audio_type *paudio = (usb_audio_type *)pudev->class_handler->pdata;
-  if(HBYTE(setup->wIndex) == AUDIO_SPK_FEATURE_UNIT_ID)
+  
+  switch(setup->bmRequestType & AUDIO_REQ_CONTROL_MASK)
   {
-    *((uint16_t *)paudio->g_audio_cur) = paudio->spk_volume_limits[1];
-    usbd_ctrl_send(pudev, paudio->g_audio_cur, setup->wLength);
-  }
-  else
-  {
-    *((uint16_t *)paudio->g_audio_cur) = paudio->mic_volume_limits[1];
-    usbd_ctrl_send(pudev, paudio->g_audio_cur, setup->wLength);
+    case AUDIO_REQ_CONTROL_INTERFACE:
+      if(HBYTE(setup->wIndex) == AUDIO_SPK_FEATURE_UNIT_ID)
+      {
+        *((uint16_t *)paudio->g_audio_cur) = paudio->spk_volume_limits[1];
+        usbd_ctrl_send(pudev, paudio->g_audio_cur, setup->wLength);
+      }
+      else if(HBYTE(setup->wIndex) == AUDIO_MIC_FEATURE_UNIT_ID)
+      {
+        *((uint16_t *)paudio->g_audio_cur) = paudio->mic_volume_limits[1];
+        usbd_ctrl_send(pudev, paudio->g_audio_cur, setup->wLength);
+      }
+      else
+      {
+        usbd_ctrl_unsupport(pudev);
+      }
+      break;
+    case AUDIO_REQ_CONTROL_ENDPOINT:
+      usbd_ctrl_unsupport(pudev);
+      break;
+    default:
+      usbd_ctrl_unsupport(pudev);
+      break;
   }
 }
 
@@ -540,15 +632,30 @@ static void audio_req_get_res(void *udev, usb_setup_type *setup)
 {
   usbd_core_type *pudev = (usbd_core_type *)udev;
   usb_audio_type *paudio = (usb_audio_type *)pudev->class_handler->pdata;
-  if(HBYTE(setup->wIndex) == AUDIO_SPK_FEATURE_UNIT_ID)
+  switch(setup->bmRequestType & AUDIO_REQ_CONTROL_MASK)
   {
-    *((uint16_t *)paudio->g_audio_cur) = paudio->spk_volume_limits[2];
-    usbd_ctrl_send(pudev, paudio->g_audio_cur, setup->wLength);
-  }
-  else
-  {
-    *((uint16_t *)paudio->g_audio_cur) = paudio->mic_volume_limits[2];
-    usbd_ctrl_send(pudev, paudio->g_audio_cur, setup->wLength);
+    case AUDIO_REQ_CONTROL_INTERFACE:
+      if(HBYTE(setup->wIndex) == AUDIO_SPK_FEATURE_UNIT_ID)
+      {
+        *((uint16_t *)paudio->g_audio_cur) = paudio->spk_volume_limits[2];
+        usbd_ctrl_send(pudev, paudio->g_audio_cur, setup->wLength);
+      }
+      else if(HBYTE(setup->wIndex) == AUDIO_MIC_FEATURE_UNIT_ID)
+      {
+        *((uint16_t *)paudio->g_audio_cur) = paudio->mic_volume_limits[2];
+        usbd_ctrl_send(pudev, paudio->g_audio_cur, setup->wLength);
+      }
+      else
+      {
+        usbd_ctrl_unsupport(pudev);
+      }
+      break;
+    case AUDIO_REQ_CONTROL_ENDPOINT:
+      usbd_ctrl_unsupport(pudev);
+      break;
+    default:
+      usbd_ctrl_unsupport(pudev);
+      break;
   }
 }
 
@@ -607,7 +714,10 @@ static void audio_get_interface(void *udev, usb_setup_type *setup)
   {
     usbd_ctrl_send(pudev, (uint8_t *)&paudio->mic_alt_setting, 1);
   }
-
+  else
+  {
+    usbd_ctrl_unsupport(pudev);
+  }
 }
 
 

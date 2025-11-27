@@ -3,7 +3,8 @@
   * @file     custom_hid_class.h
   * @brief    usb custom hid header file
   **************************************************************************
-  *                       Copyright notice & Disclaimer
+  *
+  * Copyright (c) 2025, Artery Technology, All rights reserved.
   *
   * The software Board Support Package (BSP) that is made available to
   * download from Artery official website is the copyrighted work of Artery.
@@ -77,6 +78,7 @@ typedef struct
   uint8_t hid_set_report[64];
   uint8_t hid_get_report[64];
   uint8_t hid_state;
+  uint8_t send_state;
 }custom_hid_type;
 
 /**

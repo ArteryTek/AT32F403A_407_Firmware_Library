@@ -1,0 +1,298 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=gb2312">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;}
+@font-face
+	{font-family:宋体;
+	panose-1:2 1 6 0 3 1 1 1 1 1;}
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+@font-face
+	{font-family:"\@宋体";
+	panose-1:2 1 6 0 3 1 1 1 1 1;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	font-size:10.5pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoHeader, li.MsoHeader, div.MsoHeader
+	{mso-style-link:"页眉 字符";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:center;
+	layout-grid-mode:char;
+	border:none;
+	padding:0cm;
+	font-size:9.0pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoFooter, li.MsoFooter, div.MsoFooter
+	{mso-style-link:"页脚 字符";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	layout-grid-mode:char;
+	font-size:9.0pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoAcetate, li.MsoAcetate, div.MsoAcetate
+	{mso-style-link:"批注框文本 字符";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	font-size:9.0pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoListParagraph, li.MsoListParagraph, div.MsoListParagraph
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	text-indent:21.0pt;
+	font-size:10.5pt;
+	font-family:"Calibri",sans-serif;}
+span.a
+	{mso-style-name:"批注框文本 字符";
+	mso-style-link:批注框文本;}
+span.a0
+	{mso-style-name:"页眉 字符";
+	mso-style-link:页眉;}
+span.a1
+	{mso-style-name:"页脚 字符";
+	mso-style-link:页脚;}
+p.Default, li.Default, div.Default
+	{mso-style-name:Default;
+	margin:0cm;
+	margin-bottom:.0001pt;
+	text-autospace:none;
+	font-size:12.0pt;
+	font-family:"Calibri",sans-serif;
+	color:black;}
+ /* Page Definitions */
+ @page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 90.0pt 72.0pt 90.0pt;
+	layout-grid:15.6pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=ZH-CN style='text-justify-trim:punctuation'>
+
+<div class=WordSection1 style='layout-grid:15.6pt'>
+
+<p class=MsoNormal align=center style='text-align:center;word-break:break-all'><b><i><span
+lang=EN-US style='font-size:16.0pt;font-family:"Arial",sans-serif;color:#0070C0'>Release
+Notes for </span></i></b></p>
+
+<p class=MsoNormal align=center style='text-align:center;word-break:break-all'><b><i><span
+lang=EN-US style='font-size:16.0pt;font-family:"Arial",sans-serif;color:#0070C0'>AT32F403A_407
+Firmware Library Drivers</span></i></b></p>
+
+<p class=MsoNormal style='word-break:break-all'><b><span lang=EN-US
+style='font-family:"Arial",sans-serif;color:#7030A0'>V2.0.8-2025/11/24</span></b></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN-US>GPIO</span></p>
+
+<p class=MsoListParagraph style='margin-left:42.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US style='font-family:Wingdings'>l<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><span
+style='font-family:宋体'>更新</span><span lang=EN-US>gpio_bits_toggle()</span><span
+style='font-family:宋体'>函数，操作流程更严谨。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN-US>USB</span></p>
+
+<p class=MsoListParagraph style='margin-left:42.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US style='font-family:Wingdings'>l<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><span
+style='font-family:宋体'>更新</span><span lang=EN-US>usb_ept_open()</span><span
+style='font-family:宋体'>函数，当设置同步</span><span lang=EN-US>IN</span><span
+style='font-family:宋体'>传输端点时，默认将端点状态由</span><span lang=EN-US>NAK</span><span
+style='font-family:宋体'>改为</span><span lang=EN-US>DISABLE</span><span
+style='font-family:宋体'>，解决同步端点在错误的</span><span lang=EN-US>NAK</span><span
+style='font-family:宋体'>状态下引起错误。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US>3.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN-US>TMR</span></p>
+
+<p class=MsoListParagraph style='margin-left:42.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US style='font-family:Wingdings'>l<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><span
+style='font-family:宋体'>更新</span><span lang=EN-US>tmr_pwm_input_config()</span><span
+style='font-family:宋体'>、</span><span lang=EN-US>tmr_encoder_mode_config()</span><span
+style='font-family:宋体'>和</span><span lang=EN-US>tmr_output_channel_config()</span><span
+style='font-family:宋体'>函数。通道模式配置前关闭通道使能，否则通道模式无法切换。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US>4.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新部分注释。</span></p>
+
+<p class=MsoNormal style='word-break:break-all'><b><span lang=EN-US
+style='font-family:"Arial",sans-serif;color:#7030A0'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='word-break:break-all'><b><span lang=EN-US
+style='font-family:"Arial",sans-serif;color:#7030A0'>V2.0.7-2025/04/25</span></b></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新</span><span lang=EN-US>RTC</span><span
+style='font-family:宋体'>计数值读取流程。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新</span><span lang=EN-US>Flash</span><span
+style='font-family:宋体'>驱动，优化部分流程。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>3.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>新增</span><span lang=EN-US>gpio_bits_toggle</span><span
+style='font-family:宋体'>函数。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='word-break:break-all'><b><span lang=EN-US
+style='font-family:"Arial",sans-serif;color:#7030A0'>V2.0.6-2024/12/13</span></b></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新</span><span lang=EN-US>CAN</span><span
+style='font-family:宋体'>驱动。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新</span><span lang=EN-US>Flash</span><span
+style='font-family:宋体'>驱动。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>3.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新部分注释。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='word-break:break-all'><b><span lang=EN-US
+style='font-family:"Arial",sans-serif;color:#7030A0'>V2.0.5-2024/08/08</span></b></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新</span><span lang=EN-US>i2c_flag_clear</span><span
+style='font-family:宋体'>和</span><span lang=EN-US>i2c_init</span><span
+style='font-family:宋体'>函数。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新部分注释。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='word-break:break-all'><b><span lang=EN-US
+style='font-family:"Arial",sans-serif;color:#7030A0'>V2.0.4-2024/01/05</span></b></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>完善部分驱动流程在</span><span lang=EN-US>IAR7.4</span><span
+style='font-family:宋体'>下的编译警告。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>完善</span><span lang=EN-US>EMAC</span><span
+style='font-family:宋体'>的</span><span lang=EN-US>PTP</span><span
+style='font-family:宋体'>驱动。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='word-break:break-all'><b><span lang=EN-US
+style='font-family:"Arial",sans-serif;color:#7030A0'>V2.0.3-2023/10/26</span></b></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>各</span><span lang=EN-US>IP</span><span
+style='font-family:宋体'>驱动新增</span><span lang=EN-US>interrupt_flag_get</span><span
+style='font-family:宋体'>函数。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>优化系统时钟切换流程。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='word-break:break-all'><b><span lang=EN-US
+style='font-family:"Arial",sans-serif;color:#7030A0'>V2.0.2-2023/08/04</span></b></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN-US>CRC</span><span style='font-family:宋体'>驱动新增多项式及多项式宽度可修改的支持。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN-US>FLASH</span><span style='font-family:宋体'>中新增</span><span
+lang=EN-US>flash_spim_dummy_read</span><span style='font-family:宋体'>和</span><span
+lang=EN-US>flash_spim_mass_program</span><span style='font-family:宋体'>函数。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>3.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新了</span><span lang=EN-US>adc_ordinary_channel_set</span><span
+style='font-family:宋体'>和</span><span lang=EN-US>adc_preempt_channel_set</span><span
+style='font-family:宋体'>函数流程。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>4.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新部分注释。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='word-break:break-all'><b><span lang=EN-US
+style='font-family:"Arial",sans-serif;color:#7030A0'>V2.0.1-2023/02/16</span></b></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新</span><span lang=EN-US>EMAC</span><span
+style='font-family:宋体'>最大包长宏定义</span><span lang=EN-US>EMAC_MAX_PACKET_LENGTH</span><span
+style='font-family:宋体'>值为</span><span lang=EN-US>1524</span><span
+style='font-family:宋体'>。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='word-break:break-all'><b><span lang=EN-US
+style='font-family:"Arial",sans-serif;color:#7030A0'>V2.0.0-2022/11/18</span></b></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新了</span><span lang=EN-US>xmc_ext_timing_config</span><span
+style='font-family:宋体'>函数。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新当</span><span lang=EN-US>HICK</span><span
+style='font-family:宋体'>作为</span><span lang=EN-US>PLL</span><span
+style='font-family:宋体'>时钟源时</span><span lang=EN-US>CRM_HICK48_NODIV</span><span
+style='font-family:宋体'>作为默认设置。</span></p>
+
+</div>
+
+</body>
+
+</html>

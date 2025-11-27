@@ -1,0 +1,1015 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=gb2312">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;}
+@font-face
+	{font-family:宋体;
+	panose-1:2 1 6 0 3 1 1 1 1 1;}
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+@font-face
+	{font-family:"\@宋体";
+	panose-1:2 1 6 0 3 1 1 1 1 1;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	font-size:10.5pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoHeader, li.MsoHeader, div.MsoHeader
+	{mso-style-link:"页眉 字符";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:center;
+	layout-grid-mode:char;
+	border:none;
+	padding:0cm;
+	font-size:9.0pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoFooter, li.MsoFooter, div.MsoFooter
+	{mso-style-link:"页脚 字符";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	layout-grid-mode:char;
+	font-size:9.0pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoAcetate, li.MsoAcetate, div.MsoAcetate
+	{mso-style-link:"批注框文本 字符";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	font-size:9.0pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoListParagraph, li.MsoListParagraph, div.MsoListParagraph
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	text-indent:21.0pt;
+	font-size:10.5pt;
+	font-family:"Calibri",sans-serif;}
+span.a
+	{mso-style-name:"批注框文本 字符";
+	mso-style-link:批注框文本;}
+span.a0
+	{mso-style-name:"页眉 字符";
+	mso-style-link:页眉;}
+span.a1
+	{mso-style-name:"页脚 字符";
+	mso-style-link:页脚;}
+p.Default, li.Default, div.Default
+	{mso-style-name:Default;
+	margin:0cm;
+	margin-bottom:.0001pt;
+	text-autospace:none;
+	font-size:12.0pt;
+	font-family:"Calibri",sans-serif;
+	color:black;}
+.MsoChpDefault
+	{font-family:"Calibri",sans-serif;}
+ /* Page Definitions */
+ @page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 90.0pt 72.0pt 90.0pt;
+	layout-grid:15.6pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=ZH-CN style='text-justify-trim:punctuation'>
+
+<div class=WordSection1 style='layout-grid:15.6pt'>
+
+<p class=MsoNormal align=center style='text-align:center;word-break:break-all'><b><i><span
+lang=EN-US style='font-size:16.0pt;font-family:"Arial",sans-serif;color:#0070C0'>Release
+Notes for </span></i></b></p>
+
+<p class=MsoNormal align=center style='text-align:center;word-break:break-all'><b><i><span
+lang=EN-US style='font-size:16.0pt;font-family:"Arial",sans-serif;color:#0070C0'>AT32F403A_407
+Firmware Library</span></i></b></p>
+
+<p class=MsoNormal style='word-break:break-all'><b><span lang=EN-US
+style='font-family:"Arial",sans-serif;color:#7030A0'>V2.2.2-2025/11/24</span></b></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN-US>Drivers</span></p>
+
+<p class=MsoListParagraph style='margin-left:42.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US style='font-family:Wingdings'>l<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><span lang=EN-US>GPIO</span></p>
+
+<p class=MsoListParagraph style='margin-left:63.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US style='font-family:Wingdings'>w<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp; </span></span><span
+style='font-family:宋体'>更新</span><span lang=EN-US>gpio_bits_toggle()</span><span
+style='font-family:宋体'>函数，操作流程更严谨。</span></p>
+
+<p class=MsoListParagraph style='margin-left:42.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US style='font-family:Wingdings'>l<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><span lang=EN-US>USB</span></p>
+
+<p class=MsoListParagraph style='margin-left:63.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US style='font-family:Wingdings'>w<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp; </span></span><span
+style='font-family:宋体'>更新</span><span lang=EN-US>usb_ept_open()</span><span
+style='font-family:宋体'>函数，当设置同步</span><span lang=EN-US>IN</span><span
+style='font-family:宋体'>传输端点时，默认将端点状态由</span><span lang=EN-US>NAK</span><span
+style='font-family:宋体'>改为</span><span lang=EN-US>DISABLE</span><span
+style='font-family:宋体'>，解决同步端点在错误的</span><span lang=EN-US>NAK</span><span
+style='font-family:宋体'>状态下引起错误。</span></p>
+
+<p class=MsoListParagraph style='margin-left:42.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US style='font-family:Wingdings'>l<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><span lang=EN-US>TMR</span></p>
+
+<p class=MsoListParagraph style='margin-left:63.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US style='font-family:Wingdings'>w<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp; </span></span><span
+style='font-family:宋体'>更新</span><span lang=EN-US>tmr_pwm_input_config()</span><span
+style='font-family:宋体'>、</span><span lang=EN-US>tmr_encoder_mode_config()</span><span
+style='font-family:宋体'>和</span><span lang=EN-US>tmr_output_channel_config()</span><span
+style='font-family:宋体'>函数。通道模式配置前关闭通道使能，否则通道模式无法切换。</span></p>
+
+<p class=MsoListParagraph style='margin-left:42.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US style='font-family:Wingdings'>l<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><span
+style='font-family:宋体'>更新部分注释。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN-US>Middlewares</span></p>
+
+<p class=MsoListParagraph style='margin-left:42.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US style='font-family:Wingdings'>l<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><span lang=EN-US>USB</span></p>
+
+<p class=MsoListParagraph style='margin-left:63.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US style='font-family:Wingdings'>w<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp; </span></span><span
+style='font-family:宋体'>更新</span><span lang=EN-US>keyboard class</span><span
+style='font-family:宋体'>，在</span><span lang=EN-US>keyboard_type</span><span
+style='font-family:宋体'>结构体中新增成员</span><span lang=EN-US>send_state</span><span
+style='font-family:宋体'>用于记录发送状态，并更新函数</span><span lang=EN-US>usb_keyboard_class_send_report</span><span
+style='font-family:宋体'>用于发送时的流控处理，避免发送数据出错。</span></p>
+
+<p class=MsoListParagraph style='margin-left:63.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US style='font-family:Wingdings'>w<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp; </span></span><span
+style='font-family:宋体'>更新</span><span lang=EN-US>mouse class</span><span
+style='font-family:宋体'>，在</span><span lang=EN-US>mouse_type</span><span
+style='font-family:宋体'>结构体中新增成员</span><span lang=EN-US>send_state</span><span
+style='font-family:宋体'>用于记录发送状态，并更新函数</span><span lang=EN-US>usb_mouse_class_send_report</span><span
+style='font-family:宋体'>用于发送时的流控处理，避免发送数据出错。</span></p>
+
+<p class=MsoListParagraph style='margin-left:63.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US style='font-family:Wingdings'>w<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp; </span></span><span
+style='font-family:宋体'>更新</span><span lang=EN-US>custom class</span><span
+style='font-family:宋体'>，在</span><span lang=EN-US>custom_hid_type</span><span
+style='font-family:宋体'>结构体中新增成员</span><span lang=EN-US>send_state</span><span
+style='font-family:宋体'>用于记录发送状态，并更新函数</span><span lang=EN-US>custom_hid_class_send_report</span><span
+style='font-family:宋体'>用于发送时的流控处理，避免发送数据出错。</span></p>
+
+<p class=MsoListParagraph style='margin-left:63.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US style='font-family:Wingdings'>w<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp; </span></span><span
+style='font-family:宋体'>更新</span><span lang=EN-US> audio class</span><span
+style='font-family:宋体'>，修改</span><span lang=EN-US>audio sampling frequency</span><span
+style='font-family:宋体'>请求配置，解决部分主机兼容性问题。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US>3.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN-US>Demos</span></p>
+
+<p class=MsoListParagraph style='margin-left:42.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US style='font-family:Wingdings'>l<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><span lang=EN-US>ADC</span></p>
+
+<p class=MsoListParagraph style='margin-left:63.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US style='font-family:Wingdings'>w<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp; </span></span><span
+style='font-family:宋体'>更新所有</span><span lang=EN-US>demo</span><span
+style='font-family:宋体'>的</span><span lang=EN-US>ADC</span><span
+style='font-family:宋体'>初始化顺序，防止在极端情况下异常。</span></p>
+
+<p class=MsoListParagraph style='margin-left:63.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US style='font-family:Wingdings'>w<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp; </span></span><span
+style='font-family:宋体'>更新有使用</span><span lang=EN-US>DMA</span><span
+style='font-family:宋体'>的相关</span><span lang=EN-US>demo</span><span
+style='font-family:宋体'>，配置流程中开启</span><span lang=EN-US>DMA</span><span
+style='font-family:宋体'>循环模式，功能实现更新为循环触发。</span></p>
+
+<p class=MsoListParagraph style='margin-left:63.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US style='font-family:Wingdings'>w<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp; </span></span><span
+style='font-family:宋体'>删除重复的</span><span lang=EN-US> software_trigger_repeat demo</span><span
+style='font-family:宋体'>。</span></p>
+
+<p class=MsoListParagraph style='margin-left:42.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US style='font-family:Wingdings'>l<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><span lang=EN-US>USB</span></p>
+
+<p class=MsoListParagraph style='margin-left:63.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US style='font-family:Wingdings'>w<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp; </span></span><span
+style='font-family:宋体'>更新所有</span><span lang=EN-US>usb_device demo</span><span
+style='font-family:宋体'>的时钟分频配置流程，防止因</span><span lang=EN-US>AHB</span><span
+style='font-family:宋体'>分频后导致</span><span lang=EN-US>USB</span><span
+style='font-family:宋体'>时钟分频设置错误。</span></p>
+
+<p class=MsoListParagraph style='margin-left:63.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US style='font-family:Wingdings'>w<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp; </span></span><span
+style='font-family:宋体'>调整</span><span lang=EN-US>keyboard</span><span
+style='font-family:宋体'>中唤醒稳定延时方式。</span></p>
+
+<p class=MsoListParagraph style='margin-left:63.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US style='font-family:Wingdings'>w<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp; </span></span><span
+style='font-family:宋体'>调整</span><span lang=EN-US>mouse</span><span
+style='font-family:宋体'>中唤醒稳定延时方式。</span></p>
+
+<p class=MsoListParagraph style='margin-left:63.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US style='font-family:Wingdings'>w<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp; </span></span><span
+style='font-family:宋体'>更新</span><span lang=EN-US>msc</span><span
+style='font-family:宋体'>中宏定义</span><span lang=EN-US>USB_FLASH_ADDR_OFFSET</span><span
+style='font-family:宋体'>值，由</span><span lang=EN-US>0x08005000</span><span
+style='font-family:宋体'>改为</span><span lang=EN-US>0x08008000</span><span
+style='font-family:宋体'>，解决不同环境下编译范围溢出导致出错问题。</span></p>
+
+<p class=MsoListParagraph style='margin-left:63.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US style='font-family:Wingdings'>w<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp; </span></span><span
+style='font-family:宋体'>更新</span><span lang=EN-US>virtual_msc_iap demo</span><span
+style='font-family:宋体'>中跳转</span><span lang=EN-US>APP</span><span
+style='font-family:宋体'>函数，添加编译不优化设定，防止部分跳转优化失败的问题。</span></p>
+
+<p class=MsoListParagraph style='margin-left:42.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US style='font-family:Wingdings'>l<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><span lang=EN-US>templates</span></p>
+
+<p class=MsoListParagraph style='margin-left:63.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US style='font-family:Wingdings'>w<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp; </span></span><span
+style='font-family:宋体'>更新</span><span lang=EN-US>eclipse_gcc</span><span
+style='font-family:宋体'>中工程配置的</span><span lang=EN-US>include</span><span
+style='font-family:宋体'>路径，防止多工程导入时</span><span lang=EN-US>workspace_project_locations</span><span
+style='font-family:宋体'>参数错误导致编译报错。</span></p>
+
+<p class=MsoListParagraph style='margin-left:42.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US style='font-family:Wingdings'>l<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><span lang=EN-US>Board</span></p>
+
+<p class=MsoListParagraph style='margin-left:63.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US style='font-family:Wingdings'>w<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp; </span></span><span
+style='font-family:宋体'>更新</span><span lang=EN-US>board.c</span><span
+style='font-family:宋体'>中部分参数变量的写法，解决新版编译器下编译警告。</span></p>
+
+<p class=MsoListParagraph style='margin-left:42.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US style='font-family:Wingdings'>l<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><span lang=EN-US>Cortex-m4</span></p>
+
+<p class=MsoListParagraph style='margin-left:63.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US style='font-family:Wingdings'>w<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp; </span></span><span
+style='font-family:宋体'>更新</span><span lang=EN-US>systick_interrupt</span><span
+style='font-family:宋体'>中判断延时的写法由大于改为大于等于，避免翻转</span><span lang=EN-US>IO</span><span
+style='font-family:宋体'>多</span><span lang=EN-US>1ms</span><span
+style='font-family:宋体'>问题。</span></p>
+
+<p class=MsoListParagraph style='margin-left:42.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US style='font-family:Wingdings'>l<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><span lang=EN-US>AT32IDE</span><span
+style='font-family:宋体'>和</span><span lang=EN-US>Eclipse</span><span
+style='font-family:宋体'>工程</span></p>
+
+<p class=MsoListParagraph style='margin-left:63.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US style='font-family:Wingdings'>w<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp; </span></span><span
+style='font-family:宋体'>删除工程配置中</span><span lang=EN-US>release</span><span
+style='font-family:宋体'>项，只保留</span><span lang=EN-US>debug</span><span
+style='font-family:宋体'>项。</span></p>
+
+<p class=MsoListParagraph style='margin-left:42.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US style='font-family:Wingdings'>l<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><span lang=EN-US>IAP</span><span
+style='font-family:宋体'>相关</span></p>
+
+<p class=MsoListParagraph style='margin-left:63.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US style='font-family:Wingdings'>w<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp; </span></span><span
+style='font-family:宋体'>更新所有</span><span lang=EN-US>IAP_Programmer.exe</span><span
+style='font-family:宋体'>应用程序。</span></p>
+
+<p class=MsoListParagraph style='margin-left:42.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US style='font-family:Wingdings'>l<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><span lang=EN-US>Keil</span><span
+style='font-family:宋体'>工程</span></p>
+
+<p class=MsoListParagraph style='margin-left:63.0pt;text-indent:-21.0pt;
+word-break:break-all'><span lang=EN-US style='font-family:Wingdings'>w<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp; </span></span><span
+style='font-family:宋体'>更新部分</span><span lang=EN-US>Keil</span><span
+style='font-family:宋体'>工程的</span><span lang=EN-US>IROM size</span><span
+style='font-family:宋体'>配置。</span></p>
+
+<p class=MsoNormal style='word-break:break-all'><b><span lang=EN-US
+style='font-family:"Arial",sans-serif;color:#7030A0'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='word-break:break-all'><b><span lang=EN-US
+style='font-family:"Arial",sans-serif;color:#7030A0'>V2.2.1-2025/04/25</span></b></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>优化</span><span lang=EN-US>PWC deepsleep_rtc
+demo</span><span style='font-family:宋体'>。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>调整</span><span lang=EN-US>SPI demo</span><span
+style='font-family:宋体'>的代码结构。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>3.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新</span><span lang=EN-US>EMAC dns</span><span
+style='font-family:宋体'>服务器</span><span lang=EN-US>IP</span><span
+style='font-family:宋体'>地址。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>4.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新</span><span lang=EN-US>RTC</span><span
+style='font-family:宋体'>计数值读取流程。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>5.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新</span><span lang=EN-US>Flash</span><span
+style='font-family:宋体'>驱动，优化部分流程。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>6.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>新增</span><span lang=EN-US>gpio_bits_toggle</span><span
+style='font-family:宋体'>函数。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>7.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新部分注释。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='word-break:break-all'><b><span lang=EN-US
+style='font-family:"Arial",sans-serif;color:#7030A0'>V2.2.0-2024/12/13</span></b></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新内核</span><span lang=EN-US>DSP</span><span
+style='font-family:宋体'>库。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新</span><span lang=EN-US>CAN</span><span
+style='font-family:宋体'>驱动。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>3.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新</span><span lang=EN-US>EMAC wake_on_lan
+demo</span><span style='font-family:宋体'>。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>4.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新</span><span lang=EN-US>SDIO</span><span
+style='font-family:宋体'>协议层驱动，并新增</span><span lang=EN-US>emmc_card demo</span><span
+style='font-family:宋体'>。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>5.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN-US>SLIB demo</span><span style='font-family:宋体'>新增支持</span><span
+lang=EN-US>AT32IDE</span><span style='font-family:宋体'>工程。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>6.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新</span><span lang=EN-US>USB</span><span
+style='font-family:宋体'>驱动。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>7.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新</span><span lang=EN-US>I2C eeprom
+demo</span><span style='font-family:宋体'>，增加多页写逻辑。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>8.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>优化</span><span lang=EN-US>PWR</span><span
+style='font-family:宋体'>驱动和</span><span lang=EN-US>demo</span><span
+style='font-family:宋体'>。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>9.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新部分注释。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='word-break:break-all'><b><span lang=EN-US
+style='font-family:"Arial",sans-serif;color:#7030A0'>V2.1.9-2024/08/08</span></b></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>调整</span><span lang=EN-US>sdio demo</span><span
+style='font-family:宋体'>中总线时钟频率。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新</span><span lang=EN-US>EMAC demo</span><span
+style='font-family:宋体'>中</span><span lang=EN-US>lwip_periodic_handle</span><span
+style='font-family:宋体'>函数。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>3.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新</span><span lang=EN-US>i2c_flag_clear</span><span
+style='font-family:宋体'>和</span><span lang=EN-US>i2c_init</span><span
+style='font-family:宋体'>函数。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>4.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新</span><span lang=EN-US>msc iap
+demo</span><span style='font-family:宋体'>，完善兼容性问题。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>5.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新</span><span lang=EN-US>I2C dma</span><span
+style='font-family:宋体'>相关</span><span lang=EN-US>demo</span><span
+style='font-family:宋体'>的初始化配置流程。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>6.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>修正部分</span><span lang=EN-US>demo AC6</span><span
+style='font-family:宋体'>环境下编译问题。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>7.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新部分注释。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='word-break:break-all'><b><span lang=EN-US
+style='font-family:"Arial",sans-serif;color:#7030A0'>V2.1.8-2024/01/26</span></b></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新日历闰年计算函数。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新</span><span lang=EN-US>USB hid report</span><span
+style='font-family:宋体'>描述符。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>3.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新部分注释。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='word-break:break-all'><b><span lang=EN-US
+style='font-family:"Arial",sans-serif;color:#7030A0'>V2.1.7-2024/01/05</span></b></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新</span><span lang=EN-US>timer</span><span
+style='font-family:宋体'>下</span><span lang=EN-US>input_capture demo</span><span
+style='font-family:宋体'>的计数计算方式。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新部分</span><span lang=EN-US>USB demo
+HID</span><span style='font-family:宋体'>识别慢问题。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>3.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新</span><span lang=EN-US>systick interrupt
+demo</span><span style='font-family:宋体'>中</span><span lang=EN-US>systick</span><span
+style='font-family:宋体'>的初始化函数。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>4.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>新增</span><span lang=EN-US>winusb demo</span><span
+style='font-family:宋体'>。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>5.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>各</span><span lang=EN-US>demo</span><span
+style='font-family:宋体'>中更新</span><span lang=EN-US>xx_interrupt_flag_get</span><span
+style='font-family:宋体'>函数调用方式。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='word-break:break-all'><b><span lang=EN-US
+style='font-family:"Arial",sans-serif;color:#7030A0'>V2.1.6-2023/10/26</span></b></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>删除</span><span lang=EN-US>SRAM</span><span
+style='font-family:宋体'>扩展</span><span lang=EN-US>demo</span><span
+style='font-family:宋体'>。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新部分注释及</span><span lang=EN-US>readme</span><span
+style='font-family:宋体'>。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='word-break:break-all'><b><span lang=EN-US
+style='font-family:"Arial",sans-serif;color:#7030A0'>V2.1.5-2023/08/04</span></b></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN-US>utilities</span><span style='font-family:宋体'>下各</span><span
+lang=EN-US>demo</span><span style='font-family:宋体'>增加</span><span lang=EN-US>AT32IDE</span><span
+style='font-family:宋体'>工程支持。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN-US>CRC</span><span style='font-family:宋体'>驱动新增多项式及多项式宽度可修改的支持。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>3.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新</span><span lang=EN-US>USB</span><span
+style='font-family:宋体'>驱动及</span><span lang=EN-US>demo</span><span
+style='font-family:宋体'>，完善数据对齐问题，优化代码流程。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>4.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>完善</span><span lang=EN-US>IAR9</span><span
+style='font-family:宋体'>使用</span><span lang=EN-US>printf</span><span
+style='font-family:宋体'>时的重定向兼容性问题。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>5.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>新增按</span><span lang=EN-US>FLASH</span><span
+style='font-family:宋体'>容量区分的宏定义并更新</span><span lang=EN-US>FLASH demo</span><span
+style='font-family:宋体'>。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>6.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新部分注释。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='word-break:break-all'><b><span lang=EN-US
+style='font-family:"Arial",sans-serif;color:#7030A0'>V2.1.4-2023/02/16</span></b></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>完善</span><span lang=EN-US>utilities</span><span
+style='font-family:宋体'>下</span><span lang=EN-US>freertos demo</span><span
+style='font-family:宋体'>的</span><span lang=EN-US>AC6</span><span
+style='font-family:宋体'>编译问题。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>完善</span><span lang=EN-US>EMAC</span><span
+style='font-family:宋体'>相关</span><span lang=EN-US>demo</span><span
+style='font-family:宋体'>，更新</span><span lang=EN-US>cc.h</span><span
+style='font-family:宋体'>文件以解决</span><span lang=EN-US>AC6</span><span
+style='font-family:宋体'>编译后对齐出错问题，并增加</span><span lang=EN-US>lwip assert</span><span
+style='font-family:宋体'>信息从串口输出。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>3.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新</span><span lang=EN-US>EMAC demo</span><span
+style='font-family:宋体'>中</span><span lang=EN-US>lwip</span><span
+style='font-family:宋体'>底层封包接口，以更好的支持多包传输。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>4.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>在</span><span lang=EN-US>at32f403a_407_conf.h</span><span
+style='font-family:宋体'>中新增了</span><span lang=EN-US>LEXT_VALUE</span><span
+style='font-family:宋体'>宏定义。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>5.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>在</span><span lang=EN-US>*.ld</span><span
+style='font-family:宋体'>文件中新增</span><span lang=EN-US>spim</span><span
+style='font-family:宋体'>相关的</span><span lang=EN-US>section</span><span
+style='font-family:宋体'>描述，以更好支持</span><span lang=EN-US>gcc</span><span
+style='font-family:宋体'>下</span><span lang=EN-US>spim</span><span
+style='font-family:宋体'>地址的链接处理。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>6.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新部分注释。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='word-break:break-all'><b><span lang=EN-US
+style='font-family:"Arial",sans-serif;color:#7030A0'>V2.1.3-2022/11/18</span></b></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>移除各文件中文件头部分的版本及日期记录项。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>新增一份</span><span lang=EN-US>release
+notes drivers</span><span style='font-family:宋体'>，单独记录</span><span lang=EN-US>drivers</span><span
+style='font-family:宋体'>部分的更新，文件位于</span><span lang=EN-US>libraries\drivers</span><span
+style='font-family:宋体'>目录下。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>3.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新</span><span lang=EN-US>I2C</span><span
+style='font-family:宋体'>中断和</span><span lang=EN-US>DMA demo</span><span
+style='font-family:宋体'>为非阻塞方式。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>4.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>修正</span><span lang=EN-US>USB</span><span
+style='font-family:宋体'>的</span><span lang=EN-US>cdc_msc</span><span
+style='font-family:宋体'>复合类在</span><span lang=EN-US>linux</span><span
+style='font-family:宋体'>失败的问题。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>5.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新</span><span lang=EN-US>USB</span><span
+style='font-family:宋体'>的</span><span lang=EN-US>virtual msc iap demo</span><span
+style='font-family:宋体'>以支持</span><span lang=EN-US>linux</span><span
+style='font-family:宋体'>。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>6.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新</span><span lang=EN-US>USB</span><span
+style='font-family:宋体'>的</span><span lang=EN-US>audio</span><span
+style='font-family:宋体'>相关内容，以提供更好的兼容性。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>7.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新了</span><span lang=EN-US>IAR_Programmer.exe</span><span
+style='font-family:宋体'>。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>8.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN-US>USART interrupt demo</span><span
+style='font-family:宋体'>的中断函数中，标志位的检测加入了中断使能判断。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>9.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN-US>ADC</span><span style='font-family:宋体'>新增</span><span
+lang=EN-US>repeat_conversion_loop_transfer demo</span><span style='font-family:
+宋体'>，采用</span><span lang=EN-US>DMA</span><span style='font-family:宋体'>循环取</span><span
+lang=EN-US>ADC</span><span style='font-family:宋体'>数据。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='word-break:break-all'><b><span lang=EN-US
+style='font-family:"Arial",sans-serif;color:#7030A0'>V2.1.2-2022/08/16</span></b></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN-US>template </span><span style='font-family:宋体'>下新增</span><span
+lang=EN-US>IAR v9.3 </span><span style='font-family:宋体'>的工程</span><span
+lang=EN-US>demo</span><span style='font-family:宋体'>。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>修正</span><span lang=EN-US>gcc</span><span
+style='font-family:宋体'>环境下</span><span lang=EN-US>printf</span><span
+style='font-family:宋体'>无法输出的问题。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>3.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>启动文件支持</span><span lang=EN-US>configuration
+wizard</span><span style='font-family:宋体'>图形配置。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='word-break:break-all'><b><span lang=EN-US
+style='font-family:"Arial",sans-serif;color:#7030A0'>V2.1.1-2022/07/22</span></b></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>新增</span><span lang=EN-US>GPIO io
+toggle demo</span><span style='font-family:宋体'>。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新</span><span lang=EN-US>I2C eeprom
+demo</span><span style='font-family:宋体'>，增加</span><span lang=EN-US>16</span><span
+style='font-family:宋体'>位地址支持。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>3.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>优化部分</span><span lang=EN-US>demo</span><span
+style='font-family:宋体'>及驱动流程，更正注释。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='word-break:break-all'><b><span lang=EN-US
+style='font-family:"Arial",sans-serif;color:#7030A0'>V2.1.0-2022/06/09</span></b></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>新增</span><span lang=EN-US>USART
+RS485 demo</span><span style='font-family:宋体'>。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>新增</span><span lang=EN-US>USB
+composite_vcp_msc demo</span><span style='font-family:宋体'>。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>3.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>新增</span><span lang=EN-US>EMAC mqtt </span><span
+style='font-family:宋体'>客户端</span><span lang=EN-US>demo</span><span
+style='font-family:宋体'>。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>4.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>新增</span><span lang=EN-US>FLASH </span><span
+style='font-family:宋体'>访问保护使能</span><span lang=EN-US>demo</span><span
+style='font-family:宋体'>。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>5.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>优化部分</span><span lang=EN-US>demo</span><span
+style='font-family:宋体'>及驱动流程，更正注释。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='word-break:break-all'><b><span lang=EN-US
+style='font-family:"Arial",sans-serif;color:#7030A0'>V2.0.9-2022/04/25</span></b></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>修改</span><span lang=EN-US>USB
+virtual msc iap demo</span><span style='font-family:宋体'>的分区表描述符。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>新增</span><span lang=EN-US>EMAC</span><span
+style='font-family:宋体'>相关</span><span lang=EN-US>demo</span><span
+style='font-family:宋体'>网络连接状态的检测功能，并更新</span><span lang=EN-US>local_time</span><span
+style='font-family:宋体'>变量。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>3.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>优化部分</span><span lang=EN-US>demo</span><span
+style='font-family:宋体'>，更正注释。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='word-break:break-all'><b><span lang=EN-US
+style='font-family:"Arial",sans-serif;color:#7030A0'>V2.0.8-2022/04/02</span></b></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>新增</span><span lang=EN-US>wdt_standby
+demo</span><span style='font-family:宋体'>。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>导入</span><span lang=EN-US>DSP</span><span
+style='font-family:宋体'>相关源码及新增</span><span lang=EN-US>cmsis_dsp demo</span><span
+style='font-family:宋体'>。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>3.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>优化部分</span><span lang=EN-US>demo</span><span
+style='font-family:宋体'>及驱动流程，更正注释。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='word-break:break-all'><b><span lang=EN-US
+style='font-family:"Arial",sans-serif;color:#7030A0'>V2.0.7-2022/02/11</span></b></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN-US>USB</span><span style='font-family:宋体'>中新增</span><span
+lang=EN-US>virtual_comport demo</span><span style='font-family:宋体'>。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>完善</span><span lang=EN-US>USB msc
+iap demo</span><span style='font-family:宋体'>在不同系统下的兼容问题。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>3.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>优化部分</span><span lang=EN-US>demo</span><span
+style='font-family:宋体'>及驱动流程，更正注释。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='word-break:break-all'><b><span lang=EN-US
+style='font-family:"Arial",sans-serif;color:#7030A0'>V2.0.6-2021/12/31</span></b></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>修正中断优先级组参数定义错误的问题。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>统一</span><span lang=EN-US>printf</span><span
+style='font-family:宋体'>的串口初始化及重定向函数到</span><span lang=EN-US>xx_board.c</span><span
+style='font-family:宋体'>中，并去除各</span><span lang=EN-US>demo</span><span
+style='font-family:宋体'>中的相关内容。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>3.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新部分</span><span lang=EN-US>demo</span><span
+style='font-family:宋体'>，以支持</span><span lang=EN-US>AC6</span><span
+style='font-family:宋体'>、</span><span lang=EN-US> –O3</span><span
+style='font-family:宋体'>优化等级编译。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>4.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN-US>USB</span><span style='font-family:宋体'>中新增</span><span
+lang=EN-US>composite_audio_hid demo</span><span style='font-family:宋体'>，并完善回馈及同步机制。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>5.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>修正</span><span lang=EN-US>AT32F407
+EMAC</span><span style='font-family:宋体'>使用</span><span lang=EN-US>phy dp83848</span><span
+style='font-family:宋体'>时，</span><span lang=EN-US>speed</span><span
+style='font-family:宋体'>状态和</span><span lang=EN-US>duplex</span><span
+style='font-family:宋体'>模式定义错误的问题。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='word-break:break-all'><b><span lang=EN-US
+style='font-family:"Arial",sans-serif;color:#7030A0'>V2.0.5-2021/12/17</span></b></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>修正各外设的</span><span lang=EN-US>flag</span><span
+style='font-family:宋体'>清除函数，防止位域方式下的误操作问题。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>统一</span><span lang=EN-US>pwc_wakeup_pin_enable</span><span
+style='font-family:宋体'>函数接口。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>3.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>修正</span><span lang=EN-US>USB</span><span
+style='font-family:宋体'>设备类数组</span><span lang=EN-US>4</span><span
+style='font-family:宋体'>字节对齐问题。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>4.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新</span><span lang=EN-US>virtual_msc_iap
+demo</span><span style='font-family:宋体'>的虚拟空间大小为</span><span lang=EN-US>100 MB</span><span
+style='font-family:宋体'>。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>5.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>修正</span><span lang=EN-US>composite_vcp_keyboard
+demo</span><span style='font-family:宋体'>中虚拟串口</span><span lang=EN-US>bulk</span><span
+style='font-family:宋体'>传输结束问题。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>6.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新</span><span lang=EN-US>USB demo</span><span
+style='font-family:宋体'>中</span><span lang=EN-US>keyboard</span><span
+style='font-family:宋体'>相关的发送函数。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>7.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新</span><span lang=EN-US>ADC demo</span><span
+style='font-family:宋体'>中</span><span lang=EN-US>timer</span><span
+style='font-family:宋体'>触发</span><span lang=EN-US>adc</span><span
+style='font-family:宋体'>转换的定时器频率配置流程。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>8.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>调整了</span><span lang=EN-US>XMC</span><span
+style='font-family:宋体'>外设驱动架构，并更新对应</span><span lang=EN-US>demo</span><span
+style='font-family:宋体'>。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='word-break:break-all'><b><span lang=EN-US
+style='font-family:"Arial",sans-serif;color:#7030A0'>V2.0.4-2021/11/26</span></b></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新部分注释及</span><span lang=EN-US>readme</span><span
+style='font-family:宋体'>。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>修正</span><span lang=EN-US>audio
+codec</span><span style='font-family:宋体'>设置麦克风频率的采样率判断流程。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>3.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>修正</span><span lang=EN-US>USB</span><span
+style='font-family:宋体'>发数据写</span><span lang=EN-US>fifo</span><span
+style='font-family:宋体'>时的字节对齐问题。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='word-break:break-all'><b><span lang=EN-US
+style='font-family:"Arial",sans-serif;color:#7030A0'>V2.0.3-2021/11/15</span></b></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新部分外设驱动的</span><span lang=EN-US>flag_clear</span><span
+style='font-family:宋体'>函数，修正</span><span lang=EN-US>bit</span><span
+style='font-family:宋体'>位为</span><span lang=EN-US>w1c</span><span
+style='font-family:宋体'>属性时的勿操作问题。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>解锁</span><span lang=EN-US>USD</span><span
+style='font-family:宋体'>或</span><span lang=EN-US>SLIB</span><span
+style='font-family:宋体'>后，增加</span><span lang=EN-US>unlock</span><span
+style='font-family:宋体'>标志的判断流程。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>3.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>修改了部分</span><span lang=EN-US>GPIO PIN</span><span
+style='font-family:宋体'>脚复用宏定义名。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>4.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新了部分文件中的注释及描述。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='word-break:break-all'><b><span lang=EN-US
+style='font-family:"Arial",sans-serif;color:#7030A0'>V2.0.2-2021/10/27</span></b></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>修改</span><span lang=EN-US>mass
+storage demo</span><span style='font-family:宋体'>实现，以完善</span><span lang=EN-US>CV</span><span
+style='font-family:宋体'>测试内容。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新</span><span lang=EN-US>usb cdc
+demo</span><span style='font-family:宋体'>。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>3.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>修改</span><span lang=EN-US>EMAC SMI</span><span
+style='font-family:宋体'>分频支持</span><span lang=EN-US>240MHz</span><span
+style='font-family:宋体'>。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='word-break:break-all'><b><span lang=EN-US
+style='font-family:"Arial",sans-serif;color:#7030A0'>V2.0.1-2021/10/21</span></b></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新部分库函数命名。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>更新</span><span lang=EN-US>HEXT
+startup timeout</span><span style='font-family:宋体'>时间。</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>3.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-family:宋体'>修正部分</span><span lang=EN-US>USB</span><span
+style='font-family:宋体'>功能函数。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='word-break:break-all'><b><span lang=EN-US
+style='font-family:"Arial",sans-serif;color:#7030A0'>V2.0.0-2021/07/01</span></b></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=EN-US>AT32F403A</span><span style='font-family:宋体'>和</span><span
+lang=EN-US>AT32F407</span><span style='font-family:宋体'>系列固件库初始发布版。</span></p>
+
+</div>
+
+</body>
+
+</html>

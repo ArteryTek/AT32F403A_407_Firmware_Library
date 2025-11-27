@@ -3,7 +3,8 @@
   * @file     system_at32f403a_407.c
   * @brief    contains all the functions for cmsis cortex-m4 system source file
   **************************************************************************
-  *                       Copyright notice & Disclaimer
+  *
+  * Copyright (c) 2025, Artery Technology, All rights reserved.
   *
   * The software Board Support Package (BSP) that is made available to
   * download from Artery official website is the copyrighted work of Artery.
@@ -136,14 +137,14 @@ void system_core_clock_update(void)
         pll_mult_h = CRM->cfg_bit.pllmult_h;
         /* process high bits */
         if((pll_mult_h != 0U) || (pll_mult == 15U)){
-            pll_mult += ((16U * pll_mult_h) + 1U);
+          pll_mult += ((16U * pll_mult_h) + 1U);
         }
         else
         {
-            pll_mult += 2U;
+          pll_mult += 2U;
         }
 
-        if (pll_clock_source == 0x00)
+        if(pll_clock_source == 0x00)
         {
           /* hick divided by 2 selected as pll clock entry */
           system_core_clock = (HICK_VALUE >> 1) * pll_mult;
@@ -151,7 +152,7 @@ void system_core_clock_update(void)
         else
         {
           /* hext selected as pll clock entry */
-          if (CRM->cfg_bit.pllhextdiv != RESET)
+          if(CRM->cfg_bit.pllhextdiv != RESET)
           {
             hext_prediv = CRM->misc3_bit.hextdiv;
 

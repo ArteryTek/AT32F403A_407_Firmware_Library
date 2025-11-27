@@ -3,7 +3,8 @@
   * @file     msc_diskio.h
   * @brief    usb mass storage disk interface header file
   **************************************************************************
-  *                       Copyright notice & Disclaimer
+  *
+  * Copyright (c) 2025, Artery Technology, All rights reserved.
   *
   * The software Board Support Package (BSP) that is made available to
   * download from Artery official website is the copyrighted work of Artery.
@@ -44,7 +45,7 @@ extern "C" {
 #define SPI_FLASH_LUN                    1
 #define SD_LUN                           2
 
-#define USB_FLASH_ADDR_OFFSET  0x08005000
+#define USB_FLASH_ADDR_OFFSET  0x08008000
 
 #define SECTOR_SIZE_1K                   1024
 #define SECTOR_SIZE_2K                   2048

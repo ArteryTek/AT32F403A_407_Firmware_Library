@@ -3,7 +3,8 @@
   * @file     keyboard_class.c
   * @brief    usb hid keyboard class type
   **************************************************************************
-  *                       Copyright notice & Disclaimer
+  *
+  * Copyright (c) 2025, Artery Technology, All rights reserved.
   *
   * The software Board Support Package (BSP) that is made available to
   * download from Artery official website is the copyrighted work of Artery.
@@ -217,6 +218,7 @@ static usb_sts_type class_init_handler(void *udev)
   usbd_ept_open(pudev, USBD_KEYBOARD_IN_EPT, EPT_INT_TYPE, USBD_KEYBOARD_IN_MAXPACKET_SIZE);
 
   pkeyboard->g_u8tx_completed = 1;
+  pkeyboard->send_state = 0;
 
   return status;
 }
@@ -373,6 +375,7 @@ static usb_sts_type class_in_handler(void *udev, uint8_t ept_num)
     trans next packet data
   */
   pkeyboard->g_u8tx_completed = 1;
+  pkeyboard->send_state = 0;
 
   return status;
 }
@@ -446,11 +449,16 @@ static usb_sts_type class_event_handler(void *udev, usbd_event_type event)
   */
 usb_sts_type usb_keyboard_class_send_report(void *udev, uint8_t *report, uint16_t len)
 {
-  usb_sts_type status = USB_OK;
+  usb_sts_type status = USB_FAIL;
   usbd_core_type *pudev = (usbd_core_type *)udev;
-
-  if(usbd_connect_state_get(pudev) == USB_CONN_STATE_CONFIGURED)
+  keyboard_type *pkeyboard = (keyboard_type *)pudev->class_handler->pdata;
+  
+  if(usbd_connect_state_get(pudev) == USB_CONN_STATE_CONFIGURED && pkeyboard->send_state == 0)
+  {
+    pkeyboard->send_state = 1;
     usbd_ept_send(pudev, USBD_KEYBOARD_IN_EPT, report, len);
+    status = USB_OK;
+  }
 
   return status;
 }

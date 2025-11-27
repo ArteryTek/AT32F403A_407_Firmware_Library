@@ -3,7 +3,8 @@
   * @file     main.c
   * @brief    main program
   **************************************************************************
-  *                       Copyright notice & Disclaimer
+  *
+  * Copyright (c) 2025, Artery Technology, All rights reserved.
   *
   * The software Board Support Package (BSP) that is made available to
   * download from Artery official website is the copyrighted work of Artery.
@@ -33,15 +34,12 @@
   * @{
   */
 
-__IO uint32_t adc1_ordinary_valuetab[5][3];
-__IO uint16_t adc3_ordinary_valuetab[5][3];
+__IO uint32_t adc1_ordinary_valuetab[3];
+__IO uint16_t adc3_ordinary_valuetab[3];
 __IO uint32_t dma1_trans_complete_flag = 0;
+__IO uint16_t adc12_ordinary_conversion_times_index = 0;
 __IO uint32_t dma2_trans_complete_flag = 0;
-
-static void gpio_config(void);
-static void dma_config(void);
-static void tmr1_config(void);
-static void adc_config(void);
+__IO uint16_t adc3_ordinary_conversion_times_index = 0;
 
 /**
   * @brief  gpio configuration.
@@ -84,7 +82,7 @@ static void dma_config(void)
   dma_reset(DMA1_CHANNEL1);
   dma_reset(DMA2_CHANNEL5);
   dma_default_para_init(&dma_init_struct);
-  dma_init_struct.buffer_size = 15;
+  dma_init_struct.buffer_size = 3;
   dma_init_struct.direction = DMA_DIR_PERIPHERAL_TO_MEMORY;
   dma_init_struct.memory_base_addr = (uint32_t)adc1_ordinary_valuetab;
   dma_init_struct.memory_data_width = DMA_MEMORY_DATA_WIDTH_WORD;
@@ -93,7 +91,7 @@ static void dma_config(void)
   dma_init_struct.peripheral_data_width = DMA_PERIPHERAL_DATA_WIDTH_WORD;
   dma_init_struct.peripheral_inc_enable = FALSE;
   dma_init_struct.priority = DMA_PRIORITY_HIGH;
-  dma_init_struct.loop_mode_enable = FALSE;
+  dma_init_struct.loop_mode_enable = TRUE;
   dma_init(DMA1_CHANNEL1, &dma_init_struct);
 
   dma_init_struct.memory_base_addr = (uint32_t)adc3_ordinary_valuetab;
@@ -104,8 +102,6 @@ static void dma_config(void)
 
   dma_interrupt_enable(DMA1_CHANNEL1, DMA_FDT_INT, TRUE);
   dma_interrupt_enable(DMA2_CHANNEL5, DMA_FDT_INT, TRUE);
-  dma_channel_enable(DMA1_CHANNEL1, TRUE);
-  dma_channel_enable(DMA2_CHANNEL5, TRUE);
 }
 
 /**
@@ -122,8 +118,8 @@ static void tmr1_config(void)
 
   crm_periph_clock_enable(CRM_TMR1_PERIPH_CLOCK, TRUE);
 
-  /* (systemclock/(systemclock/10000))/1000 = 10Hz(100ms) */
-  tmr_base_init(TMR1, 999, (crm_clocks_freq_struct.sclk_freq/10000 - 1));
+  /* (systemclock/(systemclock/10000))/10000 = 1Hz(1s) */
+  tmr_base_init(TMR1, 9999, (crm_clocks_freq_struct.sclk_freq/10000 - 1));
   tmr_cnt_dir_set(TMR1, TMR_COUNT_UP);
   tmr_clock_source_div_set(TMR1, TMR_CLOCK_DIV1);
   tmr_primary_mode_select(TMR1, TMR_PRIMARY_SEL_OVERFLOW);
@@ -140,11 +136,16 @@ static void adc_config(void)
   crm_periph_clock_enable(CRM_ADC1_PERIPH_CLOCK, TRUE);
   crm_periph_clock_enable(CRM_ADC2_PERIPH_CLOCK, TRUE);
   crm_periph_clock_enable(CRM_ADC3_PERIPH_CLOCK, TRUE);
-  crm_adc_clock_div_set(CRM_ADC_DIV_6);
+  adc_reset(ADC1);
+  adc_reset(ADC2);
+  adc_reset(ADC3);
+  crm_adc_clock_div_set(CRM_ADC_DIV_4);
+  adc_base_default_para_init(&adc_base_struct);
 
   /* select combine mode */
   adc_combine_mode_select(ADC_ORDINARY_SMLT_ONLY_MODE);
-  adc_base_default_para_init(&adc_base_struct);
+
+  /* ADC1 config */
   adc_base_struct.sequence_mode = TRUE;
   adc_base_struct.repeat_mode = FALSE;
   adc_base_struct.data_align = ADC_RIGHT_ALIGNMENT;
@@ -156,12 +157,14 @@ static void adc_config(void)
   adc_ordinary_conversion_trigger_set(ADC1, ADC12_ORDINARY_TRIG_TMR1TRGOUT, TRUE);
   adc_dma_mode_enable(ADC1, TRUE);
 
+  /* ADC2 config */
   adc_base_config(ADC2, &adc_base_struct);
   adc_ordinary_channel_set(ADC2, ADC_CHANNEL_7, 1, ADC_SAMPLETIME_239_5);
   adc_ordinary_channel_set(ADC2, ADC_CHANNEL_8, 2, ADC_SAMPLETIME_239_5);
   adc_ordinary_channel_set(ADC2, ADC_CHANNEL_9, 3, ADC_SAMPLETIME_239_5);
   adc_ordinary_conversion_trigger_set(ADC2, ADC12_ORDINARY_TRIG_SOFTWARE, TRUE);
 
+  /* ADC3 config */
   adc_base_config(ADC3, &adc_base_struct);
   adc_ordinary_channel_set(ADC3, ADC_CHANNEL_10, 1, ADC_SAMPLETIME_239_5);
   adc_ordinary_channel_set(ADC3, ADC_CHANNEL_11, 2, ADC_SAMPLETIME_239_5);
@@ -171,6 +174,8 @@ static void adc_config(void)
 
   adc_enable(ADC1, TRUE);
   adc_enable(ADC2, TRUE);
+
+  /* ADC calibration */
   adc_calibration_init(ADC1);
   while(adc_calibration_init_status_get(ADC1));
   adc_calibration_start(ADC1);
@@ -188,13 +193,40 @@ static void adc_config(void)
 }
 
 /**
+  * @brief  this function handles dma1_channel1 handler.
+  * @param  none
+  * @retval none
+  */
+void DMA1_Channel1_IRQHandler(void)
+{
+  if(dma_interrupt_flag_get(DMA1_FDT1_FLAG) != RESET)
+  {
+    dma_flag_clear(DMA1_FDT1_FLAG);
+    dma1_trans_complete_flag++;
+  }
+}
+
+/**
+  * @brief  this function handles dma2_channel4_5 handler.
+  * @param  none
+  * @retval none
+  */
+void DMA2_Channel4_5_IRQHandler(void)
+{
+  if(dma_interrupt_flag_get(DMA2_FDT5_FLAG) != RESET)
+  {
+    dma_flag_clear(DMA2_FDT5_FLAG);
+    dma2_trans_complete_flag++;
+  }
+}
+
+/**
   * @brief  main function.
   * @param  none
   * @retval none
   */
 int main(void)
 {
-  __IO uint32_t index = 0;
   nvic_priority_group_config(NVIC_PRIORITY_GROUP_4);
   system_clock_config();
   at32_board_init();
@@ -207,28 +239,38 @@ int main(void)
   dma_config();
   adc_config();
 
+  /* enable DMA after ADC activation */
+  dma_channel_enable(DMA1_CHANNEL1, TRUE);
+  dma_channel_enable(DMA2_CHANNEL5, TRUE);
+
   printf("triple_adc_synchro_trigger \r\n");
 
   tmr_counter_enable(TMR1, TRUE);
-  while(dma1_trans_complete_flag == 0);
-  while(dma2_trans_complete_flag == 0);
-  tmr_counter_enable(TMR1, FALSE);
-
-  for(index = 0; index < 5; index++)
-  {
-    printf("adc1_ordinary_valuetab[%d][0] = 0x%x\r\n", index, adc1_ordinary_valuetab[index][0]);
-    printf("adc1_ordinary_valuetab[%d][1] = 0x%x\r\n", index, adc1_ordinary_valuetab[index][1]);
-    printf("adc1_ordinary_valuetab[%d][2] = 0x%x\r\n", index, adc1_ordinary_valuetab[index][2]);
-    printf("adc3_ordinary_valuetab[%d][0] = 0x%x\r\n", index, adc3_ordinary_valuetab[index][0]);
-    printf("adc3_ordinary_valuetab[%d][1] = 0x%x\r\n", index, adc3_ordinary_valuetab[index][1]);
-    printf("adc3_ordinary_valuetab[%d][2] = 0x%x\r\n", index, adc3_ordinary_valuetab[index][2]);
-    printf("\r\n");
-  }
-
-  at32_led_on(LED2);
-
   while(1)
   {
+    /* wait ordinary conversion end */
+    if(adc12_ordinary_conversion_times_index != dma1_trans_complete_flag)
+    {
+      adc12_ordinary_conversion_times_index = dma1_trans_complete_flag;
+      printf("adc12_ordinary_conversion_times_index = %d\r\n",adc12_ordinary_conversion_times_index);
+      printf("adc1_ordinary_valuetab[0] = 0x%x\r\n", adc1_ordinary_valuetab[0]);
+      printf("adc1_ordinary_valuetab[1] = 0x%x\r\n", adc1_ordinary_valuetab[1]);
+      printf("adc1_ordinary_valuetab[2] = 0x%x\r\n", adc1_ordinary_valuetab[2]);
+      printf("\r\n");
+      at32_led_toggle(LED2);
+    }
+
+    /* wait preempt conversion end */
+    if(adc3_ordinary_conversion_times_index != dma2_trans_complete_flag)
+    {
+      adc3_ordinary_conversion_times_index = dma2_trans_complete_flag;
+      printf("adc3_ordinary_conversion_times_index = %d\r\n",adc3_ordinary_conversion_times_index);
+      printf("adc3_ordinary_valuetab[0] = 0x%x\r\n", adc3_ordinary_valuetab[0]);
+      printf("adc3_ordinary_valuetab[1] = 0x%x\r\n", adc3_ordinary_valuetab[1]);
+      printf("adc3_ordinary_valuetab[2] = 0x%x\r\n", adc3_ordinary_valuetab[2]);
+      printf("\r\n");
+      at32_led_toggle(LED3);
+    }
   }
 }
 

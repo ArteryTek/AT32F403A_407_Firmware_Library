@@ -3,7 +3,8 @@
   * @file     main.c
   * @brief    main program
   **************************************************************************
-  *                       Copyright notice & Disclaimer
+  *
+  * Copyright (c) 2025, Artery Technology, All rights reserved.
   *
   * The software Board Support Package (BSP) that is made available to
   * download from Artery official website is the copyrighted work of Artery.
@@ -49,6 +50,8 @@ void usb_clock48m_select(usb_clk48_s clk_s);
   */
 void usb_clock48m_select(usb_clk48_s clk_s)
 {
+  crm_clocks_freq_type clocks_struct;
+  
   if(clk_s == USB_CLK_HICK)
   {
     crm_usb_clock_source_select(CRM_USB_CLOCK_SOURCE_HICK);
@@ -66,7 +69,8 @@ void usb_clock48m_select(usb_clk48_s clk_s)
   }
   else
   {
-    switch(system_core_clock)
+    crm_clocks_freq_get(&clocks_struct);
+    switch(clocks_struct.sclk_freq)
     {
       /* 48MHz */
       case 48000000:

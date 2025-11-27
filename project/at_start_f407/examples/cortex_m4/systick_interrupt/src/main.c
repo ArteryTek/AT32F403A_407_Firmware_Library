@@ -3,7 +3,8 @@
   * @file     main.c
   * @brief    main program
   **************************************************************************
-  *                       Copyright notice & Disclaimer
+  *
+  * Copyright (c) 2025, Artery Technology, All rights reserved.
   *
   * The software Board Support Package (BSP) that is made available to
   * download from Artery official website is the copyrighted work of Artery.
@@ -48,7 +49,7 @@ void systick_handler(void)
   ticks ++;
 
   /* toggle led */
-  if(ticks > DELAY)
+  if(ticks >= DELAY)
   {
     at32_led_toggle(LED2);
     ticks = 0;

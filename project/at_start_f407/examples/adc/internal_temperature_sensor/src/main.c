@@ -3,7 +3,8 @@
   * @file     main.c
   * @brief    main program
   **************************************************************************
-  *                       Copyright notice & Disclaimer
+  *
+  * Copyright (c) 2025, Artery Technology, All rights reserved.
   *
   * The software Board Support Package (BSP) that is made available to
   * download from Artery official website is the copyrighted work of Artery.
@@ -40,9 +41,6 @@
 
 __IO uint16_t adc1_ordinary_value = 0;
 
-static void dma_config(void);
-static void adc_config(void);
-
 /**
   * @brief  dma configuration.
   * @param  none
@@ -65,8 +63,6 @@ static void dma_config(void)
   dma_init_struct.priority = DMA_PRIORITY_HIGH;
   dma_init_struct.loop_mode_enable = TRUE;
   dma_init(DMA1_CHANNEL1, &dma_init_struct);
-
-  dma_channel_enable(DMA1_CHANNEL1, TRUE);
 }
 
 /**
@@ -78,13 +74,16 @@ static void adc_config(void)
 {
   adc_base_config_type adc_base_struct;
   crm_periph_clock_enable(CRM_ADC1_PERIPH_CLOCK, TRUE);
-  crm_adc_clock_div_set(CRM_ADC_DIV_6);
+  adc_reset(ADC1);
+  crm_adc_clock_div_set(CRM_ADC_DIV_4);
+  adc_base_default_para_init(&adc_base_struct);
 
   /* select combine mode */
   adc_combine_mode_select(ADC_INDEPENDENT_MODE);
-  adc_base_default_para_init(&adc_base_struct);
+
+  /* ADC1 config */
   adc_base_struct.sequence_mode = FALSE;
-  adc_base_struct.repeat_mode = TRUE;
+  adc_base_struct.repeat_mode = FALSE;
   adc_base_struct.data_align = ADC_RIGHT_ALIGNMENT;
   adc_base_struct.ordinary_channel_length = 1;
   adc_base_config(ADC1, &adc_base_struct);
@@ -94,6 +93,8 @@ static void adc_config(void)
   adc_tempersensor_vintrv_enable(TRUE);
 
   adc_enable(ADC1, TRUE);
+
+  /* ADC calibration */
   adc_calibration_init(ADC1);
   while(adc_calibration_init_status_get(ADC1));
   adc_calibration_start(ADC1);
@@ -107,7 +108,6 @@ static void adc_config(void)
   */
 int main(void)
 {
-  __IO uint32_t index = 0;
   nvic_priority_group_config(NVIC_PRIORITY_GROUP_4);
   system_clock_config();
   at32_board_init();
@@ -117,15 +117,25 @@ int main(void)
   uart_print_init(115200);
   dma_config();
   adc_config();
+
+  /* enable DMA after ADC activation */
+  dma_channel_enable(DMA1_CHANNEL1, TRUE);
+
   printf("internal_temperature_sensor \r\n");
   adc_ordinary_software_trigger_enable(ADC1, TRUE);
   while(1)
   {
-    at32_led_on(LED2);
-    delay_sec(1);
-    while(dma_flag_get(DMA1_FDT1_FLAG) == RESET);
+    /* ordinary software start conversion */
+    adc_ordinary_software_trigger_enable(ADC1, TRUE);
+
+    /* wait conversion end */
+    while(dma_flag_get(DMA1_FDT1_FLAG) == RESET)
+    {
+    }
     dma_flag_clear(DMA1_FDT1_FLAG);
-    printf("internal_temperature = %f deg C\r\n",(ADC_TEMP_BASE - (double)adc1_ordinary_value * ADC_VREF / 4096) / ADC_TEMP_SLOPE + 25);
+    printf("internal_temperature = %f deg C\r\n",(ADC_TEMP_BASE - (double)adc1_ordinary_value * ADC_VREF / 4095) / ADC_TEMP_SLOPE + 25);
+    at32_led_toggle(LED2);
+    delay_sec(1);
   }
 }
 
